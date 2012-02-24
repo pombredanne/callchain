@@ -8,8 +8,8 @@ from stuf.utils import lazy
 from appspace.managers import Manager as _Manager
 from appspace.keys import AppLookupError, ConfigurationError
 
-from callchain.keys import ASettings
-from callchain.settings import Settings
+from callchain.core.keys import ASettings
+from callchain.core.settings import Settings
 
 __all__ = ['Manager']
 

@@ -5,7 +5,7 @@ from twoq import port
 from appspace.keys import ConfigurationError
 from appspace.spaces import Patterns, patterns
 
-from callchain.managers import Manager
+from callchain.core.managers import Manager
 
 __all__ = ['Pathways']
 
