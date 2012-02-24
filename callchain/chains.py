@@ -12,76 +12,15 @@ from callchain.paths import Pathways
 __all__ = ['chainq', 'leadq']
 
 
-class leadq(twoq):
-
-    '''call chain manager'''
-
-    def __init__(self, pattern, required=None, defaults=None, *args):
-        '''
-        init
-
-        @param pattern: pattern configuration or appspace label
-        @param required: required settings (default: None)
-        @param defaults: default settings (default: None)
-        '''
-        super(leadq, self).__init__(*args)
-        # application appspace
-        self.M = Pathways.appspace(pattern, required, defaults)
-
-    @property
-    def settings(self):
-        '''application settings'''
-        return self.M.settings.final
-
-    @lazy_class
-    def port(self):
-        '''python 2.x <-> python 3.x compatibility helper'''
-        return port
-
-    def add(self, app, label, branch=False):
-        '''
-        add application to appspace
-
-        @param app: new application
-        @param label: application label
-        @param branch: branch label (default: False)
-        '''
-        self.M.add(app, label, branch)
-        return self
-
-    def chain(self, call, branch=False, *args, **kw):
-        '''
-        add callable to call chain, partialized with any parameters
-
-        @param call: callable
-        @param branch: branch label (default: False)
-        '''
-        self._cappendright(self.M.partial(call, branch, *args, **kw))
-        return self
-
-    def partial(self, call, branch=False, *args, **kw):
-        '''
-        partialize callable or appspaced application with any callable
-        parameters
-
-        @param call: callable or application label
-        @param branch: branch label (default: False)
-        '''
-        self.M.partialize(call, branch, *args, **kw)
-        return self
-
-
 class chainq(twoq):
 
     '''call chain execution'''
 
-    def __init__(self, manager):
+    def __init__(self, manager, *args):
         '''
         init
 
-        @param pattern: pattern configuration or appspace label
-        @param required: required settings (default: None)
-        @param defaults: default settings (default: None)
+        @param manager: appspace manager
         '''
         super(chainq, self).__init__()
         # application appspace
@@ -118,13 +57,68 @@ class chainq(twoq):
         self._app = self.M.app(label, branch)
         return self
 
-    ###########################################################################
-    ## call chain execution ###################################################
-    ###########################################################################
-
     def commit(self):
         '''invoke call chain'''
         # consume call chain until exhausted & put results in outgoing things
         calls = iterexcept(self._chain.popleft, IndexError)
         self.outappend(call() for call in calls)
         return self
+
+    def add(self, app, label, branch=False):
+        '''
+        add application to appspace
+
+        @param app: new application
+        @param label: application label
+        @param branch: branch label (default: False)
+        '''
+        self.M.add(app, label, branch)
+        return self
+
+    def chain(self, call, branch=False, *args, **kw):
+        '''
+        add callable to call chain, partialized with any parameters
+
+        @param call: callable
+        @param branch: branch label (default: False)
+        '''
+        self._cappendright(self.M.partial(call, branch, *args, **kw))
+        return self
+
+    def partial(self, call, branch=False, *args, **kw):
+        '''
+        partialize callable or appspaced application with any callable
+        parameters
+
+        @param call: callable or application label
+        @param branch: branch label (default: False)
+        '''
+        self.M.partial(call, branch, *args, **kw)
+        return self
+
+
+class leadq(chainq):
+
+    '''call chain manager'''
+
+    def __init__(self, pattern, required=None, defaults=None, *args):
+        '''
+        init
+
+        @param pattern: pattern configuration or appspace label
+        @param required: required settings (default: None)
+        @param defaults: default settings (default: None)
+        '''
+        # application appspace
+        self.M = Pathways.appspace(pattern, required, defaults)
+        super(leadq, self).__init__(self.M, *args)
+
+    @property
+    def settings(self):
+        '''application settings'''
+        return self.M.settings.final
+
+    @lazy_class
+    def port(self):
+        '''python 2.x <-> python 3.x compatibility helper'''
+        return port
