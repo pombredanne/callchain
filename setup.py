@@ -10,7 +10,7 @@ except ImportError:
     from distutils.core import setup
 
 install_requires = [
-    'twoq', 'appspace>=0.5.1', 'zope.interface>=3.8.0', 'stuf>=0.8.4',
+    'twoq>0.1.10', 'appspace>=0.5.1', 'zope.interface>=3.8.0', 'stuf>=0.8.4',
 ]
 if sys.version_info[0] == 2 and sys.version_info[1] < 7:
     install_requires.extend(['importlib', 'ordereddict', 'unittest2'])
@@ -19,7 +19,7 @@ setup(
     name='callchain',
     version='0.1.1',
     url='http://bitbucket.com/lcrees/callchain',
-    description='chains calls and components together in one happy chain',
+    description='calls and components joined in one big happy chain',
     long_description=open(os.path.join(os.getcwd(), 'README.rst'), 'r').read(),
     author='L. C. Rees',
     license='MIT',

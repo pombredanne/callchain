@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 '''callchain call chain mixins'''
 
-from twoq import twoq, port
+from twoq import port
 from appspace.keys import appifies
 from appspace.builders import Appspace
-from stuf.utils import lazy, lazy_class
+from stuf.utils import lazy, lazy_class, either
 
 from callchain.core.paths import Pathways
 from callchain.mixins.keys import ABranchChain, ARootChain
@@ -12,45 +12,50 @@ from callchain.mixins.keys import ABranchChain, ARootChain
 __all__ = ('ChainsQMixin', 'ChainQMixin', 'BranchQMixin')
 
 
-class ChainsQMixin(twoq):
+class ChainsQMixin(object):
 
     '''base call chain'''
+
+    @either
+    def L(self):
+        '''local manager settings'''
+        return self.M.localize(self)
 
     @lazy
     def space(self):
         '''appspace'''
         return Appspace(self.M)
 
-    def add(self, app, label, branch=False):
+    def add(self, app, label, key=False):
         '''
         add application to appspace
 
         @param app: new application
         @param label: application label
-        @param branch: branch label (default: False)
+        @param key: key label (default: False)
         '''
-        self.M.add(app, label, branch)
+        self.M.set(label, app, key)
         return self
 
-    def app(self, label, branch=False):
+    def app(self, label, key=False):
         '''
-        fetch application in appspace
+        fetch application from appspace
 
         @param label: application label
-        @param branch: branch label (default: False)
+        @param key: key label (default: False)
         '''
-        self._app = self.M.app(label, branch)
+        self._app = self.M.get(label, key)
         return self
 
-    def partial(self, call, branch=False, *args, **kw):
+    def partial(self, call, key=False, *args, **kw):
         '''
         partialize callable or appspaced application with any callable
         parameters
 
         @param call: callable or application label
-        @param branch: branch label (default: False)
+        @param key: key label (default: False)
         '''
-        self.M.partial(call, branch, *args, **kw)
+        self._app = self.M.partial(call, key, *args, **kw)
         return self
 
 
@@ -72,8 +77,6 @@ class BranchQMixin(ChainsQMixin):
         self.M = root.M
         # manager settings
         self.L = root.L
-        # sync with root
-        self.extend(root.outgoing)
 
 
 @appifies(ARootChain)
@@ -81,7 +84,7 @@ class ChainQMixin(ChainsQMixin):
 
     '''root call chain'''
 
-    def __init__(self, pattern, required=None, defaults=None):
+    def __init__(self, pattern, required=None, defaults=None, **kw):
         '''
         init
 
@@ -92,6 +95,8 @@ class ChainQMixin(ChainsQMixin):
         super(ChainQMixin, self).__init__()
         # application appspace
         self.M = Pathways.appspace(pattern, required, defaults)
+        # freeze settings with any custom settings passed as keywords
+        self.M.freeze(kw)
 
     @property
     def settings(self):

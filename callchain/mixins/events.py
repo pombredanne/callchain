@@ -1,18 +1,17 @@
 # -*- coding: utf-8 -*-
 '''callchain events'''
 
-from functools import partial
 from itertools import chain, starmap
 
-from twoq import port
-from twoq.support import map
 from appspace import Registry
+from twoq.support import map, items
 from stuf import orderedstuf, frozenstuf
 
 from callchain.mixins.keys import (
     EEvent, EBefore, EWork, EChange, EAfter, EProblem, EFinally, EAny)
 
 from callchain.mixins.chains import ChainsQMixin, BranchQMixin, ChainQMixin
+from stuf.utils import exhaust
 
 __all__ = ('EventsQMixin', 'EventQMixin', 'TripQMixin')
 
@@ -24,24 +23,26 @@ class EventsQMixin(ChainsQMixin):
     def __init__(self):
         super(EventsQMixin, self).__init__()
         # local event registry
-        self.E = Registry(key=EEvent)
+        self.E = Registry('events', EEvent)
         # populate system events
-        register = partial(self.E.ez_register, key=EEvent)
-        starmap(register, port.items(self.L.EVENTS))
+        ez_register = self.E.ez_register
+        exhaust(starmap(
+            lambda x, y: ez_register(EEvent, x, y), items(self.L.EVENTS),
+        ))
 
     ###########################################################################
     ## event listener management ##############################################
     ###########################################################################
 
-    def on(self, event, call, branch=False, *args, **kw):
+    def on(self, event, call, key=False, *args, **kw):
         '''
         bind callable to event
 
         @param event: event label
         @param call: callable or application label
-        @param branch: branch label (default: False)
+        @param key: key label (default: False)
         '''
-        self._eventq(event).chain(call, branch, *args, **kw)
+        self._eventq(event).chain(call, key, *args, **kw)
         return self
 
     def off(self, event):
@@ -140,26 +141,6 @@ class TripQMixin(EventsQMixin, BranchQMixin):
         self._eget = self.root.event
 
     ###########################################################################
-    ## event management #######################################################
-    ###########################################################################
-
-    def _eventq(self, event):
-        '''
-        get call chain tied to event
-
-        @param event: event label
-        '''
-        # fetch root event
-        event = self._eget(event)
-        # fetch branch event call chain
-        queue = self.E.ez_lookup(EEvent, event)
-        if queue is None:
-            # create branch event call chain if nonexistent
-            queue = BranchQMixin(self.M, self.M.max_length)
-            self.E.extend(EEvent, event, queue)
-        return queue
-
-    ###########################################################################
     ## event chain execution ##################################################
     ###########################################################################
 
@@ -172,26 +153,6 @@ class TripQMixin(EventsQMixin, BranchQMixin):
 class EventQMixin(EventsQMixin, ChainQMixin):
 
     '''root event chain'''
-
-    ###########################################################################
-    ## event management #######################################################
-    ###########################################################################
-
-    def _eventq(self, event):
-        '''
-        get call chain tied to event
-
-        @param event: event label
-        '''
-        # fetch event
-        event = self.event(event)
-        # fetch branch event call chain
-        queue = self.E.ez_lookup(EEvent, event)
-        if queue is None:
-            # create branch event call chain if nonexistent
-            queue = BranchQMixin(self)
-            self.E.extend(EEvent, event, queue)
-        return queue
 
     ###########################################################################
     ## event chain execution ##################################################

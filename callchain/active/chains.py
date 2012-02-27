@@ -3,7 +3,8 @@
 
 from collections import deque
 
-from twoq import iterexcept
+from twoq import twoq
+from stuf.utils import iterexcept
 
 from callchain.mixins.keys import ABranchChain
 from callchain.mixins.chains import ChainsQMixin, BranchQMixin, ChainQMixin
@@ -11,7 +12,7 @@ from callchain.mixins.chains import ChainsQMixin, BranchQMixin, ChainQMixin
 __all__ = ['branchq', 'chainq']
 
 
-class chainsq(ChainsQMixin):
+class chainsq(ChainsQMixin, twoq):
 
     '''base call chain'''
 
@@ -44,6 +45,11 @@ class branchq(chainsq, BranchQMixin):
 
     '''call chain branch'''
 
+    def __init__(self, root):
+        super(branchq, self).__init__(root)
+        # sync with root
+        self.extend(root.outgoing)
+
     def back(self):
         '''return to root'''
         return self.root.clear().extend(self.outgoing)
@@ -52,18 +58,6 @@ class branchq(chainsq, BranchQMixin):
 class chainq(chainsq, ChainQMixin):
 
     '''root call chain'''
-
-    def fork(self, test, label1, label2):
-        '''
-        switch to branch call chain based on condition
-
-        @param test: test determining which branch to take
-        @param label1: label of branch taken if `test` is `True`
-        @param label2: label of branch taken if `test` is `False`
-        '''
-        if test:
-            return self.M.ez_lookup(ABranchChain, label1)(self)
-        return self.M.ez_lookup(ABranchChain, label2)(self)
 
     def switch(self, label):
         '''

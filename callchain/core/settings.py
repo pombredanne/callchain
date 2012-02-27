@@ -53,7 +53,7 @@ class Settings(ResetLocalMixin):
         super(Settings, self).__init__()
         # default settings
         self._default = dict()
-        # final settings
+        # end settings
         self._final = dict()
         # required settings
         self._required = dict()
@@ -107,10 +107,10 @@ class Settings(ResetLocalMixin):
     @lock_set
     def final(self):
         '''finalized settings'''
-        final = self._default.copy()
-        final.update(self._final.copy())
-        final.update(self._required.copy())
-        return frozenstuf(final)
+        end = self._default.copy()
+        end.update(self._final.copy())
+        end.update(self._required.copy())
+        return frozenstuf(end)
 
     @lock_set
     def required(self):
@@ -150,7 +150,7 @@ class Settings(ResetLocalMixin):
         self.lock()
 
     def update(self, *args, **kw):
-        '''update final setting'''
+        '''update end setting'''
         self._final.update(*args, **kw)
 
     @bi

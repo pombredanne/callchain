@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
 '''callchain active event call chains'''
 
-from twoq import iterexcept
+from stuf.utils import iterexcept
 
-
+from callchain.mixins.keys import EEvent
 from callchain.mixins.events import EventsQMixin, TripQMixin, EventQMixin
 
-from callchain.active.chains import chainsq, branchq, chainq
+from callchain.active.chains import branchq, chainq
+
 
 __all__ = ['eventq', 'tripq']
 
 
-class eventsq(EventsQMixin, chainsq):
+class eventsq(EventsQMixin):
 
     '''base event call chain'''
 
@@ -44,7 +45,39 @@ class tripq(eventsq, TripQMixin, branchq):
 
     '''trips events'''
 
+    def _eventq(self, event):
+        '''
+        get call chain tied to event
+
+        @param event: event label
+        '''
+        # fetch root event
+        event = self._eget(event)
+        # fetch branch event call chain
+        queue = self.E.ez_lookup(EEvent, event)
+        if queue is None:
+            # create branch event call chain if nonexistent
+            queue = branchq(self.M, self.M.max_length)
+            self.E.ez_register(EEvent, event, queue)
+        return queue
+
 
 class eventq(eventsq, EventQMixin, chainq):
 
     '''root event chain'''
+
+    def _eventq(self, event):
+        '''
+        get call chain tied to event
+
+        @param event: event label
+        '''
+        # fetch event
+        event = self.event(event)
+        # fetch branch event call chain
+        queue = self.E.ez_lookup(EEvent, event)
+        if queue is None:
+            # create branch event call chain if nonexistent
+            queue = branchq(self)
+            self.E.ez_register(EEvent, event, queue)
+        return queue

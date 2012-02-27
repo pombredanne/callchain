@@ -3,7 +3,7 @@
 
 from inspect import ismodule
 
-from stuf.six import iteritems
+from stuf.six import items
 from appspace.keys import AppspaceKey
 
 
@@ -70,7 +70,7 @@ class AEventChain(AppspaceKey):
     '''event call chain'''
 
 
-__all__ = sorted(name for name, obj in iteritems(locals()) if not any([
+__all__ = sorted(name for name, obj in items(locals()) if not any([
     name.startswith('_'), ismodule(obj),
 ]))
 del ismodule
