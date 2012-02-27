@@ -1,20 +1,22 @@
 # -*- coding: utf-8 -*-
-'''callchain active event call chains'''
+'''active event call chains'''
 
+from threading import local
+from inspect import ismodule
+
+from stuf.six import items
 from stuf.utils import iterexcept
+from twoq.active.queuing import autoq, manq, syncq
 
 from callchain.mixins.keys import EEvent
-from callchain.mixins.events import EventsQMixin, TripQMixin, EventQMixin
+from callchain.mixins.events import TripQMixin, EventQMixin
 
-from callchain.active.chains import branchq, chainq
-
-
-__all__ = ['eventq', 'tripq']
+from callchain.active.chains import AChainQMixin, ALinkQMixin, linkq
 
 
-class eventsq(EventsQMixin):
+class AEventsQMixin(local):
 
-    '''base event call chain'''
+    '''base event call chain mixin'''
 
     ###########################################################################
     ## event chain execution ##################################################
@@ -41,13 +43,13 @@ class eventsq(EventsQMixin):
         return self
 
 
-class tripq(eventsq, TripQMixin, branchq):
+class ATripQMixin(TripQMixin, AEventsQMixin, ALinkQMixin):
 
-    '''trips events'''
+    '''event tripwire call chain mixin'''
 
     def _eventq(self, event):
         '''
-        get call chain tied to event
+        get call chain tied to tripwire
 
         @param event: event label
         '''
@@ -57,14 +59,14 @@ class tripq(eventsq, TripQMixin, branchq):
         queue = self.E.ez_lookup(EEvent, event)
         if queue is None:
             # create branch event call chain if nonexistent
-            queue = branchq(self.M, self.M.max_length)
+            queue = linkq(self.M, self.M.max_length)
             self.E.ez_register(EEvent, event, queue)
         return queue
 
 
-class eventq(eventsq, EventQMixin, chainq):
+class AEventQMixin(EventQMixin, AEventsQMixin, AChainQMixin):
 
-    '''root event chain'''
+    '''event call chain mixin'''
 
     def _eventq(self, event):
         '''
@@ -78,6 +80,56 @@ class eventq(eventsq, EventQMixin, chainq):
         queue = self.E.ez_lookup(EEvent, event)
         if queue is None:
             # create branch event call chain if nonexistent
-            queue = branchq(self)
+            queue = linkq(self)
             self.E.ez_register(EEvent, event, queue)
         return queue
+
+
+###############################################################################
+## active trip wire call chains ###############################################
+###############################################################################
+
+
+class atripq(ATripQMixin, autoq):
+
+    '''auto-balancing tripwire call chain'''
+
+tripq = atripq
+
+
+class mtripq(ATripQMixin, manq):
+
+    '''manually balanced tripwire call chain'''
+
+
+class stripq(ATripQMixin, syncq):
+
+    '''synchronized tripwire call chain'''
+
+
+###############################################################################
+## active event call chains ###################################################
+###############################################################################
+
+
+class aeventq(AEventQMixin, autoq):
+
+    '''auto-balancing event call chain'''
+
+eventq = aeventq
+
+
+class meventq(AEventQMixin, manq):
+
+    '''manually balanced event call chain'''
+
+
+class seventq(AEventQMixin, syncq):
+
+    '''synchronized event call chain'''
+
+
+__all__ = sorted(name for name, obj in items(locals()) if not any([
+    name.startswith('_'), ismodule(obj),
+]))
+del ismodule

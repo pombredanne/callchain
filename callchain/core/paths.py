@@ -2,8 +2,8 @@
 '''callchain pathwayss'''
 
 from twoq import port
-from appspace.keys import ConfigurationError
 from appspace.spaces import Patterns, patterns
+from appspace.keys import ConfigurationError, AApp
 
 from callchain.core.managers import Manager
 
@@ -17,7 +17,9 @@ class Pathways(Patterns):
     _manager = Manager
 
     @classmethod
-    def appspace(cls, pattern, required=None, defaults=None, *args, **kw):
+    def appspace(
+        cls, pattern, required=None, defaults=None, key=AApp, *args, **kw
+    ):
         '''
         build new appspace
 
@@ -27,7 +29,7 @@ class Pathways(Patterns):
         '''
         # from appspace configuration class...
         if issubclass(pattern, Patterns):
-            return pattern.build(required, defaults)
+            return pattern.build(required, defaults, key)
         # from label and arguments...
         elif port.isstring(pattern) and args:
             manager = patterns(pattern, *args, **kw)
@@ -38,14 +40,14 @@ class Pathways(Patterns):
 
     # pylint: disable-msg=w0221
     @classmethod
-    def build(cls, required=None, defaults=None):
+    def build(cls, required=None, defaults=None, key=AApp):
         '''
         build manager configuration from class
 
         @param required: required settings
         @param defaults: default settings
         '''
-        manager = super(Pathways, cls).build()
+        manager = super(Pathways, cls).build(key)
         if any([required is not None, defaults is not None]):
             cls.settings(manager, required, defaults)
         return manager

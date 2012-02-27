@@ -1,20 +1,40 @@
 # -*- coding: utf-8 -*-
-'''callchain call chain mixins'''
+'''call chain mixins'''
+
+from threading import local
 
 from twoq import port
-from appspace.keys import appifies
 from appspace.builders import Appspace
 from stuf.utils import lazy, lazy_class, either
+from appspace.keys import appifies, AppLookupError, NoAppError
 
 from callchain.core.paths import Pathways
 from callchain.mixins.keys import ABranchChain, ARootChain
 
-__all__ = ('ChainsQMixin', 'ChainQMixin', 'BranchQMixin')
+__all__ = ('ChainQMixin', 'LinkQMixin')
 
 
-class ChainsQMixin(object):
+class ChainsQMixin(local):
 
-    '''base call chain'''
+    '''base call chain mixin'''
+
+    def __getapp(self, label):
+        try:
+            item = self.M.get(label, self.M._current)
+        except AppLookupError:
+            try:
+                # try finding namespace
+                self.M.namespace(label)
+            except AppLookupError:
+                raise NoAppError(label)
+            else:
+                # temporarily swap primary label
+                self.M._current = label
+                return self
+        else:
+            # ensure current label is set back to default
+            self.M._current = self.M._root
+            return item
 
     @either
     def L(self):
@@ -44,25 +64,14 @@ class ChainsQMixin(object):
         @param label: application label
         @param key: key label (default: False)
         '''
-        self._app = self.M.get(label, key)
-        return self
-
-    def partial(self, call, key=False, *args, **kw):
-        '''
-        partialize callable or appspaced application with any callable
-        parameters
-
-        @param call: callable or application label
-        @param key: key label (default: False)
-        '''
-        self._app = self.M.partial(call, key, *args, **kw)
+        self._call = self.M.get(label, key)
         return self
 
 
 @appifies(ABranchChain)
-class BranchQMixin(ChainsQMixin):
+class LinkQMixin(ChainsQMixin):
 
-    '''call chain branch'''
+    '''liked call chain mixin'''
 
     def __init__(self, root):
         '''
@@ -70,7 +79,7 @@ class BranchQMixin(ChainsQMixin):
 
         @param root: root call chain
         '''
-        super(BranchQMixin, self).__init__()
+        super(LinkQMixin, self).__init__()
         # root call chain
         self.root = root
         # application appspace
@@ -78,11 +87,17 @@ class BranchQMixin(ChainsQMixin):
         # manager settings
         self.L = root.L
 
+    def __getattr__(self, label):
+        try:
+            return object.__getattribute__(self, label)
+        except AttributeError:
+            return self._getapp(label)
+
 
 @appifies(ARootChain)
 class ChainQMixin(ChainsQMixin):
 
-    '''root call chain'''
+    '''call chain mixin'''
 
     def __init__(self, pattern, required=None, defaults=None, **kw):
         '''
@@ -94,9 +109,22 @@ class ChainQMixin(ChainsQMixin):
         '''
         super(ChainQMixin, self).__init__()
         # application appspace
-        self.M = Pathways.appspace(pattern, required, defaults)
+        self.M = Pathways.appspace(pattern, required, defaults, ABranchChain)
         # freeze settings with any custom settings passed as keywords
         self.M.freeze(kw)
+
+    def __getattr__(self, label):
+        try:
+            return object.__getattribute__(self, label)
+        except AttributeError:
+            try:
+                item = self.M.lookup1(ABranchChain, ABranchChain, label)
+                if item is None:
+                    raise NoAppError(label)
+            except NoAppError:
+                return self._getapp(label)
+            else:
+                return item(self)
 
     @property
     def settings(self):
@@ -108,12 +136,20 @@ class ChainQMixin(ChainsQMixin):
         '''python 2.x <-> python 3.x compatibility aid'''
         return port
 
-    def branch(self, label, branch):
+    def link(self, label, branch):
         '''
-        add branch call chain class to root
+        add linked call chain class
 
-        @param label: branch call chain class label
-        @param branch: branch call chain class
+        @param label: linked call chain class label
+        @param branch: linked call chain class
         '''
         self.M.ez_register(ABranchChain, label, branch)
         return self
+
+    def switch(self, label):
+        '''
+        switch to linked call chain
+
+        @param label: chain label
+        '''
+        return self.M.lookup1(ABranchChain, ABranchChain, label)

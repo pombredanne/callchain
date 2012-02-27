@@ -1,31 +1,34 @@
 # -*- coding: utf-8 -*-
-'''callchain active call chains'''
+'''active call chains'''
 
+from threading import local
+
+from inspect import ismodule
 from collections import deque
 
-from twoq import twoq
+from stuf.six import items
 from stuf.utils import iterexcept
+from twoq.active.queuing import autoq, manq, syncq
 
-from callchain.mixins.keys import ABranchChain
-from callchain.mixins.chains import ChainsQMixin, BranchQMixin, ChainQMixin
+from callchain.mixins.chains import LinkQMixin, ChainQMixin
 
-__all__ = ['branchq', 'chainq']
+###############################################################################
+## active callchain mixins ####################################################
+###############################################################################
 
 
-class chainsq(ChainsQMixin, twoq):
+class AChainsQMixin(local):
 
     '''base call chain'''
 
     def __init__(self):
-        super(chainsq, self).__init__()
-        #######################################################################
+        super(AChainsQMixin, self).__init__()
         ## call chain #########################################################
-        #######################################################################
         self._chain = deque()
         # call chain right extend
         self._cxtend = self._chain.extend
         # call chain right append
-        self._cappendright = self._chain.append
+        self._cappend = self._chain.append
         # call chain left append
         self._cappendleft = self._chain.appendleft
         # call chain left pop
@@ -40,13 +43,24 @@ class chainsq(ChainsQMixin, twoq):
         self.outappend(call() for call in calls)
         return self
 
+    def chain(self, call, key=False, *args, **kw):
+        '''
+        add callable or appspaced application to call chain, partializing it
+        with any passed parameters
 
-class branchq(chainsq, BranchQMixin):
+        @param call: callable or application label
+        @param key: key label (default: False)
+        '''
+        self._cappend(self.M.partial(call, key, *args, **kw))
+        return self
 
-    '''call chain branch'''
+
+class ALinkQMixin(AChainsQMixin, LinkQMixin):
+
+    '''linked call chain mixin'''
 
     def __init__(self, root):
-        super(branchq, self).__init__(root)
+        super(ALinkQMixin, self).__init__(root)
         # sync with root
         self.extend(root.outgoing)
 
@@ -55,14 +69,55 @@ class branchq(chainsq, BranchQMixin):
         return self.root.clear().extend(self.outgoing)
 
 
-class chainq(chainsq, ChainQMixin):
+class AChainQMixin(AChainsQMixin, ChainQMixin):
 
-    '''root call chain'''
+    '''call chain mixin'''
 
-    def switch(self, label):
-        '''
-        switch to branch call chain
+###############################################################################
+## active link call chains ####################################################
+###############################################################################
 
-        @param label: chain label
-        '''
-        return self.M.ez_lookup(ABranchChain, label)(self)
+
+class alinkq(ALinkQMixin, autoq):
+
+    '''auto-balancing link call chain'''
+
+linkq = alinkq
+
+
+class mlinkq(ALinkQMixin, manq):
+
+    '''manually balanced link call chain'''
+
+
+class slinkq(AChainQMixin, syncq):
+
+    '''synchronized link call chain'''
+
+
+###############################################################################
+## active call chains #########################################################
+###############################################################################
+
+
+class achainq(AChainQMixin, autoq):
+
+    '''auto-balancing call chain'''
+
+chainq = achainq
+
+
+class mchainq(AChainQMixin, manq):
+
+    '''manually balanced call chain'''
+
+
+class schainq(AChainQMixin, syncq):
+
+    '''synchronized call chain'''
+
+
+__all__ = sorted(name for name, obj in items(locals()) if not any([
+    name.startswith('_'), ismodule(obj),
+]))
+del ismodule

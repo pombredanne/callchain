@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-'''callchain events'''
+'''callchain event mixins'''
 
+from threading import local
 from itertools import chain, starmap
 
 from appspace import Registry
@@ -10,15 +11,14 @@ from stuf import orderedstuf, frozenstuf
 from callchain.mixins.keys import (
     EEvent, EBefore, EWork, EChange, EAfter, EProblem, EFinally, EAny)
 
-from callchain.mixins.chains import ChainsQMixin, BranchQMixin, ChainQMixin
 from stuf.utils import exhaust
 
-__all__ = ('EventsQMixin', 'EventQMixin', 'TripQMixin')
+__all__ = ('EventQMixin', 'TripQMixin')
 
 
-class EventsQMixin(ChainsQMixin):
+class EventsQMixin(local):
 
-    '''events call chain'''
+    '''base event call chain mixin'''
 
     def __init__(self):
         super(EventsQMixin, self).__init__()
@@ -124,9 +124,9 @@ class EventsQMixin(ChainsQMixin):
         })
 
 
-class TripQMixin(EventsQMixin, BranchQMixin):
+class TripQMixin(EventsQMixin):
 
-    '''trips events'''
+    '''tripwire call chain mixin'''
 
     def __init__(self, root):
         '''
@@ -150,9 +150,9 @@ class TripQMixin(EventsQMixin, BranchQMixin):
         return chain(self.E.subscriptions(EEvent, e), self._regetit(e))
 
 
-class EventQMixin(EventsQMixin, ChainQMixin):
+class EventQMixin(EventsQMixin):
 
-    '''root event chain'''
+    '''event call chain mixin'''
 
     ###########################################################################
     ## event chain execution ##################################################
