@@ -11,7 +11,7 @@ from appspace.keys import appifies, AppLookupError, NoAppError
 from callchain.core.paths import Pathways
 from callchain.mixins.keys import ABranchChain, ARootChain
 
-__all__ = ('ChainQMixin', 'LinkQMixin')
+__all__ = ('CallChainMixin', 'ChainLinkMixin')
 
 
 class ChainsQMixin(local):
@@ -69,9 +69,9 @@ class ChainsQMixin(local):
 
 
 @appifies(ABranchChain)
-class LinkQMixin(ChainsQMixin):
+class ChainLinkMixin(ChainsQMixin):
 
-    '''liked call chain mixin'''
+    '''base linked call chain mixin'''
 
     def __init__(self, root):
         '''
@@ -79,7 +79,7 @@ class LinkQMixin(ChainsQMixin):
 
         @param root: root call chain
         '''
-        super(LinkQMixin, self).__init__()
+        super(ChainLinkMixin, self).__init__()
         # root call chain
         self.root = root
         # application appspace
@@ -95,9 +95,9 @@ class LinkQMixin(ChainsQMixin):
 
 
 @appifies(ARootChain)
-class ChainQMixin(ChainsQMixin):
+class CallChainMixin(ChainsQMixin):
 
-    '''call chain mixin'''
+    '''base call chain mixin'''
 
     def __init__(self, pattern, required=None, defaults=None, **kw):
         '''
@@ -107,7 +107,7 @@ class ChainQMixin(ChainsQMixin):
         @param required: required settings (default: None)
         @param defaults: default settings (default: None)
         '''
-        super(ChainQMixin, self).__init__()
+        super(CallChainMixin, self).__init__()
         # application appspace
         self.M = Pathways.appspace(pattern, required, defaults, ABranchChain)
         # freeze settings with any custom settings passed as keywords

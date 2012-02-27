@@ -8,21 +8,21 @@ from collections import deque
 
 from stuf.six import items
 from stuf.utils import iterexcept
-from twoq.active.queuing import autoq, manq, syncq
+from twoq.active.queuing import AutoQMixin, ManQMixin, SyncQMixin
 
-from callchain.mixins.chains import LinkQMixin, ChainQMixin
+from callchain.mixins.chains import ChainLinkMixin, CallChainMixin
 
 ###############################################################################
-## active callchain mixins ####################################################
+## active CallChain mixins ####################################################
 ###############################################################################
 
 
-class AChainsQMixin(local):
+class AChainsMixin(local):
 
     '''base call chain'''
 
     def __init__(self):
-        super(AChainsQMixin, self).__init__()
+        super(AChainsMixin, self).__init__()
         ## call chain #########################################################
         self._chain = deque()
         # call chain right extend
@@ -55,12 +55,12 @@ class AChainsQMixin(local):
         return self
 
 
-class ALinkQMixin(AChainsQMixin, LinkQMixin):
+class AChainLinkMixin(AChainsMixin, ChainLinkMixin):
 
     '''linked call chain mixin'''
 
     def __init__(self, root):
-        super(ALinkQMixin, self).__init__(root)
+        super(AChainLinkMixin, self).__init__(root)
         # sync with root
         self.extend(root.outgoing)
 
@@ -69,7 +69,7 @@ class ALinkQMixin(AChainsQMixin, LinkQMixin):
         return self.root.clear().extend(self.outgoing)
 
 
-class AChainQMixin(AChainsQMixin, ChainQMixin):
+class ACallChainMixin(AChainsMixin, CallChainMixin):
 
     '''call chain mixin'''
 
@@ -78,19 +78,19 @@ class AChainQMixin(AChainsQMixin, ChainQMixin):
 ###############################################################################
 
 
-class alinkq(ALinkQMixin, autoq):
+class AChainLink(AChainLinkMixin, AutoQMixin):
 
     '''auto-balancing link call chain'''
 
-linkq = alinkq
+ChainLink = AChainLink
 
 
-class mlinkq(ALinkQMixin, manq):
+class MChainLink(AChainLinkMixin, ManQMixin):
 
     '''manually balanced link call chain'''
 
 
-class slinkq(AChainQMixin, syncq):
+class SChainLink(ACallChainMixin, SyncQMixin):
 
     '''synchronized link call chain'''
 
@@ -100,19 +100,19 @@ class slinkq(AChainQMixin, syncq):
 ###############################################################################
 
 
-class achainq(AChainQMixin, autoq):
+class ACallChain(ACallChainMixin, AutoQMixin):
 
     '''auto-balancing call chain'''
 
-chainq = achainq
+CallChain = ACallChain
 
 
-class mchainq(AChainQMixin, manq):
+class MCallChain(ACallChainMixin, ManQMixin):
 
     '''manually balanced call chain'''
 
 
-class schainq(AChainQMixin, syncq):
+class SCallChain(ACallChainMixin, SyncQMixin):
 
     '''synchronized call chain'''
 

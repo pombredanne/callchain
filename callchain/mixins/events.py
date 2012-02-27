@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''callchain event mixins'''
+'''event chain mixins'''
 
 from threading import local
 from itertools import chain, starmap
@@ -13,12 +13,12 @@ from callchain.mixins.keys import (
 
 from stuf.utils import exhaust
 
-__all__ = ('EventQMixin', 'TripQMixin')
+__all__ = ('EventChainMixin', 'EventLinkMixin')
 
 
 class EventsQMixin(local):
 
-    '''base event call chain mixin'''
+    '''base event chain mixin'''
 
     def __init__(self):
         super(EventsQMixin, self).__init__()
@@ -124,17 +124,17 @@ class EventsQMixin(local):
         })
 
 
-class TripQMixin(EventsQMixin):
+class EventLinkMixin(EventsQMixin):
 
-    '''tripwire call chain mixin'''
+    '''base linked event chain mixin'''
 
     def __init__(self, root):
         '''
         init
 
-        @param manager: manager
+        @param root: root event chain
         '''
-        super(TripQMixin, self).__init__(root)
+        super(EventLinkMixin, self).__init__(root)
         # root event chain getter
         self._regetit = self.root._getit
         # event getter
@@ -150,9 +150,9 @@ class TripQMixin(EventsQMixin):
         return chain(self.E.subscriptions(EEvent, e), self._regetit(e))
 
 
-class EventQMixin(EventsQMixin):
+class EventChainMixin(EventsQMixin):
 
-    '''event call chain mixin'''
+    '''base event chain mixin'''
 
     ###########################################################################
     ## event chain execution ##################################################

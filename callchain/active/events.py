@@ -1,22 +1,22 @@
 # -*- coding: utf-8 -*-
-'''active event call chains'''
+'''active event chains'''
 
 from threading import local
 from inspect import ismodule
 
 from stuf.six import items
 from stuf.utils import iterexcept
-from twoq.active.queuing import autoq, manq, syncq
+from twoq.active.queuing import AutoQMixin, ManQMixin, SyncQMixin
 
 from callchain.mixins.keys import EEvent
-from callchain.mixins.events import TripQMixin, EventQMixin
+from callchain.mixins.events import EventLinkMixin, EventChainMixin
 
-from callchain.active.chains import AChainQMixin, ALinkQMixin, linkq
+from callchain.active.chains import ACallChainMixin, AChainLinkMixin, ChainLink
 
 
-class AEventsQMixin(local):
+class AEventsMixin(local):
 
-    '''base event call chain mixin'''
+    '''base event chain mixin'''
 
     ###########################################################################
     ## event chain execution ##################################################
@@ -43,90 +43,90 @@ class AEventsQMixin(local):
         return self
 
 
-class ATripQMixin(TripQMixin, AEventsQMixin, ALinkQMixin):
+class AEventLinkMixin(EventLinkMixin, AEventsMixin, AChainLinkMixin):
 
-    '''event tripwire call chain mixin'''
+    '''linked event chain mixin'''
 
     def _eventq(self, event):
         '''
-        get call chain tied to tripwire
+        fetch chain tied to event
 
         @param event: event label
         '''
-        # fetch root event
+        # fetch event from root call chain
         event = self._eget(event)
-        # fetch branch event call chain
+        # fetch linked call chain bound to event
         queue = self.E.ez_lookup(EEvent, event)
         if queue is None:
-            # create branch event call chain if nonexistent
-            queue = linkq(self.M, self.M.max_length)
+            # create liked call chain if nonexistent
+            queue = ChainLink(self)
             self.E.ez_register(EEvent, event, queue)
         return queue
 
 
-class AEventQMixin(EventQMixin, AEventsQMixin, AChainQMixin):
+class AEventChainMixin(EventChainMixin, AEventsMixin, ACallChainMixin):
 
-    '''event call chain mixin'''
+    '''event chain mixin'''
 
     def _eventq(self, event):
         '''
-        get call chain tied to event
+        fetch call chain tied to event
 
         @param event: event label
         '''
         # fetch event
         event = self.event(event)
-        # fetch branch event call chain
+        # fetch linked call chain bound to event
         queue = self.E.ez_lookup(EEvent, event)
         if queue is None:
-            # create branch event call chain if nonexistent
-            queue = linkq(self)
+            # create linked call chain if nonexistent
+            queue = ChainLink(self)
             self.E.ez_register(EEvent, event, queue)
         return queue
 
 
 ###############################################################################
-## active trip wire call chains ###############################################
+## active linked event chains #################################################
 ###############################################################################
 
 
-class atripq(ATripQMixin, autoq):
+class AEventLink(AEventLinkMixin, AutoQMixin):
 
-    '''auto-balancing tripwire call chain'''
+    '''auto-balancing linked event chain'''
 
-tripq = atripq
-
-
-class mtripq(ATripQMixin, manq):
-
-    '''manually balanced tripwire call chain'''
+EventLink = AEventLink
 
 
-class stripq(ATripQMixin, syncq):
+class MEventLink(AEventLinkMixin, ManQMixin):
 
-    '''synchronized tripwire call chain'''
+    '''manually balanced linked event chain'''
+
+
+class SEventLink(AEventLinkMixin, SyncQMixin):
+
+    '''synchronized linked event chain'''
 
 
 ###############################################################################
-## active event call chains ###################################################
+## active event chains ########################################################
 ###############################################################################
 
 
-class aeventq(AEventQMixin, autoq):
+class AEventChain(AEventChainMixin, AutoQMixin):
 
-    '''auto-balancing event call chain'''
+    '''auto-balancing event chain'''
 
-eventq = aeventq
-
-
-class meventq(AEventQMixin, manq):
-
-    '''manually balanced event call chain'''
+EventChain = AEventChain
 
 
-class seventq(AEventQMixin, syncq):
+class MEventChain(AEventChainMixin, ManQMixin):
 
-    '''synchronized event call chain'''
+    '''manually balanced event chain'''
+
+
+class SEventChain(AEventChainMixin, SyncQMixin):
+
+    '''synchronized event chain'''
 
 
 __all__ = sorted(name for name, obj in items(locals()) if not any([
