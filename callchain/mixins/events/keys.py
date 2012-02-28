@@ -1,64 +1,76 @@
 # -*- coding: utf-8 -*-
-'''callchain keys'''
+#@PydevCodeAnalysisIgnore
+# pylint: disable-msg=e0211,e0213
+'''event chain keys'''
 
 from inspect import ismodule
 
 from stuf.six import items
-from appspace.keys import AppspaceKey
+from callchain.mixins.keys import ACallChain
 
 
-###############################################################################
-## events #####################################################################
-###############################################################################
+class AEvents(ACallChain):
+    
+    '''events key'''
+    
+    def on(event, call, key=False, *args, **kw):
+        '''
+        bind callable to event
 
-class EEvent(AppspaceKey):
+        @param event: event label
+        @param call: callable or application label
+        @param key: key label (default: False)
+        '''
 
-    '''event key'''
+    def off(event):
+        '''
+        clear all callables bound to event
 
+        @param event: event label
+        '''
 
-class EBefore(EEvent):
+    def events(*events):
+        '''get callables bound to `*events`'''
 
-    '''before event key'''
+    def commit(self):
+        '''run call chain'''
 
+    def queues(*events):
+        '''
+        ordered mapping of per event processing queue
 
-class EWork(EEvent):
+        @param *events: event labels
+        '''
+        
+    def fire(*events):
+        '''invoke callables bound to `*events` immediately'''
 
-    '''work event key'''
-
-
-class EChange(EEvent):
-
-    '''change event key'''
-
-
-class EAny(EEvent):
-
-    '''any events key'''
-
-
-class EAfter(EEvent):
-
-    '''after event key'''
-
-
-class EProblem(EEvent):
-
-    '''problem event key'''
-
-
-class EFinally(EEvent):
-
-    '''run anyway event key'''
+    def trigger(*events):
+        '''add callables bound to events to primary call chain'''
 
 
-###############################################################################
-## call chains ################################################################
-###############################################################################
+class AEventChain(AEvents):
+
+    '''event chain key'''
+
+    def event(event):
+        '''
+        create or fetch event
+
+        @param event: event label
+        '''
+
+    def unevent(event):
+        '''
+        drop event
+
+        @param event: event label
+        '''
 
 
-class AEventChain(AppspaceKey):
+class AEventLink(AEvents):
 
-    '''event call chain'''
+    '''linked event chain key'''
 
 
 __all__ = sorted(name for name, obj in items(locals()) if not any([
