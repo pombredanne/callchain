@@ -10,7 +10,7 @@ from stuf.six import items
 from stuf.utils import iterexcept
 from twoq.active.queuing import AutoQMixin, ManQMixin, SyncQMixin
 
-from callchain.mixins.chains import ChainLinkMixin, CallChainMixin
+from callchain.mixins.core import ChainLinkMixin, CallChainMixin
 
 ###############################################################################
 ## active CallChain mixins ####################################################
@@ -65,7 +65,7 @@ class AChainLinkMixin(AChainsMixin, ChainLinkMixin):
         self.extend(root.outgoing)
 
     def back(self):
-        '''return to root'''
+        '''return to root call chain'''
         return self.root.clear().extend(self.outgoing)
 
 
@@ -74,25 +74,25 @@ class ACallChainMixin(AChainsMixin, CallChainMixin):
     '''call chain mixin'''
 
 ###############################################################################
-## active link call chains ####################################################
+## active linked call chains ##################################################
 ###############################################################################
 
 
 class AChainLink(AChainLinkMixin, AutoQMixin):
 
-    '''auto-balancing link call chain'''
+    '''auto-balancing linked call chain'''
 
 ChainLink = AChainLink
 
 
 class MChainLink(AChainLinkMixin, ManQMixin):
 
-    '''manually balanced link call chain'''
+    '''manually balanced linked call chain'''
 
 
 class SChainLink(ACallChainMixin, SyncQMixin):
 
-    '''synchronized link call chain'''
+    '''synchronized linked call chain'''
 
 
 ###############################################################################
