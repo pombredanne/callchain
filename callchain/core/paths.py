@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''callchain pathwayss'''
+'''callchain pathways'''
 
 from twoq import port
 from appspace.spaces import Patterns, patterns
@@ -26,6 +26,7 @@ class Pathways(Patterns):
         @param pattern: pattern configuration class or appspace label
         @param required: required settings (default: None)
         @param defaults: default settings (default: None)
+        @param key: default appspace key (default: AApp)
         '''
         # from appspace configuration class...
         if issubclass(pattern, Patterns):
