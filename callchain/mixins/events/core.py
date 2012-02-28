@@ -16,12 +16,12 @@ from stuf.utils import exhaust
 __all__ = ('EventChainMixin', 'EventLinkMixin')
 
 
-class EventsQMixin(local):
+class EventsMixin(local):
 
     '''base event chain mixin'''
 
     def __init__(self):
-        super(EventsQMixin, self).__init__()
+        super(EventsMixin, self).__init__()
         # local event registry
         self.E = Registry('events', EEvent)
         # populate system events
@@ -69,7 +69,7 @@ class EventsQMixin(local):
             L = self.L
             self.trigger(L.BEFORE)
             self.trigger(L.WORK)
-            super(EventsQMixin, self).commit()
+            super(EventsMixin, self).commit()
             self.trigger(L.CHANGE)
             self.trigger(L.ANY)
             self.trigger(L.AFTER)
@@ -124,7 +124,7 @@ class EventsQMixin(local):
         })
 
 
-class EventLinkMixin(EventsQMixin):
+class EventLinkMixin(EventsMixin):
 
     '''base linked event chain mixin'''
 
@@ -150,7 +150,7 @@ class EventLinkMixin(EventsQMixin):
         return chain(self.E.subscriptions(EEvent, e), self._regetit(e))
 
 
-class EventChainMixin(EventsQMixin):
+class EventChainMixin(EventsMixin):
 
     '''base event chain mixin'''
 

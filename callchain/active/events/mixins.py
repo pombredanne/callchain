@@ -8,10 +8,9 @@ from stuf.six import items
 from stuf.utils import iterexcept
 from twoq.active.queuing import AutoQMixin, ManQMixin, SyncQMixin
 
-from callchain.mixins.keys import EEvent
-from callchain.mixins.events import EventLinkMixin, EventChainMixin
-
-from callchain.active.chains import ACallChainMixin, AChainLinkMixin, ChainLink
+from callchain.mixins.events.events import EEvent
+from callchain.mixins.events.core import EventLinkMixin, EventChainMixin
+from callchain.active.mixins import AChainLinkMixin, ACallChainMixin, ChainLink
 
 
 class AEventsMixin(local):
