@@ -8,7 +8,7 @@ from appspace import Registry
 from twoq.support import map, items
 from stuf import orderedstuf, frozenstuf
 
-from callchain.mixins.keys import (
+from callchain.mixins.events.keys import (
     EEvent, EBefore, EWork, EChange, EAfter, EProblem, EFinally, EAny)
 
 from stuf.utils import exhaust

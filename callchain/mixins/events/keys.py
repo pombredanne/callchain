@@ -55,15 +55,6 @@ class EFinally(EEvent):
 ## call chains ################################################################
 ###############################################################################
 
-class ARootChain(AppspaceKey):
-
-    '''root call chain'''
-
-
-class ABranchChain(AppspaceKey):
-
-    '''branch call chain'''
-
 
 class AEventChain(AppspaceKey):
 
