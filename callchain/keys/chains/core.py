@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 #@PydevCodeAnalysisIgnore
 # pylint: disable-msg=e0211,e0213
-'''callchain keys'''
+'''call chain keys'''
 
-from callchain.mixins.services.queuing import AQueue
+from callchain.keys.chains.queue import KQueue
 
-__all__ = ('ACallChain', 'AChainLink')
+__all__ = ('KCallChain', 'KChainLink')
 
 
-class AChains(AQueue):
+class KChain(KQueue):
     
     '''chains key'''
 
@@ -25,7 +25,7 @@ class AChains(AQueue):
         '''
 
 
-class ACallChain(AChains):
+class KCallChain(KChain):
 
     '''call chain key'''
     
@@ -45,7 +45,7 @@ class ACallChain(AChains):
         '''
 
 
-class AChainLink(AChains):
+class KChainLink(KChain):
 
     '''linked call chain key'''
     

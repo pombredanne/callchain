@@ -6,12 +6,13 @@
 from inspect import ismodule
 
 from stuf.six import items
-from callchain.mixins.chains.keys import ACallChain
+
+from callchain.keys.chains.core import KCallChain
 
 
-class AEvents(ACallChain):
+class KEvent(KCallChain):
     
-    '''events key'''
+    '''bae event key'''
     
     def on(event, call, key=False, *args, **kw):
         '''
@@ -29,7 +30,7 @@ class AEvents(ACallChain):
         @param event: event label
         '''
 
-    def commit(self):
+    def commit():
         '''run call chain'''
 
     def events(*events):
@@ -46,7 +47,7 @@ class AEvents(ACallChain):
         '''add callables bound to events to primary call chain'''
 
 
-class AEventChain(AEvents):
+class KEventChain(KEvent):
 
     '''event chain key'''
 
@@ -65,7 +66,7 @@ class AEventChain(AEvents):
         '''
 
 
-class AEventLink(AEvents):
+class KEventLink(KEvent):
 
     '''linked event chain key'''
 

@@ -6,7 +6,7 @@ from collections import deque
 
 from stuf.utils import iterexcept
 
-from callchain.mixins.chains.core import ChainLinkMixin, CallChainMixin
+from callchain.mixins.chains import ChainLinkMixin, CallChainMixin
 
 
 class _AChainMixin(local):

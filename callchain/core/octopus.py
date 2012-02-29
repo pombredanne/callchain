@@ -50,7 +50,9 @@ class follow(object):
         return that
 
 
-class OctoMixin(ResetLocalMixin):
+class _Octopus(ResetLocalMixin):
+
+    '''base class'''
 
     def __getapp(self, label):
         try:
@@ -80,29 +82,8 @@ class OctoMixin(ResetLocalMixin):
         '''appspace'''
         return Appspace(self.M)
 
-    def app(self, label, key=False):
-        '''
-        make application from appspace current call in chall chain
 
-        @param label: application label
-        @param key: key label (default: False)
-        '''
-        self._call = self.M.get(label, key)
-        return self
-
-    def add(self, app, label, key=False):
-        '''
-        add application to appspace
-
-        @param app: new application
-        @param label: application label
-        @param key: key label (default: False)
-        '''
-        self.M.set(label, app, key)
-        return self
-
-
-class octopus(OctoMixin):
+class octopus(_Octopus):
 
     '''appspace octopus'''
 
@@ -144,7 +125,7 @@ class octopus(OctoMixin):
         return port
 
 
-class tentacle(OctoMixin):
+class tentacle(_Octopus):
 
     '''appspace tentacle'''
 
@@ -152,20 +133,20 @@ class tentacle(OctoMixin):
         '''
         init
 
-        @param root: root call chain
+        @param root: appspace root
         '''
         super(tentacle, self).__init__()
-        # octopus
+        # root appspace
         self.root = root
-        # external manager appspace
+        # root external appspace manager
         self.M = root.M
-        # external manager local settings
+        # root local settings
         self.L = root.L
-        # external manager global settings
+        # root external global settings
         self.G = root.G
-        # add internal root appspace
+        # root internal appspace manager
         self._M = root._M
-        # add internal root settings
+        # root internal global settings
         self._G = root._G
 
     def __getattr__(self, label):

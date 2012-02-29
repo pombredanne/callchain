@@ -6,7 +6,7 @@
 from appspace.keys import AppspaceKey
 
 
-class Math(AppspaceKey):
+class KMath(AppspaceKey):
 
     '''math mixin'''
 
@@ -47,7 +47,7 @@ class Math(AppspaceKey):
         @param start: starting number (default: 0)
         '''
 
-class Truth(AppspaceKey):
+class KTruth(AppspaceKey):
 
     '''truth mixin'''
 
@@ -68,7 +68,7 @@ class Truth(AppspaceKey):
         '''how many times call is `True` for incoming things'''
 
 
-class Reduce(Math, Truth):
+class KReduce(KMath, KTruth):
 
     '''reducing mixin'''
 
@@ -79,11 +79,7 @@ class Reduce(Math, Truth):
         '''flatten deeply nested incoming things'''
 
     def pairwise():
-        '''
-        every two incoming things as a tuple
-
-        s -> (s0,s1), (s1,s2), (s2, s3), ...
-        '''
+        '''every two incoming things as a tuple'''
 
     def reduce(initial=None):
         '''

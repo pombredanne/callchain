@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 '''event chain mixins'''
 
-from threading import local
 from itertools import chain, starmap
 
 from appspace import Registry
@@ -9,13 +8,15 @@ from stuf.utils import exhaust
 from twoq.support import map, items
 from stuf import orderedstuf, frozenstuf
 
-from callchain.mixins.events.events import (
+from callchain.core.resets import ResetLocalMixin
+from callchain.core.octopus import tentacle, octopus
+from callchain.keys.events.core import (
     EEvent, EBefore, EWork, EChange, EAfter, EProblem, EFinally, EAny)
 
 __all__ = ('EventChainMixin', 'EventLinkMixin')
 
 
-class _EventMixin(local):
+class _EventMixin(ResetLocalMixin):
 
     '''base event chain mixin'''
 
@@ -97,13 +98,13 @@ class _EventMixin(local):
 
     class Meta:
         ## event names ########################################################
-        # 1. before events
+        # 1. before event
         BEFORE = 'before',
-        # 2. work events
+        # 2. work event
         WORK = 'work',
-        # 3. change events
+        # 3. change event
         CHANGE = 'change'
-        # 4. any events
+        # 4. any event
         ANY = 'any'
         # 5. after event
         AFTER = 'after'
@@ -113,43 +114,25 @@ class _EventMixin(local):
         FINALLY = 'finally'
         ## events #############################################################
         EVENTS = frozenstuf({
+            # 1. before event
             BEFORE: EBefore,
+            # 2. work event
             WORK: EWork,
+            # 3. change event
             CHANGE: EChange,
+            # 4. any event
             ANY: EAny,
+            # 5. after event
             AFTER: EAfter,
+            # 6. problem event
             PROBLEM: EProblem,
+            # 7. event that runs irrespective
             FINALLY: EFinally,
         })
 
 
-class EventLinkMixin(_EventMixin):
 
-    '''base linked event chain mixin'''
-
-    def __init__(self, root):
-        '''
-        init
-
-        @param root: root event chain
-        '''
-        super(EventLinkMixin, self).__init__(root)
-        # root event chain getter
-        self._regetit = self.root._getevent
-        # event getter
-        self._eget = self.root.event
-
-    ###########################################################################
-    ## event chain execution ##################################################
-    ###########################################################################
-
-    def _getevent(self, event):
-        '''fetch callables bound to event'''
-        e = self._eget(event)
-        return chain(self.E.subscriptions(EEvent, e), self._regetit(e))
-
-
-class EventChainMixin(_EventMixin):
+class EventChainMixin(_EventMixin, octopus):
 
     '''base event chain mixin'''
 
@@ -182,3 +165,29 @@ class EventChainMixin(_EventMixin):
         '''
         self.E.unkey(EEvent, event)
         return self
+    
+
+class EventLinkMixin(_EventMixin, tentacle):
+
+    '''base linked event chain mixin'''
+
+    def __init__(self, root):
+        '''
+        init
+
+        @param root: root event chain
+        '''
+        super(EventLinkMixin, self).__init__(root)
+        # root event chain getter
+        self._regetit = self.root._getevent
+        # event getter
+        self._eget = self.root.event
+
+    ###########################################################################
+    ## event chain execution ##################################################
+    ###########################################################################
+
+    def _getevent(self, event):
+        '''fetch callables bound to event'''
+        e = self._eget(event)
+        return chain(self.E.subscriptions(EEvent, e), self._regetit(e))

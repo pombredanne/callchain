@@ -5,8 +5,9 @@ from threading import local
 
 from stuf.utils import iterexcept
 
-from callchain.mixins.events.events import EEvent
-from callchain.mixins.events.core import EventLinkMixin, EventChainMixin
+from callchain.keys.events.core import EEvent
+from callchain.mixins.events import EventLinkMixin, EventChainMixin
+
 from callchain.active.mixins.chains import AChainLinkMixin, ACallChainMixin
 
 

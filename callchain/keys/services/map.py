@@ -6,7 +6,7 @@
 from appspace.keys import AppspaceKey
 
 
-class SDelay(AppspaceKey):
+class KDelay(AppspaceKey):
 
     '''delayed map key'''
 
@@ -36,7 +36,7 @@ class SDelay(AppspaceKey):
         '''
 
 
-class SCopy(AppspaceKey):
+class KCopy(AppspaceKey):
 
     '''copy key'''
 
@@ -47,7 +47,7 @@ class SCopy(AppspaceKey):
         '''copy each incoming thing deeply'''
 
 
-class SRepeat(AppspaceKey):
+class KRepeat(AppspaceKey):
 
     '''repetition key'''
 
@@ -79,7 +79,7 @@ class SRepeat(AppspaceKey):
         '''
 
 
-class SMap(SDelay, SCopy, SRepeat):
+class KMap(KDelay, KCopy, KRepeat):
 
     '''mapping key'''
 

@@ -6,7 +6,7 @@
 from appspace.keys import AppspaceKey
 
 
-class SRandom(AppspaceKey):
+class KRandom(AppspaceKey):
 
     '''random key'''
 
@@ -24,7 +24,7 @@ class SRandom(AppspaceKey):
         '''randomly order incoming things'''
 
 
-class SOrder(SRandom):
+class KOrder(KRandom):
 
     '''ordering key'''
     
