@@ -12,16 +12,17 @@ class SDelay(AppspaceKey):
 
     def delay_each(wait):
         '''
-        invoke call with passed arguments, keywords in incoming things after a
-        delay
+        invoke call with passed arguments, keywords in incoming things after
+        delay `wait`
 
         @param wait: time in seconds
         '''
 
     def delay_invoke(name, wait):
         '''
-        invoke call on each incoming thing with passed arguments, keywords
-        after a delay but return incoming thing instead if call returns None
+        invoke method `name` on each incoming thing with passed arguments,
+        keywords after delay `wait` but return incoming thing instead if method
+        returns `None`
 
         @param name: name of method
         @param wait: time in seconds
@@ -29,7 +30,7 @@ class SDelay(AppspaceKey):
 
     def delay_map(wait):
         '''
-        invoke call on each incoming thing after a delay
+        invoke call on each incoming thing after delay `wait`
 
         @param wait: time in seconds
         '''
@@ -37,7 +38,7 @@ class SDelay(AppspaceKey):
 
 class SCopy(AppspaceKey):
 
-    '''duplication key'''
+    '''copy key'''
 
     def copy(self):
         '''copy each incoming thing'''
@@ -46,47 +47,20 @@ class SCopy(AppspaceKey):
         '''copy each incoming thing deeply'''
 
 
-class SMapping(AppspaceKey):
-
-    '''map key'''
-
-    def each():
-        '''invoke call with passed arguments, keywords in incoming things'''
-
-    def invoke(name):
-        '''
-        invoke call on each incoming thing with passed arguments, keywords
-        but return incoming thing instead if call returns None
-
-        @param name: name of method
-        '''
-
-    def items():
-        '''invoke call on each mapping to get key, value pairs'''
-
-    def map():
-        '''invoke call on each incoming thing'''
-
-    def starmap():
-        '''invoke call on each incoming pair of things'''
-
-
 class SRepeat(AppspaceKey):
 
     '''repetition key'''
 
     def padnone():
-        '''
-        incoming things and then `None` indefinitely
-
-        (Useful for emulating the behavior of 2.x classic `builtin` `map`)
-        '''
+        '''incoming things and then `None` indefinitely'''
 
     def range(start, stop=0, step=1):
         '''
-        repeat incoming things `n` times
+        put sequence of numbers in incoming things
 
-        @param n: number of times to repeat
+        @param start: number to start with
+        @param stop: number to stop with (default: 0)
+        @param step: number of steps to advance per iteration (default: 1)
         '''
 
     def repeat(n):
@@ -98,12 +72,33 @@ class SRepeat(AppspaceKey):
 
     def times(n=None):
         '''
-        repeat call with passed arguments
+        repeat call with incoming things `n` times
 
-        @param n: number of times to repeat calls (default: None)
+        @param n: number of times to repeat calls with incoming things 
+            (default: None)
         '''
 
 
-class SMap(SDelay, SCopy, SMapping, SRepeat):
+class SMap(SDelay, SCopy, SRepeat):
 
     '''mapping key'''
+
+    def each():
+        '''invoke call with passed arguments, keywords in incoming things'''
+
+    def invoke(name):
+        '''
+        invoke method `name` on each incoming thing with passed arguments,
+        keywords but return incoming thing instead if method returns `None`
+
+        @param name: name of method
+        '''
+
+    def items():
+        '''invoke call on each mapping to get key, value pairs'''
+
+    def map():
+        '''invoke call on each incoming thing'''
+
+    def starmap():
+        '''invoke call on each sequence of incoming things'''

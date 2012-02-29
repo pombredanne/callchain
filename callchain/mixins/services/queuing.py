@@ -3,12 +3,15 @@
 # pylint: disable-msg=e0211,e0213
 '''twoq queuing mixins'''
 
-from appspace.keys import AppspaceKey
+from appspace.keys import AppspaceKey, Attribute
 
 
-class Queueing(AppspaceKey):
+class AQueue(AppspaceKey):
 
     '''queuing key'''
+    
+    incoming = Attribute('incoming queue')
+    outgoing = Attribute('outgoing queue')
 
     def args(*args, **kw):
         '''arguments for current callable'''
@@ -27,7 +30,7 @@ class Queueing(AppspaceKey):
         '''build factory callable and make call'''
 
     def unwrap():
-        '''clear call'''
+        '''clear factory'''
         
     def ahead(n=None):
         '''
@@ -51,19 +54,19 @@ class Queueing(AppspaceKey):
         '''
 
     def end():
-        '''return outgoing things and clear'''
+        '''return outgoing things and clear out all things'''
 
     def results():
-        '''iterate over reversed outgoing things, clearing as it goes'''
+        '''yield outgoing things and clear outgoing things'''
 
     def value():
         '''return outgoing things and clear outgoing things'''
 
     def first():
-        '''first thing among incoming things'''
+        '''first incoming thing'''
 
     def last():
-        '''last thing among incoming things'''
+        '''last incoming thing'''
 
     ###########################################################################
     ## clear queues ###########################################################
@@ -77,25 +80,33 @@ class Queueing(AppspaceKey):
         '''
 
     def clear():
-        '''clear all queues'''
+        '''clear every thing'''
 
     def inclear():
-        '''incoming things clear'''
+        '''clear incoming things'''
 
     def outclear():
-        '''incoming things clear'''
+        '''clear outgoing things'''
 
     ###########################################################################
     ## manipulate queues ######################################################
     ###########################################################################
 
     def append(thing):
-        '''incoming things right append'''
+        '''
+        append `thing` to right side of incoming things 
+        
+        @param thing: some thing
+        '''
 
     def appendleft(thing):
-        '''incoming things left append'''
+        '''
+        append `thing` to left side of incoming things 
+        
+        @param thing: some thing
+        '''
 
-    def insert(index, value):
+    def insert(index, thing):
         '''
         insert thing into incoming things
 
@@ -104,10 +115,18 @@ class Queueing(AppspaceKey):
         '''
 
     def extend(things):
-        '''incoming things right extend'''
+        '''
+        extend right side of incoming things with `things`
+        
+        @param thing: some things
+        '''
 
     def extendleft(things):
-        '''incoming things left extend'''
+        '''
+        extend left side of incoming things with `things`
+        
+        @param thing: some things
+        '''
 
     ###########################################################################
     ## balance queues #########################################################

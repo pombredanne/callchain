@@ -5,23 +5,22 @@ from threading import local
 from itertools import chain, starmap
 
 from appspace import Registry
+from stuf.utils import exhaust
 from twoq.support import map, items
 from stuf import orderedstuf, frozenstuf
 
 from callchain.mixins.events.events import (
     EEvent, EBefore, EWork, EChange, EAfter, EProblem, EFinally, EAny)
 
-from stuf.utils import exhaust
-
 __all__ = ('EventChainMixin', 'EventLinkMixin')
 
 
-class EventsMixin(local):
+class _EventMixin(local):
 
     '''base event chain mixin'''
 
     def __init__(self):
-        super(EventsMixin, self).__init__()
+        super(_EventMixin, self).__init__()
         # local event registry
         self.E = Registry('events', EEvent)
         # populate system events
@@ -58,18 +57,18 @@ class EventsMixin(local):
     ## event chain execution ##################################################
     ###########################################################################
 
-    def events(self, *events):
+    def _events(self, *events):
         '''get callables bound to `*events`'''
-        getit = self._getit
+        getit = self._getevent
         return chain(*(i for i in map(getit, events)))
 
     def commit(self):
-        '''run call chain'''
+        '''run event chain'''
         try:
             L = self.L
             self.trigger(L.BEFORE)
             self.trigger(L.WORK)
-            super(EventsMixin, self).commit()
+            super(_EventMixin, self).commit()
             self.trigger(L.CHANGE)
             self.trigger(L.ANY)
             self.trigger(L.AFTER)
@@ -83,9 +82,9 @@ class EventsMixin(local):
     ## event queue processing #################################################
     ###########################################################################
 
-    def queues(self, *events):
+    def events(self, *events):
         '''
-        ordered mapping of per event processing queue
+        ordered mapping of each event processing queue
 
         @param *events: event labels
         '''
@@ -124,7 +123,7 @@ class EventsMixin(local):
         })
 
 
-class EventLinkMixin(EventsMixin):
+class EventLinkMixin(_EventMixin):
 
     '''base linked event chain mixin'''
 
@@ -136,7 +135,7 @@ class EventLinkMixin(EventsMixin):
         '''
         super(EventLinkMixin, self).__init__(root)
         # root event chain getter
-        self._regetit = self.root._getit
+        self._regetit = self.root._getevent
         # event getter
         self._eget = self.root.event
 
@@ -144,13 +143,13 @@ class EventLinkMixin(EventsMixin):
     ## event chain execution ##################################################
     ###########################################################################
 
-    def _getit(self, event):
+    def _getevent(self, event):
         '''fetch callables bound to event'''
         e = self._eget(event)
         return chain(self.E.subscriptions(EEvent, e), self._regetit(e))
 
 
-class EventChainMixin(EventsMixin):
+class EventChainMixin(_EventMixin):
 
     '''base event chain mixin'''
 
@@ -158,7 +157,7 @@ class EventChainMixin(EventsMixin):
     ## event chain execution ##################################################
     ###########################################################################
 
-    def _getit(self, event):
+    def _getevent(self, event):
         '''fetch callables bound to event'''
         return self.E.subscriptions(EEvent, self._eget(event))
 

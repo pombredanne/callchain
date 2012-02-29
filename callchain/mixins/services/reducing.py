@@ -14,26 +14,22 @@ class Math(AppspaceKey):
         '''average of all incoming things'''
 
     def fsum():
-        '''
-        add incoming things together
-
-        @param start: starting number (default: 0)
-        '''
+        '''add incoming things together'''
 
     def max():
-        '''find maximum value in incoming things using call for key function'''
+        '''find maximum thing in incoming things using call as key function'''
 
     def median():
-        '''mean of incoming things'''
+        '''mean of all incoming things'''
 
     def min():
-        '''find minimum value in incoming things using call for key function'''
+        '''find minimum thing in incoming things using call as key function'''
 
     def minmax():
-        '''minimum and maximum values among incoming things'''
+        '''minimum and maximum things among all incoming things'''
 
     def mode():
-        '''mode of incoming things'''
+        '''mode of all incoming things'''
 
     def uncommon():
         '''least common incoming thing'''
@@ -42,60 +38,14 @@ class Math(AppspaceKey):
         '''frequency of each incoming thing'''
 
     def statrange():
-        '''statistical range of incoming things'''
+        '''statistical range of all incoming things'''
 
     def sum(start=0):
         '''
-        add incoming things together
+        add all incoming things together
 
         @param start: starting number (default: 0)
         '''
-
-
-class Reducing(AppspaceKey):
-
-    '''reduce mixin'''
-
-    def merge():
-        '''flatten nested and ordered incoming things'''
-
-    def smash(_smash=smash):
-        '''flatten deeply nested incoming things'''
-
-    def pairwise():
-        '''
-        every two incoming things as a tuple
-
-        s -> (s0,s1), (s1,s2), (s2, s3), ...
-        '''
-
-    def reduce(initial=None):
-        '''
-        reduce incoming things to one thing using call
-
-        @param initial: initial thing (default: None)
-        '''
-
-    def reduce_right(initial=None):
-        '''
-        reduce incoming things to one thing from right side using call
-
-        @param initial: initial thing (default: None)
-        '''
-
-    def roundrobin():
-        '''
-        interleave incoming things into one thing e.g.
-
-        roundrobin('ABC', 'D', 'EF') --> A D E B F C
-        '''
-
-    def zip():
-        '''
-        smash incoming things into single thing, pairing things by iterable
-        position
-        '''
-
 
 class Truth(AppspaceKey):
 
@@ -115,9 +65,47 @@ class Truth(AppspaceKey):
         '''
 
     def quantify():
-        '''how many times call is True for incoming things'''
+        '''how many times call is `True` for incoming things'''
 
 
-class Reduce(Math, Reducing, Truth):
+class Reduce(Math, Truth):
 
     '''reducing mixin'''
+
+    def merge():
+        '''flatten nested but ordered incoming things'''
+
+    def smash():
+        '''flatten deeply nested incoming things'''
+
+    def pairwise():
+        '''
+        every two incoming things as a tuple
+
+        s -> (s0,s1), (s1,s2), (s2, s3), ...
+        '''
+
+    def reduce(initial=None):
+        '''
+        reduce incoming things to one thing using call (from left side of
+        incoming things)
+
+        @param initial: initial thing (default: None)
+        '''
+
+    def reduce_right(initial=None):
+        '''
+        reduce incoming things to one thing from right side of incoming things
+        using call
+
+        @param initial: initial thing (default: None)
+        '''
+
+    def roundrobin():
+        '''interleave incoming things into one thing'''
+
+    def zip():
+        '''
+        smash incoming things into one single thing, pairing things by iterable
+        position
+        '''

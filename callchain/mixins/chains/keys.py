@@ -3,40 +3,16 @@
 # pylint: disable-msg=e0211,e0213
 '''callchain keys'''
 
-from appspace.keys import Attribute
-
-from callchain.mixins.services.queuing import Queueing
+from callchain.mixins.services.queuing import AQueue
 
 __all__ = ('ACallChain', 'AChainLink')
 
 
-class AChains(Queueing):
+class AChains(AQueue):
     
     '''chains key'''
-    
-    G = Attribute('application settings')
-    L = Attribute('local manager settings')
-    port = Attribute('python 2.x <-> python 3.x compatibility helper')
-    space = Attribute('appspace')
-    
-    def add(app, label, key=False):
-        '''
-        add application to appspace
 
-        @param app: new application
-        @param label: application label
-        @param key: key label (default: False)
-        '''
-    
-    def app(label, key=False):
-        '''
-        make application from appspace current call in chall chain
-
-        @param label: application label
-        @param key: key label (default: False)
-        '''
-        
-    def commit(self):
+    def commit():
         '''invoke call chain'''
 
     def chain(call, key=False, *args, **kw):

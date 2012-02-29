@@ -6,7 +6,7 @@
 from inspect import ismodule
 
 from stuf.six import items
-from callchain.mixins.keys import ACallChain
+from callchain.mixins.chains.keys import ACallChain
 
 
 class AEvents(ACallChain):
@@ -24,18 +24,15 @@ class AEvents(ACallChain):
 
     def off(event):
         '''
-        clear all callables bound to event
+        clear callables bound to event
 
         @param event: event label
         '''
 
-    def events(*events):
-        '''get callables bound to `*events`'''
-
     def commit(self):
         '''run call chain'''
 
-    def queues(*events):
+    def events(*events):
         '''
         ordered mapping of per event processing queue
 

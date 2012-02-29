@@ -80,6 +80,16 @@ class OctoMixin(ResetLocalMixin):
         '''appspace'''
         return Appspace(self.M)
 
+    def app(self, label, key=False):
+        '''
+        make application from appspace current call in chall chain
+
+        @param label: application label
+        @param key: key label (default: False)
+        '''
+        self._call = self.M.get(label, key)
+        return self
+
     def add(self, app, label, key=False):
         '''
         add application to appspace

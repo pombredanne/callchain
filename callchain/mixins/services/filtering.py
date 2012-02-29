@@ -6,49 +6,21 @@
 from appspace.keys import AppspaceKey
 
 
-class SFiltering(AppspaceKey):
-
-    '''filtering key'''
-
-    def compact():
-        '''strip "untrue" things from incoming things'''
-
-    def filter():
-        '''incoming things for which call is `True`'''
-
-    def find():
-        '''first incoming thing for which call is `True`'''
-
-    def partition():
-        '''
-        split incoming things into `True` and `False` things based on results
-        of callable
-
-        @param test: a test
-        '''
-
-    def reject():
-        '''incoming things for which call is `False`'''
-
-    def without(*things):
-        '''strip things from incoming things'''
-
-
 class SCollecting(AppspaceKey):
 
     '''collection key'''
 
     def deepmembers():
-        '''collect members of incoming things and their bases'''
+        '''collect object members from incoming things and their bases'''
 
     def members():
-        '''collect members of incoming things'''
+        '''collect object members from incoming things'''
 
     def pick(*names):
-        '''attributes of incoming things by attribute `*names`'''
+        '''collect object attributes from incoming things by their `*names`'''
 
     def pluck(*keys):
-        '''items of incoming things by item `*keys`'''
+        '''collect object items from incoming things by item `*keys`'''
 
 
 class SSet(AppspaceKey):
@@ -68,9 +40,6 @@ class SSet(AppspaceKey):
         '''
         list unique incoming things, preserving order and remember all incoming
         things ever seen
-
-        unique('AAAABBBCCDAABBB') --> A B C D
-        unique('ABBCcAD', str.lower) --> A B C D
         '''
 
 
@@ -80,7 +49,7 @@ class SSlice(AppspaceKey):
 
     def nth(n, default=None):
         '''
-        nth incoming thing or default thing
+        `nth` incoming thing or default thing
 
         @param n: number of things
         @param default: default thing (default: None)
@@ -109,6 +78,27 @@ class SSlice(AppspaceKey):
         '''
 
 
-class SFilterMixin(SFiltering, SCollecting, SSet, SSlice):
+class SFilterMixin(SCollecting, SSet, SSlice):
 
     '''filter key'''
+
+    def compact():
+        '''strip "untrue" things from incoming things'''
+
+    def filter():
+        '''incoming things for which call is `True`'''
+
+    def find():
+        '''first incoming thing for which call is `True`'''
+
+    def partition():
+        '''
+        split incoming things into `True` and `False` things based on results
+        of call
+        '''
+
+    def reject():
+        '''incoming things for which call is `False`'''
+
+    def without(*things):
+        '''strip things from incoming things'''

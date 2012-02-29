@@ -2,24 +2,19 @@
 '''active call chains'''
 
 from threading import local
-
 from collections import deque
 
 from stuf.utils import iterexcept
 
-from callchain.mixins.core import ChainLinkMixin, CallChainMixin
-
-###############################################################################
-## active CallChain mixins ####################################################
-###############################################################################
+from callchain.mixins.chains.core import ChainLinkMixin, CallChainMixin
 
 
-class AChainsMixin(local):
+class _AChainMixin(local):
 
     '''base call chain'''
 
     def __init__(self):
-        super(AChainsMixin, self).__init__()
+        super(_AChainMixin, self).__init__()
         ## call chain #########################################################
         self._chain = deque()
         # call chain right extend
@@ -52,7 +47,7 @@ class AChainsMixin(local):
         return self
 
 
-class AChainLinkMixin(AChainsMixin, ChainLinkMixin):
+class AChainLinkMixin(_AChainMixin, ChainLinkMixin):
 
     '''linked call chain mixin'''
 
@@ -66,6 +61,6 @@ class AChainLinkMixin(AChainsMixin, ChainLinkMixin):
         return self.root.clear().extend(self.outgoing)
 
 
-class ACallChainMixin(AChainsMixin, CallChainMixin):
+class ACallChainMixin(_AChainMixin, CallChainMixin):
 
     '''call chain mixin'''
