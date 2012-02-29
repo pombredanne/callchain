@@ -4,7 +4,7 @@
 from twoq.active.mixins import AutoQMixin
 from twoq.mixins.reducing import MathMixin, TruthMixin, ReduceMixin
 
-from callchain.active.mixins.chains import AChainLinkMixin
+from callchain.active.chains import AChainLinkMixin
 
 __all__ = ('mathchain', 'truthchain', 'reducechain')
 

@@ -7,7 +7,7 @@ from inspect import ismodule
 
 from stuf.six import items
 
-from callchain.keys.chains.core import KCallChain
+from callchain.chains.keys import KCallChain
 
 
 class KEvent(KCallChain):

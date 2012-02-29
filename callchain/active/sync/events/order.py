@@ -4,7 +4,7 @@
 from twoq.active.mixins import AutoQMixin
 from twoq.mixins.ordering import RandomMixin, OrderMixin
 
-from callchain.active.mixins.events import AEventLinkMixin
+from callchain.active.events import AEventLinkMixin
 
 __all__ = ('randomevent', 'orderevent')
 

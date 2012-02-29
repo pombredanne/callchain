@@ -3,7 +3,7 @@
 
 from callchain.core.octopus import tentacle, octopus
 
-from callchain.keys.chains.core import KChainLink
+from callchain.chains.keys import KChainLink
 from callchain.core.resets import ResetLocalMixin
 
 __all__ = ('CallChainMixin', 'ChainLinkMixin')

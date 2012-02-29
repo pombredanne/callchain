@@ -5,7 +5,7 @@ from twoq.active.mixins import AutoQMixin
 from twoq.mixins.filtering import (
     FilterMixin, CollectMixin, SetMixin, SliceMixin)
 
-from callchain.active.mixins.chains import AChainLinkMixin
+from callchain.active.chains import AChainLinkMixin
 
 __all__ = ('collectchain', 'setchain', 'slicechain', 'filterchain')
 

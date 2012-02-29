@@ -3,7 +3,7 @@
 
 from twoq.active.mixins import AutoQMixin
 
-from callchain.active.mixins.chains import AChainLinkMixin, ACallChainMixin
+from callchain.active.chains import AChainLinkMixin, ACallChainMixin
 
 __all__ = ('callchain', 'chainlink')
 

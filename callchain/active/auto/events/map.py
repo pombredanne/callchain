@@ -5,7 +5,7 @@ from twoq.mixins.mapping import DelayMixin, CopyMixin, RepeatMixin, MapMixin
 
 from twoq.active.mixins import AutoQMixin
 
-from callchain.active.mixins.events import AEventLinkMixin
+from callchain.active.events import AEventLinkMixin
 
 __all__ = ('delayevent', 'copyevent', 'repeatevent', 'mapevent')
 

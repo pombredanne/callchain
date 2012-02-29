@@ -10,7 +10,7 @@ from stuf import orderedstuf, frozenstuf
 
 from callchain.core.resets import ResetLocalMixin
 from callchain.core.octopus import tentacle, octopus
-from callchain.keys.events.core import (
+from callchain.events.services import (
     EEvent, EBefore, EWork, EChange, EAfter, EProblem, EFinally, EAny)
 
 __all__ = ('EventChainMixin', 'EventLinkMixin')

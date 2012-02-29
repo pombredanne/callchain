@@ -3,7 +3,7 @@
 # pylint: disable-msg=e0211,e0213
 '''call chain keys'''
 
-from callchain.keys.chains.queue import KQueue
+from callchain.chains.services import KQueue
 
 __all__ = ('KCallChain', 'KChainLink')
 
