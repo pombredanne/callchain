@@ -13,7 +13,7 @@ class KChain(KQueue):
     '''chains key'''
 
     def commit():
-        '''invoke call chain'''
+        '''run call chain'''
 
     def chain(call, key=False, *args, **kw):
         '''
@@ -23,25 +23,43 @@ class KChain(KQueue):
         @param call: callable or application label
         @param key: key label (default: False)
         '''
+        
+    def unchain(key):
+        '''
+        unchain callables or appspaced applications from a call chain
+
+        @param call: callable or application label
+        @param key: key label (default: False)
+        '''
+        
+    def add(app, label, key=False):
+        '''
+        add application to appspace
+
+        @param app: new application
+        @param label: application label
+        @param key: key label (default: False)
+        '''
+    
+    def app(label, key=False):
+        '''
+        make application from appspace current call in chall chain
+
+        @param label: application label
+        @param key: key label (default: False)
+        '''
 
 
 class KCallChain(KChain):
 
     '''call chain key'''
     
-    def link(label, branch):
-        '''
-        add linked call chain class
-
-        @param label: linked call chain class label
-        @param branch: linked call chain class
-        '''
-
-    def switch(label):
+    def switch(label, key=False):
         '''
         switch to linked call chain
 
-        @param label: chain label
+        @param label: linked call chain label
+        @param key: linked call chain key (default: False)
         '''
 
 

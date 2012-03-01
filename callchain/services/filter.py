@@ -29,9 +29,21 @@ class KSet(AppspaceKey):
 
     def difference():
         '''difference between incoming things'''
+        
+    def symmetric_difference():
+        '''symmetric difference between incoming things'''
+
+    def disjointed():
+        '''disjoint between incoming things'''
 
     def intersection():
         '''intersection between incoming things'''
+        
+    def subset():
+        '''incoming things are subsets of incoming things'''
+
+    def superset():
+        '''incoming things are supersets of incoming things'''
 
     def union():
         '''union between incoming things'''
@@ -57,8 +69,6 @@ class KSlice(AppspaceKey):
 
     def initial():
         '''all incoming things except the last thing'''
-
-    _oinitial = initial
 
     def rest():
         '''all incoming things except the first thing'''

@@ -35,7 +35,7 @@ class KEvent(KCallChain):
 
     def events(*events):
         '''
-        ordered mapping of per event processing queue
+        ordered mapping of outgoing items from each event chain
 
         @param *events: event labels
         '''

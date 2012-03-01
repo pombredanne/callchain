@@ -12,11 +12,12 @@ class KQueue(AppspaceKey):
     
     incoming = Attribute('incoming queue')
     outgoing = Attribute('outgoing queue')
+    balanced = Attribute('if queues are balanced')
 
     def args(*args, **kw):
         '''arguments for current callable'''
 
-    def tap(call):
+    def tap(call, label=True):
         '''
         add call
 
@@ -41,10 +42,6 @@ class KQueue(AppspaceKey):
 
     def outcount():
         '''count of outgoing items'''
-
-    @property
-    def balanced():
-        '''if queues are balanced'''
 
     def index(thing):
         '''
