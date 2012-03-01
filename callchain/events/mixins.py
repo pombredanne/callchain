@@ -6,10 +6,10 @@ from itertools import chain, starmap
 from appspace import Registry
 from stuf.utils import exhaust
 from twoq.support import map, items
+from octopus import Tentacle, Octopus
 from stuf import orderedstuf, frozenstuf
+from octopus.resets import ResetLocalMixin
 
-from callchain.core.resets import ResetLocalMixin
-from callchain.core.octopus import tentacle, octopus
 from callchain.events.services import (
     EEvent, EBefore, EWork, EChange, EAfter, EProblem, EFinally, EAny)
 
@@ -132,21 +132,13 @@ class _EventMixin(ResetLocalMixin):
 
 
 
-class EventChainMixin(_EventMixin, octopus):
+class EventChainMixin(_EventMixin, Octopus):
 
     '''base event chain mixin'''
-
-    ###########################################################################
-    ## event chain execution ##################################################
-    ###########################################################################
 
     def _getevent(self, event):
         '''fetch callables bound to event'''
         return self.E.subscriptions(EEvent, self._eget(event))
-
-    ###########################################################################
-    ## event lifecycle manager ################################################
-    ###########################################################################
 
     def event(self, event):
         '''
@@ -167,7 +159,7 @@ class EventChainMixin(_EventMixin, octopus):
         return self
     
 
-class EventLinkMixin(_EventMixin, tentacle):
+class EventLinkMixin(_EventMixin, Tentacle):
 
     '''base linked event chain mixin'''
 
@@ -182,10 +174,6 @@ class EventLinkMixin(_EventMixin, tentacle):
         self._regetit = self.root._getevent
         # event getter
         self._eget = self.root.event
-
-    ###########################################################################
-    ## event chain execution ##################################################
-    ###########################################################################
 
     def _getevent(self, event):
         '''fetch callables bound to event'''

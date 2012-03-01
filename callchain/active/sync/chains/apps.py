@@ -3,7 +3,7 @@
 
 from appspace import Namespace
 
-from callchain.core.paths import Pathways
+from octopus.paths import Pathways
 
 __all__ = ['syncchain']
 

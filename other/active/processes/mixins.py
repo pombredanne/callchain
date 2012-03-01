@@ -6,7 +6,7 @@ from threading import local
 from stuf import frozenstuf
 from stuf.utils import iterexcept
 
-from callchain.mixins.events.events import EEvent
+from callchain.events.services import EEvent
 
 from callchain.mixins.processes.processes import PProcess
 

@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 '''call chain mixins'''
 
-from callchain.core.octopus import tentacle, octopus
+from appspace.keys import NoAppError
+
+from octopus import Tentacle, Octopus
+from octopus.resets import ResetLocalMixin
 
 from callchain.chains.keys import KChainLink
-from callchain.core.resets import ResetLocalMixin
+
 
 __all__ = ('CallChainMixin', 'ChainLinkMixin')
 
@@ -12,6 +15,19 @@ __all__ = ('CallChainMixin', 'ChainLinkMixin')
 class _Chain(ResetLocalMixin):
 
     '''base chain mixin'''
+
+    def __getattr__(self, label):
+        try:
+            return object.__getattribute__(self, label)
+        except AttributeError:
+            try:
+                item = self._M.lookup1(self._key, self._key, label)
+                if item is None:
+                    raise NoAppError(label)
+            except NoAppError:
+                return self._getapp(label)
+            else:
+                return item(self)
 
     def app(self, label, key=False):
         '''
@@ -35,12 +51,12 @@ class _Chain(ResetLocalMixin):
         return self
 
 
-class ChainLinkMixin(_Chain, tentacle):
+class ChainLinkMixin(_Chain, Tentacle):
 
     '''base linked call chain mixin'''
 
 
-class CallChainMixin(_Chain, octopus):
+class CallChainMixin(_Chain, Octopus):
 
     '''base call chain mixin'''
 
