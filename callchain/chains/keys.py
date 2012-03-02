@@ -3,9 +3,11 @@
 # pylint: disable-msg=e0211,e0213
 '''call chain keys'''
 
+from octopus.keys import AOctopus, ATentacle
+
 from callchain.chains.services import KQueue
 
-__all__ = ('KCallChain', 'KChainLink')
+__all__ = ('KChain', 'KCallChain', 'KChainLink')
 
 
 class KChain(KQueue):
@@ -50,7 +52,7 @@ class KChain(KQueue):
         '''
 
 
-class KCallChain(KChain):
+class KCallChain(AOctopus, KChain):
 
     '''call chain key'''
     
@@ -63,7 +65,7 @@ class KCallChain(KChain):
         '''
 
 
-class KChainLink(KChain):
+class KChainLink(ATentacle, KChain):
 
     '''linked call chain key'''
     

@@ -3,16 +3,14 @@
 # pylint: disable-msg=e0211,e0213
 '''event chain keys'''
 
-from inspect import ismodule
+from callchain.chains.keys import KCallChain, KChain, KChainLink
 
-from stuf.six import items
-
-from callchain.chains.keys import KCallChain
+__all__ = ('KEventChain', 'KEventLink')
 
 
-class KEvent(KCallChain):
+class KEvent(KChain):
     
-    '''bae event key'''
+    '''base event key'''
     
     def on(event, call, key=False, *args, **kw):
         '''
@@ -47,7 +45,7 @@ class KEvent(KCallChain):
         '''add callables bound to events to primary call chain'''
 
 
-class KEventChain(KEvent):
+class KEventChain(KCallChain, KEvent):
 
     '''event chain key'''
 
@@ -66,12 +64,6 @@ class KEventChain(KEvent):
         '''
 
 
-class KEventLink(KEvent):
+class KEventLink(KChainLink, KEvent):
 
     '''linked event chain key'''
-
-
-__all__ = sorted(name for name, obj in items(locals()) if not any([
-    name.startswith('_'), ismodule(obj),
-]))
-del ismodule

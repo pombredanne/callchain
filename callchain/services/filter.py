@@ -6,7 +6,7 @@
 from appspace.keys import AppspaceKey
 
 
-class KCollecting(AppspaceKey):
+class KCollect(AppspaceKey):
 
     '''collection key'''
 
@@ -88,7 +88,7 @@ class KSlice(AppspaceKey):
         '''
 
 
-class KFilterMixin(KCollecting, KSet, KSlice):
+class KFilter(KCollect, KSet, KSlice):
 
     '''filter key'''
 
