@@ -15,14 +15,14 @@ class TestManOrderQ(Manning, MQMixin, MOrderQMixin):
 
     def setUp(self):
         from callchain.active.man.chains.order import orderchain
-        self.qclass = orderchain
+        self.qclass = orderchain()
 
 
 class TestManRandomQ(Manning, MQMixin, MRandomQMixin):
 
     def setUp(self):
         from callchain.active.man.chains.order import randomchain
-        self.qclass = randomchain
+        self.qclass = randomchain()
 
 if __name__ == '__main__':
     unittest.main()

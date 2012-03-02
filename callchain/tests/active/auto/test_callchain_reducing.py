@@ -14,21 +14,21 @@ class TestAutoReduceQ(unittest.TestCase, AQMixin, AReduceQMixin):
 
     def setUp(self):
         from callchain.active.auto.chains.reduce import reducechain
-        self.qclass = reducechain
+        self.qclass = reducechain()
 
 
 class TestAutoMathQ(unittest.TestCase, AQMixin, AMathQMixin):
 
     def setUp(self):
         from callchain.active.auto.chains.reduce import mathchain
-        self.qclass = mathchain
+        self.qclass = mathchain()
 
 
 class TestAutoTruthQ(unittest.TestCase, AQMixin, ATruthQMixin):
 
     def setUp(self):
         from callchain.active.auto.chains.reduce import truthchain
-        self.qclass = truthchain
+        self.qclass = truthchain()
 
 
 if __name__ == '__main__':

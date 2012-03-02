@@ -20,7 +20,7 @@ class TestAutoQ(
 
     def setUp(self):
         from callchain.active.auto.chains.chain import callchain
-        self.qclass = callchain
+        self.qclass = callchain()
 
 
 if __name__ == '__main__':

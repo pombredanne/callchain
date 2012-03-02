@@ -14,14 +14,14 @@ class TestAutoOrderQ(unittest.TestCase, AQMixin, AOrderQMixin):
 
     def setUp(self):
         from callchain.active.auto.chains.order import orderchain
-        self.qclass = orderchain
+        self.qclass = orderchain()
 
 
 class TestAutoRandomQ(unittest.TestCase, AQMixin, ARandomQMixin):
 
     def setUp(self):
         from callchain.active.auto.chains.order import randomchain
-        self.qclass = randomchain
+        self.qclass = randomchain()
 
 if __name__ == '__main__':
     unittest.main()

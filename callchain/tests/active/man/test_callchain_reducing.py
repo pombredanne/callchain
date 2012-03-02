@@ -15,21 +15,21 @@ class TestManReduceQ(Manning, MQMixin, MReduceQMixin):
 
     def setUp(self):
         from callchain.active.man.chains.reduce import reducechain
-        self.qclass = reducechain
+        self.qclass = reducechain()
 
 
 class TestManMathQ(Manning, MQMixin, MMathQMixin):
 
     def setUp(self):
         from callchain.active.man.chains.reduce import mathchain
-        self.qclass = mathchain
+        self.qclass = mathchain()
 
 
 class TestManTruthQ(Manning, MQMixin, MTruthQMixin):
 
     def setUp(self):
         from callchain.active.man.chains.reduce import truthchain
-        self.qclass = truthchain
+        self.qclass = truthchain()
 
 
 if __name__ == '__main__':

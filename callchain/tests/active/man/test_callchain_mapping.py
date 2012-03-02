@@ -15,7 +15,7 @@ class TestManMap(Manning, MQMixin, MMapQMixin):
 
     def setUp(self):
         from callchain.active.man.chains.map import mapchain
-        self.qclass = mapchain
+        self.qclass = mapchain()
 
 
 class TestManRepeatQ(
@@ -24,14 +24,14 @@ class TestManRepeatQ(
 
     def setUp(self):
         from callchain.active.man.chains.map import repeatchain
-        self.qclass = repeatchain
+        self.qclass = repeatchain()
 
 
 class TestManDelayQ(Manning, MQMixin, MDelayQMixin):
 
     def setUp(self):
         from callchain.active.man.chains.map import delaychain
-        self.qclass = delaychain
+        self.qclass = delaychain()
 
 
 if __name__ == '__main__':

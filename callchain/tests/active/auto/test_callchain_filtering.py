@@ -15,14 +15,14 @@ class TestAutoFilterQ(unittest.TestCase, AQMixin, AFilterQMixin):
     def setUp(self):
         self.maxDiff = None
         from callchain.active.auto.chains.filter import filterchain
-        self.qclass = filterchain
+        self.qclass = filterchain()
 
 
 class TestAutoSliceQ(unittest.TestCase, AQMixin, ASliceQMixin):
 
     def setUp(self):
         from callchain.active.auto.chains.filter import slicechain
-        self.qclass = slicechain
+        self.qclass = slicechain()
 
 
 class TestAutoCollectQ(unittest.TestCase, AQMixin, ACollectQMixin):
@@ -30,7 +30,7 @@ class TestAutoCollectQ(unittest.TestCase, AQMixin, ACollectQMixin):
     def setUp(self):
         self.maxDiff = None
         from callchain.active.auto.chains.filter import collectchain
-        self.qclass = collectchain
+        self.qclass = collectchain()
 
 
 class TestAutoSetQ(unittest.TestCase, AQMixin, ASetQMixin):
@@ -39,7 +39,7 @@ class TestAutoSetQ(unittest.TestCase, AQMixin, ASetQMixin):
 
     def setUp(self):
         from callchain.active.auto.chains.filter import setchain
-        self.qclass = setchain
+        self.qclass = setchain()
 
 
 if __name__ == '__main__':

@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 '''call chain mixins'''
 
-from appspace.keys import NoAppError
-
 from octopus import Tentacle, Octopus
+from octopus.keys import NoServiceError
 from octopus.resets import ResetLocalMixin
 
 __all__ = ('CallChainMixin', 'ChainLinkMixin')
@@ -18,13 +17,12 @@ class _Chain(ResetLocalMixin):
             return object.__getattribute__(self, label)
         except AttributeError:
             try:
-                item = self._M.lookup1(self._key, self._key, label)
-                if item is None:
-                    raise NoAppError(label)
-            except NoAppError:
-                return self._getapp(label)
-            else:
-                return item(self)
+                # silent switch
+                key = self._M.service(label)
+                item = self._M.lookup1(key, key)(self)
+                return getattr(item, label)
+            except NoServiceError:
+                return super(_Chain, self).__getattr__(label)
 
     def tap(self, call, key=False):
         '''
@@ -52,4 +50,5 @@ class CallChainMixin(_Chain, Octopus):
 
         @param label: chain label
         '''
+        key = self.M.namespace(key)
         return self.M.lookup1(key, key, label)(self)

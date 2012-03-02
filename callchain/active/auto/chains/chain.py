@@ -15,7 +15,7 @@ __all__ = ('callchain', 'chainlink')
 @appifies(KChainLink)
 class chainlink(AChainLinkMixin, AutoQMixin):
 
-    '''auto-balancing linked chain'''
+    '''auto-balancing linked call chain'''
 
 
 @appifies(KCallChain)

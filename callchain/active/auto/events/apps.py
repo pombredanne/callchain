@@ -18,19 +18,19 @@ class autoevent(Pathways):
         slice = 'callchain.active.auto.events.filter.sliceevent'
 
     class map(Namespace):
-        key = 'callchain.services.filter.KMap'
+        key = 'callchain.services.map.KMap'
         copy = 'callchain.active.auto.events.map.copyevent'
         delay = 'callchain.active.auto.events.map.delayevent'
         map = 'callchain.active.auto.map.events.mapevent'
         repeat = 'callchain.active.auto.events.map.repeatevent'
 
     class order(Namespace):
-        key = 'callchain.services.filter.KOrder'
+        key = 'callchain.services.order.KOrder'
         order = 'callchain.active.auto.events.order.orderevent'
         random = 'callchain.active.auto.events.order.randomevent'
 
     class reduce(Namespace):
-        key = 'callchain.services.filter.KReduce'
+        key = 'callchain.services.reduce.KReduce'
         math = 'callchain.active.auto.events.reduce.mathevent'
         reduce = 'callchain.active.auto.events.reduce.reduceevent'
         truth = 'callchain.active.auto.events.reduce.truthevent'

@@ -15,13 +15,13 @@ class autochain(Pathways):
         filter = 'callchain.active.auto.chains.filter.filterchain'
 
     class map(Namespace):
-        key = 'callchain.services.filter.KMap'
+        key = 'callchain.services.map.KMap'
         map = 'callchain.active.auto.chains.map.mapchain'
 
     class order(Namespace):
-        key = 'callchain.services.filter.KOrder'
+        key = 'callchain.services.order.KOrder'
         order = 'callchain.active.auto.chains.order.orderchain'
 
     class reduce(Namespace):
-        key = 'callchain.services.filter.KReduce'
+        key = 'callchain.services.reduce.KReduce'
         reduce = 'callchain.active.auto.chains.reduce.reducechain'

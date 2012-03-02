@@ -20,7 +20,7 @@ class TestManQ(
 
     def setUp(self):
         from callchain.active.man.chains.chain import manchain
-        self.qclass = manchain
+        self.qclass = manchain()
 
 if __name__ == '__main__':
     unittest.main()

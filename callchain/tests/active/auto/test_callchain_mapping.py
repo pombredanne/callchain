@@ -14,21 +14,21 @@ class TestAutoMap(AQMixin, AMapQMixin):
 
     def setUp(self):
         from callchain.active.auto.chains.map import mapchain
-        self.qclass = mapchain
+        self.qclass = mapchain()
 
 
 class TestAutoRepeatQ(unittest.TestCase, AQMixin, ARepeatQMixin):
 
     def setUp(self):
         from callchain.active.auto.chains.map import repeatchain
-        self.qclass = repeatchain
+        self.qclass = repeatchain()
 
 
 class TestAutoDelayQ(unittest.TestCase, AQMixin, ADelayQMixin):
 
     def setUp(self):
         from callchain.active.auto.chains.map import delaychain
-        self.qclass = delaychain
+        self.qclass = delaychain()
 
 if __name__ == '__main__':
     unittest.main()
