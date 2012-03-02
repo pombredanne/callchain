@@ -1,35 +1,33 @@
 # -*- coding: utf-8 -*-
 '''active manually balanced event chain appconf'''
 
-from appspace import Namespace
-
-from octopus import Pathways
+from octopus import Pathways, Nameways
 
 __all__ = ['manevent']
 
 
 class manevent(Pathways):
 
-    class filter(Namespace):
+    class filter(Nameways):
         key = 'callchain.services.filter.KFilter'
         collect = 'callchain.active.man.events.filter.collectevent'
         filter = 'callchain.active.man.events.filter.filterevent'
         set = 'callchain.active.man.events.filter.setevent'
         slice = 'callchain.active.man.events.filter.sliceevent'
 
-    class map(Namespace):
+    class map(Nameways):
         key = 'callchain.services.map.KMap'
         copy = 'callchain.active.man.events.map.copyevent'
         delay = 'callchain.active.man.events.map.delayevent'
         map = 'callchain.active.man.map.events.mapevent'
         repeat = 'callchain.active.man.events.map.repeatevent'
 
-    class order(Namespace):
+    class order(Nameways):
         key = 'callchain.services.order.KOrder'
         order = 'callchain.active.man.events.order.orderevent'
         random = 'callchain.active.man.events.order.randomevent'
 
-    class reduce(Namespace):
+    class reduce(Nameways):
         key = 'callchain.services.reduce.KReduce'
         math = 'callchain.active.man.events.reduce.mathevent'
         reduce = 'callchain.active.man.events.reduce.reduceevent'

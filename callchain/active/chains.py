@@ -35,48 +35,7 @@ class _AChainMixin(local):
         @param incoming: incoming queue
         @param outgoing: outgoing queue
         '''
-        incoming = deque()
-        # extend if just one argument
-        if len(args) == 1:
-            incoming.append(args[0])
-        else:
-            incoming.extend(args)
-        # callable stub
-        self._call = None
-        # callable postitional arguments stub
-        self._args = ()
-        # callable keyword arguments stub
-        self._kw = {}
-        # incoming queue
-        self.incoming = incoming
-        # outgoing queue
-        self.outgoing = deque()
-        #######################################################################
-        ## incoming things ####################################################
-        #######################################################################
-        # incoming things right append
-        self._inappend = self.incoming.append
-        # incoming things left append
-        self._inappendleft = self.incoming.appendleft
-        # incoming things clear
-        self._inclear = self.incoming.clear
-        # incoming things right extend
-        self._inextend = self.incoming.extend
-        # incoming things left extend
-        self._inextendleft = self.incoming.extendleft
-        #######################################################################
-        ## outgoing things ####################################################
-        #######################################################################
-        # outgoing things right append
-        self._outappend = self.outgoing.append
-        # outgoing things right extend
-        self._outextend = self.outgoing.extend
-        # outgoing things clear
-        self._outclear = self.outgoing.clear
-        # outgoing things right pop
-        self.pop = self.outgoing.pop
-        # outgoing things left pop
-        self.popleft = self.outgoing.popleft
+        self._inextend(args)
         return self
 
     def commit(self):
