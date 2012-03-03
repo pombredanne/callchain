@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 '''active synchronized call chains'''
 
-from twoq.active.mixins import AutoQMixin, AutoMixin
+from twoq.active.mixins import AutoQMixin, AutoResultMixin
 
 from callchain.active.chains import ChainLinkMixin, CallChainMixin
 
@@ -13,6 +13,6 @@ class chainlink(ChainLinkMixin, AutoQMixin):
     '''synchronized linked chain'''
 
 
-class callchain(CallChainMixin, AutoMixin):
+class callchain(CallChainMixin, AutoResultMixin):
 
     '''synchronized call chain'''

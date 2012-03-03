@@ -3,7 +3,7 @@
 
 from octopus import inside
 from appspace.keys import appifies
-from twoq.active.mixins import AutoQMixin, AutoMixin
+from twoq.active.mixins import AutoQMixin, AutoResultMixin
 
 from callchain.active.man.events.apps import manevent
 from callchain.events.keys import KEventLink, KEventChain
@@ -20,6 +20,6 @@ class eventlink(EventLinkMixin, AutoQMixin):
 
 @appifies(KEventChain)
 @inside(manevent)
-class eventchain(EventChainMixin, AutoMixin):
+class eventchain(EventChainMixin, AutoResultMixin):
 
     '''manually balanced event chain'''

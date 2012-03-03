@@ -63,7 +63,7 @@ class ChainLinkMixin(_AChainMixin, LinkMixin):
 
     def back(self):
         '''back to root call chain'''
-        return self.root.clear().extend(self.outgoing)
+        return self.root.clear().extend(self.outgoing).outsync()
 
 
 class CallChainMixin(_AChainMixin, ChainMixin):

@@ -3,7 +3,7 @@
 
 from octopus import inside
 from appspace.keys import appifies
-from twoq.active.mixins import AutoQMixin, AutoMixin
+from twoq.active.mixins import AutoQMixin, AutoResultMixin
 
 from callchain.active.auto.chains.apps import autochain
 from callchain.chains.keys import KChainLink, KCallChain
@@ -20,6 +20,6 @@ class chainlink(ChainLinkMixin, AutoQMixin):
 
 @appifies(KCallChain)
 @inside(autochain)
-class callchain(CallChainMixin, AutoMixin):
+class callchain(CallChainMixin, AutoResultMixin):
 
     '''auto-balancing call chain'''
