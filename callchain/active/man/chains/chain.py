@@ -6,20 +6,20 @@ from appspace.keys import appifies
 from twoq.active.mixins import AutoQMixin
 
 from callchain.active.man.chains.apps import manchain
-from callchain.active.chains import AChainLinkMixin, ACallChainMixin
 from callchain.chains.keys import KChainLink, KCallChain
+from callchain.active.chains import ChainLinkMixin, CallChainMixin
 
 __all__ = ('callchain', 'chainlink')
 
 
 @appifies(KChainLink)
-class chainlink(AChainLinkMixin, AutoQMixin):
+class chainlink(ChainLinkMixin, AutoQMixin):
 
     '''manually balanced linked call chain'''
 
 
 @appifies(KCallChain)
 @inside(manchain)
-class callchain(ACallChainMixin, AutoQMixin):
+class callchain(CallChainMixin, AutoQMixin):
 
     '''manually balanced call chain'''

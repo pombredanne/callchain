@@ -5,25 +5,25 @@ from appspace.keys import appifies
 from twoq.active.mixins import AutoQMixin
 from twoq.mixins.reducing import MathMixin, TruthMixin, ReduceMixin
 
-from callchain.active.chains import AChainLinkMixin
+from callchain.active.chains import ChainLinkMixin
 from callchain.services.reduce import KMath, KReduce, KTruth
 
 __all__ = ('mathchain', 'truthchain', 'reducechain')
 
 
 @appifies(KMath)
-class mathchain(AChainLinkMixin, AutoQMixin, MathMixin):
+class mathchain(ChainLinkMixin, AutoQMixin, MathMixin):
 
     '''manually balanced mathing linked chain'''
 
 
 @appifies(KReduce)
-class reducechain(AChainLinkMixin, AutoQMixin, ReduceMixin):
+class reducechain(ChainLinkMixin, AutoQMixin, ReduceMixin):
 
     '''manually balanced reducing linked chain'''
 
 
 @appifies(KTruth)
-class truthchain(AChainLinkMixin, AutoQMixin, TruthMixin):
+class truthchain(ChainLinkMixin, AutoQMixin, TruthMixin):
 
     '''manually balanced truthing linked chain'''

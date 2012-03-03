@@ -6,24 +6,24 @@ from twoq.active.mixins import AutoQMixin
 from twoq.mixins.reducing import MathMixin, TruthMixin, ReduceMixin
 
 from callchain.services.reduce import KMath, KReduce, KTruth
-from callchain.active.chains import AChainLinkMixin
+from callchain.active.chains import ChainLinkMixin
 
 __all__ = ('mathchain', 'truthchain', 'reducechain')
 
 
 @appifies(KMath)
-class mathchain(AChainLinkMixin, AutoQMixin, MathMixin):
+class mathchain(ChainLinkMixin, AutoQMixin, MathMixin):
 
     '''auto-balancing mathing linked chain'''
 
 
 @appifies(KReduce)
-class reducechain(AChainLinkMixin, AutoQMixin, ReduceMixin):
+class reducechain(ChainLinkMixin, AutoQMixin, ReduceMixin):
 
     '''auto-balancing reducing linked chain'''
 
 
 @appifies(KTruth)
-class truthchain(AChainLinkMixin, AutoQMixin, TruthMixin):
+class truthchain(ChainLinkMixin, AutoQMixin, TruthMixin):
 
     '''auto-balancing truthing linked chain'''

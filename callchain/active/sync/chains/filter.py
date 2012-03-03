@@ -5,26 +5,26 @@ from twoq.active.mixins import AutoQMixin
 from twoq.mixins.filtering import (
     FilterMixin, CollectMixin, SetMixin, SliceMixin)
 
-from callchain.active.chains import AChainLinkMixin
+from callchain.active.chains import ChainLinkMixin
 
 __all__ = ('collectchain', 'setchain', 'slicechain', 'filterchain')
 
 
-class collectchain(AChainLinkMixin, AutoQMixin, CollectMixin):
+class collectchain(ChainLinkMixin, AutoQMixin, CollectMixin):
 
     '''synchronized collecting linked chain'''
 
 
-class setchain(AChainLinkMixin, AutoQMixin, SetMixin):
+class setchain(ChainLinkMixin, AutoQMixin, SetMixin):
 
     '''synchronized seting linked chain'''
 
 
-class slicechain(AChainLinkMixin, AutoQMixin, SliceMixin):
+class slicechain(ChainLinkMixin, AutoQMixin, SliceMixin):
 
     '''synchronized slicing linked chain'''
 
 
-class filterchain(AChainLinkMixin, AutoQMixin, FilterMixin):
+class filterchain(ChainLinkMixin, AutoQMixin, FilterMixin):
 
     '''synchronized filtering linked chain'''

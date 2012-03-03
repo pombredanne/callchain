@@ -5,26 +5,26 @@ from twoq.mixins.mapping import DelayMixin, CopyMixin, RepeatMixin, MapMixin
 
 from twoq.active.mixins import AutoQMixin
 
-from callchain.active.chains import AChainLinkMixin
+from callchain.active.chains import ChainLinkMixin
 
 __all__ = ('delaychain', 'copychain', 'repeatchain', 'mapchain')
 
 
-class delaychain(AChainLinkMixin, AutoQMixin, DelayMixin):
+class delaychain(ChainLinkMixin, AutoQMixin, DelayMixin):
 
     '''synchronized delayed mapping linked chain'''
 
 
-class copychain(AChainLinkMixin, AutoQMixin, CopyMixin):
+class copychain(ChainLinkMixin, AutoQMixin, CopyMixin):
 
     '''synchronized copy linked chain'''
 
 
-class repeatchain(AChainLinkMixin, AutoQMixin, RepeatMixin):
+class repeatchain(ChainLinkMixin, AutoQMixin, RepeatMixin):
 
     '''synchronized repeat linked chain'''
 
 
-class mapchain(AChainLinkMixin, AutoQMixin, MapMixin):
+class mapchain(ChainLinkMixin, AutoQMixin, MapMixin):
 
     '''synchronized mapping linked chain'''

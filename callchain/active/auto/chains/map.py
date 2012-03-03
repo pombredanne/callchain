@@ -5,31 +5,31 @@ from appspace.keys import appifies
 from twoq.active.mixins import AutoQMixin
 from twoq.mixins.mapping import DelayMixin, CopyMixin, RepeatMixin, MapMixin
 
-from callchain.active.chains import AChainLinkMixin
+from callchain.active.chains import ChainLinkMixin
 from callchain.services.map import KDelay, KCopy, KRepeat, KMap
 
 __all__ = ('delaychain', 'copychain', 'repeatchain', 'mapchain')
 
 
 @appifies(KDelay)
-class delaychain(AChainLinkMixin, AutoQMixin, DelayMixin):
+class delaychain(ChainLinkMixin, AutoQMixin, DelayMixin):
 
     '''auto-balancing delayed mapping linked chain'''
 
 
 @appifies(KCopy)
-class copychain(AChainLinkMixin, AutoQMixin, CopyMixin):
+class copychain(ChainLinkMixin, AutoQMixin, CopyMixin):
 
     '''auto-balancing copy linked chain'''
 
 
 @appifies(KRepeat)
-class repeatchain(AChainLinkMixin, AutoQMixin, RepeatMixin):
+class repeatchain(ChainLinkMixin, AutoQMixin, RepeatMixin):
 
     '''auto-balancing repeat linked chain'''
 
 
 @appifies(KMap)
-class mapchain(AChainLinkMixin, AutoQMixin, MapMixin):
+class mapchain(ChainLinkMixin, AutoQMixin, MapMixin):
 
     '''auto-balancing mapping linked chain'''

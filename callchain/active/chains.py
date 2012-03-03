@@ -6,16 +6,19 @@ from collections import deque
 
 from stuf.utils import iterexcept
 
-from callchain.chains.mixins import ChainLinkMixin, CallChainMixin
+from callchain.chains.mixins import LinkMixin, ChainMixin
 
 
 class _AChainMixin(local):
 
     '''base call chain'''
 
-    def __init__(self):
-        super(_AChainMixin, self).__init__()
-        ## call chain #########################################################
+    def __call__(self, *args):
+        self._inextend(args)
+        return self
+
+    def _setup_chain(self):
+        '''setup call chain'''
         self._chain = deque()
         # call chain right extend
         self._cxtend = self._chain.extend
@@ -27,16 +30,6 @@ class _AChainMixin(local):
         self._cpopleft = self._chain.popleft
         # call chain clear
         self._cclear = self._chain.clear
-
-    def __call__(self, *args):
-        '''
-        init
-
-        @param incoming: incoming queue
-        @param outgoing: outgoing queue
-        '''
-        self._inextend(args)
-        return self
 
     def commit(self):
         '''invoke call chain'''
@@ -57,20 +50,34 @@ class _AChainMixin(local):
         return self
 
 
-class AChainLinkMixin(_AChainMixin, ChainLinkMixin):
+class ChainLinkMixin(_AChainMixin, LinkMixin):
 
     '''linked call chain mixin'''
 
     def __init__(self, root):
-        super(AChainLinkMixin, self).__init__(root)
+        super(ChainLinkMixin, self).__init__(root)
+        # setup call chain
+        self._setup_chain()
         # sync with root
-        self.extend(root.outgoing)
+        self.extend(root.incoming)
 
     def back(self):
-        '''return to root call chain'''
+        '''back to root call chain'''
         return self.root.clear().extend(self.outgoing)
 
 
-class ACallChainMixin(_AChainMixin, CallChainMixin):
+class CallChainMixin(_AChainMixin, ChainMixin):
 
     '''call chain mixin'''
+
+    def __init__(self, pattern=None, required=None, defaults=None, **kw):
+        '''
+        init
+
+        @param pattern: pattern configuration or appspace label (default: None)
+        @param required: required settings (default: None)
+        @param defaults: default settings (default: None)
+        '''
+        super(CallChainMixin, self).__init__(pattern, required, defaults, **kw)
+        # setup call chain
+        self._setup_chain()

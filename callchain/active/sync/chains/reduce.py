@@ -4,21 +4,21 @@
 from twoq.active.mixins import AutoQMixin
 from twoq.mixins.reducing import MathMixin, TruthMixin, ReduceMixin
 
-from callchain.active.chains import AChainLinkMixin
+from callchain.active.chains import ChainLinkMixin
 
 __all__ = ('mathchain', 'truthchain', 'reducechain')
 
 
-class mathchain(AChainLinkMixin, AutoQMixin, MathMixin):
+class mathchain(ChainLinkMixin, AutoQMixin, MathMixin):
 
     '''synchronized mathing linked chain'''
 
 
-class reducechain(AChainLinkMixin, AutoQMixin, ReduceMixin):
+class reducechain(ChainLinkMixin, AutoQMixin, ReduceMixin):
 
     '''synchronized reducing linked chain'''
 
 
-class truthchain(AChainLinkMixin, AutoQMixin, TruthMixin):
+class truthchain(ChainLinkMixin, AutoQMixin, TruthMixin):
 
     '''synchronized truthing linked chain'''

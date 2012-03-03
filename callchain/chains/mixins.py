@@ -4,51 +4,57 @@
 from octopus import Tentacle, Octopus
 from octopus.keys import NoServiceError
 from octopus.resets import ResetLocalMixin
+from appspace.keys import NoAppError
 
-__all__ = ('CallChainMixin', 'ChainLinkMixin')
+__all__ = ('ChainMixin', 'LinkMixin')
 
 
 class _Chain(ResetLocalMixin):
 
     '''base chain mixin'''
 
-    def __getattr__(self, label):
-        try:
-            return object.__getattribute__(self, label)
-        except AttributeError:
-            try:
-                # silent switch
-                key = self._M.service(label)
-                item = self._M.lookup1(key, key)(self)
-                return getattr(item, label)
-            except NoServiceError:
-                return super(_Chain, self).__getattr__(label)
 
-    def tap(self, call, key=False):
-        '''
-        make application from appspace current call in chall chain
-
-        @param label: application label
-        @param key: key label (default: False)
-        '''
-        self._call = self.M.get(call, key)
-        return self
-
-
-class ChainLinkMixin(_Chain, Tentacle):
+class LinkMixin(_Chain, Tentacle):
 
     '''base linked call chain mixin'''
 
+    def _iget(self, label):
+        try:
+            # silent switch
+            _M = self._M
+            key = _M.service(label)
+            item = _M.get(key, key)(self)
+            item = getattr(item, label)
+            return item
+        except NoServiceError:
+            try:
+                return super(LinkMixin, self)._iget(label)
+            except NoAppError:
+                return self.back()
 
-class CallChainMixin(_Chain, Octopus):
+
+class ChainMixin(_Chain, Octopus):
 
     '''base call chain mixin'''
+
+    def _iget(self, label):
+        try:
+            # silent switch
+            _M = self._M
+            key = _M.service(label)
+            item = _M.get(key, key)(self)
+            item = getattr(item, label)
+            return item
+        except NoServiceError:
+            return super(ChainMixin, self)._iget(label)
 
     def switch(self, label, key=False):
         '''
         switch to linked call chain
 
         @param label: chain label
+        @param key: chain key (default: False)
         '''
-        key = self.M.namespace(key)
-        return self.M.lookup1(key, key, label)(self)
+        M = self._M
+        key = M.namespace(key)
+        return M.lookup1(key, key, label)(self)

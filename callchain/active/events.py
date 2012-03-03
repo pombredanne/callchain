@@ -8,7 +8,7 @@ from stuf.utils import iterexcept
 from callchain.events.services import EEvent
 from callchain.events.mixins import EventLinkMixin, EventChainMixin
 
-from callchain.active.chains import AChainLinkMixin, ACallChainMixin
+from callchain.active.chains import ChainLinkMixin, CallChainMixin
 
 
 class _AEventMixin(local):
@@ -40,7 +40,7 @@ class _AEventMixin(local):
         return self
 
 
-class AEventLinkMixin(_AEventMixin, EventLinkMixin, AChainLinkMixin):
+class AEventLinkMixin(_AEventMixin, EventLinkMixin, ChainLinkMixin):
 
     '''active linked event chain mixin'''
 
@@ -61,7 +61,7 @@ class AEventLinkMixin(_AEventMixin, EventLinkMixin, AChainLinkMixin):
         return queue
 
 
-class AEventChainMixin(_AEventMixin, EventChainMixin, ACallChainMixin):
+class AEventChainMixin(_AEventMixin, EventChainMixin, CallChainMixin):
 
     '''active event chain mixin'''
 

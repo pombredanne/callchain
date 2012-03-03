@@ -20,7 +20,10 @@ class ACopyQMixin(object):
 
     def test_deepcopy(self):
         testlist = [[1, [2, 3]], [4, [5, 6]]]
-        newlist = self.qclass(testlist).deepcopy().value()
+        newlist = self.qclass(testlist)
+        newlist = newlist.deepcopy
+        newlist = newlist()
+        newlist = newlist.value()
         self.assertFalse(newlist is testlist)
         self.assertListEqual(newlist, testlist)
         self.assertFalse(newlist[0] is testlist[0])

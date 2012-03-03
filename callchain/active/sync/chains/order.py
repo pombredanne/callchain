@@ -4,16 +4,16 @@
 from twoq.active.mixins import AutoQMixin
 from twoq.mixins.ordering import RandomMixin, OrderMixin
 
-from callchain.active.chains import AChainLinkMixin
+from callchain.active.chains import ChainLinkMixin
 
 __all__ = ('randomchain', 'orderchain')
 
 
-class randomchain(AChainLinkMixin, AutoQMixin, RandomMixin):
+class randomchain(ChainLinkMixin, AutoQMixin, RandomMixin):
 
     '''synchronized randomizing linked chain'''
 
 
-class orderchain(AChainLinkMixin, AutoQMixin, OrderMixin):
+class orderchain(ChainLinkMixin, AutoQMixin, OrderMixin):
 
     '''synchronized ordering linked chain'''
