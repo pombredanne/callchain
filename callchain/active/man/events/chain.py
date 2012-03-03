@@ -7,19 +7,19 @@ from twoq.active.mixins import ManQMixin, ManResultMixin
 
 from callchain.active.man.events.apps import manevent
 from callchain.events.keys import KEventLink, KEventChain
-from callchain.active.events import EventLinkMixin, EventChainMixin
+from callchain.active.events import ELinkMixin, EChainMixin
 
 __all__ = ['eventlink', 'eventchain']
 
 
 @appifies(KEventLink)
-class eventlink(EventLinkMixin, ManQMixin):
+class eventlink(ELinkMixin, ManQMixin):
 
     '''manually balanced linked event chain'''
 
 
 @appifies(KEventChain)
 @inside(manevent)
-class eventchain(EventChainMixin, ManResultMixin):
+class eventchain(EChainMixin, ManResultMixin):
 
     '''manually balanced event chain'''

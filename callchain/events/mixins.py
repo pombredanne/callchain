@@ -13,7 +13,7 @@ from octopus.resets import ResetLocalMixin
 from callchain.events.services import (
     EEvent, EBefore, EWork, EChange, EAfter, EProblem, EFinally, EAny)
 
-__all__ = ('EventChainMixin', 'EventLinkMixin')
+__all__ = ('EChainMixin', 'ELinkMixin')
 
 
 class _EventMixin(ResetLocalMixin):
@@ -132,7 +132,7 @@ class _EventMixin(ResetLocalMixin):
 
 
 
-class EventChainMixin(_EventMixin, Octopus):
+class EChainMixin(_EventMixin, Octopus):
 
     '''base event chain mixin'''
 
@@ -159,7 +159,7 @@ class EventChainMixin(_EventMixin, Octopus):
         return self
     
 
-class EventLinkMixin(_EventMixin, Tentacle):
+class ELinkMixin(_EventMixin, Tentacle):
 
     '''base linked event chain mixin'''
 
@@ -169,7 +169,7 @@ class EventLinkMixin(_EventMixin, Tentacle):
 
         @param root: root event chain
         '''
-        super(EventLinkMixin, self).__init__(root)
+        super(ELinkMixin, self).__init__(root)
         # root event chain getter
         self._regetit = self.root._getevent
         # event getter

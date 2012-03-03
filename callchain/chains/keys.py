@@ -33,23 +33,6 @@ class KChain(KQueue):
         @param call: callable or application label
         @param key: key label (default: False)
         '''
-        
-    def add(app, label, key=False):
-        '''
-        add application to appspace
-
-        @param app: new application
-        @param label: application label
-        @param key: key label (default: False)
-        '''
-    
-    def app(label, key=False):
-        '''
-        make application from appspace current call in chall chain
-
-        @param label: application label
-        @param key: key label (default: False)
-        '''
 
 
 class KCallChain(AOctopus, KChain):
@@ -63,6 +46,9 @@ class KCallChain(AOctopus, KChain):
         @param label: linked call chain label
         @param key: linked call chain key (default: False)
         '''
+    
+    def back(link):
+        '''return to root call chain'''
 
 
 class KChainLink(ATentacle, KChain):

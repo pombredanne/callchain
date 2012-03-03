@@ -6,7 +6,7 @@ from collections import deque
 
 from stuf.utils import iterexcept
 
-from callchain.chains.mixins import LinkMixin, ChainMixin
+from callchain.chains.mixins import LinkMixin, EventChainMixin
 
 
 class _AChainMixin(local):
@@ -71,7 +71,7 @@ class ChainLinkMixin(_AChainMixin, LinkMixin):
         self._kw = root._kw
 
 
-class CallChainMixin(_AChainMixin, ChainMixin):
+class CallChainMixin(_AChainMixin, EventChainMixin):
 
     '''call chain mixin'''
 

@@ -5,7 +5,7 @@ from appspace.keys import NoAppError
 from octopus import Tentacle, Octopus
 from octopus.keys import NoServiceError
 
-__all__ = ('ChainMixin', 'LinkMixin')
+__all__ = ('EventChainMixin', 'LinkMixin')
 
 
 class LinkMixin(Tentacle):
@@ -26,10 +26,11 @@ class LinkMixin(Tentacle):
 
     def back(self):
         '''back to root call chain'''
-        return self.root.back(self)
+        self = self.root.back(self)
+        return self
 
 
-class ChainMixin(Octopus):
+class EventChainMixin(Octopus):
 
     '''base call chain mixin'''
 
@@ -40,7 +41,7 @@ class ChainMixin(Octopus):
             key = _M.service(label)
             return getattr(_M.get(key, key)(self), label)
         except NoServiceError:
-            return super(ChainMixin, self)._iget(label)
+            return super(EventChainMixin, self)._iget(label)
 
     def switch(self, label, key=False):
         '''
