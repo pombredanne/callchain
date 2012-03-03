@@ -30,7 +30,8 @@ class LinkMixin(_Chain, Tentacle):
             try:
                 return super(LinkMixin, self)._iget(label)
             except NoAppError:
-                return self.back()
+                item = getattr(self.back(), label)
+                return item
 
 
 class ChainMixin(_Chain, Octopus):

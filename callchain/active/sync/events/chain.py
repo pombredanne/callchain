@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 '''active synchronized event chains'''
 
-from twoq.active.mixins import AutoQMixin
+from twoq.active.mixins import AutoQMixin, AutoMixin
 
 from callchain.active.events import AEventLinkMixin, AEventChainMixin
 
@@ -13,6 +13,6 @@ class eventlink(AEventLinkMixin, AutoQMixin):
     '''synchronized linked event chain'''
 
 
-class eventchain(AEventChainMixin, AutoQMixin):
+class eventchain(AEventChainMixin, AutoMixin):
 
     '''synchronized event chain'''
