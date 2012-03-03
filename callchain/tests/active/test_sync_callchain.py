@@ -13,8 +13,9 @@ from callchain.tests.mixins.auto.reducing import AReduceQMixin
 from callchain.tests.mixins.auto.filtering import AFilterQMixin
 
 
-class TestSyncQ(unittest.TestCase,
-    AQMixin, AFilterQMixin, AMapQMixin, AReduceQMixin, AOrderQMixin,
+class TestSyncQ(
+    unittest.TestCase, AQMixin, AFilterQMixin, AMapQMixin, AReduceQMixin,
+    AOrderQMixin,
 ):
 
     def setUp(self):

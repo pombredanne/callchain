@@ -40,7 +40,7 @@ class _AEventMixin(local):
         return self
 
 
-class AEventLinkMixin(_AEventMixin, EventLinkMixin, ChainLinkMixin):
+class LinkMixin(_AEventMixin, EventLinkMixin, ChainLinkMixin):
 
     '''active linked event chain mixin'''
 
@@ -61,7 +61,7 @@ class AEventLinkMixin(_AEventMixin, EventLinkMixin, ChainLinkMixin):
         return queue
 
 
-class AEventChainMixin(_AEventMixin, EventChainMixin, CallChainMixin):
+class ChainMixin(_AEventMixin, EventChainMixin, CallChainMixin):
 
     '''active event chain mixin'''
 

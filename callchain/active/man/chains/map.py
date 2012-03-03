@@ -2,7 +2,7 @@
 '''manually balanced mapping linked chains'''
 
 from appspace.keys import appifies
-from twoq.active.mixins import AutoQMixin
+from twoq.active.mixins import ManQMixin
 from twoq.mixins.mapping import DelayMixin, CopyMixin, RepeatMixin, MapMixin
 
 from callchain.active.chains import ChainLinkMixin
@@ -12,24 +12,24 @@ __all__ = ('delaychain', 'copychain', 'repeatchain', 'mapchain')
 
 
 @appifies(KDelay)
-class delaychain(ChainLinkMixin, AutoQMixin, DelayMixin):
+class delaychain(ChainLinkMixin, ManQMixin, DelayMixin):
 
     '''manually balanced delayed mapping linked chain'''
 
 
 @appifies(KCopy)
-class copychain(ChainLinkMixin, AutoQMixin, CopyMixin):
+class copychain(ChainLinkMixin, ManQMixin, CopyMixin):
 
     '''manually balanced copy linked chain'''
 
 
 @appifies(KRepeat)
-class repeatchain(ChainLinkMixin, AutoQMixin, RepeatMixin):
+class repeatchain(ChainLinkMixin, ManQMixin, RepeatMixin):
 
     '''manually balanced repeat linked chain'''
 
 
 @appifies(KMap)
-class mapchain(ChainLinkMixin, AutoQMixin, MapMixin):
+class mapchain(ChainLinkMixin, ManQMixin, MapMixin):
 
     '''manually balanced mapping linked chain'''

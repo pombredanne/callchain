@@ -14,6 +14,7 @@ class _AChainMixin(local):
     '''base call chain'''
 
     def __call__(self, *args):
+        self.clear()
         self._inextend(args)
         return self
 
@@ -59,11 +60,15 @@ class ChainLinkMixin(_AChainMixin, LinkMixin):
         # setup call chain
         self._setup_chain()
         # sync with root
-        self.extend(root.incoming)
-
-    def back(self):
-        '''back to root call chain'''
-        return self.root.clear().extend(self.outgoing).outsync()
+        self._inextend(root.incoming)
+        # sync outgoing
+        self._outextend(root.outgoing)
+        # sync callable
+        self._call = root._call
+        # sync callable postitional arguments
+        self._args = root._args
+        # sync callable keyword argumentss
+        self._kw = root._kw
 
 
 class CallChainMixin(_AChainMixin, ChainMixin):
@@ -81,3 +86,18 @@ class CallChainMixin(_AChainMixin, ChainMixin):
         super(CallChainMixin, self).__init__(pattern, required, defaults, **kw)
         # setup call chain
         self._setup_chain()
+
+    def back(self, link):
+        # sync incoming
+        self._inclear()
+        self._inextend(link.incoming)
+        # sync outgoing
+        self._outclear()
+        self._outextend(link.outgoing)
+        # sync callable
+        self._call = link._call
+        # sync callable postitional arguments
+        self._args = link._args
+        # sync callable keyword arguments
+        self._kw = link._kw
+        return self

@@ -2,7 +2,7 @@
 '''manually balanced filtering linked chains'''
 
 from appspace.keys import appifies
-from twoq.active.mixins import AutoQMixin
+from twoq.active.mixins import ManQMixin
 from twoq.mixins.filtering import (
     FilterMixin, CollectMixin, SetMixin, SliceMixin)
 
@@ -13,24 +13,24 @@ __all__ = ('collectchain', 'setchain', 'slicechain', 'filterchain')
 
 
 @appifies(KCollect)
-class collectchain(ChainLinkMixin, AutoQMixin, CollectMixin):
+class collectchain(ChainLinkMixin, ManQMixin, CollectMixin):
 
     '''manually balanced collecting linked chain'''
 
 
 @appifies(KSet)
-class setchain(ChainLinkMixin, AutoQMixin, SetMixin):
+class setchain(ChainLinkMixin, ManQMixin, SetMixin):
 
     '''manually balanced seting linked chain'''
 
 
 @appifies(KSlice)
-class slicechain(ChainLinkMixin, AutoQMixin, SliceMixin):
+class slicechain(ChainLinkMixin, ManQMixin, SliceMixin):
 
     '''manually balanced slicing linked chain'''
 
 
 @appifies(KFilter)
-class filterchain(ChainLinkMixin, AutoQMixin, FilterMixin):
+class filterchain(ChainLinkMixin, ManQMixin, FilterMixin):
 
     '''manually balanced filtering linked chain'''

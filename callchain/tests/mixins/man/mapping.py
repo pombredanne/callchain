@@ -14,7 +14,7 @@ class MCopyQMixin(object):
         self.assertTrue(manq.balanced)
         manq.sync()
         self.assertTrue(manq.balanced)
-        newlist = manq.value()
+        newlist = manq.end()
         self.assertFalse(newlist is testlist)
         self.assertListEqual(newlist, testlist)
         self.assertTrue(newlist[0] is testlist[0])
@@ -29,7 +29,7 @@ class MCopyQMixin(object):
         self.assertTrue(manq.balanced)
         manq.sync()
         self.assertTrue(manq.balanced)
-        newlist = manq.value()
+        newlist = manq.end()
         self.assertFalse(newlist is testlist)
         self.assertListEqual(newlist, testlist)
         self.assertFalse(newlist[0] is testlist[0])
@@ -110,7 +110,7 @@ class MMapQMixin(MCopyQMixin, MDelayQMixin, MRepeatQMixin):
         from stuf import stuf
         thing = self.qclass(
                 [('a', 1), ('b', 2), ('c', 3)]
-            ).reup().wrap(stuf).map().shift().value()
+            ).reup().wrap(stuf).map().shift().end()
         self.assertDictEqual(thing, stuf(a=1, b=2, c=3))
 
     def test_each(self):

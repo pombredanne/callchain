@@ -13,7 +13,7 @@ class MRandomQMixin(object):
         self.assertFalse(manq.balanced)
         manq.sync()
         self.assertTrue(manq.balanced)
-        manq.value()
+        manq.end()
         self.assertFalse(manq.balanced)
 
     def test_sample(self):
@@ -21,7 +21,7 @@ class MRandomQMixin(object):
         self.assertFalse(manq.balanced)
         manq.sync()
         self.assertTrue(manq.balanced)
-        manq.value()
+        manq.end()
         self.assertFalse(manq.balanced)
 
     def test_shuffle(self):
@@ -29,7 +29,7 @@ class MRandomQMixin(object):
         self.assertTrue(manq.balanced)
         manq.sync()
         self.assertTrue(manq.balanced)
-        manq.value()
+        manq.end()
         self.assertFalse(manq.balanced)
 
 

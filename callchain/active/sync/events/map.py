@@ -3,28 +3,28 @@
 
 from twoq.mixins.mapping import DelayMixin, CopyMixin, RepeatMixin, MapMixin
 
-from twoq.active.mixins import AutoQMixin
+from twoq.active.mixins import SyncQMixin
 
-from callchain.active.events import AEventLinkMixin
+from callchain.active.events import LinkMixin
 
 __all__ = ('delayevent', 'copyevent', 'repeatevent', 'mapevent')
 
 
-class delayevent(AEventLinkMixin, AutoQMixin, DelayMixin):
+class delayevent(LinkMixin, SyncQMixin, DelayMixin):
 
     '''synchronized delayed mapping linked event chain'''
 
 
-class copyevent(AEventLinkMixin, AutoQMixin, CopyMixin):
+class copyevent(LinkMixin, SyncQMixin, CopyMixin):
 
     '''synchronized copy linked event chain'''
 
 
-class repeatevent(AEventLinkMixin, AutoQMixin, RepeatMixin):
+class repeatevent(LinkMixin, SyncQMixin, RepeatMixin):
 
     '''synchronized repeat linked event chain'''
 
 
-class mapevent(AEventLinkMixin, AutoQMixin, MapMixin):
+class mapevent(LinkMixin, SyncQMixin, MapMixin):
 
     '''synchronized mapping linked event chain'''

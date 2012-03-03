@@ -1,24 +1,24 @@
 # -*- coding: utf-8 -*-
 '''synchronized reducing linked event events'''
 
-from twoq.active.mixins import AutoQMixin
+from twoq.active.mixins import SyncQMixin
 from twoq.mixins.reducing import MathMixin, TruthMixin, ReduceMixin
 
-from callchain.active.events import AEventLinkMixin
+from callchain.active.events import LinkMixin
 
 __all__ = ('mathevent', 'truthevent', 'reduceevent')
 
 
-class mathevent(AEventLinkMixin, AutoQMixin, MathMixin):
+class mathevent(LinkMixin, SyncQMixin, MathMixin):
 
     '''synchronized mathing linked event event'''
 
 
-class reduceevent(AEventLinkMixin, AutoQMixin, ReduceMixin):
+class reduceevent(LinkMixin, SyncQMixin, ReduceMixin):
 
     '''synchronized reducing linked event event'''
 
 
-class truthevent(AEventLinkMixin, AutoQMixin, TruthMixin):
+class truthevent(LinkMixin, SyncQMixin, TruthMixin):
 
     '''synchronized truthing linked event event'''
