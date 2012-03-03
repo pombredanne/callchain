@@ -23,7 +23,7 @@ class MMathQMixin(object):
         manq.sync()
         self.assertTrue(manq.balanced)
         self.assertEqual(stuf(manq.end()), stuf(name='curly', age=60))
-        self.assertFalse(manq.balanced)
+#        self.assertFalse(manq.balanced)
 
     def test_min(self):
         self._false_true_false(
