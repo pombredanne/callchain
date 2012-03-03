@@ -9,22 +9,14 @@ from twoq.support import port
 class ASliceQMixin(object):
 
     def test_first(self):
-        self.assertEqual(
-            self.qclass(5, 4, 3, 2, 1).first().end(), 5,
-        )
+        self.assertEqual(self.qclass(5, 4, 3, 2, 1).first().end(), 5)
 
     def test_nth(self):
-        self.assertEqual(
-            self.qclass(5, 4, 3, 2, 1).nth(2).end(), 3,
-        )
-        self.assertEqual(
-            self.qclass(5, 4, 3, 2, 1).nth(10, 11).end(), 11,
-        )
+        self.assertEqual(self.qclass(5, 4, 3, 2, 1).nth(2).end(), 3)
+        self.assertEqual(self.qclass(5, 4, 3, 2, 1).nth(10, 11).end(), 11)
 
     def test_last(self):
-        self.assertEqual(
-            self.qclass(5, 4, 3, 2, 1).last().end(), 1,
-        )
+        self.assertEqual(self.qclass(5, 4, 3, 2, 1).last().end(), 1)
 
     def test_initial(self):
         self.assertEqual(
@@ -32,19 +24,13 @@ class ASliceQMixin(object):
         )
 
     def test_rest(self):
-        self.assertEqual(
-            self.qclass(5, 4, 3, 2, 1).rest().end(), [4, 3, 2, 1]
-        )
+        self.assertEqual(self.qclass(5, 4, 3, 2, 1).rest().end(), [4, 3, 2, 1])
 
     def test_take(self):
-        self.assertEqual(
-            self.qclass(5, 4, 3, 2, 1).take(2).end(), [5, 4]
-        )
+        self.assertEqual(self.qclass(5, 4, 3, 2, 1).take(2).end(), [5, 4])
 
     def test_takeback(self):
-        self.assertEqual(
-            self.qclass(5, 4, 3, 2, 1).snatch(2).end(), [2, 1]
-        )
+        self.assertEqual(self.qclass(5, 4, 3, 2, 1).snatch(2).end(), [2, 1])
 
 
 class ACollectQMixin(object):
@@ -137,7 +123,7 @@ class ACollectQMixin(object):
             stuf(name='curly', age=60)
         ]
         self.assertEqual(
-            self.qclass(*stooges).pluck('name').end(),
+            self.qclass(*stooges).pluck('name').end(), 
             ['moe', 'larry', 'curly'],
         )
         self.assertEqual(
@@ -146,16 +132,10 @@ class ACollectQMixin(object):
         )
         stooges = [['moe', 40], ['larry', 50], ['curly', 60]]
         self.assertEqual(
-            self.qclass(*stooges).pluck(0).end(),
-            ['moe', 'larry', 'curly'],
+            self.qclass(*stooges).pluck(0).end(), ['moe', 'larry', 'curly'],
         )
-        self.assertEqual(
-            self.qclass(*stooges).pluck(1).end(),
-            [40, 50, 60],
-        )
-        self.assertEqual(
-            self.qclass(*stooges).pluck('place').end(), [],
-        )
+        self.assertEqual(self.qclass(*stooges).pluck(1).end(), [40, 50, 60])
+        self.assertEqual(self.qclass(*stooges).pluck('place').end(), [])
 
 
 class ASetQMixin(object):
@@ -167,12 +147,8 @@ class ASetQMixin(object):
         )
 
     def test_disjointed(self):
-        self.assertTrue(
-            self.qclass([1, 2, 3], [5, 4, 10]).disjointed().end()
-        )
-        self.assertFalse(
-            self.qclass([1, 2, 3], [5, 2, 10]).disjointed().end()
-        )
+        self.assertTrue(self.qclass([1, 2, 3], [5, 4, 10]).disjointed().end())
+        self.assertFalse(self.qclass([1, 2, 3], [5, 2, 10]).disjointed().end())
 
     def test_intersection(self):
         self.assertEqual(
@@ -189,8 +165,7 @@ class ASetQMixin(object):
 
     def test_unique(self):
         self.assertEqual(
-            self.qclass(1, 2, 1, 3, 1, 4).unique().end(),
-            [1, 2, 3, 4],
+            self.qclass(1, 2, 1, 3, 1, 4).unique().end(), [1, 2, 3, 4],
         )
         self.assertEqual(
             self.qclass(1, 2, 1, 3, 1, 4).tap(round).unique().end(),
@@ -232,14 +207,12 @@ class AFilterQMixin(ACollectQMixin, ASetQMixin, ASliceQMixin):
 
     def test_compact(self):
         self.assertEqual(
-            self.qclass(0, 1, False, 2, '', 3).compact().end(),
-            [1, 2, 3],
+            self.qclass(0, 1, False, 2, '', 3).compact().end(), [1, 2, 3],
         )
 
     def test_without(self):
         self.assertEqual(
-            self.qclass(1, 2, 1, 0, 3, 1, 4).without(0, 1).end(),
-            [2, 3, 4],
+            self.qclass(1, 2, 1, 0, 3, 1, 4).without(0, 1).end(), [2, 3, 4],
         )
 
 __all__ = sorted(name for name, obj in port.items(locals()) if not any([

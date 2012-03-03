@@ -99,9 +99,9 @@ class _EventMixin(ResetLocalMixin):
     class Meta:
         ## event names ########################################################
         # 1. before event
-        BEFORE = 'before',
+        BEFORE = 'before'
         # 2. work event
-        WORK = 'work',
+        WORK = 'work'
         # 3. change event
         CHANGE = 'change'
         # 4. any event
@@ -111,7 +111,7 @@ class _EventMixin(ResetLocalMixin):
         # 6. problem event
         PROBLEM = 'problem'
         # 7. event that runs irrespective
-        FINALLY = 'finally'
+        FINALLY = 'anyway'
         ## events #############################################################
         EVENTS = frozenstuf({
             # 1. before event

@@ -79,8 +79,7 @@ class ADelayQMixin(object):
             [1, 2],
         )
         self.assertEqual(
-            self.qclass([5, 1, 7], [3, 2, 1])
-            .delay_invoke('sort', 0.1).end(),
+            self.qclass([5, 1, 7], [3, 2, 1]).delay_invoke('sort', 0.1).end(),
             [[1, 5, 7], [1, 2, 3]],
         )
 
