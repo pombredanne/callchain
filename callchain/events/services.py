@@ -46,9 +46,10 @@ class EProblem(EEvent):
     '''problem event key'''
 
 
-class EFinally(EEvent):
+class EAnyway(EEvent):
 
     '''run anyway event key'''
+
 
 __all__ = sorted(name for name, obj in items(locals()) if not any([
     name.startswith('_'), ismodule(obj),

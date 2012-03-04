@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 '''callchain auto-balancing call chain tests'''
 
+
 try:
     import unittest2 as unittest
 except ImportError:
@@ -19,7 +20,7 @@ class TestAutoQ(
 ):
 
     def setUp(self):
-        from callchain.active.auto.chains.chain import callchain
+        from callchain.chains.active.auto.chain import callchain
         self.qclass = callchain()
 
 

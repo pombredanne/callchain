@@ -1,34 +1,37 @@
 # -*- coding: utf-8 -*-
 '''event chain mixins'''
 
-from itertools import chain, starmap
+from itertools import chain
 
-from appspace import Registry
-from stuf.utils import exhaust
-from twoq.support import map, items
-from octopus import Tentacle, Octopus
-from stuf import orderedstuf, frozenstuf
+from stuf import orderedstuf
+from appspace.keys import imap
 from octopus.resets import ResetLocalMixin
-
-from callchain.events.services import (
-    EEvent, EBefore, EWork, EChange, EAfter, EProblem, EFinally, EAny)
+from octopus import Tentacle, Octopus, inside as _inside
 
 __all__ = ('EChainMixin', 'ELinkMixin')
+
+
+class inside(_inside):
+
+    '''internal eventspace configuration'''
+
+    def __init__(self, pattern, events, req=None, default=None, *args, **kw):
+        super(inside, self).__init__(pattern, req, default, *args, **kw)
+        self.events = events
+
+    def __call__(self, that):
+        that._E = self.events.build()
+        return self._call(that)
 
 
 class _EventMixin(ResetLocalMixin):
 
     '''base event chain mixin'''
 
-    def __init__(self):
+    def __init__(self, events):
         super(_EventMixin, self).__init__()
         # local event registry
-        self.E = Registry('events', EEvent)
-        # populate system events
-        ez_register = self.E.ez_register
-        exhaust(starmap(
-            lambda x, y: ez_register(EEvent, x, y), items(self.L.EVENTS),
-        ))
+        self.E = events.build()
 
     ###########################################################################
     ## event listener management ##############################################
@@ -51,7 +54,7 @@ class _EventMixin(ResetLocalMixin):
 
         @param event: event label
         '''
-        self.E.ez_unsubscribe(EEvent, event)
+        self.E.unset(event)
         return self
 
     ###########################################################################
@@ -61,22 +64,29 @@ class _EventMixin(ResetLocalMixin):
     def _events(self, *events):
         '''get callables bound to `*events`'''
         getit = self._getevent
-        return chain(*(i for i in map(getit, events)))
+        return chain(*tuple(imap(getit, events)))
 
     def commit(self):
         '''run event chain'''
         try:
-            L = self.L
-            self.trigger(L.BEFORE)
-            self.trigger(L.WORK)
+            # 1. before event
+            self.trigger('before')
+            # 2. work event
+            self.trigger('work')
+            # everything else
             super(_EventMixin, self).commit()
-            self.trigger(L.CHANGE)
-            self.trigger(L.ANY)
-            self.trigger(L.AFTER)
+            # 3. change event
+            self.fire('change')
+            # 4. any event
+            self.fire('any')
+            # 5. after event
+            self.fire('after')
         except:
-            self.trigger(L.PROBLEM)
+            # 6. problem event
+            self.fire('problem')
         finally:
-            self.trigger(L.FINALLY)
+            # 7. event that runs irrespective
+            self.fire('anyway')
         return self
 
     ###########################################################################
@@ -92,76 +102,10 @@ class _EventMixin(ResetLocalMixin):
         _eventq = self._eventq
         return orderedstuf((e, _eventq(e).queue) for e in events)
 
-    ###########################################################################
-    ## events #################################################################
-    ###########################################################################
-
-    class Meta:
-        ## event names ########################################################
-        # 1. before event
-        BEFORE = 'before'
-        # 2. work event
-        WORK = 'work'
-        # 3. change event
-        CHANGE = 'change'
-        # 4. any event
-        ANY = 'any'
-        # 5. after event
-        AFTER = 'after'
-        # 6. problem event
-        PROBLEM = 'problem'
-        # 7. event that runs irrespective
-        FINALLY = 'anyway'
-        ## events #############################################################
-        EVENTS = frozenstuf({
-            # 1. before event
-            BEFORE: EBefore,
-            # 2. work event
-            WORK: EWork,
-            # 3. change event
-            CHANGE: EChange,
-            # 4. any event
-            ANY: EAny,
-            # 5. after event
-            AFTER: EAfter,
-            # 6. problem event
-            PROBLEM: EProblem,
-            # 7. event that runs irrespective
-            FINALLY: EFinally,
-        })
-
-
-
-class EChainMixin(_EventMixin, Octopus):
-
-    '''base event chain mixin'''
-
-    def _getevent(self, event):
-        '''fetch callables bound to event'''
-        return self.E.subscriptions(EEvent, self._eget(event))
-
-    def event(self, event):
-        '''
-        create or fetch event
-
-        @param event: event label
-        '''
-        self.E.key(EEvent, event)
-        return self
-
-    def unevent(self, event):
-        '''
-        drop event
-
-        @param event: event label
-        '''
-        self.E.unkey(EEvent, event)
-        return self
-    
 
 class ELinkMixin(_EventMixin, Tentacle):
 
-    '''base linked event chain mixin'''
+    '''linked event chain mixin'''
 
     def __init__(self, root):
         '''
@@ -175,7 +119,74 @@ class ELinkMixin(_EventMixin, Tentacle):
         # event getter
         self._eget = self.root.event
 
+    def _eventq(self, event):
+        '''
+        fetch chain tied to `event`
+
+        @param event: event label
+        '''
+        # fetch event from root call chain
+        event = self._eget(event)
+        # fetch linked call chain bound to event
+        queue = self.E.get(event)
+        if queue is None:
+            # create liked call chain if nonexistent
+            queue = self._chainlink(self)
+            self.E.set(event, queue)
+        return queue
+
     def _getevent(self, event):
-        '''fetch callables bound to event'''
+        '''
+        fetch callables bound to event
+
+        @param event: event label
+        '''
         e = self._eget(event)
-        return chain(self.E.subscriptions(EEvent, e), self._regetit(e))
+        return chain(self.E.events(e), self._regetit(e))
+
+
+class EChainMixin(_EventMixin, Octopus):
+
+    '''event chain mixin'''
+
+    def _eventq(self, event):
+        '''
+        fetch call chain tied to `event`
+
+        @param event: event label
+        '''
+        # fetch event
+        event = self.event(event)
+        # fetch linked call chain bound to event
+        queue = self.E.get(event)
+        if queue is None:
+            # create linked call chain if nonexistent
+            queue = self._chainlink(self)
+            self.E.set(event, queue)
+        return queue
+
+    def _getevent(self, event):
+        '''
+        fetch callables bound to event
+
+        @param event: event label
+        '''
+        return self.E.events(self._eget(event))
+
+    def event(self, event):
+        '''
+        create or fetch event
+
+        @param event: event label
+        '''
+        self.E.event(event)
+        return self
+
+    def unevent(self, event):
+        '''
+        drop event
+
+        @param event: event label
+        '''
+        self.E.unevent(event)
+        return self
