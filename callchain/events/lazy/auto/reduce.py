@@ -1,30 +1,30 @@
 # -*- coding: utf-8 -*-
-'''auto-balancing reducing linked event chainss'''
+'''auto-balancing reducing linked events'''
 
 from appspace.keys import appifies
-from twoq.active.mixins import AutoQMixin
+from twoq.lazy.mixins import AutoQMixin
 from twoq.mixins.reducing import MathMixin, TruthMixin, ReduceMixin
 
 from callchain.chains.services.reduce import KMath, KReduce, KTruth
 
-from callchain.events.active.mixins import EventLinkMixin
+from callchain.events.lazy.mixins import EventLinkMixin
 
-__all__ = ('mathevent', 'truthevent', 'reduceevent')
+__all__ = ('mathchain', 'truthchain', 'reducechain')
 
 
 @appifies(KMath)
 class mathevent(EventLinkMixin, AutoQMixin, MathMixin):
 
-    '''auto-balancing mathing linked event event'''
+    '''auto-balancing mathing linked event'''
 
 
 @appifies(KReduce)
 class reduceevent(EventLinkMixin, AutoQMixin, ReduceMixin):
 
-    '''auto-balancing reducing linked event event'''
+    '''auto-balancing reducing linked event'''
 
 
 @appifies(KTruth)
 class truthevent(EventLinkMixin, AutoQMixin, TruthMixin):
 
-    '''auto-balancing truthing linked event event'''
+    '''auto-balancing truthing linked event'''

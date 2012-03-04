@@ -1,61 +1,61 @@
 # -*- coding: utf-8 -*-
-'''active auto-balancing event chain appconf'''
+'''lazy man-balancing call chain appconf'''
 
 from octopus import Pathways, Nameways
 
-__all__ = ['event']
+__all__ = ['chain']
 
 
-class event(Pathways):
+class chain(Pathways):
 
     class filter(Nameways):
         key = 'callchain.chains.services.filter.KFilter'
-        filter = 'callchain.events.active.auto.filter.filterevent'
+        filter = 'callchain.chains.lazy.man.filter.filterchain'
 
     class collect(Nameways):
         key = 'callchain.chains.services.filter.KCollect'
-        collect = 'callchain.events.active.auto.filter.collectevent'
+        collect = 'callchain.chains.lazy.man.filter.collectchain'
 
     class set(Nameways):
         key = 'callchain.chains.services.filter.KSet'
-        set = 'callchain.events.active.auto.filter.setevent'
+        set = 'callchain.chains.lazy.man.filter.setchain'
 
     class slice(Nameways):
         key = 'callchain.chains.services.filter.KSlice'
-        slice = 'callchain.events.active.auto.filter.sliceevent'
+        slice = 'callchain.chains.lazy.man.filter.slicechain'
 
     class map(Nameways):
         key = 'callchain.chains.services.map.KMap'
-        map = 'callchain.events.active.auto.map.mapevent'
+        map = 'callchain.chains.lazy.man.map.mapchain'
 
     class delay(Nameways):
         key = 'callchain.chains.services.map.KDelay'
-        delay = 'callchain.events.active.auto.map.delayevent'
+        delay = 'callchain.chains.lazy.man.map.delaychain'
 
     class copy(Nameways):
         key = 'callchain.chains.services.map.KCopy'
-        copy = 'callchain.events.active.auto.map.copyevent'
+        copy = 'callchain.chains.lazy.man.map.copychain'
 
     class repeat(Nameways):
         key = 'callchain.chains.services.map.KRepeat'
-        repeat = 'callchain.events.active.auto.map.repeatevent'
+        repeat = 'callchain.chains.lazy.man.map.repeatchain'
 
     class order(Nameways):
         key = 'callchain.chains.services.order.KOrder'
-        order = 'callchain.events.active.auto.order.orderevent'
+        order = 'callchain.chains.lazy.man.order.orderchain'
 
     class random(Nameways):
         key = 'callchain.chains.services.order.KRandom'
-        random = 'callchain.events.active.auto.order.randomevent'
+        random = 'callchain.chains.lazy.man.order.randomchain'
 
     class reduce(Nameways):
         key = 'callchain.chains.services.reduce.KReduce'
-        reduce = 'callchain.events.active.auto.reduce.reduceevent'
+        reduce = 'callchain.chains.lazy.man.reduce.reducechain'
 
     class math(Nameways):
         key = 'callchain.chains.services.reduce.KMath'
-        math = 'callchain.events.active.auto.reduce.mathevent'
+        math = 'callchain.chains.lazy.man.reduce.mathchain'
 
     class truth(Nameways):
         key = 'callchain.chains.services.reduce.KTruth'
-        truth = 'callchain.events.active.auto.reduce.truthevent'
+        truth = 'callchain.chains.lazy.man.reduce.truthchain'

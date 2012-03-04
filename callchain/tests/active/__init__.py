@@ -1,2 +1,2 @@
 # -*- coding: utf-8 -*-
-'''active queue tests'''
+'''active callchain tests'''
