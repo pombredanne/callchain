@@ -5,7 +5,7 @@
 
 from octopus.keys import AOctopus, ATentacle
 
-from callchain.chains.services import KQueue
+from callchain.chains.services.queue import KQueue
 
 __all__ = ('KChain', 'KCallChain', 'KChainLink')
 

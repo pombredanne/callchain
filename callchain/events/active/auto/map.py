@@ -5,7 +5,7 @@ from appspace.keys import appifies
 from twoq.active.mixins import AutoQMixin
 from twoq.mixins.mapping import DelayMixin, CopyMixin, RepeatMixin, MapMixin
 
-from callchain.services.map import KDelay, KCopy, KRepeat, KMap
+from callchain.chains.services.map import KDelay, KCopy, KRepeat, KMap
 
 from callchain.events.active.mixins import EventLinkMixin
 

@@ -9,7 +9,7 @@ from callchain.events.mixins import inside
 from callchain.events.keys import KEventLink, KEventChain
 from callchain.events.active.mixins import EventChainMixin, EventLinkMixin
 
-from callchain.events.active.man.apps import manevent
+from callchain.events.active.man.apps import event
 
 __all__ = ['eventlink', 'eventchain']
 
@@ -21,7 +21,7 @@ class eventlink(EventLinkMixin, ManQMixin):
 
 
 @appifies(KEventChain)
-@inside(manevent, events)
+@inside(event, events)
 class eventchain(EventChainMixin, ManResultMixin):
 
     '''manually balanced event chain'''

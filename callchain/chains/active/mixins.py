@@ -24,17 +24,17 @@ class _ChainMixin(ResetLocalMixin):
     def _setup_chain(self):
         '''setup call chain'''
         # call chain
-        self._chain = deque()
+        self._chain = _chain = deque()
         # call chain right extend
-        self._cxtend = self._chain.extend
+        self._cxtend = _chain.extend
         # call chain right append
-        self._cappend = self._chain.append
+        self._cappend = _chain.append
         # call chain left append
-        self._cappendleft = self._chain.appendleft
+        self._cappendleft = _chain.appendleft
         # call chain left pop
-        self._cpopleft = self._chain.popleft
+        self._cpopleft = _chain.popleft
         # call chain clear
-        self._cclear = self._chain.clear
+        self._cclear = _chain.clear
 
     def chain(self, call, key=False, *args, **kw):
         '''
@@ -51,10 +51,10 @@ class _ChainMixin(ResetLocalMixin):
 
     def commit(self):
         '''run call chain'''
-        # consume call chain till exhausted
-        calls = iterexcept(self._chain.popleft, IndexError)
-        # put call chain results in outgoing things
-        self.outappend(call() for call in calls)
+        # consume call chain until exhausted and put results in outgoing things
+        self.outappend(
+            call() for call in iterexcept(self._chain.popleft, IndexError)
+        )
         return self
 
     _ocommit = commit
@@ -71,17 +71,17 @@ class ChainLinkMixin(_ChainMixin, CLinkMixin):
         @param root: root call chain
         '''
         super(ChainLinkMixin, self).__init__(root)
-        # setup call chain
+        # initialize call chain
         self._setup_chain()
-        # sync with root
+        # sync with root incoming things
         self._inextend(root.incoming)
-        # sync outgoing
+        # sync with root outgoing things
         self._outextend(root.outgoing)
-        # sync callable
+        # sync with root callable
         self._call = root._call
-        # sync postitional arguments
+        # sync with root postitional arguments
         self._args = root._args
-        # sync keyword arguments
+        # sync with root keyword arguments
         self._kw = root._kw
 
 
@@ -102,17 +102,17 @@ class CallChainMixin(_ChainMixin, CChainMixin):
         self._setup_chain()
 
     def back(self, link):
-        # sync incoming
+        # sync with link incoming things
         self._inclear()
         self._inextend(link.incoming)
-        # sync outgoing
+        # sync with link outgoing things
         self._outclear()
         self._outextend(link.outgoing)
-        # sync callable
+        # sync with link callable
         self._call = link._call
-        # sync postitional arguments
+        # sync with link postitional arguments
         self._args = link._args
-        # sync keyword arguments
+        # sync with link keyword arguments
         self._kw = link._kw
         return self
 

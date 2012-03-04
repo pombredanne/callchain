@@ -5,7 +5,7 @@ from appspace.keys import appifies
 from twoq.active.mixins import AutoQMixin
 from twoq.mixins.ordering import RandomMixin, OrderMixin
 
-from callchain.services.order import KRandom, KOrder
+from callchain.chains.services.order import KRandom, KOrder
 
 from callchain.events.active.mixins import EventLinkMixin
 

@@ -15,9 +15,9 @@ class inside(_inside):
 
     '''internal eventspace configuration'''
 
-    def __init__(self, pattern, events, req=None, default=None, *args, **kw):
-        super(inside, self).__init__(pattern, req, default, *args, **kw)
-        self.events = events
+    def __init__(self, ptrnz=None, evntz=None, req=None, dflt=None, *ag, **kw):
+        super(inside, self).__init__(ptrnz, req, dflt, *ag, **kw)
+        self.events = evntz
 
     def __call__(self, that):
         that._E = self.events.build()

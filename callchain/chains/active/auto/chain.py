@@ -7,7 +7,7 @@ from twoq.active.mixins import AutoQMixin, AutoResultMixin
 
 from callchain.chains.keys import KChainLink, KCallChain
 
-from callchain.chains.active.auto.apps import autochain
+from callchain.chains.active.auto.apps import chain
 from callchain.chains.active.mixins import ChainLinkMixin, CallChainMixin
 
 __all__ = ('callchain', 'chainlink')
@@ -20,7 +20,7 @@ class chainlink(ChainLinkMixin, AutoQMixin):
 
 
 @appifies(KCallChain)
-@inside(autochain)
+@inside(chain)
 class callchain(CallChainMixin, AutoResultMixin):
 
     '''auto-balancing call chain'''

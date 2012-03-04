@@ -24,7 +24,7 @@ class KRandom(AppspaceKey):
         '''randomly order incoming things'''
 
 
-class KOrder(KRandom):
+class KOrder(AppspaceKey):
 
     '''ordering key'''
     

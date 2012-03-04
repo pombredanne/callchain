@@ -7,18 +7,18 @@ __all__ = ['events']
 
 
 class events(Patterns):
-    key = 'callchain.events.apps.EEvent'
+    key = 'callchain.events.services.EEvent'
     # 1. before event
-    before = 'callchain.events.apps.EBefore'
+    before = 'callchain.events.services.EBefore'
     # 2. work event
-    work = 'callchain.events.apps.EWork'
+    work = 'callchain.events.services.EWork'
     # 3. change event
-    change = 'callchain.events.apps.EChange'
+    change = 'callchain.events.services.EChange'
     # 4. any event
-    any = 'callchain.events.apps.EAny'
+    any = 'callchain.events.services.EAny'
     # 5. after event
-    after = 'callchain.events.apps.EAfter'
+    after = 'callchain.events.services.EAfter'
     # 6. problem event
-    problem = 'callchain.events.apps.EProblem'
+    problem = 'callchain.events.services.EProblem'
     # 7. event that runs irrespective
-    anyway = 'callchain.events.apps.EAnyway'
+    anyway = 'callchain.events.services.EAnyway'

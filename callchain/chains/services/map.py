@@ -79,7 +79,7 @@ class KRepeat(AppspaceKey):
         '''
 
 
-class KMap(KDelay, KCopy, KRepeat):
+class KMap(AppspaceKey):
 
     '''mapping key'''
 

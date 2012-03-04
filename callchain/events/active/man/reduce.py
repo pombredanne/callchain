@@ -5,7 +5,7 @@ from appspace.keys import appifies
 from twoq.active.mixins import ManQMixin
 from twoq.mixins.reducing import MathMixin, TruthMixin, ReduceMixin
 
-from callchain.services.reduce import KMath, KReduce, KTruth
+from callchain.chains.services.reduce import KMath, KReduce, KTruth
 
 from callchain.events.active.mixins import EventLinkMixin
 

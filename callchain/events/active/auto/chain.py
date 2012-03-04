@@ -9,7 +9,7 @@ from callchain.events.mixins import inside
 from callchain.events.keys import KEventLink, KEventChain
 from callchain.events.active.mixins import EventLinkMixin, EventChainMixin
 
-from callchain.events.active.auto.apps import autoevent
+from callchain.events.active.auto.apps import event
 
 __all__ = ['eventlink', 'eventchain']
 
@@ -21,7 +21,7 @@ class eventlink(EventLinkMixin, AutoQMixin):
 
 
 @appifies(KEventChain)
-@inside(autoevent, events)
+@inside(event, events)
 class eventchain(EventChainMixin, AutoResultMixin):
 
     '''auto-balancing event chain'''

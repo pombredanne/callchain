@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 '''call chain mixins'''
 
-from stuf.six import strings
+from twoq import port
 from appspace.keys import NoAppError
 from octopus import Tentacle, Octopus
 from octopus.keys import NoServiceError
@@ -10,31 +10,29 @@ from octopus.resets import ResetLocalMixin
 __all__ = ('CChainMixin', 'CLinkMixin')
 
 
-class _CChainMixin(ResetLocalMixin):
+class _ChainMixin(ResetLocalMixin):
 
-    '''chain mixin'''
+    '''linked call chain mixin'''
 
-    def tap(self, call, branch=False):
+    def tap(self, call, key=False):
         '''
         add call
 
         @param call: callable or appspace label
-        @param key: linked call chain chain key (default: False)
+        @param key: linked call chain key (default: False)
         '''
         # reset postitional arguments
         self._args = ()
         # reset keyword arguments
         self._kw = {}
         # set current application
-        self._app = self._M.get(
-            call, branch
-        ) if isinstance(call, strings) else call
+        self._call = self._M.get(call, key) if port.isstring(call) else call
         return self
 
     _cctap = tap
 
 
-class CLinkMixin(_CChainMixin, Tentacle):
+class CLinkMixin(_ChainMixin, Tentacle):
 
     '''linked call chain mixin'''
 
@@ -61,7 +59,7 @@ class CLinkMixin(_CChainMixin, Tentacle):
     _oback = back
 
 
-class CChainMixin(_CChainMixin, Octopus):
+class CChainMixin(_ChainMixin, Octopus):
 
     '''call chain mixin'''
 

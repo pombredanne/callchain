@@ -5,9 +5,8 @@ from appspace.keys import appifies
 from twoq.active.mixins import ManQMixin
 from twoq.mixins.reducing import MathMixin, TruthMixin, ReduceMixin
 
-from callchain.services.reduce import KMath, KReduce, KTruth
-
 from callchain.chains.active.mixins import ChainLinkMixin
+from callchain.chains.services.reduce import KMath, KReduce, KTruth
 
 __all__ = ('mathchain', 'truthchain', 'reducechain')
 

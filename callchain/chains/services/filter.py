@@ -88,7 +88,7 @@ class KSlice(AppspaceKey):
         '''
 
 
-class KFilter(KCollect, KSet, KSlice):
+class KFilter(AppspaceKey):
 
     '''filter key'''
 

@@ -68,7 +68,7 @@ class KTruth(AppspaceKey):
         '''how many times call is `True` for incoming things'''
 
 
-class KReduce(KMath, KTruth):
+class KReduce(AppspaceKey):
 
     '''reducing mixin'''
 

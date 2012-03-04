@@ -6,7 +6,7 @@ from twoq.active.mixins import ManQMixin
 from twoq.mixins.filtering import (
     FilterMixin, CollectMixin, SetMixin, SliceMixin)
 
-from callchain.services.filter import KCollect, KSet, KSlice, KFilter
+from callchain.chains.services.filter import KCollect, KSet, KSlice, KFilter
 
 from callchain.events.active.mixins import EventLinkMixin
 

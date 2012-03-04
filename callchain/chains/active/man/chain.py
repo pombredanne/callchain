@@ -5,7 +5,7 @@ from octopus import inside
 from appspace.keys import appifies
 from twoq.active.mixins import ManQMixin, ManResultMixin
 
-from callchain.chains.active.man.apps import manchain
+from callchain.chains.active.man.apps import chain
 from callchain.chains.keys import KChainLink, KCallChain
 from callchain.chains.active.mixins import ChainLinkMixin, CallChainMixin
 
@@ -19,7 +19,7 @@ class chainlink(ChainLinkMixin, ManQMixin):
 
 
 @appifies(KCallChain)
-@inside(manchain)
+@inside(chain)
 class callchain(CallChainMixin, ManResultMixin):
 
     '''manually balanced call chain'''
