@@ -1,25 +1,29 @@
 # -*- coding: utf-8 -*-
-'''active call chains'''
+'''active call chain mixins'''
 
-from threading import local
 from collections import deque
 
 from stuf.utils import iterexcept
+from octopus.resets import ResetLocalMixin
 
-from callchain.chains.mixins import LinkMixin, EventChainMixin
+from callchain.chains.mixins import CLinkMixin, CChainMixin
 
 
-class _AChainMixin(local):
+class _ChainMixin(ResetLocalMixin):
 
-    '''base call chain'''
+    '''call chain mixin'''
 
     def __call__(self, *args):
+        '''load args into incoming thing'''
+        # clear call chain and queues
         self.clear()
+        # extend incoming things
         self._inextend(args)
         return self
 
     def _setup_chain(self):
         '''setup call chain'''
+        # call chain
         self._chain = deque()
         # call chain right extend
         self._cxtend = self._chain.extend
@@ -32,30 +36,40 @@ class _AChainMixin(local):
         # call chain clear
         self._cclear = self._chain.clear
 
-    def commit(self):
-        '''invoke call chain'''
-        # consume call chain until exhausted & put results in outgoing things
-        calls = iterexcept(self._chain.popleft, IndexError)
-        self.outappend(call() for call in calls)
-        return self
-
     def chain(self, call, key=False, *args, **kw):
         '''
-        add callable or appspaced application to call chain, partializing it
-        with any passed parameters
+        add callable or appspaced callable to call chain, partializing it with
+        any passed arguments
 
         @param call: callable or application label
-        @param key: key label (default: False)
+        @param key: callable key label (default: False)
         '''
         self._cappend(self.M.partial(call, key, *args, **kw))
         return self
 
+    _ochain = chain
 
-class ChainLinkMixin(_AChainMixin, LinkMixin):
+    def commit(self):
+        '''run call chain'''
+        # consume call chain till exhausted
+        calls = iterexcept(self._chain.popleft, IndexError)
+        # put call chain results in outgoing things
+        self.outappend(call() for call in calls)
+        return self
+
+    _ocommit = commit
+
+
+class ChainLinkMixin(_ChainMixin, CLinkMixin):
 
     '''linked call chain mixin'''
 
     def __init__(self, root):
+        '''
+        init
+
+        @param root: root call chain
+        '''
         super(ChainLinkMixin, self).__init__(root)
         # setup call chain
         self._setup_chain()
@@ -65,13 +79,13 @@ class ChainLinkMixin(_AChainMixin, LinkMixin):
         self._outextend(root.outgoing)
         # sync callable
         self._call = root._call
-        # sync callable postitional arguments
+        # sync postitional arguments
         self._args = root._args
-        # sync callable keyword argumentss
+        # sync keyword arguments
         self._kw = root._kw
 
 
-class CallChainMixin(_AChainMixin, EventChainMixin):
+class CallChainMixin(_ChainMixin, CChainMixin):
 
     '''call chain mixin'''
 
@@ -96,8 +110,10 @@ class CallChainMixin(_AChainMixin, EventChainMixin):
         self._outextend(link.outgoing)
         # sync callable
         self._call = link._call
-        # sync callable postitional arguments
+        # sync postitional arguments
         self._args = link._args
-        # sync callable keyword arguments
+        # sync keyword arguments
         self._kw = link._kw
         return self
+
+    _oback = back
