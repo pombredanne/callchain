@@ -7,6 +7,7 @@ from stuf import orderedstuf
 from appspace.keys import imap
 from octopus.resets import ResetLocalMixin
 from octopus import Tentacle, Octopus, inside as _inside
+from callchain.events.registry import EventRegistry
 
 __all__ = ('EChainMixin', 'ELinkMixin')
 
@@ -27,11 +28,6 @@ class inside(_inside):
 class _EventMixin(ResetLocalMixin):
 
     '''base event chain mixin'''
-
-    def __init__(self, events):
-        super(_EventMixin, self).__init__()
-        # local event registry
-        self.E = events.build()
 
     ###########################################################################
     ## event listener management ##############################################
@@ -118,6 +114,8 @@ class ELinkMixin(_EventMixin, Tentacle):
         self._regetit = self.root._getevent
         # event getter
         self._eget = self.root.event
+        # local event registry
+        self.E = EventRegistry('events') if root.events is not None else None
 
     def _eventq(self, event):
         '''
@@ -148,6 +146,24 @@ class ELinkMixin(_EventMixin, Tentacle):
 class EChainMixin(_EventMixin, Octopus):
 
     '''event chain mixin'''
+
+    def __init__(
+        self, patterns=None, events=None, required=None, defaults=None,
+        *args, **kw
+    ):
+        '''
+        init
+
+        @param patterns: pattern config or appspace label (default: None)
+        @param events: event configuration (default: None)
+        @param required: required settings (default: None)
+        @param defaults: default settings (default: None)
+        '''
+        super(EChainMixin, self).__init__(
+            patterns, required, defaults, *args, **kw
+        )
+        # local event registry
+        self.E = events.build() if events is not None else None
 
     def _eventq(self, event):
         '''

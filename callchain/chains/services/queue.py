@@ -50,21 +50,6 @@ class KQueue(AppspaceKey):
         @param thing: some thing
         '''
 
-    def end():
-        '''return outgoing things and clear out all things'''
-
-    def results():
-        '''yield outgoing things and clear outgoing things'''
-
-    def value():
-        '''return outgoing things and clear outgoing things'''
-
-    def first():
-        '''first incoming thing'''
-
-    def last():
-        '''last incoming thing'''
-
     ###########################################################################
     ## clear queues ###########################################################
     ###########################################################################
@@ -147,3 +132,21 @@ class KQueue(AppspaceKey):
         '''
         shift incoming things to outgoing things, clearing outgoing things
         '''
+
+
+class KResults(KQueue):
+
+    def end():
+        '''return outgoing things and clear out all things'''
+
+    def results():
+        '''yield outgoing things and clear outgoing things'''
+
+    def value():
+        '''return outgoing things and clear outgoing things'''
+
+    def first():
+        '''first incoming thing'''
+
+    def last():
+        '''last incoming thing'''

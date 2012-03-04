@@ -19,7 +19,7 @@ class TestManQ(
 ):
 
     def setUp(self):
-        from callchain.chains.active.auto.chain import callchain
+        from callchain.chains.active.man.chain import callchain
         self.qclass = callchain()
 
 if __name__ == '__main__':

@@ -3,14 +3,15 @@
 # pylint: disable-msg=e0211,e0213
 '''call chain keys'''
 
+from appspace.keys import AppspaceKey
 from octopus.keys import AOctopus, ATentacle
 
-from callchain.chains.services.queue import KQueue
+from callchain.chains.services.queue import KQueue, KResults
 
 __all__ = ('KChain', 'KCallChain', 'KChainLink')
 
 
-class KChain(KQueue):
+class KChain(AppspaceKey):
     
     '''chains key'''
 
@@ -35,7 +36,7 @@ class KChain(KQueue):
         '''
 
 
-class KCallChain(AOctopus, KChain):
+class KCallChain(AOctopus, KChain, KQueue):
 
     '''call chain key'''
     
@@ -51,7 +52,7 @@ class KCallChain(AOctopus, KChain):
         '''return to root call chain'''
 
 
-class KChainLink(ATentacle, KChain):
+class KChainLink(ATentacle, KChain, KResults):
 
     '''linked call chain key'''
     
