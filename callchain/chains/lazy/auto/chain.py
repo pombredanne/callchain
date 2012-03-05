@@ -6,21 +6,22 @@ from appspace.keys import appifies
 from twoq.lazy.mixins import AutoQMixin, AutoResultMixin
 
 from callchain.chains.keys import KChainLink, KCallChain
+from callchain.chains.services.queue import KQueue, KResults
 
 from callchain.chains.lazy.auto.apps import chain
-from callchain.chains.lazy.mixins import ChainLinkMixin, CallChainMixin
+from callchain.chains.lazy.mixins import ChainLinkMixin, ChainMixin
 
-__all__ = ('callchain', 'chainlink')
+__all__ = ('chainq', 'linkq')
 
 
-@appifies(KChainLink)
-class chainlink(ChainLinkMixin, AutoQMixin):
+@appifies(KChainLink, KQueue)
+class linkq(ChainLinkMixin, AutoQMixin):
 
     '''auto-balancing linked call chain'''
 
 
-@appifies(KCallChain)
+@appifies(KCallChain, KResults)
 @inside(chain)
-class callchain(CallChainMixin, AutoResultMixin):
+class chainq(ChainMixin, AutoResultMixin):
 
     '''auto-balancing call chain'''

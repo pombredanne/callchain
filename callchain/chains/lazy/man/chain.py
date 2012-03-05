@@ -7,19 +7,20 @@ from twoq.lazy.mixins import ManQMixin, ManResultMixin
 
 from callchain.chains.lazy.man.apps import chain
 from callchain.chains.keys import KChainLink, KCallChain
-from callchain.chains.lazy.mixins import ChainLinkMixin, CallChainMixin
+from callchain.chains.services.queue import KQueue, KResults
+from callchain.chains.lazy.mixins import ChainLinkMixin, ChainMixin
 
-__all__ = ('callchain', 'chainlink')
+__all__ = ('chainq', 'linkq')
 
 
-@appifies(KChainLink)
-class chainlink(ChainLinkMixin, ManQMixin):
+@appifies(KChainLink, KQueue)
+class linkq(ChainLinkMixin, ManQMixin):
 
     '''manually balanced linked call chain'''
 
 
-@appifies(KCallChain)
+@appifies(KCallChain, KResults)
 @inside(chain)
-class callchain(CallChainMixin, ManResultMixin):
+class chainq(ChainMixin, ManResultMixin):
 
     '''manually balanced call chain'''

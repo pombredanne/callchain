@@ -6,8 +6,6 @@
 from appspace.keys import AppspaceKey
 from octopus.keys import AOctopus, ATentacle
 
-from callchain.chains.services.queue import KQueue, KResults
-
 __all__ = ('KChain', 'KCallChain', 'KChainLink')
 
 
@@ -36,7 +34,7 @@ class KChain(AppspaceKey):
         '''
 
 
-class KCallChain(AOctopus, KChain, KQueue):
+class KCallChain(AOctopus, KChain):
 
     '''call chain key'''
     
@@ -52,7 +50,7 @@ class KCallChain(AOctopus, KChain, KQueue):
         '''return to root call chain'''
 
 
-class KChainLink(ATentacle, KChain, KResults):
+class KChainLink(ATentacle, KChain):
 
     '''linked call chain key'''
     
