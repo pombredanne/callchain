@@ -27,7 +27,7 @@ class inside(InsideMixin):
 
     def __call__(self, that):
         that._E = self.events.build()
-        return self._call(that)
+        return self._ocall(that)
 
 
 class EBaseMixin(BaseMixin):
