@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''callchain manually balanced call chain tests'''
+'''chainq manually balanced call chain tests'''
 
 try:
     import unittest2 as unittest
@@ -19,8 +19,8 @@ class TestManQ(
 ):
 
     def setUp(self):
-        from callchain.chains.active.man.chain import callchain
-        self.qclass = callchain()
+        from callchain.chains.active.man.chain import chainq
+        self.qclass = chainq()
 
 if __name__ == '__main__':
     unittest.main()

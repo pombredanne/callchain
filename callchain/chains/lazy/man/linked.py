@@ -3,9 +3,9 @@
 
 from appspace.keys import appifies
 from twoq.lazy.mixins import ManQMixin
-from twoq.mixins.ordering import RandomMixin, OrderMixin
 from twoq.mixins.filtering import (
     FilterMixin, CollectMixin, SetMixin, SliceMixin)
+from twoq.mixins.ordering import RandomMixin, OrderMixin
 from twoq.mixins.reducing import MathMixin, TruthMixin, ReduceMixin
 from twoq.mixins.mapping import DelayMixin, CopyMixin, RepeatMixin, MapMixin
 

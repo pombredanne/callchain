@@ -7,7 +7,7 @@ from twoq.active.mixins import ManQMixin, ManResultMixin
 from callchain.events.apps import events
 from callchain.events.mixins import inside
 from callchain.events.keys import KEventLink, KEventChain
-from callchain.events.active.mixins import EventChainMixin, EventLinkMixin
+from callchain.events.active.queue import EventChainMixin, EventLinkMixin
 
 from callchain.events.active.man.apps import event
 

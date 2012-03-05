@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-'''lazy manually balanced linked event chains'''
+'''active manually balanced linked event chains'''
 
 from appspace.keys import appifies
-from twoq.lazy.mixins import ManQMixin
+from twoq.active.mixins import ManQMixin
 from twoq.mixins.ordering import RandomMixin, OrderMixin
 from twoq.mixins.filtering import (
     FilterMixin, CollectMixin, SetMixin, SliceMixin)
@@ -14,7 +14,7 @@ from callchain.chains.services.reduce import KMath, KReduce, KTruth
 from callchain.chains.services.map import KDelay, KCopy, KRepeat, KMap
 from callchain.chains.services.filter import KCollect, KSet, KSlice, KFilter
 
-from callchain.events.lazy.queue import EventLinkMixin
+from callchain.events.active.queue import EventLinkMixin
 
 __all__ = (
     'mathevent', 'truthevent', 'reduceevent', 'collectevent', 'setevent',

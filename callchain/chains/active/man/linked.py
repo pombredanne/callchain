@@ -3,14 +3,14 @@
 
 from appspace.keys import appifies
 from twoq.active.mixins import ManQMixin
-from twoq.mixins.ordering import RandomMixin, OrderMixin
 from twoq.mixins.filtering import (
     FilterMixin, CollectMixin, SetMixin, SliceMixin)
+from twoq.mixins.ordering import RandomMixin, OrderMixin
+from twoq.mixins.reducing import MathMixin, TruthMixin, ReduceMixin
 from twoq.mixins.mapping import DelayMixin, CopyMixin, RepeatMixin, MapMixin
 
 from callchain.chains.active.queue import ChainLinkMixin
 from callchain.chains.services.order import KRandom, KOrder
-from twoq.mixins.reducing import MathMixin, TruthMixin, ReduceMixin
 from callchain.chains.services.reduce import KMath, KReduce, KTruth
 from callchain.chains.services.map import KDelay, KCopy, KRepeat, KMap
 from callchain.chains.services.filter import KCollect, KSet, KSlice, KFilter
