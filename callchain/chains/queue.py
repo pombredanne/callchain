@@ -58,17 +58,6 @@ class ChainQMixin(ChainMixin, _BaseQMixin):
 
     '''call chain queue mixin'''
 
-    def __init__(self, pattern=None, required=None, defaults=None, **kw):
-        '''
-        init
-
-        @param pattern: pattern configuration or appspace label (default: None)
-        @param required: required settings (default: None)
-        @param defaults: default settings (default: None)
-        '''
-        super(ChainQMixin, self).__init__(pattern, required, defaults, **kw)
-        self._setup_chain(self.outgoing)
-
     def back(self, link):
         '''
         return from linked call chain
@@ -85,3 +74,95 @@ class ChainQMixin(ChainMixin, _BaseQMixin):
         return self
 
     _cback = back
+
+
+class ActiveLinkMixin(LinkQMixin):
+
+    '''linked call chain mixin'''
+
+    def __init__(self, root):
+        '''
+        init
+
+        @param root: root call chain
+        '''
+        super(ActiveLinkMixin, self).__init__(root)
+        # sync with root incoming things
+        self._inextend(root.incoming)
+        # sync with root outgoing things
+        self._outextend(root.outgoing)
+
+
+class ActiveChainMixin(ChainQMixin):
+
+    '''call chain mixin'''
+
+    def __call__(self, *args):
+        '''load args into incoming thing'''
+        # clear call chain and queues
+        self.clear()
+        # extend incoming things
+        self._inextend(args)
+        return self
+
+    def back(self, link):
+        '''
+        return from linked call chain
+
+        @param link: linked call chain
+        '''
+        self._cback(link)
+        # sync with link incoming things
+        self._inclear()
+        self._inextend(link.incoming)
+        # sync with link outgoing things
+        self._outclear()
+        self._outextend(link.outgoing)
+        return self
+
+    _ccback = back
+
+
+class LazyLinkMixin(LinkQMixin):
+
+    '''linked call chain mixin'''
+
+    def __init__(self, root):
+        '''
+        init
+
+        @param root: root call chain
+        '''
+        # sync with root incoming things
+        self.incoming = root.incoming
+        # sync with root outgoing things
+        self.outgoing = root.outgoing
+        super(LazyLinkMixin, self).__init__(root)
+
+
+class LazyChainMixin(ChainQMixin):
+
+    '''call chain mixin'''
+
+    def __call__(self, *args):
+        '''load args into incoming thing'''
+        # clear call chain and queues
+        self.clear()
+        # extend incoming things
+        self.incoming = iter([args[0]]) if len(args) == 1 else iter(args)
+        return self
+
+    def back(self, link):
+        '''
+        return from linked call chain
+
+        @param link: linked call chain
+        '''
+        self._cback(link)
+        # sync with link incoming things
+        self.incoming = link.incoming
+        # sync with link outgoing things
+        self.outgoing = link.outgoing
+        return self
+
+    _ccback = back

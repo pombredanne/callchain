@@ -9,7 +9,7 @@ from twoq.mixins.ordering import RandomMixin, OrderMixin
 from twoq.mixins.reducing import MathMixin, TruthMixin, ReduceMixin
 from twoq.mixins.mapping import DelayMixin, CopyMixin, RepeatMixin, MapMixin
 
-from callchain.chains.lazy.queue import ChainLinkMixin
+from callchain.chains.queue import LazyLinkMixin
 from callchain.chains.services.order import KRandom, KOrder
 from callchain.chains.services.reduce import KMath, KReduce, KTruth
 from callchain.chains.services.map import KDelay, KCopy, KRepeat, KMap
@@ -23,78 +23,78 @@ __all__ = (
 
 
 @appifies(KDelay)
-class delaychain(ChainLinkMixin, ManQMixin, DelayMixin):
+class delaychain(LazyLinkMixin, ManQMixin, DelayMixin):
 
     '''manually balanced delayed map linked chain'''
 
 
 @appifies(KCopy)
-class copychain(ChainLinkMixin, ManQMixin, CopyMixin):
+class copychain(LazyLinkMixin, ManQMixin, CopyMixin):
 
     '''manually balanced copy linked chain'''
 
 
 @appifies(KRepeat)
-class repeatchain(ChainLinkMixin, ManQMixin, RepeatMixin):
+class repeatchain(LazyLinkMixin, ManQMixin, RepeatMixin):
 
     '''manually balanced repeat linked chain'''
 
 
 @appifies(KMap)
-class mapchain(ChainLinkMixin, ManQMixin, MapMixin):
+class mapchain(LazyLinkMixin, ManQMixin, MapMixin):
 
     '''manually balanced map linked chain'''
 
 
 @appifies(KCollect)
-class collectchain(ChainLinkMixin, ManQMixin, CollectMixin):
+class collectchain(LazyLinkMixin, ManQMixin, CollectMixin):
 
     '''manually balanced collect linked chain'''
 
 
 @appifies(KSet)
-class setchain(ChainLinkMixin, ManQMixin, SetMixin):
+class setchain(LazyLinkMixin, ManQMixin, SetMixin):
 
     '''manually balanced set linked chain'''
 
 
 @appifies(KSlice)
-class slicechain(ChainLinkMixin, ManQMixin, SliceMixin):
+class slicechain(LazyLinkMixin, ManQMixin, SliceMixin):
 
     '''manually balanced slice linked chain'''
 
 
 @appifies(KFilter)
-class filterchain(ChainLinkMixin, ManQMixin, FilterMixin):
+class filterchain(LazyLinkMixin, ManQMixin, FilterMixin):
 
     '''manually balanced filter linked chain'''
 
 
 @appifies(KRandom)
-class randomchain(ChainLinkMixin, ManQMixin, RandomMixin):
+class randomchain(LazyLinkMixin, ManQMixin, RandomMixin):
 
     '''manually balanced randomizing linked chain'''
 
 
 @appifies(KOrder)
-class orderchain(ChainLinkMixin, ManQMixin, OrderMixin):
+class orderchain(LazyLinkMixin, ManQMixin, OrderMixin):
 
     '''manually balanced order linked chain'''
 
 
 @appifies(KMath)
-class mathchain(ChainLinkMixin, ManQMixin, MathMixin):
+class mathchain(LazyLinkMixin, ManQMixin, MathMixin):
 
     '''manually balanced math linked chain'''
 
 
 @appifies(KReduce)
-class reducechain(ChainLinkMixin, ManQMixin, ReduceMixin):
+class reducechain(LazyLinkMixin, ManQMixin, ReduceMixin):
 
     '''manually balanced reduce linked chain'''
 
 
 @appifies(KTruth)
-class truthchain(ChainLinkMixin, ManQMixin, TruthMixin):
+class truthchain(LazyLinkMixin, ManQMixin, TruthMixin):
 
     '''manually balanced truth linked chain'''

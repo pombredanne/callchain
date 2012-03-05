@@ -1,26 +1,26 @@
 # -*- coding: utf-8 -*-
-'''lazy manually balanced call chains'''
+'''active manually balanced call chains'''
 
 from octopus import inside
 from appspace.keys import appifies
-from twoq.lazy.mixins import ManQMixin, ManResultMixin
+from twoq.active.mixins import ManQMixin, ManResultMixin
 
-from callchain.chains.lazy.man.apps import chain
+from callchain.chains.activeman.apps import chain
 from callchain.chains.keys import KChainLink, KCallChain
 from callchain.chains.services.queue import KQueue, KResults
-from callchain.chains.lazy.queue import ChainLinkMixin, ChainMixin
+from callchain.chains.queue import ActiveLinkMixin, ActiveChainMixin
 
 __all__ = ('chainq', 'linkq')
 
 
 @appifies(KChainLink, KQueue)
-class linkq(ChainLinkMixin, ManQMixin):
+class linkq(ActiveLinkMixin, ManQMixin):
 
     '''manually balanced linked call chain'''
 
 
 @appifies(KCallChain, KResults)
 @inside(chain)
-class chainq(ChainMixin, ManResultMixin):
+class chainq(ActiveChainMixin, ManResultMixin):
 
     '''manually balanced call chain'''

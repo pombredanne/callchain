@@ -37,7 +37,8 @@ class callchain(ChainAloneMixin, ChainMixin):
         @param defaults: default settings (default: None)
         '''
         super(callchain, self).__init__(pattern, required, defaults, **kw)
-        self._setup_chain(deque())
+        self._setup_chain()
+        self.outgoing = deque()
         # outgoing things right extend
         self._outextend = self.outgoing.extend
         # outgoing things clear

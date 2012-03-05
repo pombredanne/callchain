@@ -10,52 +10,52 @@ class chain(Pathways):
 
     class filter(Nameways):
         key = 'callchain.chains.services.filter.KFilter'
-        filter = 'callchain.chains.lazy.man.linked.filterchain'
+        filter = 'callchain.chains.lazyman.linked.filterchain'
 
     class collect(Nameways):
         key = 'callchain.chains.services.filter.KCollect'
-        collect = 'callchain.chains.lazy.man.linked.collectchain'
+        collect = 'callchain.chains.lazyman.linked.collectchain'
 
     class set(Nameways):
         key = 'callchain.chains.services.filter.KSet'
-        set = 'callchain.chains.lazy.man.linked.setchain'
+        set = 'callchain.chains.lazyman.linked.setchain'
 
     class slice(Nameways):
         key = 'callchain.chains.services.filter.KSlice'
-        slice = 'callchain.chains.lazy.man.linked.slicechain'
+        slice = 'callchain.chains.lazyman.linked.slicechain'
 
     class map(Nameways):
         key = 'callchain.chains.services.map.KMap'
-        map = 'callchain.chains.lazy.man.linked.mapchain'
+        map = 'callchain.chains.lazyman.linked.mapchain'
 
     class delay(Nameways):
         key = 'callchain.chains.services.map.KDelay'
-        delay = 'callchain.chains.lazy.man.linked.delaychain'
+        delay = 'callchain.chains.lazyman.linked.delaychain'
 
     class copy(Nameways):
         key = 'callchain.chains.services.map.KCopy'
-        copy = 'callchain.chains.lazy.man.linked.copychain'
+        copy = 'callchain.chains.lazyman.linked.copychain'
 
     class repeat(Nameways):
         key = 'callchain.chains.services.map.KRepeat'
-        repeat = 'callchain.chains.lazy.man.linked.repeatchain'
+        repeat = 'callchain.chains.lazyman.linked.repeatchain'
 
     class order(Nameways):
         key = 'callchain.chains.services.order.KOrder'
-        order = 'callchain.chains.lazy.man.linked.orderchain'
+        order = 'callchain.chains.lazyman.linked.orderchain'
 
     class random(Nameways):
         key = 'callchain.chains.services.order.KRandom'
-        random = 'callchain.chains.lazy.man.linked.randomchain'
+        random = 'callchain.chains.lazyman.linked.randomchain'
 
     class reduce(Nameways):
         key = 'callchain.chains.services.reduce.KReduce'
-        reduce = 'callchain.chains.lazy.man.reduce.reducechain'
+        reduce = 'callchain.chains.lazyman.linked.reducechain'
 
     class math(Nameways):
         key = 'callchain.chains.services.reduce.KMath'
-        math = 'callchain.chains.lazy.man.linked.mathchain'
+        math = 'callchain.chains.lazyman.linked.mathchain'
 
     class truth(Nameways):
         key = 'callchain.chains.services.reduce.KTruth'
-        truth = 'callchain.chains.lazy.man.linked.truthchain'
+        truth = 'callchain.chains.lazyman.linked.truthchain'

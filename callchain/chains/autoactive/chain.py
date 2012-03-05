@@ -1,27 +1,26 @@
 # -*- coding: utf-8 -*-
-'''lazy auto-balancing call chains'''
+'''active auto-balancing call chains'''
 
 from octopus import inside
 from appspace.keys import appifies
-from twoq.lazy.mixins import AutoQMixin, AutoResultMixin
+from twoq.active.mixins import AutoQMixin, AutoResultMixin
 
+from callchain.chains.autoactive.apps import chain
 from callchain.chains.keys import KChainLink, KCallChain
 from callchain.chains.services.queue import KQueue, KResults
-
-from callchain.chains.lazy.auto.apps import chain
-from callchain.chains.lazy.queue import ChainLinkMixin, ChainMixin
+from callchain.chains.queue import ActiveLinkMixin, ActiveChainMixin
 
 __all__ = ('chainq', 'linkq')
 
 
 @appifies(KChainLink, KQueue)
-class linkq(ChainLinkMixin, AutoQMixin):
+class linkq(ActiveLinkMixin, AutoQMixin):
 
     '''auto-balancing linked call chain'''
 
 
 @appifies(KCallChain, KResults)
 @inside(chain)
-class chainq(ChainMixin, AutoResultMixin):
+class chainq(ActiveChainMixin, AutoResultMixin):
 
     '''auto-balancing call chain'''

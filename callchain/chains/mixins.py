@@ -16,7 +16,7 @@ class BaseMixin(ResetLocalMixin):
 
     '''chain base mixin'''
 
-    def _setup_chain(self, outgoing):
+    def _setup_chain(self):
         '''setup call chain'''
         _chain = deque()
         # call chain right extend
@@ -31,8 +31,6 @@ class BaseMixin(ResetLocalMixin):
         self._cclear = _chain.clear
         # call chain
         self._chain = _chain
-        # outgoing queue
-        self.outgoing = outgoing
 
     _osetup_chain = _setup_chain
 
@@ -50,9 +48,57 @@ class BaseMixin(ResetLocalMixin):
     _ochain = chain
 
 
+class LinkMixin(Tentacle):
+
+    '''linked call chain mixin'''
+
+    def __init__(self, root):
+        '''
+        init
+
+        @param root: root call chain
+        '''
+        super(LinkMixin, self).__init__(root)
+        self._setup_chain()
+        # extend call chain with root call chain
+        self._cxtend(root._chain)
+
+    def _iget(self, label):
+        '''
+        silent internal switch back...
+
+        @param label: appspaced thing label
+        '''
+        # fetch appspaced thing...
+        try:
+            return self._oiget(label)
+        #...or return to root chain
+        except NoAppError:
+            return getattr(self.back(), label)
+
+    _ciget = _iget
+
+    def back(self):
+        '''return to root call chain'''
+        return self.root.back(self)
+
+    _oback = back
+
+
 class ChainMixin(Octopus):
 
     '''call chain base mixin'''
+
+    def __init__(self, pattern=None, required=None, defaults=None, **kw):
+        '''
+        init
+
+        @param pattern: pattern configuration or appspace label (default: None)
+        @param required: required settings (default: None)
+        @param defaults: default settings (default: None)
+        '''
+        super(ChainMixin, self).__init__(pattern, required, defaults, **kw)
+        self._setup_chain()
 
     def _iget(self, label):
         '''
@@ -105,40 +151,3 @@ class ChainMixin(Octopus):
         return self.M.get(label, key)(self)
 
     _oswitch = switch
-
-
-class LinkMixin(Tentacle):
-
-    '''linked call chain mixin'''
-
-    def __init__(self, root):
-        '''
-        init
-
-        @param root: root call chain
-        '''
-        super(LinkMixin, self).__init__(root)
-        self._setup_chain(root.outgoing)
-        # extend call chain with root call chain
-        self._cxtend(root._chain)
-
-    def _iget(self, label):
-        '''
-        silent internal switch back...
-
-        @param label: appspaced thing label
-        '''
-        # fetch appspaced thing...
-        try:
-            return self._oiget(label)
-        #...or return to root chain
-        except NoAppError:
-            return getattr(self.back(), label)
-
-    _ciget = _iget
-
-    def back(self):
-        '''return to root call chain'''
-        return self.root.back(self)
-
-    _oback = back

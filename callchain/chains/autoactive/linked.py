@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
-'''lazy auto-balancing linked chains'''
+'''active auto-balancing linked chains'''
 
 from appspace.keys import appifies
-from twoq.lazy.mixins import AutoQMixin
+from twoq.active.mixins import AutoQMixin
 from twoq.mixins.filtering import (
     FilterMixin, CollectMixin, SetMixin, SliceMixin)
 from twoq.mixins.ordering import RandomMixin, OrderMixin
 from twoq.mixins.reducing import MathMixin, TruthMixin, ReduceMixin
 from twoq.mixins.mapping import DelayMixin, CopyMixin, RepeatMixin, MapMixin
 
-from callchain.chains.lazy.queue import ChainLinkMixin
+from callchain.chains.queue import ActiveLinkMixin
 from callchain.chains.services.order import KRandom, KOrder
 from callchain.chains.services.reduce import KMath, KReduce, KTruth
 from callchain.chains.services.map import KDelay, KCopy, KRepeat, KMap
@@ -23,78 +23,78 @@ __all__ = (
 
 
 @appifies(KDelay)
-class delaychain(ChainLinkMixin, AutoQMixin, DelayMixin):
+class delaychain(ActiveLinkMixin, AutoQMixin, DelayMixin):
 
     '''auto-balancing delayed mapping linked chain'''
 
 
 @appifies(KCopy)
-class copychain(ChainLinkMixin, AutoQMixin, CopyMixin):
+class copychain(ActiveLinkMixin, AutoQMixin, CopyMixin):
 
     '''auto-balancing copy linked chain'''
 
 
 @appifies(KRepeat)
-class repeatchain(ChainLinkMixin, AutoQMixin, RepeatMixin):
+class repeatchain(ActiveLinkMixin, AutoQMixin, RepeatMixin):
 
     '''auto-balancing repeat linked chain'''
 
 
 @appifies(KMap)
-class mapchain(ChainLinkMixin, AutoQMixin, MapMixin):
+class mapchain(ActiveLinkMixin, AutoQMixin, MapMixin):
 
     '''auto-balancing mapping linked chain'''
 
 
 @appifies(KCollect)
-class collectchain(ChainLinkMixin, AutoQMixin, CollectMixin):
+class collectchain(ActiveLinkMixin, AutoQMixin, CollectMixin):
 
     '''auto-balancing collecting linked chain'''
 
 
 @appifies(KSet)
-class setchain(ChainLinkMixin, AutoQMixin, SetMixin):
+class setchain(ActiveLinkMixin, AutoQMixin, SetMixin):
 
     '''auto-balancing seting linked chain'''
 
 
 @appifies(KSlice)
-class slicechain(ChainLinkMixin, AutoQMixin, SliceMixin):
+class slicechain(ActiveLinkMixin, AutoQMixin, SliceMixin):
 
     '''auto-balancing slicing linked chain'''
 
 
 @appifies(KFilter)
-class filterchain(ChainLinkMixin, AutoQMixin, FilterMixin):
+class filterchain(ActiveLinkMixin, AutoQMixin, FilterMixin):
 
     '''auto-balancing filtering linked chain'''
 
 
 @appifies(KRandom)
-class randomchain(ChainLinkMixin, AutoQMixin, RandomMixin):
+class randomchain(ActiveLinkMixin, AutoQMixin, RandomMixin):
 
     '''auto-balancing randomizing linked chain'''
 
 
 @appifies(KOrder)
-class orderchain(ChainLinkMixin, AutoQMixin, OrderMixin):
+class orderchain(ActiveLinkMixin, AutoQMixin, OrderMixin):
 
     '''auto-balancing ordering linked chain'''
 
 
 @appifies(KMath)
-class mathchain(ChainLinkMixin, AutoQMixin, MathMixin):
+class mathchain(ActiveLinkMixin, AutoQMixin, MathMixin):
 
     '''auto-balancing mathing linked chain'''
 
 
 @appifies(KReduce)
-class reducechain(ChainLinkMixin, AutoQMixin, ReduceMixin):
+class reducechain(ActiveLinkMixin, AutoQMixin, ReduceMixin):
 
     '''auto-balancing reducing linked chain'''
 
 
 @appifies(KTruth)
-class truthchain(ChainLinkMixin, AutoQMixin, TruthMixin):
+class truthchain(ActiveLinkMixin, AutoQMixin, TruthMixin):
 
     '''auto-balancing truthing linked chain'''
