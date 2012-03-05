@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''auto-balancing ordering linked chains'''
+'''auto-balancing ordering linked event chains'''
 
 from appspace.keys import appifies
 from twoq.lazy.mixins import AutoQMixin
@@ -9,16 +9,16 @@ from callchain.chains.services.order import KRandom, KOrder
 
 from callchain.events.lazy.mixins import EventLinkMixin
 
-__all__ = ('randomchain', 'orderchain')
+__all__ = ('randomevent', 'orderevent')
 
 
 @appifies(KRandom)
-class randomchain(EventLinkMixin, AutoQMixin, RandomMixin):
+class randomevent(EventLinkMixin, AutoQMixin, RandomMixin):
 
-    '''auto-balancing randomizing linked chain'''
+    '''auto-balancing randomizing linked event chain'''
 
 
 @appifies(KOrder)
-class orderchain(EventLinkMixin, AutoQMixin, OrderMixin):
+class orderevent(EventLinkMixin, AutoQMixin, OrderMixin):
 
-    '''auto-balancing ordering linked chain'''
+    '''auto-balancing ordering linked event chain'''

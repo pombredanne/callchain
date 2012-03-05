@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''manually balanced mapping linked chains'''
+'''manually balanced mapping linked event chains'''
 
 from appspace.keys import appifies
 from twoq.lazy.mixins import ManQMixin
@@ -9,28 +9,28 @@ from callchain.chains.services.map import KDelay, KCopy, KRepeat, KMap
 
 from callchain.events.lazy.mixins import EventLinkMixin
 
-__all__ = ('delaychain', 'copychain', 'repeatchain', 'mapchain')
+__all__ = ('delayevent', 'copyevent', 'repeatevent', 'mapevent')
 
 
 @appifies(KDelay)
-class delaychain(EventLinkMixin, ManQMixin, DelayMixin):
+class delayevent(EventLinkMixin, ManQMixin, DelayMixin):
 
-    '''manually balanced delayed mapping linked chain'''
+    '''manually balanced delayed mapping linked event chain'''
 
 
 @appifies(KCopy)
-class copychain(EventLinkMixin, ManQMixin, CopyMixin):
+class copyevent(EventLinkMixin, ManQMixin, CopyMixin):
 
-    '''manually balanced copy linked chain'''
+    '''manually balanced copy linked event chain'''
 
 
 @appifies(KRepeat)
-class repeatchain(EventLinkMixin, ManQMixin, RepeatMixin):
+class repeatevent(EventLinkMixin, ManQMixin, RepeatMixin):
 
-    '''manually balanced repeat linked chain'''
+    '''manually balanced repeat linked event chain'''
 
 
 @appifies(KMap)
-class mapchain(EventLinkMixin, ManQMixin, MapMixin):
+class mapevent(EventLinkMixin, ManQMixin, MapMixin):
 
-    '''manually balanced mapping linked chain'''
+    '''manually balanced mapping linked event chain'''

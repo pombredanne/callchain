@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''auto-balancing filtering linked chains'''
+'''auto-balancing filtering linked event chains'''
 
 from appspace.keys import appifies
 from twoq.lazy.mixins import AutoQMixin
@@ -10,28 +10,28 @@ from callchain.chains.services.filter import KCollect, KSet, KSlice, KFilter
 
 from callchain.events.lazy.mixins import EventLinkMixin
 
-__all__ = ('collectchain', 'setchain', 'slicechain', 'filterchain')
+__all__ = ('collectevent', 'setevent', 'sliceevent', 'filterevent')
 
 
 @appifies(KCollect)
-class collectchain(EventLinkMixin, AutoQMixin, CollectMixin):
+class collectevent(EventLinkMixin, AutoQMixin, CollectMixin):
 
-    '''auto-balancing collecting linked chain'''
+    '''auto-balancing collecting linked event chain'''
 
 
 @appifies(KSet)
-class setchain(EventLinkMixin, AutoQMixin, SetMixin):
+class setevent(EventLinkMixin, AutoQMixin, SetMixin):
 
-    '''auto-balancing seting linked chain'''
+    '''auto-balancing seting linked event chain'''
 
 
 @appifies(KSlice)
-class slicechain(EventLinkMixin, AutoQMixin, SliceMixin):
+class sliceevent(EventLinkMixin, AutoQMixin, SliceMixin):
 
-    '''auto-balancing slicing linked chain'''
+    '''auto-balancing slicing linked event chain'''
 
 
 @appifies(KFilter)
-class filterchain(EventLinkMixin, AutoQMixin, FilterMixin):
+class filterevent(EventLinkMixin, AutoQMixin, FilterMixin):
 
-    '''auto-balancing filtering linked chain'''
+    '''auto-balancing filtering linked event chain'''

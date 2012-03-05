@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''manually balanced reducing linked chains'''
+'''manually balanced reducing linked event chains'''
 
 from appspace.keys import appifies
 from twoq.lazy.mixins import ManQMixin
@@ -9,22 +9,22 @@ from callchain.chains.services.reduce import KMath, KReduce, KTruth
 
 from callchain.events.lazy.mixins import EventLinkMixin
 
-__all__ = ('mathchain', 'truthchain', 'reducechain')
+__all__ = ('mathevent', 'truthevent', 'reduceevent')
 
 
 @appifies(KMath)
-class mathchain(EventLinkMixin, ManQMixin, MathMixin):
+class mathevent(EventLinkMixin, ManQMixin, MathMixin):
 
-    '''manually balanced mathing linked chain'''
+    '''manually balanced mathing linked event chain'''
 
 
 @appifies(KReduce)
-class reducechain(EventLinkMixin, ManQMixin, ReduceMixin):
+class reduceevent(EventLinkMixin, ManQMixin, ReduceMixin):
 
-    '''manually balanced reducing linked chain'''
+    '''manually balanced reducing linked event chain'''
 
 
 @appifies(KTruth)
-class truthchain(EventLinkMixin, ManQMixin, TruthMixin):
+class truthevent(EventLinkMixin, ManQMixin, TruthMixin):
 
-    '''manually balanced truthing linked chain'''
+    '''manually balanced truthing linked event chain'''

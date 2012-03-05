@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-'''autoq tests'''
+'''callchain auto-balancing call chain tests'''
+
 
 try:
     import unittest2 as unittest
@@ -19,8 +20,8 @@ class TestAutoQ(
 ):
 
     def setUp(self):
-        from callchain.chains.lazy.auto.chain import callchain
-        self.qclass = callchain()
+        from callchain.events.lazy.auto.chain import eventchain
+        self.qclass = eventchain()
 
 
 if __name__ == '__main__':

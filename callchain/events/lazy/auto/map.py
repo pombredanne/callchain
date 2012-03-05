@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''auto-balancing mapping linked chains'''
+'''auto-balancing mapping linked event chains'''
 
 from appspace.keys import appifies
 from twoq.lazy.mixins import AutoQMixin
@@ -13,24 +13,24 @@ __all__ = ('delaychain', 'copychain', 'repeatchain', 'mapchain')
 
 
 @appifies(KDelay)
-class delaychain(EventLinkMixin, AutoQMixin, DelayMixin):
+class delayevent(EventLinkMixin, AutoQMixin, DelayMixin):
 
-    '''auto-balancing delayed mapping linked chain'''
+    '''auto-balancing delayed mapping linked event chain'''
 
 
 @appifies(KCopy)
-class copychain(EventLinkMixin, AutoQMixin, CopyMixin):
+class copyevent(EventLinkMixin, AutoQMixin, CopyMixin):
 
-    '''auto-balancing copy linked chain'''
+    '''auto-balancing copy linked event chain'''
 
 
 @appifies(KRepeat)
-class repeatchain(EventLinkMixin, AutoQMixin, RepeatMixin):
+class repeatevent(EventLinkMixin, AutoQMixin, RepeatMixin):
 
-    '''auto-balancing repeat linked chain'''
+    '''auto-balancing repeat linked event chain'''
 
 
 @appifies(KMap)
-class mapchain(EventLinkMixin, AutoQMixin, MapMixin):
+class mapevent(EventLinkMixin, AutoQMixin, MapMixin):
 
-    '''auto-balancing mapping linked chain'''
+    '''auto-balancing mapping linked event chain'''
