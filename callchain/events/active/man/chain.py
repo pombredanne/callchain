@@ -4,23 +4,24 @@
 from appspace.keys import appifies
 from twoq.active.mixins import ManQMixin, ManResultMixin
 
+from callchain.chains.services.queue import KQueue, KResults
+
 from callchain.events.apps import events
 from callchain.events.mixins import inside
+from callchain.events.active.man.apps import event
 from callchain.events.keys import KEventLink, KEventChain
 from callchain.events.active.queue import EventChainMixin, EventLinkMixin
-
-from callchain.events.active.man.apps import event
 
 __all__ = ['eventlink', 'eventchain']
 
 
-@appifies(KEventLink)
+@appifies(KEventLink, KQueue)
 class eventlink(EventLinkMixin, ManQMixin):
 
     '''manually balanced linked event chain'''
 
 
-@appifies(KEventChain)
+@appifies(KEventChain, KResults)
 @inside(event, events)
 class eventchain(EventChainMixin, ManResultMixin):
 
