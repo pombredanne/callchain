@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 '''lazy call chain mixins'''
 
-from callchain.chains.mixins import LinkQMixin, ChainQMixin
+from callchain.chains.queue import LinkQMixin, ChainQMixin
 
 
 class ChainLinkMixin(LinkQMixin):

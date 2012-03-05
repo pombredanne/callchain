@@ -5,7 +5,7 @@ from appspace.keys import appifies
 from twoq.active.mixins import ManQMixin
 from twoq.mixins.ordering import RandomMixin, OrderMixin
 
-from callchain.chains.active.mixins import ChainLinkMixin
+from callchain.chains.active.queue import ChainLinkMixin
 from callchain.chains.services.order import KRandom, KOrder
 
 __all__ = ('randomchain', 'orderchain')

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 '''call chains queue mixins'''
 
-from callchain.chains.core import BaseMixin, LinkMixin, ChainMixin
+from callchain.chains.mixins import BaseMixin, LinkMixin, ChainMixin
 
 
 class _BaseQMixin(BaseMixin):

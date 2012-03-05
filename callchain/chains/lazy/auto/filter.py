@@ -6,7 +6,7 @@ from twoq.lazy.mixins import AutoQMixin
 from twoq.mixins.filtering import (
     FilterMixin, CollectMixin, SetMixin, SliceMixin)
 
-from callchain.chains.lazy.mixins import ChainLinkMixin
+from callchain.chains.lazy.queue import ChainLinkMixin
 from callchain.chains.services.filter import KCollect, KSet, KSlice, KFilter
 
 __all__ = ('collectchain', 'setchain', 'slicechain', 'filterchain')

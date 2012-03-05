@@ -5,7 +5,7 @@ from appspace.keys import appifies
 from twoq.active.mixins import ManQMixin
 from twoq.mixins.mapping import DelayMixin, CopyMixin, RepeatMixin, MapMixin
 
-from callchain.chains.active.mixins import ChainLinkMixin
+from callchain.chains.active.queue import ChainLinkMixin
 from callchain.chains.services.map import KDelay, KCopy, KRepeat, KMap
 
 __all__ = ('delaychain', 'copychain', 'repeatchain', 'mapchain')

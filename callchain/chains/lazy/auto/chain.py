@@ -9,7 +9,7 @@ from callchain.chains.keys import KChainLink, KCallChain
 from callchain.chains.services.queue import KQueue, KResults
 
 from callchain.chains.lazy.auto.apps import chain
-from callchain.chains.lazy.mixins import ChainLinkMixin, ChainMixin
+from callchain.chains.lazy.queue import ChainLinkMixin, ChainMixin
 
 __all__ = ('chainq', 'linkq')
 
