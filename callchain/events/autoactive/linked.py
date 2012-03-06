@@ -13,8 +13,7 @@ from callchain.chains.keys.order import KRandom, KOrder
 from callchain.chains.keys.reduce import KMath, KReduce, KTruth
 from callchain.chains.keys.map import KDelay, KCopy, KRepeat, KMap
 from callchain.chains.keys.filter import KCollect, KSet, KSlice, KFilter
-
-from callchain.events.queue import ActiveEventLinkMixin
+from callchain.events.linked import ActiveELinkedQMixin
 
 __all__ = (
     'mathevent', 'truthevent', 'reduceevent', 'collectevent', 'setevent',
@@ -24,78 +23,78 @@ __all__ = (
 
 
 @appifies(KDelay)
-class delayevent(ActiveEventLinkMixin, AutoQMixin, DelayMixin):
+class delayevent(ActiveELinkedQMixin, AutoQMixin, DelayMixin):
 
     '''auto-balancing delayed mapping linked event chain'''
 
 
 @appifies(KCopy)
-class copyevent(ActiveEventLinkMixin, AutoQMixin, CopyMixin):
+class copyevent(ActiveELinkedQMixin, AutoQMixin, CopyMixin):
 
     '''auto-balancing copy linked event chain'''
 
 
 @appifies(KRepeat)
-class repeatevent(ActiveEventLinkMixin, AutoQMixin, RepeatMixin):
+class repeatevent(ActiveELinkedQMixin, AutoQMixin, RepeatMixin):
 
     '''auto-balancing repeat linked event chain'''
 
 
 @appifies(KMap)
-class mapevent(ActiveEventLinkMixin, AutoQMixin, MapMixin):
+class mapevent(ActiveELinkedQMixin, AutoQMixin, MapMixin):
 
     '''auto-balancing mapping linked event chain'''
 
 
 @appifies(KCollect)
-class collectevent(ActiveEventLinkMixin, AutoQMixin, CollectMixin):
+class collectevent(ActiveELinkedQMixin, AutoQMixin, CollectMixin):
 
     '''auto-balancing collecting linked event chain'''
 
 
 @appifies(KSet)
-class setevent(ActiveEventLinkMixin, AutoQMixin, SetMixin):
+class setevent(ActiveELinkedQMixin, AutoQMixin, SetMixin):
 
     '''auto-balancing seting linked event chain'''
 
 
 @appifies(KSlice)
-class sliceevent(ActiveEventLinkMixin, AutoQMixin, SliceMixin):
+class sliceevent(ActiveELinkedQMixin, AutoQMixin, SliceMixin):
 
     '''auto-balancing slicing linked event chain'''
 
 
 @appifies(KFilter)
-class filterevent(ActiveEventLinkMixin, AutoQMixin, FilterMixin):
+class filterevent(ActiveELinkedQMixin, AutoQMixin, FilterMixin):
 
     '''auto-balancing filtering linked event chain'''
 
 
 @appifies(KRandom)
-class randomevent(ActiveEventLinkMixin, AutoQMixin, RandomMixin):
+class randomevent(ActiveELinkedQMixin, AutoQMixin, RandomMixin):
 
     '''auto-balancing randomizing linked event chain'''
 
 
 @appifies(KOrder)
-class orderevent(ActiveEventLinkMixin, AutoQMixin, OrderMixin):
+class orderevent(ActiveELinkedQMixin, AutoQMixin, OrderMixin):
 
     '''auto-balancing ordering linked event chain'''
 
 
 @appifies(KMath)
-class mathevent(ActiveEventLinkMixin, AutoQMixin, MathMixin):
+class mathevent(ActiveELinkedQMixin, AutoQMixin, MathMixin):
 
     '''auto-balancing mathing linked event chain'''
 
 
 @appifies(KReduce)
-class reduceevent(ActiveEventLinkMixin, AutoQMixin, ReduceMixin):
+class reduceevent(ActiveELinkedQMixin, AutoQMixin, ReduceMixin):
 
     '''auto-balancing reducing linked event chain'''
 
 
 @appifies(KTruth)
-class truthevent(ActiveEventLinkMixin, AutoQMixin, TruthMixin):
+class truthevent(ActiveELinkedQMixin, AutoQMixin, TruthMixin):
 
     '''auto-balancing truthing linked event chain'''

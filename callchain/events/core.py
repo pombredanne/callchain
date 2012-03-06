@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
-'''event chain mixins'''
+'''event core mixins'''
 
 from itertools import chain
 
 from stuf import orderedstuf
 from appspace.keys import imap
 from stuf.utils import iterexcept
+from appspace import Patterns, Registry
 
+from callchain.octopus import ResetLocalMixin
 from callchain.octopus.core import InsideMixin
-from callchain.chains.mixins import LinkMixin, ChainMixin, BaseMixin
 
-from callchain.events.registry import EventRegistry
+from callchain.events.keys.events import EEvent
 
-__all__ = ('inside', 'EBaseMixin', 'EChainMixin', 'ELinkMixin')
+__all__ = ('inside', 'ECoreMixin', 'EventRegistry')
 
 
 class inside(InsideMixin):
@@ -31,7 +32,7 @@ class inside(InsideMixin):
         return self._ocall(that)
 
 
-class EBaseMixin(BaseMixin):
+class ECoreMixin(ResetLocalMixin):
 
     '''base event chain mixin'''
 
@@ -76,7 +77,7 @@ class EBaseMixin(BaseMixin):
             # 2. work event
             self.trigger('work')
             # everything else
-            super(EBaseMixin, self).commit()
+            super._ocommit()
             # 3. change event
             self.fire('change')
             # 4. any event
@@ -125,110 +126,75 @@ class EBaseMixin(BaseMixin):
         return self
 
 
-class ELinkMixin(LinkMixin):
+class EventRegistry(Registry):
 
-    '''linked event chain'''
+    '''event registry'''
 
-    def __init__(self, root):
+    __slots__ = ('_root', '_key')
+
+    def __init__(self, label, key=EEvent):
         '''
         init
 
-        @param root: root event chain
+        @param label: label for event registry
+        @param key: default key for event registry (default: EEvent)
         '''
-        super(ELinkMixin, self).__init__(root)
-        # root event chain getter
-        self._regetit = self.root._getevent
-        # event getter
-        self._eget = self.root.event
-        # local event registry
-        self.E = EventRegistry('events') if root.events is not None else None
+        super(EventRegistry, self).__init__(label, key)
 
-    def _eventq(self, event):
-        '''
-        fetch chain tied to `event`
-
-        @param event: event label
-        '''
-        # fetch event from root call chain
-        event = self._eget(event)
-        # fetch linked call chain bound to event
-        queue = self.E.get(event)
-        if queue is None:
-            # create liked call chain if nonexistent
-            queue = self._chainlink(self)
-            self.E.set(event, queue)
-        return queue
-
-    def _getevent(self, event):
-        '''
-        fetch callables bound to event
-
-        @param event: event label
-        '''
-        e = self._eget(event)
-        return chain(self.E.events(e), self._regetit(e))
-
-
-class EChainMixin(ChainMixin):
-
-    '''event chain'''
-
-    def __init__(
-        self, patterns=None, events=None, required=None, defaults=None, *args,
-        **kw
-    ):
-        '''
-        init
-
-        @param patterns: pattern config or appspace label (default: None)
-        @param events: events configuration (default: None)
-        @param required: required settings (default: None)
-        @param defaults: default settings (default: None)
-        '''
-        super(EChainMixin, self).__init__(
-            patterns, required, defaults, *args, **kw
-        )
-        # local event registry
-        self.E = events.build() if events is not None else None
-
-    def _eventq(self, event):
-        '''
-        fetch call chain tied to `event`
-
-        @param event: event label
-        '''
-        # fetch event
-        event = self.event(event)
-        # fetch linked call chain bound to event
-        queue = self.E.get(event)
-        if queue is None:
-            # create linked call chain if nonexistent
-            queue = self._chainlink(self)
-            self.E.set(event, queue)
-        return queue
-
-    def _getevent(self, event):
-        '''
-        fetch callables bound to event
-
-        @param event: event label
-        '''
-        return self.E.events(self._eget(event))
-
-    def event(self, event):
+    def event(self, label):
         '''
         create or fetch event
 
         @param event: event label
         '''
-        self.E.event(event)
-        return self
+        return self.key(self._key, label)
 
-    def unevent(self, event):
+    def events(self, label):
+        '''
+        fetch things bound to event
+
+        @param event: event label
+        '''
+        return self.subscriptions(self._key, label)
+
+    def get(self, label):
+        '''
+        fetch thingto events
+
+        @param event: event label
+        '''
+        key = self._key
+        return self.lookup1(key, key, label)
+
+    def set(self, label, call):
+        '''
+        bound thing to event
+
+        @param event: event label
+        @param call: some thing
+        '''
+        key = self._key
+        self.register([key], key, label, call)
+
+    def unevent(self, label):
         '''
         drop event
 
         @param event: event label
         '''
-        self.E.unevent(event)
-        return self
+        self.E.unkey(self._key, label)
+
+    def unset(self, label):
+        '''
+        clear all callables bound to event
+
+        @param event: event label
+        '''
+        self.ez_unsubscribe(self._key, label)
+
+
+class Pathways(Patterns):
+
+    '''patterns for event registry'''
+
+    _manager = Registry

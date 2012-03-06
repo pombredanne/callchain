@@ -7,21 +7,22 @@ from twoq.active.mixins import ManQMixin, ManResultMixin
 from callchain.octopus import inside
 
 from callchain.chains.activeman.apps import chain
+from callchain.chains.chain import ActiveChainQMixin
+from callchain.chains.linked import ActiveLinkedQMixin
 from callchain.chains.keys.queue import KQueue, KResults
 from callchain.chains.keys.core import KChainLink, KCallChain
-from callchain.chains.queue import ActiveLinkMixin, ActiveChainMixin
 
-__all__ = ('chainq', 'linkq')
+__all__ = ('chainq', 'linkedq')
 
 
 @appifies(KChainLink, KQueue)
-class linkq(ActiveLinkMixin, ManQMixin):
+class linkedq(ActiveLinkedQMixin, ManQMixin):
 
     '''manually balanced linked call chain'''
 
 
 @appifies(KCallChain, KResults)
 @inside(chain)
-class chainq(ActiveChainMixin, ManResultMixin):
+class chainq(ActiveChainQMixin, ManResultMixin):
 
     '''manually balanced call chain'''

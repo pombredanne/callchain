@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 '''event keys'''
 
-from callchain.events.registry import Patterns
+from callchain.events.core import Patterns
 
 __all__ = ['events']
 
