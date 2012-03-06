@@ -78,7 +78,7 @@ class ChainQMixin(ChainMixin, _BaseQMixin):
 
 class ActiveLinkMixin(LinkQMixin):
 
-    '''linked call chain mixin'''
+    '''active linked call chain queue mixin'''
 
     def __init__(self, root):
         '''
@@ -95,7 +95,7 @@ class ActiveLinkMixin(LinkQMixin):
 
 class ActiveChainMixin(ChainQMixin):
 
-    '''call chain mixin'''
+    '''active call chain queue mixin'''
 
     def __call__(self, *args):
         '''load args into incoming thing'''
@@ -125,7 +125,7 @@ class ActiveChainMixin(ChainQMixin):
 
 class LazyLinkMixin(LinkQMixin):
 
-    '''linked call chain mixin'''
+    '''lazy linked call chain queue mixin'''
 
     def __init__(self, root):
         '''
@@ -133,16 +133,16 @@ class LazyLinkMixin(LinkQMixin):
 
         @param root: root call chain
         '''
+        super(LazyLinkMixin, self).__init__(root)
         # sync with root incoming things
         self.incoming = root.incoming
         # sync with root outgoing things
         self.outgoing = root.outgoing
-        super(LazyLinkMixin, self).__init__(root)
 
 
 class LazyChainMixin(ChainQMixin):
 
-    '''call chain mixin'''
+    '''lazy call chain queue mixin'''
 
     def __call__(self, *args):
         '''load args into incoming thing'''
