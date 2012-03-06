@@ -20,41 +20,22 @@ from callchain.tests.mixins.man.reducing import MReduceQMixin
 from callchain.tests.mixins.man.filtering import MFilterQMixin
 
 
-class TestAutoQCallChain(
+class TestLazyAutoEventChain(
     unittest.TestCase, AQMixin, AFilterQMixin, AMapQMixin, AReduceQMixin,
     AOrderQMixin,
 ):
 
     def setUp(self):
-        from callchain.chains.lazy.auto.chain import chainq
-        self.qclass = chainq()
+        from callchain.events.autolazy.chain import eventchain
+        self.qclass = eventchain()
 
 
-class TestManQCallChain(
+class TestLazyManEventChain(
     Manning, MQMixin, MFilterQMixin, MMapQMixin, MReduceQMixin, MOrderQMixin,
 ):
 
     def setUp(self):
-        from callchain.events.lazy.man.chain import eventchain
-        self.qclass = eventchain()
-
-
-class TestAutoQEventChain(
-    unittest.TestCase, AQMixin, AFilterQMixin, AMapQMixin, AReduceQMixin,
-    AOrderQMixin,
-):
-
-    def setUp(self):
-        from callchain.events.lazy.auto.chain import eventchain
-        self.qclass = eventchain()
-
-
-class TestManQEventChain(
-    Manning, MQMixin, MFilterQMixin, MMapQMixin, MReduceQMixin, MOrderQMixin,
-):
-
-    def setUp(self):
-        from callchain.events.lazy.man.chain import eventchain
+        from callchain.events.lazyman.chain import eventchain
         self.qclass = eventchain()
 
 

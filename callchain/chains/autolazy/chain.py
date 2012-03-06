@@ -6,8 +6,8 @@ from appspace.keys import appifies
 from twoq.lazy.mixins import AutoQMixin, AutoResultMixin
 
 from callchain.chains.autolazy.apps import chain
-from callchain.chains.keys import KChainLink, KCallChain
-from callchain.chains.services.queue import KQueue, KResults
+from callchain.chains.keys.queue import KQueue, KResults
+from callchain.chains.keys.core import KChainLink, KCallChain
 from callchain.chains.queue import LazyLinkMixin, LazyChainMixin
 
 __all__ = ('chainq', 'linkq')

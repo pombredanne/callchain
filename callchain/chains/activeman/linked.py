@@ -10,10 +10,10 @@ from twoq.mixins.reducing import MathMixin, TruthMixin, ReduceMixin
 from twoq.mixins.mapping import DelayMixin, CopyMixin, RepeatMixin, MapMixin
 
 from callchain.chains.queue import ActiveLinkMixin
-from callchain.chains.services.order import KRandom, KOrder
-from callchain.chains.services.reduce import KMath, KReduce, KTruth
-from callchain.chains.services.map import KDelay, KCopy, KRepeat, KMap
-from callchain.chains.services.filter import KCollect, KSet, KSlice, KFilter
+from callchain.chains.keys.order import KRandom, KOrder
+from callchain.chains.keys.reduce import KMath, KReduce, KTruth
+from callchain.chains.keys.map import KDelay, KCopy, KRepeat, KMap
+from callchain.chains.keys.filter import KCollect, KSet, KSlice, KFilter
 
 __all__ = (
     'mathchain', 'truthchain', 'reducechain', 'collectchain', 'setchain',
