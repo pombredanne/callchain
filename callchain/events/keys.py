@@ -3,7 +3,7 @@
 # pylint: disable-msg=e0211,e0213
 '''event chain keys'''
 
-from callchain.chains.keys import KCallChain, KChain, KChainLink
+from callchain.chains.keys.core import KCallChain, KChain, KChainLink
 
 __all__ = ('KEventChain', 'KEventLink')
 
