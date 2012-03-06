@@ -9,27 +9,12 @@ from stuf.utils import iterexcept
 from appspace import Patterns, Registry
 
 from callchain.octopus import ResetLocalMixin
-from callchain.octopus.core import InsideMixin
+
+from callchain.chains.chain import callchain
 
 from callchain.events.keys.events import EEvent
 
-__all__ = ('inside', 'ECoreMixin', 'EventRegistry')
-
-
-class inside(InsideMixin):
-
-    '''internal eventspace configuration'''
-
-    def __init__(
-        self, patterns=None, events=None, required=None, defaults=None, *args,
-        **kw
-    ):
-        super(inside, self).__init__(patterns, required, defaults, *args, **kw)
-        self.events = events
-
-    def __call__(self, that):
-        that._E = self.events.build()
-        return self._ocall(that)
+__all__ = ('ECoreMixin', 'EventRegistry')
 
 
 class ECoreMixin(ResetLocalMixin):
@@ -39,6 +24,8 @@ class ECoreMixin(ResetLocalMixin):
     ###########################################################################
     ## event listener management ##############################################
     ###########################################################################
+
+    _callchain = callchain
 
     def on(self, event, call, key=False, *args, **kw):
         '''
@@ -114,7 +101,7 @@ class ECoreMixin(ResetLocalMixin):
             self._sxtend(self._events(*events))
             # run event call chain until scratch queue is exhausted
             calls = iterexcept(self._scratch.popleft, IndexError)
-            self.outappend(call() for call in calls)
+            self._outextend(call() for call in calls)
         finally:
             # clear scratch queue
             self._sclear()

@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 '''call chains core'''
 
-from collections import deque
-
 from callchain.octopus import Octopus
 from callchain.octopus.keys import NoServiceError
 
-from callchain.chains.core import QueueMixin, LoneMixin
+from callchain.chains.core import QMixin, LoneMixin
 
 __all__ = ('ActiveChainQMixin', 'LazyChainQMixin', 'callchain')
 
@@ -72,23 +70,8 @@ class callchain(_ChainMixin, LoneMixin):
 
     '''call chain'''
 
-    def __init__(self, pattern=None, required=None, defaults=None, **kw):
-        '''
-        init
 
-        @param pattern: pattern configuration or appspace label (default: None)
-        @param required: required settings (default: None)
-        @param defaults: default settings (default: None)
-        '''
-        super(callchain, self).__init__(pattern, required, defaults, **kw)
-        self.outgoing = deque()
-        # outgoing things right extend
-        self._outextend = self.outgoing.extend
-        # outgoing things clear
-        self._outclear = self.outgoing.clear
-
-
-class _ChainQMixin(_ChainMixin, QueueMixin):
+class _ChainQMixin(_ChainMixin, QMixin):
 
     '''call chain queue mixin'''
 

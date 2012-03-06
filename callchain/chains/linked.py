@@ -5,7 +5,7 @@ from appspace.keys import NoAppError
 
 from callchain.octopus import Tentacle
 
-from callchain.chains.core import QueueMixin, LoneMixin
+from callchain.chains.core import QMixin, LoneMixin
 
 __all__ = ('ActiveLinkQMixin', 'LazyLinkQMixin', 'linked')
 
@@ -45,7 +45,7 @@ class _LinkedMixin(Tentacle):
     _oback = back
 
 
-class _LinkedQMixin(_LinkedMixin, QueueMixin):
+class _LinkedQMixin(_LinkedMixin, QMixin):
 
     '''linked call chain queue mixin'''
 

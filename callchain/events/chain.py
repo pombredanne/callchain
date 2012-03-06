@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 '''event chains'''
 
+from callchain.octopus.core import InsideMixin
 from callchain.chains.chain import (
     callchain, LazyChainQMixin, ActiveChainQMixin)
 
 from callchain.events.core import ECoreMixin
 
-__all__ = ('ActiveEChainQMixin', 'LazyEChainQMixin', 'eventchain')
+__all__ = ('ActiveEChainQMixin', 'LazyEChainQMixin', 'eventchain', 'inside')
 
 
 class _EChainMixin(ECoreMixin):
@@ -14,7 +15,12 @@ class _EChainMixin(ECoreMixin):
     '''event chain'''
 
     def __init__(
-        self, patterns=None, events=None, required=None, defaults=None, *args,
+        self,
+        patterns=None,
+        events=None,
+        required=None,
+        defaults=None,
+        *args,
         **kw
     ):
         '''
@@ -72,6 +78,35 @@ class _EChainMixin(ECoreMixin):
         '''
         self.E.unevent(event)
         return self
+
+
+class inside(InsideMixin):
+
+    '''internal eventspace configuration'''
+
+    def __init__(
+        self,
+        patterns=None,
+        events=None,
+        required=None,
+        defaults=None,
+        *args,
+        **kw
+    ):
+        '''
+        init
+
+        @param patterns: pattern config or appspace label (default: None)
+        @param events: events configuration (default: None)
+        @param required: required settings (default: None)
+        @param defaults: default settings (default: None)
+        '''
+        super(inside, self).__init__(patterns, required, defaults, *args, **kw)
+        self.events = events
+
+    def __call__(self, that):
+        that._E = self.events.build()
+        return self._ocall(that)
 
 
 class eventchain(_EChainMixin, callchain):

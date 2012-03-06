@@ -7,7 +7,7 @@ from stuf.utils import iterexcept
 
 from callchain.octopus import ResetLocalMixin
 
-__all__ = ('LoneMixin', 'QueueMixin')
+__all__ = ('LoneMixin', 'QMixin')
 
 
 class _CoreMixin(ResetLocalMixin):
@@ -47,7 +47,7 @@ class _CoreMixin(ResetLocalMixin):
 
     def commit(self):
         '''consume call chain until exhausted'''
-        self._rextend(
+        self._outextend(
             call() for call in iterexcept(self._chain.popleft, IndexError)
         )
         return self
@@ -57,8 +57,18 @@ class _CoreMixin(ResetLocalMixin):
 
 class LoneMixin(_CoreMixin):
 
+    def _setup_chain(self):
+        self._osetup_chain()
+        self.outgoing = deque()
+        # outgoing things right extend
+        self._outextend = self.outgoing.extend
+        # outgoing things clear
+        self._outclear = self.outgoing.clear
+        # outgoing things right append
+        self._outappend = self.outgoing.extend
+
     def clear(self):
-        '''clear every thing'''
+        '''ANNIHILATE!!!'''
         self._outclear()
         self._cclear()
         return self
@@ -66,12 +76,12 @@ class LoneMixin(_CoreMixin):
     _cclear = clear
 
 
-class QueueMixin(_CoreMixin):
+class QMixin(_CoreMixin):
 
-    '''chain queue mixin'''
+    '''chained queue mixin'''
 
     def clear(self):
-        '''clear every thing'''
+        '''ANNIHILATE!!!'''
         self._oclear()
         self._cclear()
         return self
