@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 '''active manually balanced call chains'''
 
-from octopus import inside
 from appspace.keys import appifies
 from twoq.active.mixins import ManQMixin, ManResultMixin
+
+from callchain.octopus import inside
 
 from callchain.chains.activeman.apps import chain
 from callchain.chains.keys.queue import KQueue, KResults

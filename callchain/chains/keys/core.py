@@ -4,7 +4,8 @@
 '''call chain keys'''
 
 from appspace.keys import AppspaceKey
-from octopus.keys import AOctopus, ATentacle
+
+from callchain.octopus.keys import AOctopus, ATentacle
 
 __all__ = ('KChain', 'KCallChain', 'KChainLink')
 

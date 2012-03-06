@@ -6,10 +6,11 @@ from itertools import chain
 from stuf import orderedstuf
 from appspace.keys import imap
 from stuf.utils import iterexcept
-from octopus.core import InsideMixin
+
+from callchain.octopus.core import InsideMixin
+from callchain.chains.mixins import LinkMixin, ChainMixin, BaseMixin
 
 from callchain.events.registry import EventRegistry
-from callchain.chains.mixins import LinkMixin, ChainMixin, BaseMixin
 
 __all__ = ('inside', 'EBaseMixin', 'EChainMixin', 'ELinkMixin')
 

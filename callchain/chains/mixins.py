@@ -5,9 +5,9 @@ from collections import deque
 
 from stuf.utils import iterexcept
 from appspace.keys import NoAppError
-from octopus.keys import NoServiceError
-from octopus.resets import ResetLocalMixin
-from octopus.core import Tentacle, Octopus
+
+from callchain.octopus.keys import NoServiceError
+from callchain.octopus import Tentacle, Octopus, ResetLocalMixin
 
 __all__ = ('BaseMixin', 'ChainMixin', 'LinkMixin')
 

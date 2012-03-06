@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 '''active auto-balancing call chains'''
 
-from octopus import inside
 from appspace.keys import appifies
 from twoq.active.mixins import AutoQMixin, AutoResultMixin
+
+from callchain.octopus import inside
 
 from callchain.chains.autoactive.apps import chain
 from callchain.chains.keys.queue import KQueue, KResults

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 '''active manually balanced event chain appconf'''
 
-from octopus import Pathways, Nameways
+from callchain.octopus import Pathways, Nameways
 
 __all__ = ['event']
 
