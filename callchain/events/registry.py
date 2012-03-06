@@ -3,7 +3,7 @@
 
 from appspace import Patterns, Registry
 
-from callchain.events.services import EEvent
+from callchain.events.keys.events import EEvent
 
 __all__ = ['Register']
 

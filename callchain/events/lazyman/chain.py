@@ -6,10 +6,10 @@ from twoq.lazy.mixins import ManQMixin, ManResultMixin
 
 from callchain.chains.keys.queue import KQueue, KResults
 
-from callchain.events.apps import events
 from callchain.events.mixins import inside
+from callchain.events.keys.apps import events
 from callchain.events.lazyman.apps import event
-from callchain.events.keys import KEventLink, KEventChain
+from callchain.events.keys.core import KEventLink, KEventChain
 from callchain.events.queue import LazyEventChainMixin, LazyEventLinkMixin
 
 __all__ = ('eventchain', 'eventlink')
