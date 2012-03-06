@@ -3,15 +3,14 @@
 
 from itertools import chain
 
-from callchain.chains.linked import (
-    ActiveLinkedQMixin, LazyLinkedQMixin, chainlinked)
+from callchain.chains.linked import ActiveLinkQMixin, LazyLinkQMixin, chainlink
 
 from callchain.events.core import ECoreMixin, EventRegistry
 
-__all__ = ('ActiveELinkedQMixin', 'LazyELinkedQMixin', 'eventlinked')
+__all__ = ('ActiveELinkQMixin', 'LazyELinkQMixin', 'eventlink')
 
 
-class _ELinkedMixin(ECoreMixin):
+class _ELinkMixin(ECoreMixin):
 
     '''linked event chain'''
 
@@ -21,7 +20,7 @@ class _ELinkedMixin(ECoreMixin):
 
         @param root: root event chain
         '''
-        super(_ELinkedMixin, self).__init__(root)
+        super(_ELinkMixin, self).__init__(root)
         # root event chain getter
         self._regetit = self.root._getevent
         # event getter
@@ -55,16 +54,16 @@ class _ELinkedMixin(ECoreMixin):
         return chain(self.E.events(e), self._regetit(e))
 
 
-class eventlinked(_ELinkedMixin, chainlinked):
+class eventlink(_ELinkMixin, chainlink):
 
     '''linked event chain'''
 
 
-class ActiveELinkedQMixin(_ELinkedMixin, ActiveLinkedQMixin):
+class ActiveELinkQMixin(_ELinkMixin, ActiveLinkQMixin):
 
     '''active linked event chain mixin'''
 
 
-class LazyELinkedQMixin(_ELinkedMixin, LazyLinkedQMixin):
+class LazyELinkQMixin(_ELinkMixin, LazyLinkQMixin):
 
     '''lazy linked event chain mixin'''

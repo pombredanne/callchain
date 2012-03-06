@@ -10,14 +10,14 @@ from callchain.events.core import inside
 from callchain.events.keys.apps import events
 from callchain.events.activeman.apps import event
 from callchain.events.chain import ActiveEChainQMixin
-from callchain.events.linked import ActiveELinkedQMixin
+from callchain.events.linked import ActiveELinkQMixin
 from callchain.events.keys.core import KEventLink, KEventChain
 
 __all__ = ['eventlink', 'eventchain']
 
 
 @appifies(KEventLink, KQueue)
-class eventlink(ActiveELinkedQMixin, ManQMixin):
+class eventlink(ActiveELinkQMixin, ManQMixin):
 
     '''manually balanced linked event chain'''
 

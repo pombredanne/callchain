@@ -10,14 +10,14 @@ from callchain.events.core import inside
 from callchain.events.keys.apps import events
 from callchain.events.autoactive.apps import event
 from callchain.events.keys.core import KEventLink, KEventChain
-from callchain.events.linked import ActiveELinkedQMixin
+from callchain.events.linked import ActiveELinkQMixin
 from callchain.events.chain import ActiveEChainQMixin
 
 __all__ = ['eventlink', 'eventchain']
 
 
 @appifies(KEventLink, KQueue)
-class eventlink(ActiveELinkedQMixin, AutoQMixin):
+class eventlink(ActiveELinkQMixin, AutoQMixin):
 
     '''auto-balancing linked event chain'''
 

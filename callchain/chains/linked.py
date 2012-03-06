@@ -7,7 +7,7 @@ from callchain.octopus import Tentacle
 
 from callchain.chains.core import QueueMixin, LoneMixin
 
-__all__ = ('ActiveLinkedQMixin', 'LazyLinkedQMixin', 'linked')
+__all__ = ('ActiveLinkQMixin', 'LazyLinkQMixin', 'linked')
 
 
 class _LinkedMixin(Tentacle):
@@ -64,12 +64,12 @@ class _LinkedQMixin(_LinkedMixin, QueueMixin):
         self._kw = root._kw
 
 
-class chainlinked(_LinkedMixin, LoneMixin):
+class chainlink(_LinkedMixin, LoneMixin):
 
     '''linked call chain'''
 
 
-class ActiveLinkedQMixin(_LinkedQMixin):
+class ActiveLinkQMixin(_LinkedQMixin):
 
     '''active linked call chain queue mixin'''
 
@@ -79,14 +79,14 @@ class ActiveLinkedQMixin(_LinkedQMixin):
 
         @param root: root call chain
         '''
-        super(ActiveLinkedQMixin, self).__init__(root)
+        super(ActiveLinkQMixin, self).__init__(root)
         # sync with root incoming things
         self._inextend(root.incoming)
         # sync with root outgoing things
         self._outextend(root.outgoing)
 
 
-class LazyLinkedQMixin(_LinkedQMixin):
+class LazyLinkQMixin(_LinkedQMixin):
 
     '''lazy linked call chain queue mixin'''
 
@@ -96,7 +96,7 @@ class LazyLinkedQMixin(_LinkedQMixin):
 
         @param root: root call chain
         '''
-        super(LazyLinkedQMixin, self).__init__(root)
+        super(LazyLinkQMixin, self).__init__(root)
         # sync with root incoming things
         self.incoming = root.incoming
         # sync with root outgoing things
