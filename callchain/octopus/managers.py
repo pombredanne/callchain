@@ -50,6 +50,12 @@ class Manager(_Manager):
             'update', *args, **kw
         ).value()
 
+    def freeze(self, *args, **kw):
+        '''finalize settings'''
+        # pass any arbitrary settings
+        self.settings.update(*args, **kw)
+        self.settings.lock()
+
     def service(self, label):
         '''
         fetch internal service

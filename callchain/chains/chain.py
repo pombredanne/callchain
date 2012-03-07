@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 '''call chains core'''
 
+from stuf.utils import iterexcept
+
 from callchain.octopus import Octopus
 from callchain.octopus.keys import NoServiceError
 
@@ -11,7 +13,7 @@ __all__ = ('ActiveChainQMixin', 'LazyChainQMixin', 'callchain')
 
 class _ChainMixin(Octopus):
 
-    '''call chain core mixin'''
+    '''core call chain mixin'''
 
     def __init__(self, pattern=None, required=None, defaults=None, **kw):
         '''
@@ -43,7 +45,7 @@ class _ChainMixin(Octopus):
 
     def back(self, link):
         '''
-        return from linked call chain
+        handle return from linked call chain
 
         @param link: linked call chain
         '''
@@ -53,6 +55,15 @@ class _ChainMixin(Octopus):
         return self
 
     _oback = back
+
+    def commit(self):
+        '''consume call chain until exhausted'''
+        self._outextend(
+            call() for call in iterexcept(self._chain.popleft, IndexError)
+        )
+        return self
+
+    _ocommit = commit
 
     def switch(self, label, key=False):
         '''
@@ -77,7 +88,7 @@ class _ChainQMixin(_ChainMixin, QMixin):
 
     def back(self, link):
         '''
-        return from linked call chain
+        handle return from linked call chain
 
         @param link: linked call chain
         '''
@@ -107,7 +118,7 @@ class ActiveChainQMixin(_ChainQMixin):
 
     def back(self, link):
         '''
-        return from linked call chain
+        handle return from linked call chain
 
         @param link: linked call chain
         '''
@@ -137,7 +148,7 @@ class LazyChainQMixin(_ChainQMixin):
 
     def back(self, link):
         '''
-        return from linked call chain
+        handle return from linked call chain
 
         @param link: linked call chain
         '''

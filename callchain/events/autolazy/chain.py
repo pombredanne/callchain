@@ -6,7 +6,7 @@ from twoq.lazy.mixins import AutoQMixin, AutoResultMixin
 
 from callchain.chains.keys.queue import KQueue, KResults
 
-from callchain.events.core import inside
+from callchain.events.chain import inside
 from callchain.events.keys.apps import events
 from callchain.events.autolazy.apps import event
 from callchain.events.keys.core import KEventLink, KEventChain

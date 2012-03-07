@@ -144,12 +144,6 @@ class Settings(ResetLocalMixin):
         '''lock settings'''
         self._locked = True
 
-    def freeze(self, *args, **kw):
-        '''finalize settings'''
-        # pass any arbitrary settings
-        self.update(*args, **kw)
-        self.lock()
-
     def update(self, *args, **kw):
         '''update end setting'''
         self._final.update(*args, **kw)

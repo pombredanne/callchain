@@ -2,8 +2,9 @@
 '''call chains mixins'''
 
 from collections import deque
+from functools import partial
 
-from stuf.utils import iterexcept
+from twoq.support import isstring
 
 from callchain.octopus import ResetLocalMixin
 
@@ -12,7 +13,7 @@ __all__ = ('LoneMixin', 'QMixin')
 
 class _CoreMixin(ResetLocalMixin):
 
-    '''chain core mixin'''
+    '''core chain mixin'''
 
     def _setup_chain(self):
         '''setup call chain'''
@@ -38,26 +39,24 @@ class _CoreMixin(ResetLocalMixin):
         any passed arguments
 
         @param call: callable or application label
-        @param key: key label (default: False)
+        @param key: appspace key label (default: False)
         '''
-        self._cappend(self.M.partial(call, key, *args, **kw))
+        if not isstring(call):
+            call = partial(call, *(key,) + args, **kw)
+        else:
+            call = partial(self.M.get(call, key), *args, **kw)
+        self._cappend(call)
         return self
 
     _ochain = chain
 
-    def commit(self):
-        '''consume call chain until exhausted'''
-        self._outextend(
-            call() for call in iterexcept(self._chain.popleft, IndexError)
-        )
-        return self
-
-    _ocommit = commit
-
 
 class LoneMixin(_CoreMixin):
 
+    '''mixin for standalone chains'''
+
     def _setup_chain(self):
+        '''setup call chain'''
         self._osetup_chain()
         self.outgoing = deque()
         # outgoing things right extend
@@ -66,6 +65,8 @@ class LoneMixin(_CoreMixin):
         self._outclear = self.outgoing.clear
         # outgoing things right append
         self._outappend = self.outgoing.extend
+
+    _csetup_chain = _setup_chain
 
     def clear(self):
         '''ANNIHILATE!!!'''
@@ -100,7 +101,6 @@ class QMixin(_CoreMixin):
         # reset keyword arguments
         self._kw = {}
         # set current application
-        isstring = self.port.isstring
         self._call = self._M.get(call, key) if isstring(call) else call
         return self
 

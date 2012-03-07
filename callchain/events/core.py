@@ -4,8 +4,8 @@
 from itertools import chain
 
 from stuf import orderedstuf
-from appspace.keys import imap
 from stuf.utils import iterexcept
+from appspace.keys import imap
 from appspace import Patterns, Registry
 
 from callchain.octopus import ResetLocalMixin
@@ -21,11 +21,62 @@ class ECoreMixin(ResetLocalMixin):
 
     '''base event chain mixin'''
 
-    ###########################################################################
-    ## event listener management ##############################################
-    ###########################################################################
-
     _callchain = callchain
+
+    def _events(self, *events):
+        '''get callables bound to `*events`'''
+        getit = self._getevent
+        return chain(*tuple(imap(getit, events)))
+
+    def commit(self):
+        '''run event chain'''
+        try:
+            trigger = self.trigger
+            fire = self.fire
+            # 1. before event
+            trigger('before')
+            # 2. work event
+            trigger('work')
+            # everything else
+            self._ocommit()
+            # 3. change event
+            fire('change')
+            # 4. any event
+            fire('any')
+            # 5. after event
+            fire('after')
+        except:
+            # 6. problem event
+            fire('problem')
+        finally:
+            # 7. event that runs irrespective
+            fire('anyway')
+        return self
+
+    def events(self, *events):
+        '''
+        ordered mapping of each event processing queue
+
+        @param *events: event labels
+        '''
+        _eventq = self._eventq
+        return orderedstuf((e, _eventq(e).queue) for e in events)
+
+    def fire(self, *events):
+        '''run callables bound to `*events` immediately'''
+        try:
+            # clear scratch queue
+            self._sclear()
+            # queue global and local bound callables
+            self._sxtend(self._events(*events))
+            # run event call chain until scratch queue is exhausted
+            self._outextend(call() for call in iterexcept(
+                self._scratch.popleft, IndexError
+            ))
+        finally:
+            # clear scratch queue
+            self._sclear()
+        return self
 
     def on(self, event, call, key=False, *args, **kw):
         '''
@@ -45,66 +96,6 @@ class ECoreMixin(ResetLocalMixin):
         @param event: event label
         '''
         self.E.unset(event)
-        return self
-
-    ###########################################################################
-    ## event chain execution ##################################################
-    ###########################################################################
-
-    def _events(self, *events):
-        '''get callables bound to `*events`'''
-        getit = self._getevent
-        return chain(*tuple(imap(getit, events)))
-
-    def commit(self):
-        '''run event chain'''
-        try:
-            # 1. before event
-            self.trigger('before')
-            # 2. work event
-            self.trigger('work')
-            # everything else
-            super._ocommit()
-            # 3. change event
-            self.fire('change')
-            # 4. any event
-            self.fire('any')
-            # 5. after event
-            self.fire('after')
-        except:
-            # 6. problem event
-            self.fire('problem')
-        finally:
-            # 7. event that runs irrespective
-            self.fire('anyway')
-        return self
-
-    ###########################################################################
-    ## event queue processing #################################################
-    ###########################################################################
-
-    def events(self, *events):
-        '''
-        ordered mapping of each event processing queue
-
-        @param *events: event labels
-        '''
-        _eventq = self._eventq
-        return orderedstuf((e, _eventq(e).queue) for e in events)
-
-    def fire(self, *events):
-        '''run callables bound to `*events` immediately'''
-        try:
-            # clear scratch queue
-            self._sclear()
-            # queue global and local bound callables
-            self._sxtend(self._events(*events))
-            # run event call chain until scratch queue is exhausted
-            calls = iterexcept(self._scratch.popleft, IndexError)
-            self._outextend(call() for call in calls)
-        finally:
-            # clear scratch queue
-            self._sclear()
         return self
 
     def trigger(self, *events):
@@ -184,4 +175,4 @@ class Pathways(Patterns):
 
     '''patterns for event registry'''
 
-    _manager = Registry
+    _manager = EventRegistry

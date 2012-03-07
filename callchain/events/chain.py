@@ -61,6 +61,8 @@ class _EChainMixin(ECoreMixin):
         '''
         return self.E.events(self._eget(event))
 
+
+
     def event(self, event):
         '''
         create or fetch event
@@ -69,6 +71,10 @@ class _EChainMixin(ECoreMixin):
         '''
         self.E.event(event)
         return self
+
+
+
+
 
     def unevent(self, event):
         '''

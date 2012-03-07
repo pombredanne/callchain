@@ -6,6 +6,8 @@ try:
 except ImportError:
     import unittest
 
+from callchain.tests.mixins.chain import CallChainMixin
+
 from callchain.tests.mixins.auto.queuing import AQMixin
 from callchain.tests.mixins.auto.mapping import AMapQMixin
 from callchain.tests.mixins.auto.ordering import AOrderQMixin
@@ -21,22 +23,30 @@ from callchain.tests.mixins.man.filtering import MFilterQMixin
 
 
 class TestLazyAutoEventChain(
-    unittest.TestCase, AQMixin, AFilterQMixin, AMapQMixin, AReduceQMixin,
-    AOrderQMixin,
+    unittest.TestCase, CallChainMixin, AQMixin, AFilterQMixin, AMapQMixin,
+    AReduceQMixin, AOrderQMixin,
 ):
 
     def setUp(self):
+        self.qclass = self._makeone()
+
+    @property
+    def _makeone(self):
         from callchain.events.autolazy.chain import eventchain
-        self.qclass = eventchain()
+        return eventchain
 
 
 class TestLazyManEventChain(
-    Manning, MQMixin, MFilterQMixin, MMapQMixin, MReduceQMixin, MOrderQMixin,
+    Manning, CallChainMixin, MQMixin, MFilterQMixin, MMapQMixin, MReduceQMixin,
+    MOrderQMixin,
 ):
-
     def setUp(self):
+        self.qclass = self._makeone()
+
+    @property
+    def _makeone(self):
         from callchain.events.lazyman.chain import eventchain
-        self.qclass = eventchain()
+        return eventchain
 
 
 if __name__ == '__main__':

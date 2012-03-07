@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 '''callchain active call and event chains tests'''
 
+
 try:
     import unittest2 as unittest
 except ImportError:
     import unittest
+
+from callchain.tests.mixins.chain import CallChainMixin
 
 from callchain.tests.mixins.auto.queuing import AQMixin
 from callchain.tests.mixins.auto.mapping import AMapQMixin
@@ -20,23 +23,43 @@ from callchain.tests.mixins.man.reducing import MReduceQMixin
 from callchain.tests.mixins.man.filtering import MFilterQMixin
 
 
+class TestCallChain(unittest.TestCase, CallChainMixin):
+
+    def setUp(self):
+        self.qclass = self._makeone()
+
+    @property
+    def _makeone(self):
+        from callchain.chains.chain import callchain
+        return callchain
+
+
 class TestAutoChainQ(
     unittest.TestCase, AQMixin, AFilterQMixin, AMapQMixin, AReduceQMixin,
-    AOrderQMixin,
+    AOrderQMixin, CallChainMixin,
 ):
 
     def setUp(self):
+        self.qclass = self._makeone()
+
+    @property
+    def _makeone(self):
         from callchain.chains.autoactive.chain import chainq
-        self.qclass = chainq()
+        return chainq
 
 
 class TestManChainQ(
     Manning, MQMixin, MFilterQMixin, MMapQMixin, MReduceQMixin, MOrderQMixin,
+    CallChainMixin,
 ):
 
     def setUp(self):
+        self.qclass = self._makeone()
+
+    @property
+    def _makeone(self):
         from callchain.chains.activeman.chain import chainq
-        self.qclass = chainq()
+        return chainq
 
 
 if __name__ == '__main__':

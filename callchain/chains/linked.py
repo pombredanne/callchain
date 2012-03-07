@@ -32,14 +32,14 @@ class _LinkedMixin(Tentacle):
         # fetch appspaced thing...
         try:
             return self._oiget(label)
-        #...or return to root chain
+        # ...or go back to root chain
         except NoAppError:
             return getattr(self.back(), label)
 
     _ciget = _iget
 
     def back(self):
-        '''return to root call chain'''
+        '''go back to root call chain'''
         return self.root.back(self)
 
     _oback = back
