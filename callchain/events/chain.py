@@ -2,17 +2,16 @@
 '''event chains'''
 
 from callchain.octopus.core import InsideMixin
-from callchain.chains.chain import (
-    callchain, LazyChainQMixin, ActiveChainQMixin)
+from callchain.chains.chain import LazyChainQMixin, ActiveChainQMixin
 
-from callchain.events.core import ECoreMixin
+from callchain.events.core import ECoreMixin, ERunMixin
 
-__all__ = ('ActiveEChainQMixin', 'LazyEChainQMixin', 'eventchain', 'inside')
+__all__ = ('ActiveEChainQMixin', 'LazyEChainQMixin', 'inside')
 
 
-class _EChainMixin(ECoreMixin):
+class EChainMixin(ECoreMixin, ERunMixin):
 
-    '''event chain'''
+    '''event chain mixin'''
 
     def __init__(
         self,
@@ -31,7 +30,7 @@ class _EChainMixin(ECoreMixin):
         @param required: required settings (default: None)
         @param defaults: default settings (default: None)
         '''
-        super(_EChainMixin, self).__init__(
+        super(EChainMixin, self).__init__(
             patterns, required, defaults, *args, **kw
         )
         # local event registry
@@ -61,8 +60,6 @@ class _EChainMixin(ECoreMixin):
         '''
         return self.E.events(self._eget(event))
 
-
-
     def event(self, event):
         '''
         create or fetch event
@@ -71,10 +68,6 @@ class _EChainMixin(ECoreMixin):
         '''
         self.E.event(event)
         return self
-
-
-
-
 
     def unevent(self, event):
         '''
@@ -115,16 +108,11 @@ class inside(InsideMixin):
         return self._ocall(that)
 
 
-class eventchain(_EChainMixin, callchain):
-
-    '''event chain'''
-
-
-class LazyEChainQMixin(_EChainMixin, LazyChainQMixin):
+class LazyEChainQMixin(EChainMixin, LazyChainQMixin):
 
     '''lazy event chain mixin'''
 
 
-class ActiveEChainQMixin(_EChainMixin, ActiveChainQMixin):
+class ActiveEChainQMixin(EChainMixin, ActiveChainQMixin):
 
     '''active event chain mixin'''

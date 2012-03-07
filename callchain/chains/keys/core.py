@@ -54,6 +54,11 @@ class KCallChain(AOctopus, KChain):
 class KChainLink(ATentacle, KChain):
 
     '''linked call chain key'''
+        
+        
+class KChainlet(ATentacle, KChain):
+
+    '''linked call chain key'''
     
     def back():
         '''return to root call chain'''

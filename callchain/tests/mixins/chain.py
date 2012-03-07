@@ -7,7 +7,7 @@ class CallChainMixin(object):
     @property
     def _appconf(self):
         from callchain.octopus import Pathways, Nameways
-        from callchain.chains.linked import chainlink
+        from callchain.chains.root.linked import chainlink
         from math import ceil, fabs
         class testlink(chainlink): #@IgnorePep8
             def foo(self, x):

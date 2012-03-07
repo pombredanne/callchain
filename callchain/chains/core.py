@@ -4,6 +4,7 @@
 from collections import deque
 from functools import partial
 
+from stuf.utils import iterexcept
 from twoq.support import isstring
 
 from callchain.octopus import ResetLocalMixin
@@ -51,30 +52,38 @@ class _CoreMixin(ResetLocalMixin):
     _ochain = chain
 
 
-class LoneMixin(_CoreMixin):
+class ActiveMixin(_CoreMixin):
 
-    '''mixin for standalone chains'''
-
-    def _setup_chain(self):
-        '''setup call chain'''
-        self._osetup_chain()
-        self.outgoing = deque()
-        # outgoing things right extend
-        self._outextend = self.outgoing.extend
-        # outgoing things clear
-        self._outclear = self.outgoing.clear
-        # outgoing things right append
-        self._outappend = self.outgoing.extend
-
-    _csetup_chain = _setup_chain
-
-    def clear(self):
-        '''ANNIHILATE!!!'''
-        self._outclear()
-        self._cclear()
+    def commit(self):
+        '''consume call chain until exhausted'''
+        self._outextend(
+            c() for c in iterexcept(self._chain.popleft, IndexError)
+        )
         return self
 
-    _cclear = clear
+    _ocommit = commit
+
+
+class LazyMixin(_CoreMixin):
+
+    def commit(self):
+        '''consume call chain until exhausted'''
+        self.outgoing = deque(
+            c() for c in iterexcept(self._chain.popleft, IndexError)
+        )
+        return self
+
+
+class RootedMixin(_CoreMixin):
+
+    def __init__(self, root):
+        '''
+        init
+
+        @param root: root call chain
+        '''
+        super(RootedMixin, self).__init__(root)
+        self._setup_chain()
 
 
 class QMixin(_CoreMixin):
@@ -105,3 +114,56 @@ class QMixin(_CoreMixin):
         return self
 
     _ctap = tap
+
+
+class _SubQMixin(RootedMixin, QMixin):
+
+    '''linked call chain queue mixin'''
+
+    def __init__(self, root):
+        '''
+        init
+
+        @param root: root call chain
+        '''
+        super(_SubQMixin, self).__init__(root)
+        # sync with root callable
+        self._call = root._call
+        # sync with root postitional arguments
+        self._args = root._args
+        # sync with root keyword arguments
+        self._kw = root._kw
+
+
+class ActiveRootedQMixin(_SubQMixin):
+
+    '''active rooted queue mixin'''
+
+    def __init__(self, root):
+        '''
+        init
+
+        @param root: root call chain
+        '''
+        super(ActiveRootedQMixin, self).__init__(root)
+        # sync with root incoming things
+        self._inextend(root.incoming)
+        # sync with root outgoing things
+        self._outextend(root.outgoing)
+
+
+class LazyRootedQMixin(_SubQMixin):
+
+    '''lazy linked call chainlet queue mixin'''
+
+    def __init__(self, root):
+        '''
+        init
+
+        @param root: root call chain
+        '''
+        super(LazyRootedQMixin, self).__init__(root)
+        # sync with root incoming things
+        self.incoming = root.incoming
+        # sync with root outgoing things
+        self.outgoing = root.outgoing

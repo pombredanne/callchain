@@ -1,21 +1,17 @@
 # -*- coding: utf-8 -*-
 '''callchain call chains'''
 
-from collections import deque
-
-from stuf.utils import iterexcept
-
 from callchain.octopus import Octopus
 from callchain.octopus.keys import NoServiceError
 
-from callchain.chains.core import QMixin, LoneMixin
+from callchain.chains.core import QMixin, ActiveMixin, LazyMixin
 
-__all__ = ('ActiveChainQMixin', 'LazyChainQMixin', 'callchain')
+__all__ = ('ActiveChainQMixin', 'LazyChainQMixin', 'ChainMixin')
 
 
-class _ChainMixin(Octopus):
+class ChainMixin(Octopus):
 
-    '''core call chain mixin'''
+    '''call chain mixin'''
 
     def __init__(self, pattern=None, required=None, defaults=None, **kw):
         '''
@@ -25,7 +21,7 @@ class _ChainMixin(Octopus):
         @param required: required settings (default: None)
         @param defaults: default settings (default: None)
         '''
-        super(_ChainMixin, self).__init__(pattern, required, defaults, **kw)
+        super(ChainMixin, self).__init__(pattern, required, defaults, **kw)
         self._setup_chain()
 
     def _iget(self, label):
@@ -58,15 +54,6 @@ class _ChainMixin(Octopus):
 
     _oback = back
 
-    def commit(self):
-        '''consume call chain until exhausted'''
-        self._outextend(
-            c() for c in iterexcept(self._chain.popleft, IndexError)
-        )
-        return self
-
-    _ocommit = commit
-
     def switch(self, label, key=False):
         '''
         overt switch to linked call chain from external appspace
@@ -79,12 +66,7 @@ class _ChainMixin(Octopus):
     _oswitch = switch
 
 
-class callchain(_ChainMixin, LoneMixin):
-
-    '''call chain'''
-
-
-class _ChainQMixin(_ChainMixin, QMixin):
+class _ChainQMixin(ChainMixin, QMixin):
 
     '''call chain queue mixin'''
 
@@ -106,7 +88,7 @@ class _ChainQMixin(_ChainMixin, QMixin):
     _cback = back
 
 
-class ActiveChainQMixin(_ChainQMixin):
+class ActiveChainQMixin(_ChainQMixin, ActiveMixin):
 
     '''active call chain queue mixin'''
 
@@ -136,7 +118,7 @@ class ActiveChainQMixin(_ChainQMixin):
     _ccback = back
 
 
-class LazyChainQMixin(_ChainQMixin):
+class LazyChainQMixin(_ChainQMixin, LazyMixin):
 
     '''lazy call chain queue mixin'''
 
@@ -146,13 +128,6 @@ class LazyChainQMixin(_ChainQMixin):
         self.clear()
         # extend incoming things
         self.incoming = iter([args[0]]) if len(args) == 1 else iter(args)
-        return self
-
-    def commit(self):
-        '''consume call chain until exhausted'''
-        self.outgoing = deque(
-            c() for c in iterexcept(self._chain.popleft, IndexError)
-        )
         return self
 
     def back(self, link):

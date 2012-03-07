@@ -10,8 +10,6 @@ from appspace import Patterns, Registry
 
 from callchain.octopus import ResetLocalMixin
 
-from callchain.chains.chain import callchain
-
 from callchain.events.keys.events import EEvent
 
 __all__ = ('ECoreMixin', 'EventRegistry')
@@ -21,12 +19,38 @@ class ECoreMixin(ResetLocalMixin):
 
     '''base event chain mixin'''
 
-    _callchain = callchain
-
     def _events(self, *events):
         '''get callables bound to `*events`'''
         getit = self._getevent
         return chain(*tuple(imap(getit, events)))
+
+    def on(self, event, call, key=False, *args, **kw):
+        '''
+        bind callable to event
+
+        @param event: event label
+        @param call: callable or eventspace label
+        @param key: key label (default: False)
+        '''
+        self._eventq(event).chain(call, key, *args, **kw)
+        return self
+
+    def off(self, event):
+        '''
+        clear all callables bound to event
+
+        @param event: event label
+        '''
+        self.E.unset(event)
+        return self
+
+    def trigger(self, *events):
+        '''add callables bound to `*events` to main call chain'''
+        self._cxtend(self._events(*events))
+        return self
+
+
+class ERunMixin(ECoreMixin):
 
     def commit(self):
         '''run event chain'''
@@ -78,30 +102,49 @@ class ECoreMixin(ResetLocalMixin):
             self._sclear()
         return self
 
-    def on(self, event, call, key=False, *args, **kw):
+
+class ERootedMixin(ECoreMixin):
+
+    '''linked event chain'''
+
+    def __init__(self, root):
         '''
-        bind callable to event
+        init
+
+        @param root: root event chain
+        '''
+        super(ERootedMixin, self).__init__(root)
+        # root event chain getter
+        self._regetit = self.root._getevent
+        # event getter
+        self._eget = self.root.event
+        # local event registry
+        self.E = EventRegistry('events') if root.events is not None else None
+
+    def _eventq(self, event):
+        '''
+        fetch chain tied to `event`
 
         @param event: event label
-        @param call: callable or eventspace label
-        @param key: key label (default: False)
         '''
-        self._eventq(event).chain(call, key, *args, **kw)
-        return self
+        # fetch event from root call chain
+        event = self._eget(event)
+        # fetch linked call chain bound to event
+        queue = self.E.get(event)
+        if queue is None:
+            # create liked call chain if nonexistent
+            queue = self._chainlink(self)
+            self.E.set(event, queue)
+        return queue
 
-    def off(self, event):
+    def _getevent(self, event):
         '''
-        clear all callables bound to event
+        fetch callables bound to event
 
         @param event: event label
         '''
-        self.E.unset(event)
-        return self
-
-    def trigger(self, *events):
-        '''add callables bound to `*events` to main call chain'''
-        self._cxtend(self._events(*events))
-        return self
+        e = self._eget(event)
+        return chain(self.E.events(e), self._regetit(e))
 
 
 class EventRegistry(Registry):
