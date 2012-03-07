@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''callchain linked call chains'''
+'''callchain call chainlets'''
 
 from appspace.keys import NoAppError
 
@@ -7,12 +7,12 @@ from callchain.octopus import Tentacle
 
 from callchain.chains.core import QMixin, LoneMixin
 
-__all__ = ('ActiveLinkQMixin', 'LazyLinkQMixin', 'linked')
+__all__ = ('ActiveChainletQMixin', 'LazyChainletQMixin', 'linked')
 
 
-class _LinkedMixin(Tentacle):
+class _ChainletMixin(Tentacle):
 
-    '''linked call chain mixin'''
+    '''linked call chainlet mixin'''
 
     def __init__(self, root):
         '''
@@ -20,7 +20,7 @@ class _LinkedMixin(Tentacle):
 
         @param root: root call chain
         '''
-        super(_LinkedMixin, self).__init__(root)
+        super(_ChainletMixin, self).__init__(root)
         self._setup_chain()
 
     def _iget(self, label):
@@ -38,8 +38,14 @@ class _LinkedMixin(Tentacle):
 
     _ciget = _iget
 
+    def back(self):
+        '''go back to root call chain'''
+        return self.root.back(self)
 
-class _LinkedQMixin(_LinkedMixin, QMixin):
+    _oback = back
+
+
+class _ChainletQMixin(_ChainletMixin, QMixin):
 
     '''linked call chain queue mixin'''
 
@@ -49,7 +55,7 @@ class _LinkedQMixin(_LinkedMixin, QMixin):
 
         @param root: root call chain
         '''
-        super(_LinkedQMixin, self).__init__(root)
+        super(_ChainletQMixin, self).__init__(root)
         # sync with root callable
         self._call = root._call
         # sync with root postitional arguments
@@ -58,14 +64,14 @@ class _LinkedQMixin(_LinkedMixin, QMixin):
         self._kw = root._kw
 
 
-class chainlink(_LinkedMixin, LoneMixin):
+class chainlet(_ChainletMixin, LoneMixin):
 
-    '''linked call chain'''
+    '''linked call chainlet'''
 
 
-class ActiveLinkQMixin(_LinkedQMixin):
+class ActiveChainletQMixin(_ChainletQMixin):
 
-    '''active linked call chain queue mixin'''
+    '''active call chainlet queue mixin'''
 
     def __init__(self, root):
         '''
@@ -73,16 +79,16 @@ class ActiveLinkQMixin(_LinkedQMixin):
 
         @param root: root call chain
         '''
-        super(ActiveLinkQMixin, self).__init__(root)
+        super(ActiveChainletQMixin, self).__init__(root)
         # sync with root incoming things
         self._inextend(root.incoming)
         # sync with root outgoing things
         self._outextend(root.outgoing)
 
 
-class LazyLinkQMixin(_LinkedQMixin):
+class LazyChainletQMixin(_ChainletQMixin):
 
-    '''lazy linked call chain queue mixin'''
+    '''lazy linked call chainlet queue mixin'''
 
     def __init__(self, root):
         '''
@@ -90,7 +96,7 @@ class LazyLinkQMixin(_LinkedQMixin):
 
         @param root: root call chain
         '''
-        super(LazyLinkQMixin, self).__init__(root)
+        super(LazyChainletQMixin, self).__init__(root)
         # sync with root incoming things
         self.incoming = root.incoming
         # sync with root outgoing things

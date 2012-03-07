@@ -19,7 +19,7 @@ __all__ = ['eventlink', 'eventchain']
 @appifies(KEventLink, KQueue)
 class eventlink(ActiveELinkQMixin, ManQMixin):
 
-    '''manually balanced linked event chain'''
+    '''manually balanced chainlet event chain'''
 
 
 @appifies(KEventChain, KResults)

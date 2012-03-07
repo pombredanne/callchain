@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-'''call chains core'''
+'''callchain call chains'''
+
+from collections import deque
 
 from stuf.utils import iterexcept
 
@@ -59,7 +61,7 @@ class _ChainMixin(Octopus):
     def commit(self):
         '''consume call chain until exhausted'''
         self._outextend(
-            call() for call in iterexcept(self._chain.popleft, IndexError)
+            c() for c in iterexcept(self._chain.popleft, IndexError)
         )
         return self
 
@@ -144,6 +146,13 @@ class LazyChainQMixin(_ChainQMixin):
         self.clear()
         # extend incoming things
         self.incoming = iter([args[0]]) if len(args) == 1 else iter(args)
+        return self
+
+    def commit(self):
+        '''consume call chain until exhausted'''
+        self.outgoing = deque(
+            c() for c in iterexcept(self._chain.popleft, IndexError)
+        )
         return self
 
     def back(self, link):

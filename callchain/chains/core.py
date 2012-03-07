@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''call chains mixins'''
+'''callchains chain mixins'''
 
 from collections import deque
 from functools import partial

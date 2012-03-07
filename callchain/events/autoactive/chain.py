@@ -9,9 +9,9 @@ from callchain.chains.keys.queue import KQueue, KResults
 from callchain.events.chain import inside
 from callchain.events.keys.apps import events
 from callchain.events.autoactive.apps import event
-from callchain.events.keys.core import KEventLink, KEventChain
 from callchain.events.linked import ActiveELinkQMixin
 from callchain.events.chain import ActiveEChainQMixin
+from callchain.events.keys.core import KEventLink, KEventChain
 
 __all__ = ['eventlink', 'eventchain']
 
@@ -19,7 +19,7 @@ __all__ = ['eventlink', 'eventchain']
 @appifies(KEventLink, KQueue)
 class eventlink(ActiveELinkQMixin, AutoQMixin):
 
-    '''auto-balancing linked event chain'''
+    '''auto-balancing chainlet event chain'''
 
 
 @appifies(KEventChain, KResults)

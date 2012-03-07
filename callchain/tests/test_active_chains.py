@@ -33,6 +33,14 @@ class TestCallChain(unittest.TestCase, CallChainMixin):
         from callchain.chains.chain import callchain
         return callchain
 
+#    def test_switch(self):
+#        qclass = self._appconf
+#        foo = qclass.switch('test', 'sublink').foo(3).bar(3).back()
+#        foo.commit()
+#        outgoing = foo.outgoing
+#        self.assertEqual(outgoing.popleft(), 3.0)
+#        self.assertEqual(outgoing.popleft(), 3.0)
+
 
 class TestAutoChainQ(
     unittest.TestCase, AQMixin, AFilterQMixin, AMapQMixin, AReduceQMixin,
