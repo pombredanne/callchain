@@ -68,10 +68,13 @@ class LazyMixin(_CoreMixin):
 
     def commit(self):
         '''consume call chain until exhausted'''
-        self.outgoing = deque(
+        outgoing = deque(
             c() for c in iterexcept(self._chain.popleft, IndexError)
         )
+        self.outgoing = outgoing
         return self
+
+    _ocommit = commit
 
 
 class RootedMixin(_CoreMixin):

@@ -8,7 +8,7 @@ __all__ = ['event']
 
 class event(Pathways):
     linked = 'callchain.events.autolazy.linked.linkq'
-    callchain = 'callchain.chains.root.chain.callchain'
+    callchain = 'callchain.chains.root.linked.chainlink'
 
     class filter(Nameways):
         key = 'callchain.chains.keys.filter.KFilter'

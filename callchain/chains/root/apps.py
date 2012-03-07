@@ -7,4 +7,4 @@ __all__ = ['chain']
 
 
 class chain(Pathways):
-    linked = 'callchain.chains.root.linked.linkq'
+    linked = 'callchain.chains.root.linked.chainlink'

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''callchain eventlets'''
+'''callchain eventlet mixins'''
 
 from callchain.chains.chainlet import ActiveChainletQMixin, LazyChainletQMixin
 

@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
-'''event chains'''
+'''callchain event chain mixins'''
 
 from callchain.octopus.core import InsideMixin
+from callchain.octopus.resets import ResetLocalMixin
 from callchain.chains.chain import LazyChainQMixin, ActiveChainQMixin
 
-from callchain.events.core import (
-    ECoreMixin, EActiveMixin, ELazyMixin, EventRegistry)
+from callchain.events.core import EActiveMixin, ELazyMixin, EventRegistry
+
 
 __all__ = ('ActiveEChainQMixin', 'LazyEChainQMixin', 'inside')
 
 
-class EChainMixin(ECoreMixin):
+class EChainMixin(ResetLocalMixin):
 
     '''event chain mixin'''
 

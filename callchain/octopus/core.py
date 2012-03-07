@@ -103,6 +103,9 @@ class _Octopus(ResetLocalMixin):
         '''external appspace interface'''
         return Appspace(self.M) if self.M is not None else None
 
+    class Meta:
+        pass
+
 
 class Octopus(_Octopus):
 

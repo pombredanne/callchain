@@ -44,11 +44,9 @@ class Manager(_Manager):
         '''
         # gather local settings from thing and its base classes, adding any
         # arbitrary settings
-        return twoq(
-            [type.mro(getcls(thing)), [thing]]
-        ).smash().pick('Meta').members().reup().wrap(stuf).map().invoke(
-            'update', *args, **kw
-        ).value()
+        return twoq([type.mro(getcls(thing)), [thing]]).smash().pick('Meta'
+        ).members().tap(lambda x: not x[0].startswith('__')).filter().reup(
+        ).wrap(stuf).map().invoke('update', *args, **kw).value()
 
     def freeze(self, *args, **kw):
         '''finalize settings'''

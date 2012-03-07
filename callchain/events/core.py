@@ -57,10 +57,11 @@ class ECoreMixin(ResetLocalMixin):
         return self
 
 
-class _ERunMixin(ResetLocalMixin):
+class _ERunMixin(ECoreMixin):
 
     def commit(self):
         '''run event chain'''
+        commit = self._ocommit
         try:
             trigger = self.trigger
             fire = self.fire
@@ -69,7 +70,7 @@ class _ERunMixin(ResetLocalMixin):
             # 2. work event
             trigger('work')
             # everything else
-            self._ocommit()
+            commit()
             # 3. change event
             fire('change')
             # 4. any event
@@ -105,7 +106,7 @@ class EActiveMixin(_ERunMixin):
             self._sxtend(self._events(*events))
             # run event call chain until scratch queue is exhausted
             self._outextend(call() for call in iterexcept(
-                self._scratch.popleft, IndexError
+                self._scratch.popleft, IndexError,
             ))
         finally:
             # clear scratch queue
@@ -124,7 +125,7 @@ class ELazyMixin(_ERunMixin):
             self._scratch = deque(self._events(*events))
             # run event call chain until scratch queue is exhausted
             self.outgoing = deque(call() for call in iterexcept(
-                self._scratch.popleft, IndexError
+                self._scratch.popleft, IndexError,
             ))
         finally:
             # clear scratch queue

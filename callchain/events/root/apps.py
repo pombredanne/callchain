@@ -8,4 +8,4 @@ __all__ = ['event']
 
 class event(Pathways):
     linked = 'callchain.events.root.linked.linkq'
-    callchain = 'callchain.chains.root.chain.linkq'
+    callchain = 'callchain.chains.root.linked.chainlink'
