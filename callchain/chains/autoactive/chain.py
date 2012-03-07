@@ -2,27 +2,21 @@
 '''active auto-balancing call chains'''
 
 from appspace.keys import appifies
-from twoq.active.mixins import AutoQMixin, AutoResultMixin
+from twoq.active.mixins import AutoResultMixin
 
 from callchain.octopus import inside
 
-from callchain.chains.autoactive.apps import chain
+from callchain.chains.keys.queue import KResults
+from callchain.chains.keys.core import KCallChain
 from callchain.chains.chain import ActiveChainQMixin
-from callchain.chains.linked import ActiveLinkQMixin
-from callchain.chains.keys.queue import KQueue, KResults
-from callchain.chains.keys.core import KChainLink, KCallChain
 
-__all__ = ('chainq', 'linkedq')
+from callchain.chains.autoactive.apps import chain
 
-
-@appifies(KChainLink, KQueue)
-class linkedq(ActiveLinkQMixin, AutoQMixin):
-
-    '''auto-balancing linked call chain'''
+__all__ = ['chainq']
 
 
 @appifies(KCallChain, KResults)
 @inside(chain)
 class chainq(ActiveChainQMixin, AutoResultMixin):
 
-    '''auto-balancing call chain'''
+    '''active sauto-balancing call chain'''

@@ -7,6 +7,7 @@ __all__ = ['chain']
 
 
 class chain(Pathways):
+    linked = 'callchain.chains.autoactive.linked.linkq'
 
     class filter(Nameways):
         key = 'callchain.chains.keys.filter.KFilter'
