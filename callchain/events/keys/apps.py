@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 '''event keys'''
 
-from callchain.events.core import Patterns
-
 __all__ = ['events']
 
 
-class events(Patterns):
+class events(object):
     key = 'callchain.events.keys.events.EEvent'
     # 1. before event
     before = 'callchain.events.keys.events.EBefore'

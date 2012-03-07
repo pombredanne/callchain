@@ -2,11 +2,11 @@
 '''callchain root event chains'''
 
 from callchain.chains.root.linked import chainlink
-from callchain.events.core import ERootedMixin, ERunMixin
+from callchain.events.core import ERootedMixin, EActiveMixin
 
 __all__ = ['eventlink']
 
 
-class eventlink(ERootedMixin, ERunMixin, chainlink):
+class eventlink(ERootedMixin, EActiveMixin, chainlink):
 
     '''root linked event chain'''

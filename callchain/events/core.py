@@ -2,13 +2,14 @@
 '''event core mixins'''
 
 from functools import partial
+from collections import deque
 from itertools import chain, starmap
 
 from stuf.six import items
 from stuf import orderedstuf
-from appspace import Patterns, Registry
+from appspace import Registry
 from appspace.keys import imap, ifilter
-from stuf.utils import iterexcept, exhaust, twoway
+from stuf.utils import iterexcept, exhaust
 
 from callchain.octopus import ResetLocalMixin
 
@@ -56,7 +57,7 @@ class ECoreMixin(ResetLocalMixin):
         return self
 
 
-class ERunMixin(ResetLocalMixin):
+class _ERunMixin(ResetLocalMixin):
 
     def commit(self):
         '''run event chain'''
@@ -92,6 +93,9 @@ class ERunMixin(ResetLocalMixin):
         _eventq = self._eventq
         return orderedstuf((e, _eventq(e).queue) for e in events)
 
+
+class EActiveMixin(_ERunMixin):
+
     def fire(self, *events):
         '''run callables bound to `*events` immediately'''
         try:
@@ -106,6 +110,25 @@ class ERunMixin(ResetLocalMixin):
         finally:
             # clear scratch queue
             self._sclear()
+        return self
+
+
+class ELazyMixin(_ERunMixin):
+
+    def fire(self, *events):
+        '''run callables bound to `*events` immediately'''
+        try:
+            # clear scratch queue
+            self._scratch = None
+            # queue global and local bound callables
+            self._scratch = deque(self._events(*events))
+            # run event call chain until scratch queue is exhausted
+            self.outgoing = deque(call() for call in iterexcept(
+                self._scratch.popleft, IndexError
+            ))
+        finally:
+            # clear scratch queue
+            self._scratch = None
         return self
 
 
@@ -186,7 +209,7 @@ class EventRegistry(Registry):
 
     def get(self, label):
         '''
-        fetch thingto events
+        fetch thing from events
 
         @param event: event label
         '''
@@ -195,7 +218,7 @@ class EventRegistry(Registry):
 
     def set(self, label, call):
         '''
-        bound thing to event
+        bind thing to event
 
         @param event: event label
         @param call: some thing
@@ -223,13 +246,3 @@ class EventRegistry(Registry):
         ez_register = partial(self.ez_register, self._key)
         t = lambda x: not x[0].startswith('_')
         exhaust(starmap(ez_register, ifilter(t, items(vars(events)))))
-
-
-class Pathways(Patterns):
-
-    '''patterns for event registry'''
-    
-    @twoway
-    def _manager(self):
-        '''manager class'''
-        return EventRegistry

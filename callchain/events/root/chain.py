@@ -10,12 +10,13 @@ from callchain.events.keys.core import KEventChain
 from callchain.events.chain import EChainMixin, inside
 
 from callchain.events.root.apps import event
+from callchain.events.core import EActiveMixin
 
 __all__ = ['eventchain']
 
 
 @appifies(KEventChain, KResults)
 @inside(event, events)
-class eventchain(EChainMixin, callchain):
+class eventchain(EChainMixin, EActiveMixin, callchain):
 
     '''root event chain'''

@@ -3,8 +3,8 @@
 
 from twoq import port
 from stuf.six import strings
+from stuf.utils import exhaust
 from appspace.utils import lazyimport
-from stuf.utils import exhaust, twoway
 from appspace.keys import ConfigurationError, ANamespace, imap
 from appspace.spaces import Branch, Namespace, Patterns, patterns
 
@@ -18,10 +18,7 @@ class Pathways(Patterns):
 
     '''patterns for appspace'''
 
-    @twoway
-    def _manager(self):
-        '''manager class'''
-        return Manager
+    _manager = Manager
 
     @classmethod
     def appspace(cls, pattern, required=None, defaults=None, *args, **kw):

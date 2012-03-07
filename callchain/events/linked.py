@@ -3,16 +3,19 @@
 
 from callchain.chains.linked import ActiveLinkQMixin, LazyLinkQMixin
 
-from callchain.events.core import ERunMixin, ERootedMixin, ECoreMixin
+from callchain.events.core import (
+    ERootedMixin, ECoreMixin, EActiveMixin, ELazyMixin)
 
 __all__ = ['ActiveELinkQMixin', 'LazyELinkQMixin']
 
 
-class ActiveELinkQMixin(ECoreMixin, ERunMixin, ERootedMixin, ActiveLinkQMixin):
+class ActiveELinkQMixin(
+    ECoreMixin, EActiveMixin, ERootedMixin, ActiveLinkQMixin
+):
 
     '''active linked event chain mixin'''
 
 
-class LazyELinkQMixin(ECoreMixin, ERunMixin, ERootedMixin, LazyLinkQMixin):
+class LazyELinkQMixin(ECoreMixin, ELazyMixin, ERootedMixin, LazyLinkQMixin):
 
     '''lazy linked event chain mixin'''
