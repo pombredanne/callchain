@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 '''event core mixins'''
 
-from itertools import chain
+from functools import partial
+from itertools import chain, starmap
 
+from stuf.six import items
 from stuf import orderedstuf
-from stuf.utils import iterexcept
-from appspace.keys import imap
 from appspace import Patterns, Registry
+from appspace.keys import imap, ifilter
+from stuf.utils import iterexcept, exhaust, twoway
 
 from callchain.octopus import ResetLocalMixin
 
@@ -19,9 +21,13 @@ class ECoreMixin(ResetLocalMixin):
 
     '''base event chain mixin'''
 
+    @property
+    def _callchain(self):
+        return self._M.get('callchain', 'event')(self)
+
     def _events(self, *events):
         '''get callables bound to `*events`'''
-        getit = self._getevent
+        getit = self._event
         return chain(*tuple(imap(getit, events)))
 
     def on(self, event, call, key=False, *args, **kw):
@@ -50,7 +56,7 @@ class ECoreMixin(ResetLocalMixin):
         return self
 
 
-class ERunMixin(ECoreMixin):
+class ERunMixin(ResetLocalMixin):
 
     def commit(self):
         '''run event chain'''
@@ -103,7 +109,7 @@ class ERunMixin(ECoreMixin):
         return self
 
 
-class ERootedMixin(ECoreMixin):
+class ERootedMixin(ResetLocalMixin):
 
     '''linked event chain'''
 
@@ -115,11 +121,11 @@ class ERootedMixin(ECoreMixin):
         '''
         super(ERootedMixin, self).__init__(root)
         # root event chain getter
-        self._regetit = self.root._getevent
+        self._regetit = self.root._event
         # event getter
         self._eget = self.root.event
         # local event registry
-        self.E = EventRegistry('events') if root.events is not None else None
+        self.E = EventRegistry('events')
 
     def _eventq(self, event):
         '''
@@ -133,11 +139,11 @@ class ERootedMixin(ECoreMixin):
         queue = self.E.get(event)
         if queue is None:
             # create liked call chain if nonexistent
-            queue = self._chainlink(self)
+            queue = self._callchain(self)
             self.E.set(event, queue)
         return queue
 
-    def _getevent(self, event):
+    def _event(self, event):
         '''
         fetch callables bound to event
 
@@ -213,9 +219,17 @@ class EventRegistry(Registry):
         '''
         self.ez_unsubscribe(self._key, label)
 
+    def update(self, events):
+        ez_register = partial(self.ez_register, self._key)
+        t = lambda x: not x[0].startswith('_')
+        exhaust(starmap(ez_register, ifilter(t, items(vars(events)))))
+
 
 class Pathways(Patterns):
 
     '''patterns for event registry'''
-
-    _manager = EventRegistry
+    
+    @twoway
+    def _manager(self):
+        '''manager class'''
+        return EventRegistry

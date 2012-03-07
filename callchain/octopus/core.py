@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''appspace octopus'''
+'''callchain octopus core'''
 
 from twoq.support import port
 from stuf.core import frozenstuf

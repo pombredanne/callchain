@@ -25,7 +25,7 @@ class EChainMixin(ECoreMixin, ERunMixin):
         '''
         init
 
-        @param patterns: pattern config or appspace label (default: None)
+        @param patterns: pattern config or eventspace label (default: None)
         @param events: events configuration (default: None)
         @param required: required settings (default: None)
         @param defaults: default settings (default: None)
@@ -33,8 +33,9 @@ class EChainMixin(ECoreMixin, ERunMixin):
         super(EChainMixin, self).__init__(
             patterns, required, defaults, *args, **kw
         )
-        # local event registry
-        self.E = events.build() if events is not None else None
+        # update event registry
+        if events is not None:
+            self.E.update(events)
 
     def _eventq(self, event):
         '''
@@ -48,11 +49,11 @@ class EChainMixin(ECoreMixin, ERunMixin):
         queue = self.E.get(event)
         if queue is None:
             # create linked call chain if nonexistent
-            queue = self._chainlink(self)
+            queue = self._callchain
             self.E.set(event, queue)
         return queue
 
-    def _getevent(self, event):
+    def _event(self, event):
         '''
         fetch callables bound to event
 
@@ -104,7 +105,7 @@ class inside(InsideMixin):
         self.events = events
 
     def __call__(self, that):
-        that._E = self.events.build()
+        that.E = self.events.build()
         return self._ocall(that)
 
 

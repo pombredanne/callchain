@@ -36,11 +36,11 @@ class ChainletMixin(Tentacle):
     _oback = back
 
 
-class ActiveChainletQMixin(ChainletMixin, ActiveRootedQMixin):
+class ActiveChainletQMixin(ActiveRootedQMixin, ChainletMixin):
 
     '''active call chainlet queue mixin'''
 
 
-class LazyChainletQMixin(ChainletMixin, LazyRootedQMixin):
+class LazyChainletQMixin(LazyRootedQMixin, ChainletMixin):
 
     '''lazy linked call chainlet queue mixin'''

@@ -3,16 +3,16 @@
 
 from callchain.chains.chainlet import ActiveChainletQMixin, LazyChainletQMixin
 
-from callchain.events.core import ERootedMixin
+from callchain.events.core import ERootedMixin, ECoreMixin
 
 __all__ = ('ActiveELetQMixin', 'LazyELetQMixin')
 
 
-class ActiveELetQMixin(ERootedMixin, ActiveChainletQMixin):
+class ActiveELetQMixin(ECoreMixin, ERootedMixin, ActiveChainletQMixin):
 
     '''active eventlet mixin'''
 
 
-class LazyELetQMixin(ERootedMixin, LazyChainletQMixin):
+class LazyELetQMixin(ECoreMixin, ERootedMixin, LazyChainletQMixin):
 
     '''lazy eventlet mixin'''

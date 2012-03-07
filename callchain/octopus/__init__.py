@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''octopus, with its tentacles into everything'''
+'''callchain octopus, with its tentacles into everything'''
 
 from callchain.octopus.managers import Manager
 from callchain.octopus.core import Octopus, Tentacle, inside

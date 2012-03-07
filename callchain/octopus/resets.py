@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''octopus resetables'''
+'''callchain octopus resetables'''
 
 from threading import local
 

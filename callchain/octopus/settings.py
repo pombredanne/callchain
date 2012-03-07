@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''octopus settings'''
+'''callchain octopus settings'''
 
 from inspect import isclass
 

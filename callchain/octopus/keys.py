@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''octopus core keys'''
+'''callchain octopus keys'''
 
 from appspace.keys import AppspaceKey, Attribute
 

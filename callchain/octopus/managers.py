@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''octopus managers'''
+'''callchain octopus managers'''
 
 from twoq import twoq
 from stuf import stuf
