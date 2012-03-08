@@ -67,6 +67,6 @@ class LazyChainletMixin(LazyRootedMixin, Octuplet):
     '''lazy queued chainlet mixin'''
 
 
-class LazyELetMixin(EventMixin, ERootedMixin, LazyChainletMixin):
+class LazyEventletMixin(EventMixin, ERootedMixin, LazyChainletMixin):
 
     '''lazy eventlet mixin'''

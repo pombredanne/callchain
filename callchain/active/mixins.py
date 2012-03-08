@@ -5,10 +5,9 @@ from collections import deque
 
 from stuf.utils import iterexcept
 
-from callchain.octopus import Octuplet
 from callchain.chains import ChainMixin, RootedQMixin
 
-from callchain.events import ERunMixin, EventMixin, ERootedMixin
+from callchain.events import ERunMixin
 from callchain.resets import ResetLocalMixin
 
 
@@ -62,16 +61,6 @@ class ActiveRootedMixin(RootedQMixin):
         self._inextend(root.incoming)
         # sync with root outgoing things
         self._outextend(root.outgoing)
-
-
-class ActiveChainletMixin(ActiveRootedMixin, Octuplet):
-
-    '''active queued chainlet mixin'''
-
-
-class ActiveELetMixin(EventMixin, ERootedMixin, ActiveChainletMixin):
-
-    '''active eventlet mixin'''
 
 
 class RootMixin(ResetLocalMixin):

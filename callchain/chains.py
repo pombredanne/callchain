@@ -111,7 +111,7 @@ class RootedQMixin(RootedMixin, QMixin):
         self._call = root._call
 
 
-class ChainMixin(Octopus):
+class ChainMixin(ChainsMixin, Octopus):
 
     '''call chain mixin'''
 

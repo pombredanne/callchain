@@ -18,6 +18,10 @@ from callchain.active.man.events import event as mevent
 from callchain.active.auto.events import event as aevent
 from callchain.active.mixins import ActiveMixin, ActiveEMixin, RootMixin
 
+###############################################################################
+## active chain mixins ########################################################
+###############################################################################
+
 
 class ActiveChainMixin(ChainQMixin, ActiveMixin):
 
@@ -54,9 +58,14 @@ class ActiveEChainMixin(ActiveEMixin, EChainMixin, ActiveChainMixin):
     '''active event chain mixin'''
 
 
+###############################################################################
+## root call chains ###########################################################
+###############################################################################
+
+
 @appifies(KCallChain)
 @inside(chain)
-class callchain(ActiveMixin, RootMixin):
+class callchain(RootMixin, ActiveMixin):
 
     '''call chain'''
 
@@ -66,6 +75,11 @@ class callchain(ActiveMixin, RootMixin):
 class eventchain(EChainMixin, ActiveEMixin, callchain):
 
     '''root event chain'''
+
+
+###############################################################################
+## active queued call chains ##################################################
+###############################################################################
 
 
 @appifies(KCallChain, KResults)

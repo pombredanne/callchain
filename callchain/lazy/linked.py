@@ -10,7 +10,7 @@ from callchain.events import ERootedMixin
 from callchain.keys.chain import KChainLink, KEventLink
 
 from callchain.lazy.mixins import (
-    LazyRootedMixin, LazyMixin, ELazyMixin, LazyELetMixin)
+    LazyRootedMixin, LazyMixin, ELazyMixin, LazyEventletMixin)
 
 
 class LazyLinkMixin(LazyRootedMixin, LazyMixin, Tentacle):
@@ -36,12 +36,12 @@ class lmlinkq(LazyLinkMixin, ManQMixin):
 
 
 @appifies(KEventLink, KQueue)
-class laelinkq(LazyELetMixin, AutoQMixin):
+class laelinkq(LazyEventletMixin, AutoQMixin):
 
     '''lazy queued auto-balancing linked event chain'''
 
 
 @appifies(KEventLink, KQueue)
-class lmelinkq(LazyELetMixin, ManQMixin):
+class lmelinkq(LazyEventletMixin, ManQMixin):
 
     '''lazy queued manually balanced linked event chain'''
