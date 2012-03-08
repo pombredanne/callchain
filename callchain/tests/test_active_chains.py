@@ -30,7 +30,7 @@ class TestCallChain(unittest.TestCase, CallChainMixin):
 
     @property
     def _makeone(self):
-        from callchain.chains.root.chain import callchain
+        from callchain.active.chain import callchain
         return callchain
 
 #    def test_switch(self):
@@ -52,8 +52,8 @@ class TestAutoChainQ(
 
     @property
     def _makeone(self):
-        from callchain.chains.autoactive.chain import chainq
-        return chainq
+        from callchain.active.chain import aachainq
+        return aachainq
 
 
 class TestManChainQ(
@@ -66,8 +66,8 @@ class TestManChainQ(
 
     @property
     def _makeone(self):
-        from callchain.chains.activeman.chain import chainq
-        return chainq
+        from callchain.active.chain import amchainq
+        return amchainq
 
 
 if __name__ == '__main__':

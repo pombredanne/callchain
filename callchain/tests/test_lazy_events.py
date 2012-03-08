@@ -6,8 +6,6 @@ try:
 except ImportError:
     import unittest
 
-from callchain.tests.mixins.event import EventChainMixin
-
 from callchain.tests.mixins.auto.queuing import AQMixin
 from callchain.tests.mixins.auto.mapping import AMapQMixin
 from callchain.tests.mixins.auto.ordering import AOrderQMixin
@@ -23,7 +21,7 @@ from callchain.tests.mixins.man.filtering import MFilterQMixin
 
 
 class TestLazyAutoEventChain(
-    unittest.TestCase, EventChainMixin, AQMixin, AFilterQMixin, AMapQMixin,
+    unittest.TestCase, AQMixin, AFilterQMixin, AMapQMixin,
     AReduceQMixin, AOrderQMixin,
 ):
 
@@ -32,12 +30,12 @@ class TestLazyAutoEventChain(
 
     @property
     def _makeone(self):
-        from callchain.events.autolazy.chain import eventchain
-        return eventchain
+        from callchain.lazy.chain import laeventq
+        return laeventq
 
 
 class TestLazyManEventChain(
-    Manning, EventChainMixin, MQMixin, MFilterQMixin, MMapQMixin,
+    Manning, MQMixin, MFilterQMixin, MMapQMixin,
     MReduceQMixin, MOrderQMixin,
 ):
     def setUp(self):
@@ -45,8 +43,8 @@ class TestLazyManEventChain(
 
     @property
     def _makeone(self):
-        from callchain.events.lazyman.chain import eventchain
-        return eventchain
+        from callchain.lazy.chain import lmeventq
+        return lmeventq
 
 
 if __name__ == '__main__':

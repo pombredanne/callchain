@@ -4,22 +4,22 @@
 from appspace.keys import AppspaceKey, Attribute
 
 __all__ = (
-    'ASettings',  'AService', 'AOctopus', 'ATentacle', 'ARequiredSettings',
-    'ADefaultSettings',
+    'KSettings',  'KService', 'AOctopus', 'ATentacle', 'KRequired',
+    'KDefaults',
 )
 
 
-class ASettings(AppspaceKey):
+class KSettings(AppspaceKey):
 
     '''settings key'''
 
 
-class ADefaultSettings(AppspaceKey):
+class KDefaults(AppspaceKey):
 
     '''default settings key'''
 
 
-class ARequiredSettings(AppspaceKey):
+class KRequired(AppspaceKey):
 
     '''required settings key'''
 
@@ -50,7 +50,7 @@ class ATentacle(AOctobase):
     root = Attribute('root application')
 
 
-class AService(AppspaceKey):
+class KService(AppspaceKey):
 
     '''service key'''
 
