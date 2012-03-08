@@ -13,7 +13,7 @@ from stuf.utils import bi, getcls, lazy, exhaust
 from appspace.managers import Manager as _Manager
 
 from callchain.settings import Settings
-from callchain.keys.events.events import EEvent
+from callchain.keys.events import EEvent
 from callchain.keys.octopus import KSettings, KService, NoServiceError
 
 __all__ = ['Manager']

@@ -54,18 +54,18 @@ class ActiveEChainMixin(ActiveEMixin, EChainMixin, ActiveChainMixin):
     '''active event chain mixin'''
 
 
-@appifies(KCallChain)
-@inside(chain)
-class callchain(RootMixin, ChainMixin, ActiveMixin):
-
-    '''call chain'''
-
-
-@appifies(KEventChain, KResults)
-@einside(event, events)
-class eventchain(EChainMixin, ActiveEMixin, callchain):
-
-    '''root event chain'''
+#@appifies(KCallChain)
+#@inside(chain)
+#class callchain(RootMixin, ChainMixin, ActiveMixin):
+#
+#    '''call chain'''
+#
+#
+#@appifies(KEventChain, KResults)
+#@einside(event, events)
+#class eventchain(EChainMixin, ActiveEMixin, callchain):
+#
+#    '''root event chain'''
 
 
 @appifies(KCallChain, KResults)
