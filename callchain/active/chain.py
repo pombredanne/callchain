@@ -5,9 +5,9 @@ from appspace.keys import appifies
 from twoq.active.mixins import AutoResultMixin, ManResultMixin
 
 from callchain.keys.apps import events
+from callchain.chains import ChainQMixin
 from callchain.keys.queue import KResults
 from callchain.octopus import InsideMixin as inside
-from callchain.chains import ChainQMixin, ChainMixin
 from callchain.keys.chain import KEventChain, KCallChain
 from callchain.events import inside as einside, EChainMixin
 
@@ -54,18 +54,18 @@ class ActiveEChainMixin(ActiveEMixin, EChainMixin, ActiveChainMixin):
     '''active event chain mixin'''
 
 
-#@appifies(KCallChain)
-#@inside(chain)
-#class callchain(RootMixin, ChainMixin, ActiveMixin):
-#
-#    '''call chain'''
-#
-#
-#@appifies(KEventChain, KResults)
-#@einside(event, events)
-#class eventchain(EChainMixin, ActiveEMixin, callchain):
-#
-#    '''root event chain'''
+@appifies(KCallChain)
+@inside(chain)
+class callchain(ActiveMixin, RootMixin):
+
+    '''call chain'''
+
+
+@appifies(KEventChain, KResults)
+@einside(event, events)
+class eventchain(EChainMixin, ActiveEMixin, callchain):
+
+    '''root event chain'''
 
 
 @appifies(KCallChain, KResults)
