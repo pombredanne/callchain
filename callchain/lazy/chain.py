@@ -5,17 +5,16 @@ from appspace.keys import appifies
 from twoq.lazy.mixins import ManResultMixin,  AutoResultMixin
 
 from callchain.keys.apps import events
-from callchain.chains import ChainQMixin
+from callchain.chain import ChainQMixin, EChainMixin
 from callchain.keys.queue import KResults
-from callchain.octopus import InsideMixin as inside
+from callchain.internal import inside, einside
 from callchain.keys.chain import KCallChain, KEventChain
-from callchain.events import EChainMixin, inside as einside
 
 from callchain.lazy.man.apps import chain as mchain
 from callchain.lazy.auto.apps import chain as achain
 from callchain.lazy.man.events import event as mevent
 from callchain.lazy.auto.events import event as aevent
-from callchain.lazy.mixins import LazyMixin, ELazyMixin
+from callchain.lazy.mixins import LazyMixin, LazyEMixin
 
 
 class LazyChainMixin(LazyMixin, ChainQMixin):
@@ -46,7 +45,7 @@ class LazyChainMixin(LazyMixin, ChainQMixin):
     _ccback = back
 
 
-class LazyEChainMixin(ELazyMixin, EChainMixin, LazyChainMixin):
+class LazyEChainMixin(LazyEMixin, EChainMixin, LazyChainMixin):
 
     '''lazy event chain mixin'''
 

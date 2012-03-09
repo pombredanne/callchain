@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 '''callchain root chains appconf'''
 
-from callchain.octopus import Pathways
+from callchain.patterns import Pathways
 
 __all__ = ['chain']
 

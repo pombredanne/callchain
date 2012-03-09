@@ -5,37 +5,27 @@ from appspace.keys import appifies
 from twoq.active.mixins import AutoQMixin, ManQMixin
 
 from callchain.keys.queue import KQueue
-from callchain.chains import RootedMixin
-from callchain.octopus import Tentacle, Octuplet
 from callchain.keys.chain import KChainLink, KEventLink
+from callchain.linked import (
+    Linked, ELinkedMixin, LinkedQMixin, LinkedChainMixin)
 
-from callchain.events import ERootedMixin, EventMixin
-from callchain.active.mixins import (
-    ActiveMixin, ActiveRootedMixin, ActiveEMixin, RootMixin)
+from callchain.active.chain import ActiveMixin
+from callchain.active.chainlet import ActiveChainletMixin
+from callchain.active.mixins import ActiveEMixin, RootMixin
 
 ###############################################################################
 ## mixins #####################################################################
 ###############################################################################
 
 
-class ActiveLinkMixin(ActiveRootedMixin, ActiveMixin, Tentacle):
+class ActiveLinkMixin(ActiveChainletMixin, ActiveMixin, LinkedQMixin):
 
     '''active queued linked call chain mixin'''
 
 
-class ActiveELinkMixin(ActiveEMixin, ERootedMixin, ActiveLinkMixin):
+class ActiveELinkMixin(ActiveLinkMixin, ActiveEMixin, ELinkedMixin):
 
     '''active linked event chain mixin'''
-
-
-class ActiveChainletMixin(ActiveRootedMixin, Octuplet):
-
-    '''active queued chainlet mixin'''
-
-
-class ActiveEventletMixin(EventMixin, ERootedMixin, ActiveChainletMixin):
-
-    '''active eventlet mixin'''
 
 
 ###############################################################################
@@ -43,22 +33,12 @@ class ActiveEventletMixin(EventMixin, ERootedMixin, ActiveChainletMixin):
 ###############################################################################
 
 
-class chainlet(RootedMixin, RootMixin, Octuplet):
-
-    '''root chainlets'''
-
-
-class chainlink(RootMixin, RootedMixin, ActiveMixin, Tentacle):
+class chainlink(RootMixin, LinkedChainMixin, ActiveMixin, Linked):
 
     '''root linked chain'''
 
 
-class eventlet(ERootedMixin, chainlet):
-
-    '''root event chainlet'''
-
-
-class eventlink(ERootedMixin, ActiveEMixin, chainlink):
+class eventlink(ActiveEMixin, ELinkedMixin, chainlink):
 
     '''root linked event chain'''
 

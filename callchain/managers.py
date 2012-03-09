@@ -13,7 +13,7 @@ from stuf.utils import bi, getcls, lazy, exhaust
 from appspace.managers import Manager as _Manager
 
 from callchain.settings import Settings
-from callchain.keys.events import EEvent
+from callchain.keys.event import EEvent
 from callchain.keys.octopus import KSettings, KService, NoServiceError
 
 __all__ = ['Manager']
@@ -93,32 +93,30 @@ class Events(Registry):
         '''
         return self.key(self._key, label)
 
-    def events(self, label):
+    def events(self, key):
         '''
         fetch things bound to event
 
         @param event: event label
         '''
-        return self.subscriptions(self._key, label)
+        return self.subscriptions(self._key, key)
 
-    def get(self, label):
+    def get(self, key):
         '''
         fetch thing from events
 
-        @param event: event label
+        @param key: event key
         '''
-        key = self._key
-        return self.lookup1(key, key, label)
+        return self.lookup1(self._key, key)
 
-    def set(self, label, call):
+    def set(self, key, call):
         '''
         bind thing to event
 
-        @param event: event label
+        @param key: event key
         @param call: some thing
         '''
-        key = self._key
-        self.register([key], key, label, call)
+        self.register([self._key], key, call)
 
     def unevent(self, label):
         '''
@@ -126,7 +124,7 @@ class Events(Registry):
 
         @param event: event label
         '''
-        self.E.unkey(self._key, label)
+        self.E.unkey(self._key, self.event(label))
 
     def unset(self, label):
         '''
@@ -134,7 +132,7 @@ class Events(Registry):
 
         @param event: event label
         '''
-        self.ez_unsubscribe(self._key, label)
+        self.ez_unsubscribe(self._key, self.event(label))
 
     def update(self, labels):
         '''

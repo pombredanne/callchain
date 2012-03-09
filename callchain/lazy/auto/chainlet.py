@@ -14,7 +14,7 @@ from callchain.keys.reduce import KMath, KReduce, KTruth
 from callchain.keys.map import KDelay, KCopy, KRepeat, KMap
 from callchain.keys.filter import KCollect, KSet, KSlice, KFilter
 
-from callchain.lazy.mixins import LazyChainletMixin
+from callchain.lazy.chainlet import LazyChainletMixin
 
 __all__ = (
     'mathchain', 'truthchain', 'reducechain', 'collectchain', 'setchain',

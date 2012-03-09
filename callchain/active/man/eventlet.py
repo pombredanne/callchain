@@ -14,7 +14,7 @@ from callchain.keys.reduce import KMath, KReduce, KTruth
 from callchain.keys.map import KDelay, KCopy, KRepeat, KMap
 from callchain.keys.filter import KCollect, KSet, KSlice, KFilter
 
-from callchain.active.linked import ActiveEventletMixin
+from callchain.active.chainlet import ActiveEventletMixin
 
 __all__ = (
     'mathevent', 'truthevent', 'reduceevent', 'collectevent', 'setevent',

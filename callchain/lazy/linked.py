@@ -4,21 +4,19 @@
 from appspace.keys import appifies
 from twoq.lazy.mixins import AutoQMixin, ManQMixin
 
-from callchain.octopus import Tentacle
 from callchain.keys.queue import KQueue
-from callchain.events import ERootedMixin
+from callchain.linked import LinkedQMixin, ELinkedMixin
 from callchain.keys.chain import KChainLink, KEventLink
 
-from callchain.lazy.mixins import (
-    LazyRootedMixin, LazyMixin, ELazyMixin, LazyEventletMixin)
+from callchain.lazy.mixins import LazyChainletMixin, LazyMixin, LazyEMixin
 
 
-class LazyLinkMixin(LazyRootedMixin, LazyMixin, Tentacle):
+class LazyLinkMixin(LazyChainletMixin, LazyMixin, LinkedQMixin):
 
     '''lazy queued linked call chain mixin'''
 
 
-class LazyELinkMixin(ELazyMixin, ERootedMixin, LazyLinkMixin):
+class LazyELinkMixin(LazyLinkMixin, LazyEMixin,  ELinkedMixin):
 
     '''lazy queued linked event chain mixin'''
 
@@ -36,12 +34,12 @@ class lmlinkq(LazyLinkMixin, ManQMixin):
 
 
 @appifies(KEventLink, KQueue)
-class laelinkq(LazyEventletMixin, AutoQMixin):
+class laelinkq(LazyELinkMixin, AutoQMixin):
 
     '''lazy queued auto-balancing linked event chain'''
 
 
 @appifies(KEventLink, KQueue)
-class lmelinkq(LazyEventletMixin, ManQMixin):
+class lmelinkq(LazyELinkMixin, ManQMixin):
 
     '''lazy queued manually balanced linked event chain'''

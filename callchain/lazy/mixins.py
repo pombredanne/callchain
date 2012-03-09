@@ -5,12 +5,10 @@ from collections import deque
 
 from stuf.utils import iterexcept
 
-from callchain.octopus import Octuplet
-from callchain.chains import RootedQMixin, ChainMixin
-from callchain.events import ERunMixin, ERootedMixin, EventMixin
+from callchain.call import ECallingMixin, CallingMixin
 
 
-class LazyMixin(ChainMixin):
+class LazyMixin(CallingMixin):
 
     '''lazy queued chain mixin'''
 
@@ -24,7 +22,7 @@ class LazyMixin(ChainMixin):
     _ocommit = commit
 
 
-class ELazyMixin(ERunMixin):
+class LazyEMixin(ECallingMixin):
 
     '''lazy queued event chain mixin'''
 
@@ -43,30 +41,3 @@ class ELazyMixin(ERunMixin):
             # clear scratch queue
             self._scratch = None
         return self
-
-
-class LazyRootedMixin(RootedQMixin):
-
-    '''lazy queued rooted chain mixin'''
-
-    def __init__(self, root):
-        '''
-        init
-
-        @param root: root call chain
-        '''
-        super(LazyRootedMixin, self).__init__(root)
-        # sync with root incoming things
-        self.incoming = root.incoming
-        # sync with root outgoing things
-        self.outgoing = root.outgoing
-
-
-class LazyChainletMixin(LazyRootedMixin, Octuplet):
-
-    '''lazy queued chainlet mixin'''
-
-
-class LazyEventletMixin(EventMixin, ERootedMixin, LazyChainletMixin):
-
-    '''lazy eventlet mixin'''

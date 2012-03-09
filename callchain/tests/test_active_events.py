@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''callchain active call and event chains tests'''
+'''callchain event chains test mixins'''
 
 try:
     import unittest2 as unittest
@@ -19,10 +19,13 @@ from callchain.tests.mixins.man.ordering import MOrderQMixin
 from callchain.tests.mixins.man.reducing import MReduceQMixin
 from callchain.tests.mixins.man.filtering import MFilterQMixin
 
+from callchain.tests.mixins.chain import CallingMixin
+from callchain.tests.mixins.event import EventChainMixin
+
 
 class TestActiveAutoEventChain(
-    unittest.TestCase, AQMixin, AFilterQMixin, AMapQMixin,
-    AReduceQMixin, AOrderQMixin,
+    unittest.TestCase, EventChainMixin, CallingMixin, AQMixin, AFilterQMixin,
+    AMapQMixin, AReduceQMixin, AOrderQMixin,
 ):
 
     def setUp(self):
@@ -35,8 +38,8 @@ class TestActiveAutoEventChain(
 
 
 class TestActiveManEventChain(
-    Manning, MQMixin, MFilterQMixin, MMapQMixin,
-    MReduceQMixin, MOrderQMixin,
+    Manning, EventChainMixin, CallingMixin, MQMixin, MFilterQMixin,
+    MMapQMixin, MReduceQMixin, MOrderQMixin,
 ):
 
     def setUp(self):

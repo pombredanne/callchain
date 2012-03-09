@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-'''callchain active call and event chains tests'''
+'''callchain chain test mixins'''
 
 
-class CallChainMixin(object):
+class CallingMixin(object):
 
     @property
     def _appconf(self):

@@ -6,7 +6,7 @@ try:
 except ImportError:
     import unittest
 
-from callchain.tests.mixins.chain import CallChainMixin
+from callchain.tests.mixins.chain import CallingMixin
 
 from callchain.tests.mixins.auto.queuing import AQMixin
 from callchain.tests.mixins.auto.mapping import AMapQMixin
@@ -23,7 +23,7 @@ from callchain.tests.mixins.man.filtering import MFilterQMixin
 
 
 class TestAutoChainQ(
-    unittest.TestCase, CallChainMixin, AQMixin, AFilterQMixin, AMapQMixin,
+    unittest.TestCase, CallingMixin, AQMixin, AFilterQMixin, AMapQMixin,
     AReduceQMixin, AOrderQMixin,
 ):
 
@@ -37,7 +37,7 @@ class TestAutoChainQ(
 
 
 class TestManChainQ(
-    Manning, CallChainMixin, MQMixin, MFilterQMixin, MMapQMixin, MReduceQMixin,
+    Manning, CallingMixin, MQMixin, MFilterQMixin, MMapQMixin, MReduceQMixin,
     MOrderQMixin,
 ):
 

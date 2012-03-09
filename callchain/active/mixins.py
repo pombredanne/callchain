@@ -5,13 +5,10 @@ from collections import deque
 
 from stuf.utils import iterexcept
 
-from callchain.chains import ChainMixin, RootedQMixin
-
-from callchain.events import ERunMixin
-from callchain.resets import ResetLocalMixin
+from callchain.call import ECallingMixin, CallingMixin
 
 
-class ActiveMixin(ChainMixin):
+class ActiveMixin(CallingMixin):
 
     '''active chain execution mixin'''
 
@@ -25,12 +22,12 @@ class ActiveMixin(ChainMixin):
     _ocommit = commit
 
 
-class ActiveEMixin(ERunMixin):
+class ActiveEMixin(ECallingMixin):
 
     '''active queued event chain mixin'''
 
     def fire(self, *events):
-        '''run calls bound to `*events` NOW'''
+        '''run calls bound to `events` NOW'''
         try:
             # clear scratch queue
             self._sclear()
@@ -46,24 +43,7 @@ class ActiveEMixin(ERunMixin):
         return self
 
 
-class ActiveRootedMixin(RootedQMixin):
-
-    '''active queue rooted chain mixin'''
-
-    def __init__(self, root):
-        '''
-        init
-
-        @param root: root call chain
-        '''
-        super(ActiveRootedMixin, self).__init__(root)
-        # sync with root incoming things
-        self._inextend(root.incoming)
-        # sync with root outgoing things
-        self._outextend(root.outgoing)
-
-
-class RootMixin(ResetLocalMixin):
+class RootMixin(ActiveMixin):
 
     '''mixin for standalone chains'''
 
