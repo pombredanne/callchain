@@ -101,22 +101,22 @@ class Events(Registry):
         '''
         return self.subscriptions(self._key, key)
 
-    def get(self, key):
+    def get(self, label, key):
         '''
         fetch thing from events
 
         @param key: event key
         '''
-        return self.lookup1(self._key, key)
+        return self.lookup1(self._key, key, label)
 
-    def set(self, key, call):
+    def set(self, label, key, call):
         '''
         bind thing to event
 
         @param key: event key
         @param call: some thing
         '''
-        self.register([self._key], key, call)
+        self.register([self._key], key, label, call)
 
     def unevent(self, label):
         '''

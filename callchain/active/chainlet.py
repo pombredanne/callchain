@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 '''active chainlets'''
 
-from callchain.chainlet import Chainlet
-from callchain.rooted import RootedChainMixin
-
 from callchain.active.mixins import RootMixin
-from callchain.chainlet import ChainletQMixin, EChainletMixin
+from callchain.chainlet import (
+    ChainletQMixin, EChainletMixin, ChainletCallMixin)
 
 
 class ActiveChainletMixin(ChainletQMixin):
@@ -30,7 +28,7 @@ class ActiveEventletMixin(EChainletMixin, ActiveChainletMixin):
     '''active eventlet mixin'''
 
 
-class chainlet(RootedChainMixin, RootMixin, Chainlet):
+class chainlet(ChainletCallMixin, RootMixin):
 
     '''root chainlet'''
 

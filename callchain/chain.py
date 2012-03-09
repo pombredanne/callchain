@@ -123,11 +123,11 @@ class EChainMixin(ChainMixin, ECallingMixin):
         '''
         # fetch linked call chain bound to event
         key = self.E.event(event)
-        queue = self.E.get(key)
+        queue = self.E.get(event, key)
         if queue is None:
-            # create linked call chain if nonexistent
+            # create liked call chain if nonexistent
             queue = self._callchain
-            self.E.set(key, queue)
+            self.E.set(event, key, queue)
         return queue
 
     def _event(self, event):

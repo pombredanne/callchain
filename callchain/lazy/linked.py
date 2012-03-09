@@ -8,7 +8,8 @@ from callchain.keys.queue import KQueue
 from callchain.linked import LinkedQMixin, ELinkedMixin
 from callchain.keys.chain import KChainLink, KEventLink
 
-from callchain.lazy.mixins import LazyChainletMixin, LazyMixin, LazyEMixin
+from callchain.lazy.chainlet import LazyChainletMixin
+from callchain.lazy.mixins import LazyMixin, LazyEMixin
 
 
 class LazyLinkMixin(LazyChainletMixin, LazyMixin, LinkedQMixin):

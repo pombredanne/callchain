@@ -16,11 +16,11 @@ class LinkedChainMixin(CallMixin, RootedChainMixin):
     '''link chaining mixin'''
 
 
-class LinkedQMixin(LinkedChainMixin, RootedQMixin):
+class LinkedQMixin(CallMixin, RootedQMixin):
 
     '''linked call chain mixin'''
 
 
-class ELinkedMixin(LinkedChainMixin, ERootedMixin):
+class ELinkedMixin(CallMixin, ERootedMixin):
 
     '''linked linked event chain mixin'''

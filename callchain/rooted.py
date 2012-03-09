@@ -79,17 +79,17 @@ class ERootedMixin(RootedChainMixin):
 
     def _eventq(self, event):
         '''
-        fetch linked chain tied to `event`
+        fetch linked call chain tied to `event`
 
         @param event: event label
         '''
         # fetch linked call chain bound to event
         key = self.root.event(event)
-        queue = self.E.get(event)
+        queue = self.E.get(event, key)
         if queue is None:
             # create liked call chain if nonexistent
-            queue = self._callchain(self)
-            self.E.set(key, queue)
+            queue = self._callchain
+            self.E.set(event, key, queue)
         return queue
 
     def _event(self, event):
