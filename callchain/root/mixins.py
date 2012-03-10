@@ -15,7 +15,7 @@ class RootMixin(ResetLocalMixin):
         self._csetup_chain()
         self.outgoing = deque()
         # outgoing things right extend
-        self._outextend = self.outgoing.extend
+        self.outextend = self.outgoing.extend
         # outgoing things clear
         self._outclear = self.outgoing.clear
         # outgoing things right append

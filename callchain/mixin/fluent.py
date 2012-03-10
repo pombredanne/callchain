@@ -123,7 +123,7 @@ class EventMixin(ChainMixin):
 
     def off(self, event):
         '''
-        clear all calls bound to `event`
+        clear calls bound to `event`
 
         @param event: event label
         '''

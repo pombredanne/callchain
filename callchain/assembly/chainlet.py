@@ -7,12 +7,12 @@ from callchain.mixin.rooted import (
 from callchain.mixin.fluent import FluentMixin, EventMixin, ChainMixin
 
 
-class Chainlet(RootletMixin, RootedMixin, FluentMixin):
+class Chainlet(RootedMixin, RootletMixin, FluentMixin):
 
     '''chain chainlet'''
 
 
-class CallChainlet(RootletMixin, RootedChainMixin, ChainMixin):
+class CallChainlet(RootedChainMixin, RootletMixin, ChainMixin):
 
     '''call chainlet'''
 
@@ -22,7 +22,7 @@ class CallChainletQ(CallChainlet, QRootedMixin):
     '''queued call chainlet'''
 
 
-class Eventlet(RootletMixin, EventMixin, ERootedChainMixin):
+class Eventlet(ERootedChainMixin, RootletMixin, EventMixin):
 
     '''event chainlet'''
 

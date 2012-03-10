@@ -46,7 +46,6 @@ class QRootMixin(QMixin):
 
         @param link: linked call chain
         '''
-        self._rback(link)
         # sync with link callable
         self._call = link._call
         # sync with link postitional arguments
@@ -80,6 +79,7 @@ class QRootedMixin(QRootMixin):
         # sync with root callable
         self._call = root._call
         # sync with root incoming things
+        self.inclear()
         self.extend(root.incoming)
         # sync with root outgoing things
         self.outextend(root.outgoing)

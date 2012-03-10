@@ -20,7 +20,7 @@ class RootedMixin(ResetLocalMixin):
 
         @param root: root object
         '''
-        super(RootedMixin, self).__init__()
+        super(RootedMixin, self).__init__(root)
         # root object
         self.root = root
         # root internal appspace manager
