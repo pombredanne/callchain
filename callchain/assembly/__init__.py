@@ -1,2 +1,2 @@
 # -*- coding: utf-8 -*-
-'''callchain tests'''
+'''callchain root'''
