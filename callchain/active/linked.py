@@ -8,39 +8,26 @@ from callchain.keys.queue import KQueue
 from callchain.keys.chain import KChainLink, KEventLink
 from callchain.assembly.linked import LinkedQ, EventlinkQ
 
-from callchain.mixin.active import (
-    ActiveCallMixin, ActiveECallMixin, ActiveRootedMixin)
-
-
-class ActiveLinkMixin(LinkedQ, ActiveRootedMixin, ActiveCallMixin):
-
-    '''active queued linked call chain mixin'''
-
 
 @appifies(KChainLink, KQueue)
-class aalinkq(ActiveLinkMixin, AutoQMixin):
+class aalinkq(LinkedQ, AutoQMixin):
 
     '''active queued auto-balancing linked call chain'''
 
 
 @appifies(KChainLink, KQueue)
-class amlinkq(ActiveLinkMixin, ManQMixin):
+class amlinkq(LinkedQ, ManQMixin):
 
     '''active queued manually balanced linked call chain'''
 
 
-class ActiveELinkMixin(EventlinkQ, ActiveRootedMixin, ActiveECallMixin):
-
-    '''active queued linked event chain mixin'''
-
-
 @appifies(KEventLink, KQueue)
-class aaelinkq(ActiveELinkMixin, AutoQMixin):
+class aaelinkq(EventlinkQ, AutoQMixin):
 
     '''active queued auto-balancing linked event chain'''
 
 
 @appifies(KEventLink, KQueue)
-class amelinkq(ActiveELinkMixin, ManQMixin):
+class amelinkq(EventlinkQ, ManQMixin):
 
     '''active queued manually balanced linked event chain'''

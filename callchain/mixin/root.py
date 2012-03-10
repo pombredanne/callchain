@@ -51,18 +51,27 @@ class RootChainMixin(RootMixin):
         super(RootChainMixin, self).__init__(pattern, required, defaults, **kw)
         self._setup_chain()
 
+    def __call__(self, *args):
+        '''new chain session'''
+        # clear call chain and queues
+        self.clear()
+        # extend incoming things
+        self.extend(args)
+        return self
+
     def back(self, link):
         '''
-        handle return from linked call chain
+        handle chainlet end
 
         @param link: linked call chain
         '''
         self.clear()
+        self._qback(link)
         # extend call chain with root call chain
         self._cappend(link._chain)
         return self
 
-    _rback = back
+    _ccback = back
 
 
 class RootEventMixin(RootChainMixin):

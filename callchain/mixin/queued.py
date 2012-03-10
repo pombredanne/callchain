@@ -53,6 +53,10 @@ class QRootMixin(QMixin):
         self._args = link._args
         # sync with link keyword arguments
         self._kw = link._kw
+        # sync with link incoming things
+        self.extend(link.incoming)
+        # sync with link outgoing things
+        self.outextend(link.outgoing)
         return self
 
     _qback = back
