@@ -4,7 +4,7 @@
 from twoq.support import port
 from appspace.builders import Appspace
 from stuf import frozenstuf, orderedstuf
-from stuf.utils import lazy, lazy_class, either
+from stuf.utils import lazy, lazy_class, either, iterexcept
 
 from callchain.keys.octopus import NoServiceError
 
@@ -46,6 +46,15 @@ class CallMixin(ResetLocalMixin):
     def space(self):
         '''external appspace interface'''
         return Appspace(self.M) if self.M is not None else None
+
+    def commit(self):
+        '''consume call chain until exhausted'''
+        self.outextend(
+            c() for c in iterexcept(self._chain.popleft, IndexError)
+        )
+        return self
+
+    _ccommit = commit
 
     def switch(self, label, key=False):
         '''
@@ -92,6 +101,22 @@ class ECallMixin(CallMixin):
         return self
 
     _ecommit = commit
+
+    def fire(self, *events):
+        '''run calls bound to `events` NOW'''
+        try:
+            # clear scratch queue
+            self._sclear()
+            # queue global and local bound callables
+            self._sxtend(self._events(*events))
+            # run event call chain until scratch queue is exhausted
+            self.outextend(call() for call in iterexcept(
+                self._scratch.popleft, IndexError,
+            ))
+        finally:
+            # clear scratch queue
+            self._sclear()
+        return self
 
     def queues(self, *events):
         '''

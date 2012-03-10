@@ -55,14 +55,14 @@ class ActiveCallChainMixin(ActiveCallMixin, ActiveChainMixin, CallChainQ):
 
 @appifies(KCallChain, KResults)
 @inside(achain)
-class aachainq(ActiveChainMixin, AutoResultMixin):
+class aachainq(ActiveCallChainMixin, AutoResultMixin):
 
     '''active queued auto-balancing call chain'''
 
 
 @appifies(KCallChain, KResults)
 @inside(mchain)
-class amchainq(ActiveChainMixin, ManResultMixin):
+class amchainq(ActiveCallChainMixin, ManResultMixin):
 
     '''active queued manually balanced call chain'''
 

@@ -68,6 +68,10 @@ class RootedChainMixin(RootedMixin):
         @param root: root call chain
         '''
         super(RootedChainMixin, self).__init__(root)
+        # sync with root incoming things
+        self.extend(root.incoming)
+        # sync with root outgoing things
+        self.outextend(root.outgoing)
         self._setup_chain()
 
 
