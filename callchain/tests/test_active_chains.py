@@ -30,7 +30,7 @@ class TestCallChain(unittest.TestCase, CallingMixin):
 
     @property
     def _makeone(self):
-        from callchain.active.chain import callchain
+        from callchain.root.chain import callchain
         return callchain
 
 #    def test_switch(self):

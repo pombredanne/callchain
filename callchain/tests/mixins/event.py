@@ -7,7 +7,7 @@ class EventChainMixin(object):
     @property
     def _appconf(self):
         from math import ceil, fabs
-        from callchain.active.linked import chainlink
+        from callchain.root.linked import chainlink
         from callchain.patterns import Pathways, Nameways
         class testlink(chainlink): #@IgnorePep8
             def foo(self, x):
@@ -40,23 +40,23 @@ class EventChainMixin(object):
         self.qclass.commit()
         queues = self.qclass.queues('before', 'work', 'any', 'after', 'anyway')
         outgoing = queues['before']
-        self.assertEqual(queues.popleft(), 3.0)
+        self.assertEqual(outgoing.popleft(), 3.0)
         self.assertEqual(outgoing.popleft(), 3.3000000000000003)
         self.assertEqual(outgoing.popleft(), 2)
         outgoing = queues['work']
-        self.assertEqual(queues.popleft(), 3.0)
+        self.assertEqual(outgoing.popleft(), 3.0)
         self.assertEqual(outgoing.popleft(), 3.3000000000000003)
         self.assertEqual(outgoing.popleft(), 2)
         outgoing = queues['any']
-        self.assertEqual(queues.popleft(), 3.0)
+        self.assertEqual(outgoing.popleft(), 3.0)
         self.assertEqual(outgoing.popleft(), 3.3000000000000003)
         self.assertEqual(outgoing.popleft(), 2)
         outgoing = queues['after']
-        self.assertEqual(queues.popleft(), 3.0)
+        self.assertEqual(outgoing.popleft(), 3.0)
         self.assertEqual(outgoing.popleft(), 3.3000000000000003)
         self.assertEqual(outgoing.popleft(), 2)
         outgoing = queues['anyway']
-        self.assertEqual(queues.popleft(), 3.0)
+        self.assertEqual(outgoing.popleft(), 3.0)
         self.assertEqual(outgoing.popleft(), 3.3000000000000003)
         self.assertEqual(outgoing.popleft(), 2)
 
@@ -85,22 +85,22 @@ class EventChainMixin(object):
         qclass.commit()
         queues = qclass.queues('before', 'work', 'any', 'after', 'anyway')
         outgoing = queues['before']
-        self.assertEqual(queues.popleft(), 3.0)
+        self.assertEqual(outgoing.popleft(), 3.0)
         self.assertEqual(outgoing.popleft(), 3.3000000000000003)
         self.assertEqual(outgoing.popleft(), 2)
         outgoing = queues['work']
-        self.assertEqual(queues.popleft(), 3.0)
+        self.assertEqual(outgoing.popleft(), 3.0)
         self.assertEqual(outgoing.popleft(), 3.3000000000000003)
         self.assertEqual(outgoing.popleft(), 2)
         outgoing = queues['any']
-        self.assertEqual(queues.popleft(), 3.0)
+        self.assertEqual(outgoing.popleft(), 3.0)
         self.assertEqual(outgoing.popleft(), 3.3000000000000003)
         self.assertEqual(outgoing.popleft(), 2)
         outgoing = queues['after']
-        self.assertEqual(queues.popleft(), 3.0)
+        self.assertEqual(outgoing.popleft(), 3.0)
         self.assertEqual(outgoing.popleft(), 3.3000000000000003)
         self.assertEqual(outgoing.popleft(), 2)
         outgoing = queues['anyway']
-        self.assertEqual(queues.popleft(), 3.0)
+        self.assertEqual(outgoing.popleft(), 3.0)
         self.assertEqual(outgoing.popleft(), 3.3000000000000003)
         self.assertEqual(outgoing.popleft(), 2)

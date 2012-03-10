@@ -3,11 +3,14 @@
 
 from itertools import chain
 
+from appspace.keys import NoAppError
+
 from callchain.managers import Events
-from callchain.call import ChainingMixin, QCallingMixin
+
+from callchain.mixin.fluent import ResetLocalMixin
 
 
-class RootedMixin(ChainingMixin):
+class RootedMixin(ResetLocalMixin):
 
     '''rooted mixin'''
 
@@ -17,7 +20,7 @@ class RootedMixin(ChainingMixin):
 
         @param root: root object
         '''
-        super(RootedMixin, self).__init__()
+        super(RootedMixin, self).__init__(root)
         # root object
         self.root = root
         # root internal appspace manager
@@ -28,6 +31,30 @@ class RootedMixin(ChainingMixin):
         self.M = root.M
         # root external global settings
         self.G = root.G if self.M else None
+
+
+class RootletMixin(ResetLocalMixin):
+
+    def _load(self, label):
+        '''
+        silent internal switch back...
+
+        @param label: appspaced thing label
+        '''
+        # fetch appspaced thing...
+        try:
+            return self._fload(label)
+        # ...or revert to root chain
+        except NoAppError:
+            return getattr(self.back(), label)
+
+    _rload = _load
+
+    def back(self):
+        '''revert to root chain'''
+        return self.root.back(self)
+
+    _rback = back
 
 
 class RootedChainMixin(RootedMixin):
@@ -44,26 +71,7 @@ class RootedChainMixin(RootedMixin):
         self._setup_chain()
 
 
-class RootedQMixin(RootedChainMixin, QCallingMixin):
-
-    '''linked call chain queue mixin'''
-
-    def __init__(self, root):
-        '''
-        init
-
-        @param root: root call chain
-        '''
-        super(RootedQMixin, self).__init__(root)
-        # sync with root postitional arguments
-        self._args = root._args
-        # sync with root keyword arguments
-        self._kw = root._kw
-        # sync with root callable
-        self._call = root._call
-
-
-class ERootedMixin(RootedChainMixin):
+class ERootedChainMixin(RootedChainMixin):
 
     '''rooted event chain mixin'''
 
@@ -73,7 +81,7 @@ class ERootedMixin(RootedChainMixin):
 
         @param root: root event chain
         '''
-        super(ERootedMixin, self).__init__(root)
+        super(ERootedChainMixin, self).__init__(root)
         # local event registry
         self.E = Events('events')
 
@@ -92,6 +100,8 @@ class ERootedMixin(RootedChainMixin):
             self.E.set(event, key, queue)
         return queue
 
+    _eeventq = _eventq
+
     def _event(self, event):
         '''
         fetch calls bound to `event`
@@ -100,3 +110,5 @@ class ERootedMixin(RootedChainMixin):
         '''
         key = self.root.event(event)
         return chain(self.E.events(key), self.root.E.events(key))
+
+    _devent = _event

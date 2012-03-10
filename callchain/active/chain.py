@@ -7,24 +7,20 @@ from twoq.active.mixins import AutoResultMixin, ManResultMixin
 from callchain.keys.apps import events
 from callchain.keys.queue import KResults
 from callchain.internal import inside, einside
-from callchain.keys.chain import KEventChain, KCallChain
-from callchain.chain import ChainMixin, ChainQMixin, EChainMixin
+from callchain.mixin.reset import ResetLocalMixin
+from callchain.keys.chain import KCallChain, KEventChain
+from callchain.assembly.chain import CallChainQ, EventChainQ
+from callchain.mixins.active import ActiveCallMixin, ActiveECallMixin
 
-from callchain.active.apps import chain, event
 from callchain.active.man.apps import chain as mchain
 from callchain.active.auto.apps import chain as achain
 from callchain.active.man.events import event as mevent
 from callchain.active.auto.events import event as aevent
-from callchain.active.mixins import ActiveEMixin, RootMixin, ActiveMixin
-
-###############################################################################
-## active chain mixins ########################################################
-###############################################################################
 
 
-class ActiveChainMixin(ActiveMixin, ChainQMixin):
+class ActiveChainMixin(ResetLocalMixin):
 
-    '''active queued call chain mixin'''
+    '''active queued chain mixin'''
 
     def __call__(self, *args):
         '''new chain session'''
@@ -40,7 +36,7 @@ class ActiveChainMixin(ActiveMixin, ChainQMixin):
 
         @param link: linked call chain
         '''
-        self._cback(link)
+        self._qback(link)
         # sync with link incoming things
         self._inclear()
         self._inextend(link.incoming)
@@ -52,33 +48,9 @@ class ActiveChainMixin(ActiveMixin, ChainQMixin):
     _ccback = back
 
 
-class ActiveEChainMixin(ActiveEMixin, EChainMixin, ActiveChainMixin):
+class ActiveCallChainMixin(ActiveCallMixin, ActiveChainMixin, CallChainQ):
 
-    '''active event chain mixin'''
-
-
-###############################################################################
-## root call chains ###########################################################
-###############################################################################
-
-
-@appifies(KCallChain)
-@inside(chain)
-class callchain(RootMixin, ActiveMixin, ChainMixin):
-
-    '''call chain'''
-
-
-@appifies(KEventChain, KResults)
-@einside(event, events)
-class eventchain(EChainMixin, ActiveEMixin, callchain):
-
-    '''root event chain'''
-
-
-###############################################################################
-## active queued call chains ##################################################
-###############################################################################
+    '''active call chain mixin'''
 
 
 @appifies(KCallChain, KResults)
@@ -88,18 +60,23 @@ class aachainq(ActiveChainMixin, AutoResultMixin):
     '''active queued auto-balancing call chain'''
 
 
-@appifies(KEventChain, KResults)
-@einside(aevent, events)
-class aaeventq(ActiveEChainMixin, AutoResultMixin):
-
-    '''active queued auto-balancing event chain'''
-
-
 @appifies(KCallChain, KResults)
 @inside(mchain)
 class amchainq(ActiveChainMixin, ManResultMixin):
 
     '''active queued manually balanced call chain'''
+
+
+class ActiveEChainMixin(ActiveECallMixin, ActiveChainMixin, EventChainQ):
+
+    '''active queued event chain mixin'''
+
+
+@appifies(KEventChain, KResults)
+@einside(aevent, events)
+class aaeventq(ActiveEChainMixin, AutoResultMixin):
+
+    '''active queued auto-balancing event chain'''
 
 
 @appifies(KEventChain, KResults)

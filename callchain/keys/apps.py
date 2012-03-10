@@ -5,18 +5,18 @@ __all__ = ['events']
 
 
 class events(object):
-    key = 'callchain.events.keys.events.EEvent'
+    key = 'callchain.keys.event.EEvent'
     # 1. before event
-    before = 'callchain.events.keys.events.EBefore'
+    before = 'callchain.keys.event.EBefore'
     # 2. work event
-    work = 'callchain.events.keys.events.EWork'
+    work = 'callchain.keys.event.EWork'
     # 3. change event
-    change = 'callchain.events.keys.events.EChange'
+    change = 'callchain.keys.event.EChange'
     # 4. any event
-    any = 'callchain.events.keys.events.EAny'
+    any = 'callchain.keys.event.EAny'
     # 5. after event
-    after = 'callchain.events.keys.events.EAfter'
+    after = 'callchain.keys.event.EAfter'
     # 6. problem event
-    problem = 'callchain.events.keys.events.EProblem'
+    problem = 'callchain.keys.event.EProblem'
     # 7. event that runs irrespective
-    anyway = 'callchain.events.keys.events.EAnyway'
+    anyway = 'callchain.keys.event.EAnyway'

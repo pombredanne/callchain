@@ -1,16 +1,14 @@
 # -*- coding: utf-8 -*-
-'''lazy queued mixins'''
-
-from collections import deque
+'''active queued mixins'''
 
 from stuf.utils import iterexcept
 
 from callchain.mixin.reset import ResetLocalMixin
 
 
-class LazyRootedMixin(ResetLocalMixin):
+class ActiveRootedMixin(ResetLocalMixin):
 
-    '''lazy queued rooted chain mixin'''
+    '''active queued rooted chain mixin'''
 
     def __init__(self, root):
         '''
@@ -18,20 +16,20 @@ class LazyRootedMixin(ResetLocalMixin):
 
         @param root: root call chain
         '''
-        super(LazyRootedMixin, self).__init__(root)
+        super(ActiveRootedMixin, self).__init__(root)
         # sync with root incoming things
-        self.incoming = root.incoming
+        self._inextend(root.incoming)
         # sync with root outgoing things
-        self.outgoing = root.outgoing
+        self._outextend(root.outgoing)
 
 
-class LazyCallMixin(ResetLocalMixin):
+class ActiveCallMixin(ResetLocalMixin):
 
-    '''lazy queued chain mixin'''
+    '''active queued call mixin'''
 
     def commit(self):
         '''consume call chain until exhausted'''
-        self.outgoing = deque(
+        self._outextend(
             c() for c in iterexcept(self._chain.popleft, IndexError)
         )
         return self
@@ -39,22 +37,22 @@ class LazyCallMixin(ResetLocalMixin):
     _ccommit = commit
 
 
-class LazyECallMixin(LazyCallMixin):
+class ActiveECallMixin(ActiveCallMixin):
 
-    '''lazy queued event chain mixin'''
+    '''active queued event call mixin'''
 
     def fire(self, *events):
         '''run calls bound to `events` NOW'''
         try:
             # clear scratch queue
-            self._scratch = None
+            self._sclear()
             # queue global and local bound callables
-            self._scratch = deque(self._events(*events))
+            self._sxtend(self._events(*events))
             # run event call chain until scratch queue is exhausted
-            self.outgoing = deque(call() for call in iterexcept(
+            self._outextend(call() for call in iterexcept(
                 self._scratch.popleft, IndexError,
             ))
         finally:
             # clear scratch queue
-            self._scratch = None
+            self._sclear()
         return self

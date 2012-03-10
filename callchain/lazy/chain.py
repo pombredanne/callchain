@@ -2,24 +2,25 @@
 '''lazy queued call chains'''
 
 from appspace.keys import appifies
-from twoq.lazy.mixins import ManResultMixin,  AutoResultMixin
+from twoq.lazy.mixins import AutoResultMixin, ManResultMixin
 
 from callchain.keys.apps import events
-from callchain.chain import ChainQMixin, EChainMixin
 from callchain.keys.queue import KResults
 from callchain.internal import inside, einside
+from callchain.mixin.reset import ResetLocalMixin
 from callchain.keys.chain import KCallChain, KEventChain
+from callchain.assembly.chain import CallChainQ, EventChainQ
 
 from callchain.lazy.man.apps import chain as mchain
 from callchain.lazy.auto.apps import chain as achain
 from callchain.lazy.man.events import event as mevent
 from callchain.lazy.auto.events import event as aevent
-from callchain.lazy.mixins import LazyMixin, LazyEMixin
+from callchain.lazy.mixins import LazyCallMixin, LazyECallMixin
 
 
-class LazyChainMixin(LazyMixin, ChainQMixin):
+class LazyChainMixin(ResetLocalMixin):
 
-    '''queued lazy call chain mixin'''
+    '''lazy queued chain mixin'''
 
     def __call__(self, *args):
         '''new chain session'''
@@ -35,7 +36,7 @@ class LazyChainMixin(LazyMixin, ChainQMixin):
 
         @param link: linked call chain
         '''
-        self._cback(link)
+        self._qback(link)
         # sync with link incoming things
         self.incoming = link.incoming
         # sync with link outgoing things
@@ -45,34 +46,39 @@ class LazyChainMixin(LazyMixin, ChainQMixin):
     _ccback = back
 
 
-class LazyEChainMixin(LazyEMixin, EChainMixin, LazyChainMixin):
+class LazyCallChainMixin(LazyCallMixin, LazyChainMixin, CallChainQ):
 
-    '''lazy event chain mixin'''
+    '''lazy call chain mixin'''
 
 
 @appifies(KCallChain, KResults)
 @inside(achain)
-class lachainq(LazyChainMixin, AutoResultMixin):
+class lachainq(LazyCallChainMixin, AutoResultMixin):
 
-    '''lazy auto-balancing call chain'''
+    '''lazy queued auto-balancing call chain'''
 
 
 @appifies(KCallChain, KResults)
 @inside(mchain)
-class lmchainq(LazyChainMixin, ManResultMixin):
+class lmchainq(LazyCallChainMixin, ManResultMixin):
 
-    '''lazy manually balanced call chain'''
+    '''lazy queued manually balanced call chain'''
+
+
+class LazyEChainMixin(LazyECallMixin, LazyChainMixin, EventChainQ):
+
+    '''lazy queued event chain mixin'''
 
 
 @appifies(KEventChain, KResults)
 @einside(aevent, events)
 class laeventq(LazyEChainMixin, AutoResultMixin):
 
-    '''lazy auto-balancing event chain'''
+    '''lazy queued auto-balancing event chain'''
 
 
 @appifies(KEventChain, KResults)
 @einside(mevent, events)
 class lmeventq(LazyEChainMixin, ManResultMixin):
 
-    '''lazy manually balanced event chain'''
+    '''lazy queued manually balanced event chain'''

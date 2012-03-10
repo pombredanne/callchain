@@ -72,3 +72,5 @@ class einside(inside):
         that.E = Events('events')
         that.E.update(self.events)
         return that
+
+    _ecall = __call__

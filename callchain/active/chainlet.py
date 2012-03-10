@@ -1,38 +1,16 @@
 # -*- coding: utf-8 -*-
-'''active chainlets'''
+'''active queued chainlets'''
 
-from callchain.active.mixins import RootMixin
-from callchain.chainlet import (
-    ChainletQMixin, EChainletMixin, ChainletCallMixin)
+from callchain.assembly.chainlet import Eventlet, CallChainlet
 
-
-class ActiveChainletMixin(ChainletQMixin):
-
-    '''active queue rooted chain mixin'''
-
-    def __init__(self, root):
-        '''
-        init
-
-        @param root: root call chain
-        '''
-        super(ActiveChainletMixin, self).__init__(root)
-        # sync with root incoming things
-        self._inextend(root.incoming)
-        # sync with root outgoing things
-        self._outextend(root.outgoing)
+from callchain.mixins.active import ActiveRootedMixin
 
 
-class ActiveEventletMixin(EChainletMixin, ActiveChainletMixin):
+class ActiveCallChainletMixin(CallChainlet, ActiveRootedMixin):
+
+    '''active call chainlet mixin'''
+
+
+class ActiveEventletMixin(Eventlet, ActiveRootedMixin):
 
     '''active eventlet mixin'''
-
-
-class chainlet(ChainletCallMixin, RootMixin):
-
-    '''root chainlet'''
-
-
-class eventlet(EChainletMixin, chainlet):
-
-    '''root event chainlet'''

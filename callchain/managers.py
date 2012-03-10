@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-'''callchain octopus managers'''
+'''callchain managers'''
 
-from functools import partial
 from itertools import starmap
 
 from twoq import twoq
@@ -21,7 +20,7 @@ __all__ = ['Manager']
 
 class Manager(_Manager):
 
-    '''octopus manager'''
+    '''callchain manager'''
 
     __slots__ = ('_current', '_root', '_key')
 
@@ -91,7 +90,7 @@ class Events(Registry):
 
         @param event: event label
         '''
-        return self.key(self._key, label)
+        return self._unlazy(label, self._key, self.key(self._key, label))
 
     def events(self, key):
         '''
@@ -133,6 +132,9 @@ class Events(Registry):
         @param event: event label
         '''
         self.ez_unsubscribe(self._key, self.event(label))
+        
+    def pack(self, label, call):
+        self.ez_register(self._key, label, self._lazy(call))
 
     def update(self, labels):
         '''
@@ -140,6 +142,6 @@ class Events(Registry):
 
         @param labels: eventconf
         '''
-        ez_register = partial(self.ez_register, self._key)
+        pack = self.pack
         t = lambda x: not x[0].startswith('_')
-        exhaust(starmap(ez_register, ifilter(t, items(vars(labels)))))
+        exhaust(starmap(pack, ifilter(t, items(vars(labels)))))

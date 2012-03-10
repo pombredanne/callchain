@@ -1,26 +1,16 @@
 # -*- coding: utf-8 -*-
 '''lazy queued chainlets'''
 
-from callchain.chainlet import EChainletMixin, ChainletQMixin
+from callchain.assembly.chainlet import Eventlet, CallChainlet
+
+from callchain.lazy.mixins import LazyRootedMixin
 
 
-class LazyChainletMixin(ChainletQMixin):
+class LazyCallChainletMixin(CallChainlet, LazyRootedMixin):
 
-    '''lazy queued rooted chain mixin'''
-
-    def __init__(self, root):
-        '''
-        init
-
-        @param root: root call chain
-        '''
-        super(LazyChainletMixin, self).__init__(root)
-        # sync with root incoming things
-        self.incoming = root.incoming
-        # sync with root outgoing things
-        self.outgoing = root.outgoing
+    '''lazy call chainlet mixin'''
 
 
-class LazyEventletMixin(EChainletMixin, LazyChainletMixin):
+class LazyEventletMixin(Eventlet, LazyRootedMixin):
 
     '''lazy eventlet mixin'''

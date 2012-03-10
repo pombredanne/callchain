@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
-'''callchains root call chain mixins'''
+'''chain mixins'''
 
 from stuf.utils import either
 from stuf.core import frozenstuf
 
 from callchain.patterns import Pathways
 
-from callchain.call import QCallingMixin, ECallingMixin, CallMixin
+from callchain.mixin.reset import ResetLocalMixin
 
 
-class Chain(CallMixin):
+class RootMixin(ResetLocalMixin):
 
     '''root chain'''
 
@@ -21,7 +21,7 @@ class Chain(CallMixin):
         @param required: required settings (default: None)
         @param defaults: default settings (default: None)
         '''
-        super(Chain, self).__init__()
+        super(RootMixin, self).__init__()
         if pattern is not None:
             # external appspace
             self.M = Pathways.appspace(pattern, required, defaults)
@@ -36,7 +36,7 @@ class Chain(CallMixin):
         return self.M.settings.final if self.M is not None else frozenstuf()
 
 
-class ChainMixin(Chain):
+class RootChainMixin(RootMixin):
 
     '''root call chain mixin'''
 
@@ -48,7 +48,7 @@ class ChainMixin(Chain):
         @param required: required settings (default: None)
         @param defaults: default settings (default: None)
         '''
-        super(ChainMixin, self).__init__(pattern, required, defaults, **kw)
+        super(RootChainMixin, self).__init__(pattern, required, defaults, **kw)
         self._setup_chain()
 
     def back(self, link):
@@ -62,32 +62,10 @@ class ChainMixin(Chain):
         self._cappend(link._chain)
         return self
 
-    _oback = back
+    _rback = back
 
 
-class ChainQMixin(ChainMixin, QCallingMixin):
-
-    '''queued root call chain mixin'''
-
-    def back(self, link):
-        '''
-        handle return from linked call chain
-
-        @param link: linked call chain
-        '''
-        self._oback(link)
-        # sync with link callable
-        self._call = link._call
-        # sync with link postitional arguments
-        self._args = link._args
-        # sync with link keyword arguments
-        self._kw = link._kw
-        return self
-
-    _cback = back
-
-
-class EChainMixin(ChainMixin, ECallingMixin):
+class RootEventMixin(RootChainMixin):
 
     '''root event chain mixin'''
 
@@ -108,7 +86,7 @@ class EChainMixin(ChainMixin, ECallingMixin):
         @param required: required settings (default: None)
         @param defaults: default settings (default: None)
         '''
-        super(EChainMixin, self).__init__(
+        super(RootEventMixin, self).__init__(
             patterns, required, defaults, *args, **kw
         )
         # update event registry with any other events
@@ -130,6 +108,8 @@ class EChainMixin(ChainMixin, ECallingMixin):
             self.E.set(event, key, queue)
         return queue
 
+    _eeventq = _eventq
+
     def _event(self, event):
         '''
         fetch calls bound to `event`
@@ -137,6 +117,8 @@ class EChainMixin(ChainMixin, ECallingMixin):
         @param event: event label
         '''
         return self.E.events(self.E.event(event))
+
+    _devent = _event
 
     def event(self, event):
         '''
@@ -147,6 +129,8 @@ class EChainMixin(ChainMixin, ECallingMixin):
         self.E.event(event)
         return self
 
+    _eevent = event
+
     def unevent(self, event):
         '''
         drop `event`
@@ -155,3 +139,5 @@ class EChainMixin(ChainMixin, ECallingMixin):
         '''
         self.E.unevent(event)
         return self
+
+    _eunevent = unevent

@@ -14,7 +14,7 @@ from callchain.keys.reduce import KMath, KReduce, KTruth
 from callchain.keys.map import KDelay, KCopy, KRepeat, KMap
 from callchain.keys.filter import KCollect, KSet, KSlice, KFilter
 
-from callchain.active.chainlet import ActiveChainletMixin
+from callchain.active.chainlet import ActiveCallChainletMixin
 
 __all__ = (
     'mathchain', 'truthchain', 'reducechain', 'collectchain', 'setchain',
@@ -24,78 +24,78 @@ __all__ = (
 
 
 @appifies(KDelay)
-class delaychain(ActiveChainletMixin, ManQMixin, DelayMixin):
+class delaychain(ActiveCallChainletMixin, ManQMixin, DelayMixin):
 
     '''manually balanced delayed mapping chainlets'''
 
 
 @appifies(KCopy)
-class copychain(ActiveChainletMixin, ManQMixin, CopyMixin):
+class copychain(ActiveCallChainletMixin, ManQMixin, CopyMixin):
 
     '''manually balanced copy chainlets'''
 
 
 @appifies(KRepeat)
-class repeatchain(ActiveChainletMixin, ManQMixin, RepeatMixin):
+class repeatchain(ActiveCallChainletMixin, ManQMixin, RepeatMixin):
 
     '''manually balanced repeat chainlets'''
 
 
 @appifies(KMap)
-class mapchain(ActiveChainletMixin, ManQMixin, MapMixin):
+class mapchain(ActiveCallChainletMixin, ManQMixin, MapMixin):
 
     '''manually balanced mapping chainlets'''
 
 
 @appifies(KCollect)
-class collectchain(ActiveChainletMixin, ManQMixin, CollectMixin):
+class collectchain(ActiveCallChainletMixin, ManQMixin, CollectMixin):
 
     '''manually balanced collecting chainlets'''
 
 
 @appifies(KSet)
-class setchain(ActiveChainletMixin, ManQMixin, SetMixin):
+class setchain(ActiveCallChainletMixin, ManQMixin, SetMixin):
 
     '''manually balanced seting chainlets'''
 
 
 @appifies(KSlice)
-class slicechain(ActiveChainletMixin, ManQMixin, SliceMixin):
+class slicechain(ActiveCallChainletMixin, ManQMixin, SliceMixin):
 
     '''manually balanced slicing chainlets'''
 
 
 @appifies(KFilter)
-class filterchain(ActiveChainletMixin, ManQMixin, FilterMixin):
+class filterchain(ActiveCallChainletMixin, ManQMixin, FilterMixin):
 
     '''manually balanced filtering chainlets'''
 
 
 @appifies(KRandom)
-class randomchain(ActiveChainletMixin, ManQMixin, RandomMixin):
+class randomchain(ActiveCallChainletMixin, ManQMixin, RandomMixin):
 
     '''manually balanced randomizing chainlets'''
 
 
 @appifies(KOrder)
-class orderchain(ActiveChainletMixin, ManQMixin, OrderMixin):
+class orderchain(ActiveCallChainletMixin, ManQMixin, OrderMixin):
 
     '''manually balanced ordering chainlets'''
 
 
 @appifies(KMath)
-class mathchain(ActiveChainletMixin, ManQMixin, MathMixin):
+class mathchain(ActiveCallChainletMixin, ManQMixin, MathMixin):
 
     '''manually balanced mathing chainlets'''
 
 
 @appifies(KReduce)
-class reducechain(ActiveChainletMixin, ManQMixin, ReduceMixin):
+class reducechain(ActiveCallChainletMixin, ManQMixin, ReduceMixin):
 
     '''manually balanced reducing chainlets'''
 
 
 @appifies(KTruth)
-class truthchain(ActiveChainletMixin, ManQMixin, TruthMixin):
+class truthchain(ActiveCallChainletMixin, ManQMixin, TruthMixin):
 
     '''manually balanced truthing chainlets'''
