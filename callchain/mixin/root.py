@@ -59,6 +59,8 @@ class RootChainMixin(RootMixin):
         self.extend(args)
         return self
 
+    _dcall = __call__
+
     def back(self, link):
         '''
         handle chainlet end
@@ -66,12 +68,11 @@ class RootChainMixin(RootMixin):
         @param link: linked call chain
         '''
         self.clear()
-        self._qback(link)
         # extend call chain with root call chain
         self._cappend(link._chain)
         return self
 
-    _ccback = back
+    _rback = back
 
 
 class RootEventMixin(RootChainMixin):

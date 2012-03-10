@@ -79,3 +79,7 @@ class QRootedMixin(QRootMixin):
         self._kw = root._kw
         # sync with root callable
         self._call = root._call
+        # sync with root incoming things
+        self.extend(root.incoming)
+        # sync with root outgoing things
+        self.outextend(root.outgoing)
