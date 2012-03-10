@@ -97,7 +97,7 @@ class ERootedChainMixin(RootedChainMixin):
         if queue is None:
             # create liked call chain if nonexistent
             queue = self._callchain
-            self.E.set(event, key, queue)
+            self.E.on(event, key, queue)
         return queue
 
     _eeventq = _eventq

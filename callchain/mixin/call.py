@@ -77,21 +77,14 @@ class ECallMixin(CallMixin):
 
     def commit(self):
         '''run event chain'''
-        trigger = self.trigger
         fire = self.fire
         try:
-            # 1. before event
-            trigger('before')
-            # 2. work event
-            trigger('work')
+            # 1. before event  2. work event
+            self.trigger('before', 'work')
             # everything else
             self._ccommit()
-            # 3. change event
-            fire('change')
-            # 4. any event
-            fire('any')
-            # 5. after event
-            fire('after')
+            # 3. change event 4. any event 5. after event
+            fire('change', 'any', 'after')
         except:
             # 6. problem event
             fire('problem')

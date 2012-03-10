@@ -103,8 +103,7 @@ class EventMixin(ChainMixin):
 
     def _events(self, *events):
         '''calls bound to `events`'''
-        _event = self._event
-        return chain(*tuple(imap(_event, events)))
+        return chain(*tuple(imap(self._event, events)))
 
     _devents = _events
 

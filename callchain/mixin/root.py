@@ -112,11 +112,11 @@ class RootEventMixin(RootChainMixin):
         '''
         # fetch linked call chain bound to event
         key = self.E.event(event)
-        queue = self.E.get(event, key)
+        queue = self.E.get(key)
         if queue is None:
             # create liked call chain if nonexistent
             queue = self._callchain
-            self.E.set(event, key, queue)
+            self.E.on(key, queue)
         return queue
 
     _eeventq = _eventq

@@ -30,17 +30,17 @@ class CallingMixin(object):
         self.qclass.chain(floor, 3)
         self.qclass.chain(fsum, [1.1, 1.1, 1.1]).chain(sqrt, 4)
         self.qclass.commit()
-        outgoing = self.qclass.outgoing
-        self.assertEqual(outgoing.popleft(), 3.0)
-        self.assertEqual(outgoing.popleft(), 3.3000000000000003)
-        self.assertEqual(outgoing.popleft(), 2)
+        outgoing = self.qclass.value()
+        self.assertEqual(outgoing.pop(), 3.3000000000000003)
+        self.assertEqual(outgoing.pop(), 2)
+        self.assertEqual(outgoing.pop(), 3.0)
 
     def test_appspace_calls(self):
         qclass = self._appconf
         qclass.chain('square', 'helpers', 3).chain('misc', 'subhelpers', 4)
         qclass.chain('formit', 'helpers', [1.1, 1.1, 1.1])
         qclass.commit()
-        outgoing = qclass.outgoing
-        self.assertEqual(outgoing.popleft(), 3.0)
-        self.assertEqual(outgoing.popleft(), 2)
-        self.assertEqual(outgoing.popleft(), 3.3000000000000003)
+        outgoing = qclass.value()
+        self.assertEqual(outgoing.pop(), 3.3000000000000003)
+        self.assertEqual(outgoing.pop(), 2)
+        self.assertEqual(outgoing.pop(), 3.0)
