@@ -3,7 +3,7 @@
 
 from callchain.assembly.chainlet import Eventlet, CallChainlet
 
-from callchain.mixins.active import ActiveRootedMixin
+from callchain.mixin.active import ActiveRootedMixin
 
 
 class ActiveCallChainletMixin(CallChainlet, ActiveRootedMixin):

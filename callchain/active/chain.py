@@ -10,7 +10,7 @@ from callchain.internal import inside, einside
 from callchain.mixin.reset import ResetLocalMixin
 from callchain.keys.chain import KCallChain, KEventChain
 from callchain.assembly.chain import CallChainQ, EventChainQ
-from callchain.mixins.active import ActiveCallMixin, ActiveECallMixin
+from callchain.mixin.active import ActiveCallMixin, ActiveECallMixin
 
 from callchain.active.man.apps import chain as mchain
 from callchain.active.auto.apps import chain as achain

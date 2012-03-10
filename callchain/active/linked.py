@@ -8,7 +8,7 @@ from callchain.keys.queue import KQueue
 from callchain.keys.chain import KChainLink, KEventLink
 from callchain.assembly.linked import LinkedQ, EventlinkQ
 
-from callchain.mixins.active import (
+from callchain.mixin.active import (
     ActiveCallMixin, ActiveECallMixin, ActiveRootedMixin)
 
 
