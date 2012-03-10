@@ -2,12 +2,12 @@
 '''chain assembly'''
 
 from callchain.mixin.queued import QRootMixin
-from callchain.mixin.call import CallMixin, ECallMixin
-from callchain.mixin.root import RootChainMixin, RootEventMixin, RootMixin
+from callchain.mixin.call import CallMixin, ECallMixin, CallingMixin
 from callchain.mixin.fluent import FluentMixin, ChainMixin, EventMixin
+from callchain.mixin.root import RootChainMixin, RootEventMixin, RootMixin
 
 
-class Chain(CallMixin, RootMixin, FluentMixin):
+class Chain(CallingMixin, RootMixin, FluentMixin):
 
     '''chain'''
 

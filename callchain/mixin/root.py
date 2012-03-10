@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 '''chain mixins'''
 
-from stuf.utils import either
 from stuf.core import frozenstuf
+from stuf.utils import either, lazy
 
 from callchain.patterns import Pathways
 
@@ -29,6 +29,16 @@ class RootMixin(ResetLocalMixin):
             self.M.freeze(kw)
         else:
             self.M = None
+
+    @lazy
+    def defaults(self):
+        '''default settings by their lonesome'''
+        return self.M.settings.defaults if self.M is not None else frozenstuf()
+
+    @lazy
+    def required(self):
+        '''required settings by their lonesome'''
+        return self.M.settings.required if self.M is not None else frozenstuf()
 
     @either
     def G(self):

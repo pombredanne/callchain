@@ -11,9 +11,9 @@ from callchain.keys.octopus import NoServiceError
 from callchain.mixin.reset import ResetLocalMixin
 
 
-class CallMixin(ResetLocalMixin):
+class CallingMixin(ResetLocalMixin):
 
-    '''call mixin'''
+    '''calling mixin'''
 
     def _load(self, label):
         '''
@@ -47,15 +47,6 @@ class CallMixin(ResetLocalMixin):
         '''external appspace interface'''
         return Appspace(self.M) if self.M is not None else None
 
-    def commit(self):
-        '''consume call chain until exhausted'''
-        self.outextend(
-            c() for c in iterexcept(self._chain.popleft, IndexError)
-        )
-        return self
-
-    _ccommit = commit
-
     def switch(self, label, key=False):
         '''
         overt switch to linked call chain in external appspace
@@ -69,6 +60,20 @@ class CallMixin(ResetLocalMixin):
 
     class Meta:
         pass
+
+
+class CallMixin(CallingMixin):
+
+    '''call mixin'''
+
+    def commit(self):
+        '''consume call chain until exhausted'''
+        self.outextend(
+            c() for c in iterexcept(self._chain.popleft, IndexError)
+        )
+        return self
+
+    _ccommit = commit
 
 
 class ECallMixin(CallMixin):
