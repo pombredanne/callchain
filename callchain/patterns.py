@@ -11,7 +11,7 @@ from appspace.spaces import Branch, Namespace, Patterns, patterns
 from callchain.managers import Manager
 from callchain.keys.octopus import KService
 
-__all__ = ['Pathways']
+__all__ = ['Pathways', 'Branchways', 'Nameways']
 
 
 class Pathways(Patterns):

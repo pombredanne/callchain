@@ -5,7 +5,7 @@ from itertools import starmap
 
 from twoq import twoq
 from stuf import stuf
-from stuf.six import items
+from stuf.six import items, u
 from appspace import Registry
 from appspace.keys import AApp, ifilter
 from stuf.utils import bi, getcls, lazy, exhaust
@@ -127,7 +127,7 @@ class Events(Registry):
         @param call: some thing
         '''
         self.subscribe(self._key, key, thing.commit)
-        self.register([self._key], key, u'', thing)
+        self.register([self._key], key, u(''), thing)
 
     def unevent(self, label):
         '''
