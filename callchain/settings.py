@@ -16,7 +16,7 @@ __all__ = ('DefaultSettings', 'RequiredSettings', 'Settings')
 
 def object_walk(this):
     '''
-    transform classes within an object into dictionary
+    transform classes within an instance into a dictionary
 
     @param this: object
     '''

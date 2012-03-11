@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
-'''callchain octopus keys'''
+'''callchain core keys'''
 
 from appspace.keys import AppspaceKey, Attribute
 
 __all__ = (
-    'KSettings',  'KService', 'AOctopus', 'ATentacle', 'KRequired',
-    'KDefaults',
+    'KSettings',  'KService', 'AChain', 'AChainlet', 'KRequired', 'KDefaults',
 )
 
 
@@ -24,7 +23,7 @@ class KRequired(AppspaceKey):
     '''required settings key'''
 
 
-class AOctobase(AppspaceKey):
+class ACall(AppspaceKey):
 
     '''service key'''
 
@@ -36,14 +35,14 @@ class AOctobase(AppspaceKey):
     space = Attribute('appspace')
 
 
-class AOctopus(AOctobase):
+class AChain(ACall):
 
     '''octopus key'''
 
     port = Attribute('python 2.x <-> python 3.x compatibility helper')
 
 
-class ATentacle(AOctobase):
+class AChainlet(ACall):
 
     '''tentacle key'''
 

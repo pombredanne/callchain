@@ -5,7 +5,7 @@
 
 from appspace.keys import AppspaceKey
 
-from callchain.keys.octopus import AOctopus, ATentacle
+from callchain.keys.core import AChain, AChainlet
 
 __all__ = ('KChain', 'KCallChain', 'KChainLink')
 
@@ -35,7 +35,7 @@ class KChain(AppspaceKey):
         '''
 
 
-class KCallChain(AOctopus, KChain):
+class KCallChain(AChain, KChain):
 
     '''call chain key'''
     
@@ -51,12 +51,12 @@ class KCallChain(AOctopus, KChain):
         '''return to root call chain'''
 
 
-class KChainLink(ATentacle, KChain):
+class KChainLink(AChainlet, KChain):
 
     '''linked call chain key'''
         
         
-class KChainlet(ATentacle, KChain):
+class KChainlet(AChainlet, KChain):
 
     '''linked call chain key'''
     

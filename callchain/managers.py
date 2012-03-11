@@ -36,14 +36,13 @@ class Manager(_Manager):
 
     @lazy
     def settings(self):
-        '''get appspace settings'''
+        '''appspace settings'''
         return self.ez_lookup(KSettings, self._root)()
 
     @bi
     def localize(self, thing, *args, **kw):
         '''
-        gather local settings from thing and its base classes, adding any
-        passed settings
+        local settings from thing and its base classes plus any custom settings
 
         @param thing: some thing with local settings
         '''
@@ -53,7 +52,6 @@ class Manager(_Manager):
 
     def freeze(self, *args, **kw):
         '''finalize settings, adding any passed settings'''
-
         self.settings.update(*args, **kw)
         self.settings.lock()
 
@@ -146,6 +144,12 @@ class Events(Registry):
         self.ez_unsubscribe(self._key, self.event(label))
         
     def pack(self, label, call):
+        '''
+        pack things into registry
+        
+        @param label: event label 
+        @param call: some thing
+        '''
         self.ez_register(self._key, label, self._lazy(call))
 
     def update(self, labels):

@@ -7,7 +7,7 @@ from callchain.patterns import Pathways
 
 class inside(object):
 
-    '''internal octopus configuration mixin'''
+    '''internal appspace configuration'''
 
     def __init__(self, pattern, required=None, defaults=None, *args, **kw):
         '''
