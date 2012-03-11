@@ -14,7 +14,7 @@ from callchain.mixin.reset import ResetLocalMixin
 
 class FluentMixin(ResetLocalMixin):
 
-    '''fluent-style mixin'''
+    '''fluent interface mixin'''
 
     def __getattr__(self, label):
         try:
@@ -102,14 +102,14 @@ class EventMixin(ChainMixin):
         return self._M.get('callchain', 'event')(self)
 
     def _events(self, *events):
-        '''calls bound to `events`'''
+        '''calls bound to ``events``'''
         return chain(*tuple(imap(self._event, events)))
 
     _devents = _events
 
     def on(self, event, call, key=False, *args, **kw):
         '''
-        bind call to `event`
+        bind call to ``event``
 
         @param event: event label
         @param call: label for call or eventspaced thing
@@ -122,7 +122,7 @@ class EventMixin(ChainMixin):
 
     def off(self, event):
         '''
-        clear calls bound to `event`
+        clear calls bound to ``event``
 
         @param event: event label
         '''
@@ -132,7 +132,7 @@ class EventMixin(ChainMixin):
     _eoff = off
 
     def trigger(self, *events):
-        '''extend primary call chain with partials bound to `events`'''
+        '''extend primary call chain with partials bound to ``events``'''
         self._cxtend(self._events(*events))
         return self
 

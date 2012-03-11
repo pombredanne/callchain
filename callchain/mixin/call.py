@@ -6,12 +6,12 @@ from appspace.builders import Appspace
 from stuf import frozenstuf, orderedstuf
 from stuf.utils import lazy, lazy_class, either, iterexcept
 
-from callchain.keys.octopus import NoServiceError
+from callchain.keys.core import NoServiceError
 
 from callchain.mixin.reset import ResetLocalMixin
 
 
-class CallingMixin(ResetLocalMixin):
+class CallMixin(ResetLocalMixin):
 
     '''calling mixin'''
 
@@ -19,7 +19,7 @@ class CallingMixin(ResetLocalMixin):
         '''
         silent internal switch to...
 
-        @param label: appspaced thing label
+        @param label: label of appspaced thing
         '''
         try:
             # look up internal appspaced linked call chain...
@@ -62,9 +62,9 @@ class CallingMixin(ResetLocalMixin):
         pass
 
 
-class CCallMixin(CallingMixin):
+class CCallMixin(CallMixin):
 
-    '''call mixin'''
+    '''chain execution mixin'''
 
     def commit(self):
         '''consume call chain until exhausted'''
@@ -78,17 +78,17 @@ class CCallMixin(CallingMixin):
 
 class ECallMixin(CCallMixin):
 
-    '''event chain execution mixin'''
+    '''event execution mixin'''
 
     def commit(self):
         '''run event chain'''
         fire = self.fire
         try:
-            # 1. before event  2. work event
+            # 1. before event then 2. work event
             self.trigger('before', 'work')
             # everything else
             self._ccommit()
-            # 3. change event 4. any event 5. after event
+            # 3. change event then 4. any event then 5. after event
             fire('change', 'any', 'after')
         except:
             # 6. problem event
@@ -101,7 +101,7 @@ class ECallMixin(CCallMixin):
     _ecommit = commit
 
     def fire(self, *events):
-        '''run calls bound to `events` NOW'''
+        '''run calls bound to ``events`` NOW'''
         try:
             # clear scratch queue
             self._sclear()
@@ -118,9 +118,9 @@ class ECallMixin(CCallMixin):
 
     def queues(self, *events):
         '''
-        ordered mapping of processing queues for `events`
+        ordered mapping of processing queues for ``events``
 
-        @param *events: event labels
+        @param events: event labels
         '''
         return orderedstuf((e, self._eventq(e).outgoing) for e in events)
 

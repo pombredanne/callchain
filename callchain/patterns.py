@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''callchain octopus patterns'''
+'''callchain patterns'''
 
 from twoq import port
 from stuf.six import strings
@@ -9,7 +9,7 @@ from appspace.keys import ConfigurationError, ANamespace, imap
 from appspace.spaces import Branch, Namespace, Patterns, patterns
 
 from callchain.managers import Manager
-from callchain.keys.octopus import KService
+from callchain.keys.core import KService
 
 __all__ = ['Pathways', 'Branchways', 'Nameways']
 

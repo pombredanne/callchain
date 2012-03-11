@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-'''fluent mixins'''
+'''queue mixins'''
 
 from twoq.support import isstring
 
 from callchain.mixin.reset import ResetLocalMixin
 
 
-class QMixin(ResetLocalMixin):
+class _QMixin(ResetLocalMixin):
 
     '''queued chain mixin'''
 
@@ -36,7 +36,7 @@ class QMixin(ResetLocalMixin):
     _qtap = tap
 
 
-class QRootMixin(QMixin):
+class QRootMixin(_QMixin):
 
     '''queued root chain mixin'''
 

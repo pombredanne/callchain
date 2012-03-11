@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-'''chain mixins'''
+'''root mixins'''
 
 from callchain.mixin.reset import ResetLocalMixin
 
 
 class CRootMixin(ResetLocalMixin):
 
-    '''root call chain mixin'''
+    '''root chain mixin'''
 
     def __call__(self, *args):
         '''new chain session'''
@@ -22,7 +22,7 @@ class CRootMixin(ResetLocalMixin):
         '''
         handle chainlet end
 
-        @param link: linked call chain
+        @param link: linked chain
         '''
         self.clear()
         # extend call chain with root call chain
@@ -35,11 +35,11 @@ class CRootMixin(ResetLocalMixin):
 
 class ERootMixin(CRootMixin):
 
-    '''root event chain mixin'''
+    '''root event mixin'''
 
     def _eventq(self, event):
         '''
-        fetch linked call chain tied to `event`
+        fetch linked call chain tied to ``event``
 
         @param event: event label
         '''
@@ -56,7 +56,7 @@ class ERootMixin(CRootMixin):
 
     def _event(self, event):
         '''
-        fetch calls bound to `event`
+        fetch calls bound to ``event``
 
         @param event: event label
         '''
@@ -66,7 +66,7 @@ class ERootMixin(CRootMixin):
 
     def event(self, event):
         '''
-        create or fetch `event`
+        create or fetch ``event``
 
         @param event: event label
         '''
@@ -77,7 +77,7 @@ class ERootMixin(CRootMixin):
 
     def unevent(self, event):
         '''
-        drop `event`
+        drop ``event``
 
         @param event: event label
         '''

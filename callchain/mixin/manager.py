@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''configure mixins'''
+'''manager mixins'''
 
 from stuf.core import frozenstuf
 from stuf.utils import either, lazy
@@ -11,7 +11,7 @@ from callchain.mixin.reset import ResetLocalMixin
 
 class ConfigMixin(ResetLocalMixin):
 
-    '''configure mixin'''
+    '''configuration access mixin'''
 
     @lazy
     def defaults(self):
@@ -31,7 +31,7 @@ class ConfigMixin(ResetLocalMixin):
 
 class ManagerMixin(ConfigMixin):
 
-    '''root chain'''
+    '''manager mixin'''
 
     def __init__(self, pattern=None, required=None, defaults=None, **kw):
         '''
@@ -53,7 +53,7 @@ class ManagerMixin(ConfigMixin):
 
 class CManagerMixin(ManagerMixin):
 
-    '''root call chain mixin'''
+    '''chain manager mixin'''
 
     def __init__(self, pattern=None, required=None, defaults=None, **kw):
         '''
@@ -71,7 +71,7 @@ class CManagerMixin(ManagerMixin):
 
 class EManagerMixin(CManagerMixin):
 
-    '''root event chain mixin'''
+    '''event manager mixin'''
 
     def __init__(
         self,

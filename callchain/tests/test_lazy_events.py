@@ -19,12 +19,12 @@ from callchain.tests.mixins.man.ordering import MOrderQMixin
 from callchain.tests.mixins.man.reducing import MReduceQMixin
 from callchain.tests.mixins.man.filtering import MFilterQMixin
 
-from callchain.tests.mixins.chain import CallingMixin
+from callchain.tests.mixins.chain import CallMixin
 from callchain.tests.mixins.event import EventChainMixin
 
 
 class TestLazyAutoEventChain(
-    unittest.TestCase, EventChainMixin, CallingMixin, AQMixin, AFilterQMixin,
+    unittest.TestCase, EventChainMixin, CallMixin, AQMixin, AFilterQMixin,
     AMapQMixin, AReduceQMixin, AOrderQMixin,
 ):
 
@@ -38,7 +38,7 @@ class TestLazyAutoEventChain(
 
 
 class TestLazyManEventChain(
-    Manning, EventChainMixin, CallingMixin, MQMixin, MFilterQMixin,
+    Manning, EventChainMixin, CallMixin, MQMixin, MFilterQMixin,
     MMapQMixin, MReduceQMixin, MOrderQMixin,
 ):
     def setUp(self):

@@ -87,7 +87,7 @@ class ERootedMixin(CRootedMixin):
 
     def _eventq(self, event):
         '''
-        fetch linked call chain tied to `event`
+        fetch linked call chain tied to ``event``
 
         @param event: event label
         '''
@@ -104,7 +104,7 @@ class ERootedMixin(CRootedMixin):
 
     def _event(self, event):
         '''
-        fetch calls bound to `event`
+        fetch calls bound to ``event``
 
         @param event: event label
         '''

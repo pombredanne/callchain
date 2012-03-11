@@ -4,7 +4,7 @@
 from collections import deque
 
 
-class CallingMixin(object):
+class CallMixin(object):
 
     @property
     def _appconf(self):

@@ -13,7 +13,7 @@ from appspace.managers import Manager as _Manager
 
 from callchain.settings import Settings
 from callchain.keys.event import EEvent
-from callchain.keys.octopus import KSettings, KService, NoServiceError
+from callchain.keys.core import KSettings, KService, NoServiceError
 
 __all__ = ['Manager']
 
