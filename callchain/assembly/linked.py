@@ -2,18 +2,12 @@
 '''linked chain assembly'''
 
 from callchain.mixin.queued import QRootedMixin
-from callchain.mixin.call import CallMixin, ECallMixin
-from callchain.mixin.rooted import (
-    RootedMixin, RootedChainMixin, ERootedChainMixin)
-from callchain.mixin.fluent import FluentMixin, ChainMixin, EventMixin
+from callchain.mixin.call import CCallMixin, ECallMixin
+from callchain.mixin.fluent import ChainMixin, EventMixin
+from callchain.mixin.rooted import CRootedMixin, ERootedMixin
 
 
-class Linked(RootedMixin, FluentMixin, CallMixin):
-
-    '''linked chain'''
-
-
-class LinkedChain(RootedChainMixin, ChainMixin, CallMixin):
+class LinkedChain(CRootedMixin, ChainMixin, CCallMixin):
 
     '''linked call chain'''
 
@@ -23,7 +17,7 @@ class LinkedQ(LinkedChain, QRootedMixin):
     '''queued linked call chain'''
 
 
-class Eventlink(ERootedChainMixin, EventMixin, ECallMixin):
+class Eventlink(ERootedMixin, EventMixin, ECallMixin):
 
     '''event link chain'''
 

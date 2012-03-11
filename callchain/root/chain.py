@@ -9,20 +9,20 @@ from callchain.keys.chain import KCallChain, KEventChain
 
 from callchain.root.apps import chain, event
 from callchain.root.mixins import RootMixin
-from callchain.mixin.root import RootChainMixin, RootEventMixin
+from callchain.mixin.root import CRootMixin, ERootMixin
 from callchain.mixin.fluent import ChainMixin
-from callchain.mixin.call import CallMixin
+from callchain.mixin.call import CCallMixin
 
 
 @appifies(KCallChain)
 @inside(chain)
-class callchain(RootMixin, CallMixin, RootChainMixin, ChainMixin):
+class callchain(RootMixin, CCallMixin, CRootMixin, ChainMixin):
 
     '''call chain'''
 
 
 @appifies(KEventChain)
 @einside(event, events)
-class eventchain(RootMixin, CallMixin, RootEventMixin, ChainMixin):
+class eventchain(RootMixin, CCallMixin, ERootMixin, ChainMixin):
 
     '''event chain'''

@@ -2,51 +2,41 @@
 '''callchain reset mixins'''
 
 from threading import local
+from itertools import starmap
 
 from stuf.six import items
-from stuf.utils import getcls, lazybase
+from appspace.keys import ifilter
+from stuf.utils import getcls, lazybase, exhaust
 
 
 class ResetTypeMixin(object):
 
     '''
-    mixin to add a ".reset()" method to methods decorated with "lazybase"
-
-    By default, lazy attributes, once computed, are static. If they happen to
-    depend on other parts of an object and those parts change, their values may
-    be out of sync.
-
-    This class offers a ".reset()" method that an instance can call its state
-    has _changed and invalidate all their lazy attributes. Once reset() is
-    called, all lazy attributes are reset to original format and their accessor
-    functions can be triggered again.
+    mixin to add ``reset`` method to descriptors inheriting from ``lazybase``
     '''
 
     def reset(self):
-        '''reset accessed lazy attributes'''
-        instdict = vars(self)
-        classdict = vars(getcls(self))
-        # To reset them, we simply remove them from the instance dict. At that
-        # point, it's as if they had never been computed. On the next access,
-        # the accessor function from the parent class will be called, simply
-        # because that's how the python descriptor protocol works.
-        for key, value in items(classdict):
-            if all([key in instdict, isinstance(value, lazybase)]):
-                delattr(self, key)
+        '''reset previously accessed ``lazybase`` attributes'''
+        this = vars(self)
+        that = vars(getcls(self))
+        t = lambda x, y: x in this and isinstance(y, lazybase)
+        exhaust(starmap(delattr, ifilter(t, items(that))))
 
     _rreset = reset
 
 
 class ResetLocalMixin(local):
 
-    '''thread `local` version versione of `ResetTypeMixin`'''
+    '''
+    mixin to add ``reset`` method to descriptors inheriting from ``lazybase``
+    (thread ``local`` version)
+    '''
 
     def reset(self):
-        '''reset previously accessed `lazybase` attributes'''
-        instdict = vars(self)
-        classdict = vars(getcls(self))
-        for key, value in items(classdict):
-            if all([key in instdict, isinstance(value, lazybase)]):
-                delattr(self, key)
+        '''reset previously accessed ``lazybase`` attributes'''
+        this = vars(self)
+        that = vars(getcls(self))
+        t = lambda x, y: x in this and isinstance(y, lazybase)
+        exhaust(starmap(delattr, ifilter(t, items(that))))
 
     _rreset = reset

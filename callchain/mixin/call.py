@@ -62,7 +62,7 @@ class CallingMixin(ResetLocalMixin):
         pass
 
 
-class CallMixin(CallingMixin):
+class CCallMixin(CallingMixin):
 
     '''call mixin'''
 
@@ -76,7 +76,7 @@ class CallMixin(CallingMixin):
     _ccommit = commit
 
 
-class ECallMixin(CallMixin):
+class ECallMixin(CCallMixin):
 
     '''event chain execution mixin'''
 

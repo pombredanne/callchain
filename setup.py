@@ -17,7 +17,7 @@ if sys.version_info[0] == 2 and sys.version_info[1] < 7:
 
 setup(
     name='callchain',
-    version='0.1.1',
+    version='0.1.2',
     url='http://bitbucket.com/lcrees/callchain',
     description='callables and components joined in one big happy chain',
     long_description=open(os.path.join(os.getcwd(), 'README.rst'), 'r').read(),

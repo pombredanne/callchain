@@ -11,7 +11,7 @@ class QMixin(ResetLocalMixin):
     '''queued chain mixin'''
 
     def clear(self):
-        '''clear all queues'''
+        '''clear queues'''
         self._oclear()
         self._cclear()
         return self

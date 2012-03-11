@@ -3,16 +3,11 @@
 
 from callchain.mixin.queued import QRootedMixin
 from callchain.mixin.rooted import (
-    RootedMixin, RootletMixin, RootedChainMixin, ERootedChainMixin)
-from callchain.mixin.fluent import FluentMixin, EventMixin, ChainMixin
+    RootletMixin, CRootedMixin, ERootedMixin)
+from callchain.mixin.fluent import EventMixin, ChainMixin
 
 
-class Chainlet(RootedMixin, RootletMixin, FluentMixin):
-
-    '''chain chainlet'''
-
-
-class CallChainlet(RootedChainMixin, RootletMixin, ChainMixin):
+class CallChainlet(CRootedMixin, RootletMixin, ChainMixin):
 
     '''call chainlet'''
 
@@ -22,7 +17,7 @@ class CallChainletQ(CallChainlet, QRootedMixin):
     '''queued call chainlet'''
 
 
-class Eventlet(ERootedChainMixin, RootletMixin, EventMixin):
+class Eventlet(ERootedMixin, RootletMixin, EventMixin):
 
     '''event chainlet'''
 

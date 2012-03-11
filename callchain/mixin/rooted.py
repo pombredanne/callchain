@@ -10,29 +10,6 @@ from callchain.managers import Events
 from callchain.mixin.fluent import ResetLocalMixin
 
 
-class RootedMixin(ResetLocalMixin):
-
-    '''rooted mixin'''
-
-    def __init__(self, root):
-        '''
-        init
-
-        @param root: root object
-        '''
-        super(RootedMixin, self).__init__(root)
-        # root object
-        self.root = root
-        # root internal appspace manager
-        self._M = root._M
-        # root internal global settings
-        self._G = root._G
-        # root external appspace manager
-        self.M = root.M
-        # root external global settings
-        self.G = root.G if self.M else None
-
-
 class RootletMixin(ResetLocalMixin):
 
     def _load(self, label):
@@ -57,7 +34,30 @@ class RootletMixin(ResetLocalMixin):
     _rback = back
 
 
-class RootedChainMixin(RootedMixin):
+class RootedMixin(ResetLocalMixin):
+
+    '''rooted mixin'''
+
+    def __init__(self, root):
+        '''
+        init
+
+        @param root: root object
+        '''
+        super(RootedMixin, self).__init__(root)
+        # root object
+        self.root = root
+        # root internal appspace manager
+        self._M = root._M
+        # root internal global settings
+        self._G = root._G
+        # root external appspace manager
+        self.M = root.M
+        # root external global settings
+        self.G = root.G if self.M else None
+
+
+class CRootedMixin(RootedMixin):
 
     ''''rooted chain mixin'''
 
@@ -67,11 +67,11 @@ class RootedChainMixin(RootedMixin):
 
         @param root: root call chain
         '''
-        super(RootedChainMixin, self).__init__(root)
+        super(CRootedMixin, self).__init__(root)
         self._setup_chain()
 
 
-class ERootedChainMixin(RootedChainMixin):
+class ERootedMixin(CRootedMixin):
 
     '''rooted event chain mixin'''
 
@@ -81,7 +81,7 @@ class ERootedChainMixin(RootedChainMixin):
 
         @param root: root event chain
         '''
-        super(ERootedChainMixin, self).__init__(root)
+        super(ERootedMixin, self).__init__(root)
         # local event registry
         self.E = Events('events')
 
