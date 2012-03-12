@@ -3,16 +3,16 @@
 
 from appspace.keys import appifies
 from twoq.lazy.mixins import ManQMixin
-from twoq.mixins.ordering import RandomMixin, OrderMixin
 from twoq.mixins.filtering import (
     FilterMixin, CollectMixin, SetMixin, SliceMixin)
+from twoq.mixins.ordering import RandomMixin, OrderMixin
 from twoq.mixins.reducing import MathMixin, TruthMixin, ReduceMixin
 from twoq.mixins.mapping import DelayMixin, CopyMixin, RepeatMixin, MapMixin
 
-from callchain.keys.order import KRandom, KOrder
-from callchain.keys.reduce import KMath, KReduce, KTruth
-from callchain.keys.map import KDelay, KCopy, KRepeat, KMap
-from callchain.keys.filter import KCollect, KSet, KSlice, KFilter
+from callchain.services.order import KRandom, KOrder
+from callchain.services.reduce import KMath, KReduce, KTruth
+from callchain.services.map import KDelay, KCopy, KRepeat, KMap
+from callchain.services.filter import KCollect, KSet, KSlice, KFilter
 
 from callchain.assembly.chainlet import EventletQ
 

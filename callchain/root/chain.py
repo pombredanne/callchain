@@ -11,8 +11,8 @@ from callchain.keys.chain import KCallChain, KEventChain
 from callchain.mixin.root import ChainRootMixin, EventRootMixin
 from callchain.mixin.manager import ChainManagerMixin, EventManagerMixin
 
-from callchain.root.apps import chain, event
 from callchain.root.mixins import RootMixin
+from callchain.root.apps import chain, event
 
 
 @appifies(KCallChain)
