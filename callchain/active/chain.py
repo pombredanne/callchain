@@ -4,7 +4,7 @@
 from appspace.keys import appifies
 from twoq.active.mixins import AutoResultMixin, ManResultMixin
 
-from callchain.keys.apps import events
+from callchain.services.apps import events
 from callchain.services.queue import KResults
 from callchain.internal import inside, einside
 from callchain.assembly.chain import CallChainQ, EventChainQ

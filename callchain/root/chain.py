@@ -3,7 +3,7 @@
 
 from appspace.keys import appifies
 
-from callchain.keys.apps import events
+from callchain.services.apps import events
 from callchain.mixin.fluent import ChainMixin
 from callchain.internal import inside, einside
 from callchain.mixin.call import ChainCallMixin
