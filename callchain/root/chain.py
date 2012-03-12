@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''active queued chains'''
+'''root chains'''
 
 from appspace.keys import appifies
 
