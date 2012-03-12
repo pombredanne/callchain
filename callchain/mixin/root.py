@@ -4,7 +4,7 @@
 from callchain.mixin.reset import ResetLocalMixin
 
 
-class CRootMixin(ResetLocalMixin):
+class ChainRootMixin(ResetLocalMixin):
 
     '''root chain mixin'''
 
@@ -33,7 +33,7 @@ class CRootMixin(ResetLocalMixin):
     _rback = back
 
 
-class ERootMixin(CRootMixin):
+class EventRootMixin(ChainRootMixin):
 
     '''root event mixin'''
 

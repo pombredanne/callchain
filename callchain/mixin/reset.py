@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''callchain reset mixins'''
+'''reset mixins'''
 
 from threading import local
 from itertools import starmap

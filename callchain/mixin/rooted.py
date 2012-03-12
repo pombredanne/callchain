@@ -12,6 +12,8 @@ from callchain.mixin.fluent import ResetLocalMixin
 
 class RootletMixin(ResetLocalMixin):
 
+    '''rootlet mixin'''
+
     def _load(self, label):
         '''
         silent internal switch back...
@@ -57,7 +59,7 @@ class RootedMixin(ResetLocalMixin):
         self.G = root.G if self.M else None
 
 
-class CRootedMixin(RootedMixin):
+class ChainRootedMixin(RootedMixin):
 
     ''''rooted chain mixin'''
 
@@ -67,11 +69,11 @@ class CRootedMixin(RootedMixin):
 
         @param root: root call chain
         '''
-        super(CRootedMixin, self).__init__(root)
+        super(ChainRootedMixin, self).__init__(root)
         self._setup_chain()
 
 
-class ERootedMixin(CRootedMixin):
+class EventRootedMixin(ChainRootedMixin):
 
     '''rooted event chain mixin'''
 
@@ -81,7 +83,7 @@ class ERootedMixin(CRootedMixin):
 
         @param root: root event chain
         '''
-        super(ERootedMixin, self).__init__(root)
+        super(EventRootedMixin, self).__init__(root)
         # local event registry
         self.E = Events('events')
 

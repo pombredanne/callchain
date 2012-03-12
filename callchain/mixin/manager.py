@@ -51,7 +51,7 @@ class ManagerMixin(ConfigMixin):
             self.M = None
 
 
-class CManagerMixin(ManagerMixin):
+class ChainManagerMixin(ManagerMixin):
 
     '''chain manager mixin'''
 
@@ -63,13 +63,13 @@ class CManagerMixin(ManagerMixin):
         @param required: required settings (default: None)
         @param defaults: default settings (default: None)
         '''
-        super(CManagerMixin, self).__init__(
+        super(ChainManagerMixin, self).__init__(
             pattern, required, defaults, **kw
         )
         self._setup_chain()
 
 
-class EManagerMixin(CManagerMixin):
+class EventManagerMixin(ChainManagerMixin):
 
     '''event manager mixin'''
 
@@ -90,7 +90,7 @@ class EManagerMixin(CManagerMixin):
         @param required: required settings (default: None)
         @param defaults: default settings (default: None)
         '''
-        super(EManagerMixin, self).__init__(
+        super(EventManagerMixin, self).__init__(
             patterns, required, defaults, *args, **kw
         )
         # update event registry with any other events

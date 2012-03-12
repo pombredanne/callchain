@@ -49,7 +49,7 @@ class CallMixin(ResetLocalMixin):
 
     def switch(self, label, key=False):
         '''
-        overt switch to linked call chain in external appspace
+        overt switch to linked call chain from external appspace
 
         @param label: linked call chain label
         @param key: linked call chain chain key (default: False)
@@ -62,7 +62,7 @@ class CallMixin(ResetLocalMixin):
         pass
 
 
-class CCallMixin(CallMixin):
+class ChainCallMixin(CallMixin):
 
     '''chain execution mixin'''
 
@@ -76,7 +76,7 @@ class CCallMixin(CallMixin):
     _ccommit = commit
 
 
-class ECallMixin(CCallMixin):
+class EventCallMixin(ChainCallMixin):
 
     '''event execution mixin'''
 
@@ -101,7 +101,11 @@ class ECallMixin(CCallMixin):
     _ecommit = commit
 
     def fire(self, *events):
-        '''run calls bound to ``events`` NOW'''
+        '''
+        run calls bound to ``events`` NOW
+
+        @param events: event labels
+        '''
         try:
             # clear scratch queue
             self._sclear()
