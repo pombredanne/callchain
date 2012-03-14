@@ -3,8 +3,8 @@
 
 from appspace.keys import appifies
 
-from callchain.keys.linked import KLinkedChain, KEventlink
-from callchain.assembly.linked import LinkedChain, Eventlink
+from callchain.keys.linked import KLinkedChain, KEventLink
+from callchain.assembly.linked import LinkedChain, EventLink
 
 from callchain.root.mixins import RootMixin
 
@@ -15,7 +15,7 @@ class chainlink(RootMixin, LinkedChain):
     '''root linked call chain'''
 
 
-@appifies(KEventlink)
-class eventlink(RootMixin, Eventlink):
+@appifies(KEventLink)
+class eventlink(RootMixin, EventLink):
 
     '''root linked event chain'''

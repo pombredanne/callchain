@@ -17,11 +17,11 @@ class KLinkedQ(KLinkedChain, KQueued):
     '''queued linked call chain key'''
 
 
-class KEventlink(KEventRooted, KEvent, KEventCall):
+class KEventLink(KEventRooted, KEvent, KEventCall):
 
     '''event link chain key'''
 
 
-class KEventlinkQ(KEventlink, KQueued):
+class KEventlinkQ(KEventLink, KQueued):
 
     '''queued event link chain key'''

@@ -4,9 +4,19 @@
 from callchain.mixin.reset import ResetLocalMixin
 
 
-class BackRootMixin(ResetLocalMixin):
+class ChainRootMixin(ResetLocalMixin):
 
-    '''root back mixin'''
+    '''root chain mixin'''
+
+    def __call__(self, *args):
+        '''new chain session'''
+        # clear call chain and queues
+        self.clear()
+        # extend incoming things
+        self.extend(args)
+        return self
+
+    _dcall = __call__
 
     def back(self, link):
         '''
@@ -21,21 +31,6 @@ class BackRootMixin(ResetLocalMixin):
         return self
 
     _rback = back
-
-
-class ChainRootMixin(BackRootMixin):
-
-    '''root chain mixin'''
-
-    def __call__(self, *args):
-        '''new chain session'''
-        # clear call chain and queues
-        self.clear()
-        # extend incoming things
-        self.extend(args)
-        return self
-
-    _dcall = __call__
 
 
 class EventRootMixin(ChainRootMixin):
