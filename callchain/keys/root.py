@@ -6,12 +6,9 @@
 from appspace.keys import AppspaceKey
 
 
-class KChainRoot(AppspaceKey):
-
-    '''root chain key'''
-
-    def __call__(*args):
-        '''new chain session'''
+class KBackRoot(AppspaceKey):
+    
+    '''root back key'''
 
     def back(link):
         '''
@@ -19,6 +16,14 @@ class KChainRoot(AppspaceKey):
 
         @param link: linked chain
         '''
+
+
+class KChainRoot(KBackRoot):
+
+    '''root chain key'''
+
+    def __call__(*args):
+        '''new chain session'''
 
 
 class KEventRoot(KChainRoot):

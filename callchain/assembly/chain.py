@@ -5,10 +5,10 @@ from callchain.mixin.queued import QRootMixin
 from callchain.mixin.fluent import ChainMixin, EventMixin
 from callchain.mixin.call import ChainCallMixin, EventCallMixin
 from callchain.mixin.root import ChainRootMixin, EventRootMixin
-from callchain.mixin.manager import EventManagerMixin, ChainManagerMixin
+from callchain.mixin.manager import EventManageMixin, ChainManageMixin
 
 
-class CallChain(ChainCallMixin, ChainManagerMixin, ChainRootMixin, ChainMixin):
+class CallChain(ChainCallMixin, ChainManageMixin, ChainRootMixin, ChainMixin):
 
     '''call chain'''
 
@@ -18,9 +18,7 @@ class CallChainQ(CallChain, QRootMixin):
     '''queued call chain'''
 
 
-class EventChain(
-    EventCallMixin, EventManagerMixin, EventRootMixin, EventMixin,
-):
+class EventChain(EventCallMixin, EventManageMixin, EventRootMixin, EventMixin):
 
     '''event chain'''
 
