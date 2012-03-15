@@ -2,11 +2,9 @@
 '''reset mixins'''
 
 from threading import local
-from itertools import starmap
 
 from stuf.six import items
-from appspace.keys import ifilter
-from stuf.utils import getcls, lazybase, exhaust
+from stuf.utils import getcls, lazybase, exhaustmap
 
 
 class ResetTypeMixin(object):
@@ -20,7 +18,7 @@ class ResetTypeMixin(object):
         this = vars(self)
         that = vars(getcls(self))
         t = lambda x, y: x in this and isinstance(y, lazybase)
-        exhaust(starmap(delattr, ifilter(t, items(that))))
+        exhaustmap(items(that), delattr, t)
 
     _rreset = reset
 
@@ -37,6 +35,6 @@ class ResetLocalMixin(local):
         this = vars(self)
         that = vars(getcls(self))
         t = lambda x, y: x in this and isinstance(y, lazybase)
-        exhaust(starmap(delattr, ifilter(t, items(that))))
+        exhaustmap(items(that), delattr, t)
 
     _rreset = reset

@@ -29,6 +29,10 @@ class RootletMixin(ResetLocalMixin):
 
     _rload = _load
 
+    def _synchback(self, key, value):
+        self.root.__dict__[key] = value
+        self.__dict__[key] = value
+
     def back(self):
         '''revert to root chain'''
         return self.root.back(self)

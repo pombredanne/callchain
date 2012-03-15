@@ -27,6 +27,14 @@ class KChainCall(KCall):
     
     '''chain call key'''
     
+    def __enter__():
+        '''enter execution context'''
+
+    _denter = __enter__
+
+    def __exit__(e, t, b):
+        '''exit execution context'''
+    
     def commit():
         '''consume call chain until exhausted'''
         

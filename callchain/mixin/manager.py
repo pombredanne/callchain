@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 '''manager mixins'''
 
+from operator import setitem
+
 from stuf.core import frozenstuf
-from stuf.utils import either, lazy
+from stuf.utils import either, lazy, exhaustmap
 
 from callchain.patterns import Pathways
 
@@ -49,6 +51,23 @@ class ManagerMixin(ConfigMixin):
             self.M.freeze(kw)
         else:
             self.M = None
+
+    def _setdefault(self, key, value, default):
+        value = value if value is not None else default
+        self.__dict__[key] = value
+        self.__dict__[key + '_d'] = value
+
+    _osetdefault = _setdefault
+
+    def _resetdefaults(self):
+        this = self.__dict__
+        exhaustmap(
+            vars(self),
+            lambda x, y: setitem(this, x.rstrip('_d'), y),
+            lambda x: x[0].endswith('_d'),
+        )
+        
+    _oresetdefaults = _resetdefaults
 
 
 class ChainManageMixin(ManagerMixin):

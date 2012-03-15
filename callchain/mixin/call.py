@@ -66,6 +66,17 @@ class ChainCallMixin(CallMixin):
 
     '''chain execution mixin'''
 
+    def __enter__(self):
+        return self
+
+    _denter = __enter__
+
+    def __exit__(self, e, t, b):
+        # invoke call chain
+        self.commit()
+
+    _dexit = __exit__
+
     def commit(self):
         '''consume call chain until exhausted'''
         self.outextend(
@@ -119,6 +130,8 @@ class EventCallMixin(ChainCallMixin):
             # clear scratch queue
             self._sclear()
         return self
+
+    _efire = fire
 
     def queues(self, *events):
         '''

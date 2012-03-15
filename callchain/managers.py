@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
 '''callchain managers'''
 
-from itertools import starmap
-
 from twoq import twoq
 from stuf import stuf
-from stuf.six import items, u
+from stuf.six import u
 from appspace import Registry
-from appspace.keys import AApp, ifilter
-from stuf.utils import bi, getcls, lazy, exhaust
+from appspace.keys import AApp
 from appspace.managers import Manager as _Manager
+from stuf.utils import bi, getcls, lazy, exhaustmap
 
 from callchain.settings import Settings
 from callchain.services.event import EEvent
@@ -158,6 +156,4 @@ class Events(Registry):
 
         @param labels: eventconf
         '''
-        pack = self.pack
-        t = lambda x: not x[0].startswith('_')
-        exhaust(starmap(pack, ifilter(t, items(vars(labels)))))
+        exhaustmap(vars(labels), self.pack, lambda x: not x[0].startswith('_'))
