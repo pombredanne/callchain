@@ -66,7 +66,7 @@ class ManagerMixin(ConfigMixin):
             lambda x, y: setitem(this, x.rstrip('_d'), y),
             lambda x: x[0].endswith('_d'),
         )
-        
+
     _oresetdefaults = _resetdefaults
 
 

@@ -5,7 +5,7 @@ from itertools import chain
 from collections import deque
 from functools import partial
 
-from appspace.keys import imap
+from stuf.utils import imap
 from twoq.support import isstring
 from appspace.keys import AppLookupError, NoAppError
 

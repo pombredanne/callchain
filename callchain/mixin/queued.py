@@ -46,16 +46,19 @@ class QRootMixin(_QMixin):
 
         @param link: linked call chain
         '''
-        # sync with link callable
-        self._call = link._call
-        # sync with link postitional arguments
-        self._args = link._args
-        # sync with link keyword arguments
-        self._kw = link._kw
-        # sync with link incoming things
-        self.extend(link.incoming)
-        # sync with link outgoing things
-        self.outextend(link.outgoing)
+        try:
+            # sync with link callable
+            self._call = link._call
+            # sync with link postitional arguments
+            self._args = link._args
+            # sync with link keyword arguments
+            self._kw = link._kw
+            # sync with link incoming things
+            self.extend(link.incoming)
+            # sync with link outgoing things
+            self.outextend(link.outgoing)
+        except AttributeError:
+            pass
         return self
 
     _qback = back
