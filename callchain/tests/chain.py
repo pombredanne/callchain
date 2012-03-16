@@ -30,7 +30,9 @@ class CallMixin(object):
     def test_pure_calls(self):
         from math import fsum, floor, sqrt
         self.qclass.chain(floor, 3)
-        self.qclass.chain(fsum, [1.1, 1.1, 1.1]).chain(sqrt, 4)
+        (self.qclass
+        .chain(fsum, [1.1, 1.1, 1.1])
+        .chain(sqrt, 4))
         self.qclass.commit()
         outgoing = deque(i for i in self.qclass.results())
         self.assertEqual(outgoing.popleft(), 3.0)

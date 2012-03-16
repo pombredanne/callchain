@@ -3,9 +3,9 @@
 
 from twoq import port
 from stuf.six import strings
-from stuf.utils import exhaust
+from stuf.utils import exhaust, imap
 from appspace.utils import lazyimport
-from appspace.keys import ConfigurationError, ANamespace, imap
+from appspace.keys import ConfigurationError, ANamespace
 from appspace.spaces import Branch, Namespace, Patterns, patterns
 
 from callchain.managers import Manager
