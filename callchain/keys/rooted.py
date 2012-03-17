@@ -14,7 +14,7 @@ class KRootlet(AppspaceKey):
         '''revert to root chain'''
 
 
-class KChainRooted(AppspaceKey):
+class KRooted(AppspaceKey):
 
     ''''rooted chain mixin'''
     
@@ -32,7 +32,7 @@ class KChainRooted(AppspaceKey):
         '''
 
 
-class KEventRooted(KChainRooted):
+class KEventRooted(KRooted):
 
     '''rooted event chain mixin'''
     

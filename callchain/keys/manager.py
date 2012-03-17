@@ -15,7 +15,7 @@ class KConfig(AppspaceKey):
     G = Attribute('external application global settings')
 
 
-class KChainManager(KConfig):
+class KManager(KConfig):
 
     '''chain manager key'''
 

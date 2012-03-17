@@ -12,7 +12,7 @@ class KChainRoot(AppspaceKey):
 
     def __call__(*args):
         '''new chain session'''
-        
+
     def back(link):
         '''
         handle chainlet end
@@ -27,14 +27,14 @@ class KEventRoot(KChainRoot):
 
     def event(event):
         '''
-        create or fetch ``event``
+        create or fetch `event`
 
         @param event: event label
         '''
 
     def unevent(event):
         '''
-        drop ``event``
+        drop `event`
 
         @param event: event label
         '''

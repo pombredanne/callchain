@@ -108,17 +108,17 @@ class Events(Registry):
         '''
         bind thing to event
 
-        @param label: event label 
+        @param label: event label
         @param key: event key
         @param call: some thing
         '''
         self.register([self._key], key, call)
-        
+
     def on(self, key, thing):
         '''
         bind thing to event
 
-        @param label: event label 
+        @param label: event label
         @param key: event key
         @param call: some thing
         '''
@@ -140,12 +140,12 @@ class Events(Registry):
         @param event: event label
         '''
         self.ez_unsubscribe(self._key, self.event(label))
-        
+
     def pack(self, label, call):
         '''
         pack things into registry
-        
-        @param label: event label 
+
+        @param label: event label
         @param call: some thing
         '''
         self.ez_register(self._key, label, self._lazy(call))

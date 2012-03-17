@@ -26,76 +26,76 @@ __all__ = (
 @appifies(KDelay)
 class delaychain(CallChainletQ, ManQMixin, DelayMixin):
 
-    '''manually balanced delayed mapping chainlets'''
+    '''manually balanced delayed mapping chainlet'''
 
 
 @appifies(KCopy)
 class copychain(CallChainletQ, ManQMixin, CopyMixin):
 
-    '''manually balanced copy chainlets'''
+    '''manually balanced copy chainlet'''
 
 
 @appifies(KRepeat)
 class repeatchain(CallChainletQ, ManQMixin, RepeatMixin):
 
-    '''manually balanced repeat chainlets'''
+    '''manually balanced repeat chainlet'''
 
 
 @appifies(KMap)
 class mapchain(CallChainletQ, ManQMixin, MapMixin):
 
-    '''manually balanced mapping chainlets'''
+    '''manually balanced mapping chainlet'''
 
 
 @appifies(KCollect)
 class collectchain(CallChainletQ, ManQMixin, CollectMixin):
 
-    '''manually balanced collecting chainlets'''
+    '''manually balanced collecting chainlet'''
 
 
 @appifies(KSet)
 class setchain(CallChainletQ, ManQMixin, SetMixin):
 
-    '''manually balanced seting chainlets'''
+    '''manually balanced seting chainlet'''
 
 
 @appifies(KSlice)
 class slicechain(CallChainletQ, ManQMixin, SliceMixin):
 
-    '''manually balanced slicing chainlets'''
+    '''manually balanced slicing chainlet'''
 
 
 @appifies(KFilter)
 class filterchain(CallChainletQ, ManQMixin, FilterMixin):
 
-    '''manually balanced filtering chainlets'''
+    '''manually balanced filtering chainlet'''
 
 
 @appifies(KRandom)
 class randomchain(CallChainletQ, ManQMixin, RandomMixin):
 
-    '''manually balanced randomizing chainlets'''
+    '''manually balanced randomizing chainlet'''
 
 
 @appifies(KOrder)
 class orderchain(CallChainletQ, ManQMixin, OrderMixin):
 
-    '''manually balanced ordering chainlets'''
+    '''manually balanced ordering chainlet'''
 
 
 @appifies(KMath)
 class mathchain(CallChainletQ, ManQMixin, MathMixin):
 
-    '''manually balanced mathing chainlets'''
+    '''manually balanced mathing chainlet'''
 
 
 @appifies(KReduce)
 class reducechain(CallChainletQ, ManQMixin, ReduceMixin):
 
-    '''manually balanced reducing chainlets'''
+    '''manually balanced reducing chainlet'''
 
 
 @appifies(KTruth)
 class truthchain(CallChainletQ, ManQMixin, TruthMixin):
 
-    '''manually balanced truthing chainlets'''
+    '''manually balanced truthing chainlet'''

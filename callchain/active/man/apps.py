@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''active manually balanced call chain appconf'''
+'''active manually balanced chainlets appconf'''
 
 from callchain.patterns import Pathways, Nameways
 

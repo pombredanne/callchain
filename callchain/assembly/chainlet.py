@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''chainlet assembly'''
+'''chainlet and eventlet assembly'''
 
 from appspace.keys import appifies
 
@@ -25,10 +25,10 @@ class CallChainletQ(QRootedMixin, CallChainlet):
 @appifies(KEventlet)
 class Eventlet(RootletMixin, EventRootedMixin, EventMixin):
 
-    '''event chainlet'''
+    '''eventlet'''
 
 
 @appifies(KEventletQ)
 class EventletQ(QRootedMixin, Eventlet):
 
-    '''queued event chainlet'''
+    '''queued eventlet'''

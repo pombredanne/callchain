@@ -148,7 +148,11 @@ class EventMixin(ChainMixin):
     _eoff = off
 
     def trigger(self, *events):
-        '''extend primary call chain with partials bound to `events`'''
+        '''
+        extend primary call chain with partials bound to `events`
+
+        @param *events: event labels
+        '''
         self._cxtend(self._events(*events))
         return self
 

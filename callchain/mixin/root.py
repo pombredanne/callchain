@@ -55,7 +55,7 @@ class EventRootMixin(RootMixin):
 
     def _event(self, event):
         '''
-        fetch calls bound to ``event``
+        fetch calls bound to `event`
 
         @param event: event label
         '''
@@ -65,7 +65,7 @@ class EventRootMixin(RootMixin):
 
     def event(self, event):
         '''
-        create or fetch ``event``
+        create or fetch `event`
 
         @param event: event label
         '''
@@ -76,7 +76,7 @@ class EventRootMixin(RootMixin):
 
     def unevent(self, event):
         '''
-        drop ``event``
+        drop `event`
 
         @param event: event label
         '''

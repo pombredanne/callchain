@@ -3,10 +3,10 @@
 
 from callchain.keys.queued import KQueued
 from callchain.keys.fluent import KChain, KEvent
-from callchain.keys.rooted import KChainRooted, KRootlet, KEventRooted
+from callchain.keys.rooted import KRooted, KRootlet, KEventRooted
 
 
-class KCallChainlet(KChainRooted, KRootlet, KChain):
+class KCallChainlet(KRooted, KRootlet, KChain):
 
     '''call chainlet key'''
 

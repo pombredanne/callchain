@@ -1,19 +1,19 @@
 # -*- coding: utf-8 -*-
 '''chain keys'''
 
-from callchain.keys.queued import KQueued
+from callchain.keys.queued import KQueuedRoot
 from callchain.keys.fluent import KChain, KEvent
 from callchain.keys.call import KChainCall, KEventCall
 from callchain.keys.root import KChainRoot, KEventRoot
-from callchain.keys.manager import KChainManager, KEventManager
+from callchain.keys.manager import KManager, KEventManager
 
 
-class KCallChain(KChainCall, KChainManager, KChainRoot, KChain):
+class KCallChain(KChainCall, KManager, KChainRoot, KChain):
 
     '''call chain key'''
 
 
-class KCallChainQ(KCallChain, KQueued):
+class KCallChainQ(KCallChain, KQueuedRoot):
 
     '''queued call chain key'''
 
@@ -23,6 +23,6 @@ class KEventChain(KEventCall, KEventManager, KEventRoot, KEvent):
     '''event chain key'''
 
 
-class KEventChainQ(KEventChain, KQueued):
+class KEventChainQ(KEventChain, KQueuedRoot):
 
     '''queued event chain key'''

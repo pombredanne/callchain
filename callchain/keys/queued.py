@@ -8,17 +8,10 @@ from appspace.keys import AppspaceKey
 
 class KQueued(AppspaceKey):
 
-    '''queued root chain key'''
+    '''queued key'''
     
     def clear():
         '''clear queues'''
-
-    def back(link):
-        '''
-        handle return from linked call chain
-
-        @param link: linked call chain
-        '''
 
     def tap(call, key=False):
         '''
@@ -26,4 +19,14 @@ class KQueued(AppspaceKey):
 
         @param call: callable or appspace label
         @param key: linked call chain key (default: False)
+        '''
+
+
+class KQueuedRoot(KQueued):
+    
+    def back(link):
+        '''
+        handle return from linked call chain
+
+        @param link: linked call chain
         '''

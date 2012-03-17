@@ -1,2 +1,2 @@
 # -*- coding: utf-8 -*-
-'''lazy auto-balancing chainlets'''
+'''lazy auto-balancing chainlets and eventlets'''

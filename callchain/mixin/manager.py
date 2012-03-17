@@ -54,6 +54,13 @@ class ManagerMixin(ConfigMixin):
         self._setup()
 
     def _setdefault(self, key, value, default):
+        '''
+        set default value for an instance attribute
+
+        @param key: attribute name
+        @param value: attribute value
+        @param default: default value
+        '''
         value = value if value is not None else default
         self.__dict__[key] = value
         self.__dict__[key + '_d'] = value
@@ -61,6 +68,7 @@ class ManagerMixin(ConfigMixin):
     _m_setdefault = _setdefault
 
     def _resetdefaults(self):
+        '''reset attribute values'''
         this = self.__dict__
         exhaustmap(
             vars(self),

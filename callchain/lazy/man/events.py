@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''lazy manually balanced event chain appconf'''
+'''lazy manually balanced eventlets appconf'''
 
 from callchain.patterns import Pathways, Nameways
 

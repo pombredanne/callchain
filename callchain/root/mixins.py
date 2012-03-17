@@ -9,7 +9,7 @@ from twoq.active.mixins import ResultQMixin
 
 class RootMixin(ResultQMixin):
 
-    '''base chain mixin'''
+    '''base root chain mixin'''
 
     def _setup(self):
         '''setup chain'''
@@ -20,6 +20,7 @@ class RootMixin(ResultQMixin):
         self._outclear = self.outgoing.clear
         # outgoing things right append
         self._outappend = self.outgoing.append
+        # outgoing things left pop
         self.popleft = self.outgoing.popleft
         self._c_setup()
 
@@ -27,6 +28,8 @@ class RootMixin(ResultQMixin):
 
 
 class RootableMixin(RootMixin):
+
+    '''base rooted root chain mixin'''
 
     def _setup(self, root):
         '''

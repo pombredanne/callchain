@@ -22,7 +22,7 @@ class CallMixin(ResetLocalMixin):
 
     @lazy_class
     def port(self):
-        '''python 2.x <-> python 3.x compatibility helper'''
+        '''python 2.x <-> python 3.x porting helper'''
         return port
 
     @lazy
@@ -49,7 +49,7 @@ class CallMixin(ResetLocalMixin):
 
     def switch(self, label, key=False):
         '''
-        overt switch to linked call chain from external appspace
+        overt switch to linked call chain configured in external appspace
 
         @param label: linked call chain label
         @param key: linked call chain chain key (default: False)
@@ -95,17 +95,17 @@ class EventCallMixin(ChainCallMixin):
         '''run event chain'''
         try:
             fire = self.fire
-            # 1. before event then 2. work event
+            # 1. "before" event then 2. "work" event
             self.trigger('before', 'work')
             # everything else
             self._ccommit()
-            # 3. change event then 4. any event then 5. after event
+            # 3. "change" event then 4. "any" event then 5. "after" event
             fire('change', 'any', 'after')
         except:
-            # 6. problem event
+            # 6. "problem" event
             fire('problem')
         finally:
-            # 7. event that runs irrespective
+            # 7. event that runs irrespective and "anyway"
             fire('anyway')
         return self
 
@@ -113,7 +113,7 @@ class EventCallMixin(ChainCallMixin):
 
     def fire(self, *events):
         '''
-        run calls bound to `events` NOW
+        run calls bound to `events` **NOW**
 
         @param events: event labels
         '''
@@ -135,7 +135,7 @@ class EventCallMixin(ChainCallMixin):
 
     def queues(self, *events):
         '''
-        ordered mapping of processing queues for ``events``
+        ordered mapping of processing queues for `events`
 
         @param events: event labels
         '''

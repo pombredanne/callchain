@@ -16,7 +16,7 @@ __all__ = ['Pathways', 'Branchways', 'Nameways']
 
 class Pathways(Patterns):
 
-    '''octopus patterns'''
+    '''callchain patterns'''
 
     _manager = Manager
 

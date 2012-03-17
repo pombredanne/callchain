@@ -12,10 +12,10 @@ from callchain.root.mixins import RootableMixin
 @appifies(KCallChain)
 class chainlet(RootableMixin, CallChainlet):
 
-    '''call chain'''
+    '''root call chainlet'''
 
 
 @appifies(KEventChain)
 class eventlet(RootableMixin, Eventlet):
 
-    '''event chain'''
+    '''root eventlet'''

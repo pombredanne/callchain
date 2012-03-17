@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''active queued call chains'''
+'''active queued call and event chains'''
 
 from appspace.keys import appifies
 from twoq.active.mixins import ManResultMixin, AutoResultMixin

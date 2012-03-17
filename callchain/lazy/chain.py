@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''lazy queued call chains'''
+'''lazy queued call and event chains'''
 
 from appspace.keys import appifies
 from twoq.lazy.mixins import AutoResultMixin, ManResultMixin

@@ -10,7 +10,7 @@ except ImportError:
     from distutils.core import setup
 
 install_requires = [
-    'twoq>0.2.1', 'appspace>=0.5.1', 'zope.interface>=3.8.0', 'stuf>=0.8.6',
+    'twoq>0.2.2', 'appspace>=0.5.2', 'zope.interface>=3.8.0', 'stuf>=0.8.7',
     'distribute>=0.6.25',
 ]
 if sys.version_info[0] == 2 and sys.version_info[1] < 7:

@@ -16,11 +16,11 @@ from callchain.root.apps import chain, event
 @inside(chain)
 class callchain(RootMixin, CallChain):
 
-    '''call chain'''
+    '''root call chain'''
 
 
 @appifies(KEventChain)
 @einside(event, events)
 class eventchain(RootMixin, EventChain):
 
-    '''event chain'''
+    '''root event chain'''
