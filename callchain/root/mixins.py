@@ -1,76 +1,41 @@
 # -*- coding: utf-8 -*-
-'''root chains'''
+#pylint: disable-msg=w0221
+'''root chain mixins'''
 
 from collections import deque
 
-from callchain.mixin.reset import ResetLocalMixin
-from stuf.utils import iterexcept
+from twoq.active.mixins import ResultQMixin
 
 
-class RootMixin(ResetLocalMixin):
+class RootMixin(ResultQMixin):
 
-    '''mixin for standalone chains'''
+    '''base root chain mixin'''
 
-    def _setup_chain(self):
-        '''setup call chain'''
-        self._csetup_chain()
+    def _setup(self):
+        '''setup chain'''
         self.outgoing = deque()
         # outgoing things right extend
         self.outextend = self.outgoing.extend
         # outgoing things clear
         self._outclear = self.outgoing.clear
         # outgoing things right append
-        self._outappend = self.outgoing.extend
+        self._outappend = self.outgoing.append
+        # outgoing things left pop
+        self.popleft = self.outgoing.popleft
+        self._c_setup()
 
-    _rsetup_chain = _setup_chain
+    _d_setup = _setup
 
-    def clear(self):
-        '''ANNIHILATE!!!'''
-        self._outclear()
-        self._cclear()
-        return self
 
-    _rclear = clear
+class RootableMixin(RootMixin):
 
-    def end(self):
-        '''return outgoing things and clear out all things'''
-        results = self.pop() if len(
-            self.outgoing
-        ) == 1 else list(self.outgoing)
-        self.clear()
-        return results
+    '''base rooted root chain mixin'''
 
-    _rfinal = end
+    def _setup(self, root):
+        '''
+        setup chain
 
-    def results(self):
-        '''yield outgoing things and clear outgoing things'''
-        for thing in iterexcept(self.outgoing.popleft, IndexError):
-            yield thing
-
-    _rresults = results
-
-    def value(self):
-        '''return outgoing things and clear outgoing things'''
-        results = self.pop() if len(
-            self.outgoing
-        ) == 1 else list(self.outgoing)
-        self._outclear()
-        return results
-
-    _rvalue = value
-
-    def first(self):
-        '''first incoming thing'''
-        with self._sync as sync:
-            sync.append(sync.iterable.popleft())
-        return self
-
-    _ofirst = first
-
-    def last(self):
-        '''last incoming thing'''
-        with self._sync as sync:
-            sync.append(sync.iterable.pop())
-        return self
-
-    _olast = last
+        @param root: root object
+        '''
+        self._d_setup()
+        self._r_setup(root)

@@ -1,19 +1,17 @@
 # -*- coding: utf-8 -*-
 '''callchain managers'''
 
-from itertools import starmap
-
 from twoq import twoq
 from stuf import stuf
-from stuf.six import items, u
+from stuf.six import u
 from appspace import Registry
-from appspace.keys import AApp, ifilter
-from stuf.utils import bi, getcls, lazy, exhaust
+from appspace.keys import AApp
 from appspace.managers import Manager as _Manager
+from stuf.utils import bi, getcls, lazy, exhaustmap
 
 from callchain.settings import Settings
-from callchain.keys.event import EEvent
-from callchain.keys.octopus import KSettings, KService, NoServiceError
+from callchain.services.event import EEvent
+from callchain.keys.core import KSettings, KService, NoServiceError
 
 __all__ = ['Manager']
 
@@ -36,14 +34,13 @@ class Manager(_Manager):
 
     @lazy
     def settings(self):
-        '''get appspace settings'''
+        '''appspace settings'''
         return self.ez_lookup(KSettings, self._root)()
 
     @bi
     def localize(self, thing, *args, **kw):
         '''
-        gather local settings from thing and its base classes, adding any
-        passed settings
+        local settings from thing and its base classes plus any custom settings
 
         @param thing: some thing with local settings
         '''
@@ -53,7 +50,6 @@ class Manager(_Manager):
 
     def freeze(self, *args, **kw):
         '''finalize settings, adding any passed settings'''
-
         self.settings.update(*args, **kw)
         self.settings.lock()
 
@@ -112,17 +108,17 @@ class Events(Registry):
         '''
         bind thing to event
 
-        @param label: event label 
+        @param label: event label
         @param key: event key
         @param call: some thing
         '''
         self.register([self._key], key, call)
-        
+
     def on(self, key, thing):
         '''
         bind thing to event
 
-        @param label: event label 
+        @param label: event label
         @param key: event key
         @param call: some thing
         '''
@@ -144,8 +140,14 @@ class Events(Registry):
         @param event: event label
         '''
         self.ez_unsubscribe(self._key, self.event(label))
-        
+
     def pack(self, label, call):
+        '''
+        pack things into registry
+
+        @param label: event label
+        @param call: some thing
+        '''
         self.ez_register(self._key, label, self._lazy(call))
 
     def update(self, labels):
@@ -154,6 +156,4 @@ class Events(Registry):
 
         @param labels: eventconf
         '''
-        pack = self.pack
-        t = lambda x: not x[0].startswith('_')
-        exhaust(starmap(pack, ifilter(t, items(vars(labels)))))
+        exhaustmap(vars(labels), self.pack, lambda x: not x[0].startswith('_'))

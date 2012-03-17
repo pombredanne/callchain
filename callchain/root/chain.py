@@ -1,28 +1,26 @@
 # -*- coding: utf-8 -*-
-'''active queued chains'''
+'''root chains'''
 
 from appspace.keys import appifies
 
-from callchain.keys.apps import events
+from callchain.services.apps import events
 from callchain.internal import inside, einside
 from callchain.keys.chain import KCallChain, KEventChain
+from callchain.assembly.chain import CallChain, EventChain
 
-from callchain.root.apps import chain, event
 from callchain.root.mixins import RootMixin
-from callchain.mixin.root import RootChainMixin, RootEventMixin
-from callchain.mixin.fluent import ChainMixin
-from callchain.mixin.call import CallMixin
+from callchain.root.apps import chain, event
 
 
 @appifies(KCallChain)
 @inside(chain)
-class callchain(RootMixin, CallMixin, RootChainMixin, ChainMixin):
+class callchain(RootMixin, CallChain):
 
-    '''call chain'''
+    '''root call chain'''
 
 
 @appifies(KEventChain)
 @einside(event, events)
-class eventchain(RootMixin, CallMixin, RootEventMixin, ChainMixin):
+class eventchain(RootMixin, EventChain):
 
-    '''event chain'''
+    '''root event chain'''

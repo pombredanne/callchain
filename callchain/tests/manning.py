@@ -10,10 +10,10 @@ except ImportError:
 class Manning(unittest.TestCase):
 
     def _false_true_false(self, manq, expr, comp=None):
+        manq = manq.back()
         self.assertFalse(manq.balanced)
         manq.sync()
         self.assertTrue(manq.balanced)
-        manq = manq.back()
         if comp is not None:
             expr(manq.value(), comp)
         else:
@@ -21,10 +21,10 @@ class Manning(unittest.TestCase):
         self.assertFalse(manq.balanced)
 
     def _true_true_false(self, manq, expr, comp=None):
+        manq = manq.back()
         self.assertTrue(manq.balanced)
         manq.sync()
         self.assertTrue(manq.balanced)
-        manq = manq.back()
         if comp is not None:
             expr(manq.value(), comp)
         else:
@@ -32,10 +32,10 @@ class Manning(unittest.TestCase):
         self.assertFalse(manq.balanced)
 
     def _false_true_true(self, manq, expr, comp=None):
+        manq = manq.back()
         self.assertFalse(manq.balanced)
         manq.sync()
         self.assertTrue(manq.balanced)
-        manq = manq.back()
         if comp is not None:
             expr(manq.value(), comp)
         else:

@@ -1,32 +1,34 @@
 # -*- coding: utf-8 -*-
-'''chainlet assembly'''
+'''chainlet and eventlet assembly'''
+
+from appspace.keys import appifies
 
 from callchain.mixin.queued import QRootedMixin
-from callchain.mixin.rooted import (
-    RootedMixin, RootletMixin, RootedChainMixin, ERootedChainMixin)
-from callchain.mixin.fluent import FluentMixin, EventMixin, ChainMixin
+from callchain.keys.chainlet import (
+    KCallChainlet, KCallChainletQ, KEventlet, KEventletQ)
+from callchain.mixin.fluent import EventMixin, ChainMixin
+from callchain.mixin.rooted import RootletMixin, EventRootedMixin, RootedMixin
 
 
-class Chainlet(RootedMixin, RootletMixin, FluentMixin):
-
-    '''chain chainlet'''
-
-
-class CallChainlet(RootedChainMixin, RootletMixin, ChainMixin):
+@appifies(KCallChainlet)
+class CallChainlet(RootletMixin, RootedMixin, ChainMixin):
 
     '''call chainlet'''
 
 
-class CallChainletQ(CallChainlet, QRootedMixin):
+@appifies(KCallChainletQ)
+class CallChainletQ(QRootedMixin, CallChainlet):
 
     '''queued call chainlet'''
 
 
-class Eventlet(ERootedChainMixin, RootletMixin, EventMixin):
+@appifies(KEventlet)
+class Eventlet(RootletMixin, EventRootedMixin, EventMixin):
 
-    '''event chainlet'''
+    '''eventlet'''
 
 
-class EventletQ(Eventlet, QRootedMixin):
+@appifies(KEventletQ)
+class EventletQ(QRootedMixin, Eventlet):
 
-    '''queued event chainlet'''
+    '''queued eventlet'''

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''callchain octopus setting management'''
+'''callchain setting management'''
 
 from inspect import isclass
 
@@ -9,14 +9,14 @@ from appspace.keys import appifies
 from stuf.utils import deepget, lazy_set, setter
 
 from callchain.mixin.reset import ResetLocalMixin
-from callchain.keys.octopus import KDefaults, KRequired, KSettings
+from callchain.keys.core import KDefaults, KRequired, KSettings
 
 __all__ = ('DefaultSettings', 'RequiredSettings', 'Settings')
 
 
 def object_walk(this):
     '''
-    transform classes within an object into dictionary
+    transform classes within an instance into a dictionary
 
     @param this: object
     '''
