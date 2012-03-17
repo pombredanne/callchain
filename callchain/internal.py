@@ -38,7 +38,7 @@ class inside(object):
         that._G = that._M.settings.final
         return that
 
-    _ocall = __call__
+    _o_call = __call__
 
 
 class einside(inside):
@@ -68,9 +68,9 @@ class einside(inside):
         self.events = events
 
     def __call__(self, that):
-        that = self._ocall(that)
+        that = self._o_call(that)
         that.E = Events('events')
         that.E.update(self.events)
         return that
 
-    _ecall = __call__
+    _e_call = __call__

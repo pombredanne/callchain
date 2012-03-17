@@ -15,23 +15,6 @@ class CallMixin(ResetLocalMixin):
 
     '''calling mixin'''
 
-    def _load(self, label):
-        '''
-        silent internal switch to...
-
-        @param label: label of appspaced thing
-        '''
-        try:
-            # look up internal appspaced linked call chain...
-            _M = self._M
-            key = _M.service(label)
-            return getattr(_M.get(key, key)(self), label)
-        except NoServiceError:
-            # ...or lookup other appspaced thing
-            return self._fload(label)
-
-    _cload = _load
-
     @either
     def L(self):
         '''local settings'''
@@ -47,6 +30,23 @@ class CallMixin(ResetLocalMixin):
         '''external appspace interface'''
         return Appspace(self.M) if self.M is not None else None
 
+    def _load(self, label):
+        '''
+        silent internal switch to...
+
+        @param label: label of appspaced thing
+        '''
+        try:
+            # look up internal appspaced linked call chain...
+            _M = self._M
+            key = _M.service(label)
+            return getattr(_M.get(key, key)(self), label)
+        except NoServiceError:
+            # ...or lookup other appspaced thing
+            return self._f_load(label)
+
+    _l_load = _load
+
     def switch(self, label, key=False):
         '''
         overt switch to linked call chain from external appspace
@@ -56,7 +56,7 @@ class CallMixin(ResetLocalMixin):
         '''
         return self.M.get(label, key)(self)
 
-    _cswitch = switch
+    _lswitch = switch
 
     class Meta:
         pass
@@ -69,13 +69,13 @@ class ChainCallMixin(CallMixin):
     def __enter__(self):
         return self
 
-    _denter = __enter__
+    _c_enter = __enter__
 
     def __exit__(self, e, t, b):
         # invoke call chain
         self.commit()
 
-    _dexit = __exit__
+    _c_exit = __exit__
 
     def commit(self):
         '''consume call chain until exhausted'''
@@ -113,7 +113,7 @@ class EventCallMixin(ChainCallMixin):
 
     def fire(self, *events):
         '''
-        run calls bound to ``events`` NOW
+        run calls bound to `events` NOW
 
         @param events: event labels
         '''

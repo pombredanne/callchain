@@ -10,6 +10,40 @@ from callchain.managers import Events
 from callchain.mixin.fluent import ResetLocalMixin
 
 
+class RootedMixin(ResetLocalMixin):
+
+    ''''rooted chain mixin'''
+
+    def __init__(self, root):
+        '''
+        init
+
+        @param root: root call chain
+        '''
+        super(RootedMixin, self).__init__(root)
+        self._setup(root)
+
+    def _setup(self, root):
+        '''
+        init
+
+        @param root: root object
+        '''
+        # root object
+        self.root = root
+        # root internal appspace manager
+        self._M = root._M
+        # root internal global settings
+        self._G = root._G
+        # root external appspace manager
+        self.M = root.M
+        # root external global settings
+        self.G = root.G if self.M else None
+        self._c_setup()
+
+    _r_setup = _setup
+
+
 class RootletMixin(ResetLocalMixin):
 
     '''rootlet mixin'''
@@ -22,12 +56,12 @@ class RootletMixin(ResetLocalMixin):
         '''
         # fetch appspaced thing...
         try:
-            return self._fload(label)
+            return self._f_load(label)
         # ...or revert to root chain
         except NoAppError:
             return getattr(self.back(), label)
 
-    _rload = _load
+    _r_load = _load
 
     def _synchback(self, key, value):
         self.root.__dict__[key] = value
@@ -40,56 +74,21 @@ class RootletMixin(ResetLocalMixin):
     _rback = back
 
 
-class RootedMixin(ResetLocalMixin):
-
-    '''rooted mixin'''
-
-    def __init__(self, root):
-        '''
-        init
-
-        @param root: root object
-        '''
-        super(RootedMixin, self).__init__(root)
-        # root object
-        self.root = root
-        # root internal appspace manager
-        self._M = root._M
-        # root internal global settings
-        self._G = root._G
-        # root external appspace manager
-        self.M = root.M
-        # root external global settings
-        self.G = root.G if self.M else None
-
-
-class ChainRootedMixin(RootedMixin):
-
-    ''''rooted chain mixin'''
-
-    def __init__(self, root):
-        '''
-        init
-
-        @param root: root call chain
-        '''
-        super(ChainRootedMixin, self).__init__(root)
-        self._setup_chain()
-
-
-class EventRootedMixin(ChainRootedMixin):
+class EventRootedMixin(RootedMixin):
 
     '''rooted event chain mixin'''
 
-    def __init__(self, root):
+    def _setup(self, root):
         '''
         init
 
         @param root: root event chain
         '''
-        super(EventRootedMixin, self).__init__(root)
         # local event registry
         self.E = Events('events')
+        self._r_setup(root)
+
+    _e_setup = _setup
 
     def _eventq(self, event):
         '''
@@ -106,7 +105,7 @@ class EventRootedMixin(ChainRootedMixin):
             self.E.on(key, queue)
         return queue
 
-    _eeventq = _eventq
+    _e_eventq = _eventq
 
     def _event(self, event):
         '''
@@ -117,4 +116,4 @@ class EventRootedMixin(ChainRootedMixin):
         key = self.root.event(event)
         return chain(self.E.events(key), self.root.E.events(key))
 
-    _devent = _event
+    _e_event = _event

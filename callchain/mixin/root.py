@@ -4,7 +4,7 @@
 from callchain.mixin.reset import ResetLocalMixin
 
 
-class ChainRootMixin(ResetLocalMixin):
+class RootMixin(ResetLocalMixin):
 
     '''root chain mixin'''
 
@@ -16,7 +16,7 @@ class ChainRootMixin(ResetLocalMixin):
         self.extend(args)
         return self
 
-    _dcall = __call__
+    _r_call = __call__
 
     def back(self, link):
         '''
@@ -33,18 +33,18 @@ class ChainRootMixin(ResetLocalMixin):
     _rback = back
 
 
-class EventRootMixin(ChainRootMixin):
+class EventRootMixin(RootMixin):
 
     '''root event mixin'''
 
     def _eventq(self, event):
         '''
-        fetch linked call chain tied to ``event``
+        fetch linked call chain tied to `event`
 
         @param event: event label
         '''
-        # fetch linked call chain bound to event
         key = self.E.event(event)
+        # fetch linked call chain bound to event
         queue = self.E.get(key)
         if queue is None:
             # create liked call chain if nonexistent
@@ -52,7 +52,7 @@ class EventRootMixin(ChainRootMixin):
             self.E.on(key, queue)
         return queue
 
-    _eeventq = _eventq
+    _e_eventq = _eventq
 
     def _event(self, event):
         '''
@@ -62,7 +62,7 @@ class EventRootMixin(ChainRootMixin):
         '''
         return self.E.events(self.E.event(event))
 
-    _devent = _event
+    _e_event = _event
 
     def event(self, event):
         '''

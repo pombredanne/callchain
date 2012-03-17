@@ -12,7 +12,7 @@ class RootMixin(ResultQMixin):
 
     def _setup_chain(self):
         '''setup chain'''
-        self._csetup_chain()
+        self._c_setup_chain()
         self.outgoing = deque()
         # outgoing things right extend
         self.outextend = self.outgoing.extend

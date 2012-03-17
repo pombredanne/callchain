@@ -68,13 +68,13 @@ class QRootedMixin(QRootMixin):
 
     '''queued rooted chain mixin'''
 
-    def __init__(self, root):
+    def _setup(self, root):
         '''
         init
 
         @param root: root call chain
         '''
-        super(QRootedMixin, self).__init__(root)
+        super(QRootedMixin, self)._setup(root)
         # sync with root postitional arguments
         self._args = root._args
         # sync with root keyword arguments
@@ -86,3 +86,5 @@ class QRootedMixin(QRootMixin):
         self.extend(root.incoming)
         # sync with root outgoing things
         self.outextend(root.outgoing)
+
+    _q_setup = _setup

@@ -22,7 +22,7 @@ class FluentMixin(ResetLocalMixin):
         except AttributeError:
             return self._load(label)
 
-    _fgetr = __getattr__
+    _f_getattr = __getattr__
 
     def _load(self, label):
         '''
@@ -49,15 +49,15 @@ class FluentMixin(ResetLocalMixin):
             _M._current = _M._root
             return thing
 
-    _fload = _load
+    _f_load = _load
 
 
 class ChainMixin(FluentMixin):
 
     '''chain mixin'''
 
-    def _setup_chain(self):
-        '''setup call chain'''
+    def _setup(self):
+        '''setup'''
         _chain = deque()
         # call chain right extend
         self._cxtend = _chain.extend
@@ -72,11 +72,27 @@ class ChainMixin(FluentMixin):
         # call chain
         self._chain = _chain
 
-    _csetup_chain = _setup_chain
+    _c_setup = _setup
+
+    def _incallsync(self):
+        '''move callchain to incoming for processing'''
+        self.outsync()
+        self.inclear()
+        self.extend(self._call)
+
+    _c_incallsync = _incallsync
+
+    def _callinsync(self):
+        '''move callchain to incoming for processing'''
+        self._cclear()
+        self._call(self.incoming)
+        self.sync()
+
+    _c_callinsync = _callinsync
 
     def chain(self, call, key=False, *args, **kw):
         '''
-        add call or appspaced call to call chain, partializing it with any
+        add `call` or appspaced `call` to call chain, partializing it with any
         passed arguments
 
         @param call: call or appspaced call label
@@ -102,14 +118,14 @@ class EventMixin(ChainMixin):
         return self._M.get('callchain', 'event')(self)
 
     def _events(self, *events):
-        '''calls bound to ``events``'''
+        '''calls bound to `events`'''
         return chain(*tuple(imap(self._event, events)))
 
-    _devents = _events
+    _e_events = _events
 
     def on(self, event, call, key=False, *args, **kw):
         '''
-        bind call to ``event``
+        bind call to `event`
 
         @param event: event label
         @param call: label for call or eventspaced thing
@@ -122,7 +138,7 @@ class EventMixin(ChainMixin):
 
     def off(self, event):
         '''
-        clear calls bound to ``event``
+        clear calls bound to `event`
 
         @param event: event label
         '''
@@ -132,7 +148,7 @@ class EventMixin(ChainMixin):
     _eoff = off
 
     def trigger(self, *events):
-        '''extend primary call chain with partials bound to ``events``'''
+        '''extend primary call chain with partials bound to `events`'''
         self._cxtend(self._events(*events))
         return self
 

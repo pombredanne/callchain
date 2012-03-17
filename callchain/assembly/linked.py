@@ -8,11 +8,11 @@ from callchain.keys.linked import (
     KLinkedChain, KLinkedQ, KEventLink, KEventlinkQ)
 from callchain.mixin.fluent import ChainMixin, EventMixin
 from callchain.mixin.call import ChainCallMixin, EventCallMixin
-from callchain.mixin.rooted import ChainRootedMixin, EventRootedMixin
+from callchain.mixin.rooted import RootedMixin, EventRootedMixin
 
 
 @appifies(KLinkedChain)
-class LinkedChain(ChainRootedMixin, ChainMixin, ChainCallMixin):
+class LinkedChain(RootedMixin, ChainMixin, ChainCallMixin):
 
     '''linked call chain'''
 

@@ -51,13 +51,14 @@ class ManagerMixin(ConfigMixin):
             self.M.freeze(kw)
         else:
             self.M = None
+        self._setup()
 
     def _setdefault(self, key, value, default):
         value = value if value is not None else default
         self.__dict__[key] = value
         self.__dict__[key + '_d'] = value
 
-    _osetdefault = _setdefault
+    _m_setdefault = _setdefault
 
     def _resetdefaults(self):
         this = self.__dict__
@@ -67,28 +68,11 @@ class ManagerMixin(ConfigMixin):
             lambda x: x[0].endswith('_d'),
         )
 
-    _oresetdefaults = _resetdefaults
+    _m_resetdefaults = _resetdefaults
 
 
-class ChainManageMixin(ManagerMixin):
 
-    '''chain manager mixin'''
-
-    def __init__(self, pattern=None, required=None, defaults=None, **kw):
-        '''
-        init
-
-        @param pattern: pattern configuration or appspace label (default: None)
-        @param required: required settings (default: None)
-        @param defaults: default settings (default: None)
-        '''
-        super(ChainManageMixin, self).__init__(
-            pattern, required, defaults, **kw
-        )
-        self._setup_chain()
-
-
-class EventManageMixin(ChainManageMixin):
+class EventManageMixin(ManagerMixin):
 
     '''event manager mixin'''
 
