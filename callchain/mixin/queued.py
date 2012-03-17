@@ -62,7 +62,7 @@ class QRootMixin(_QMixin):
     _qback = back
 
 
-class QRootedMixin(QRootMixin):
+class QRootedMixin(_QMixin):
 
     '''queued rooted chain mixin'''
 
