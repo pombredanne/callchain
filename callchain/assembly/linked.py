@@ -18,7 +18,7 @@ class LinkedChain(RootedMixin, ChainMixin, ChainCallMixin):
 
 
 @appifies(KLinkedQ)
-class LinkedQ(LinkedChain, QRootedMixin):
+class LinkedQ(QRootedMixin, LinkedChain):
 
     '''queued linked call chain'''
 
@@ -30,6 +30,6 @@ class EventLink(EventRootedMixin, EventMixin, EventCallMixin):
 
 
 @appifies(KEventlinkQ)
-class EventLinkQ(EventLink, QRootedMixin):
+class EventLinkQ(QRootedMixin, EventLink):
 
     '''queued event link chain'''

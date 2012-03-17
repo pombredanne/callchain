@@ -2,7 +2,7 @@
 '''active queued call chains'''
 
 from appspace.keys import appifies
-from twoq.active.mixins import AutoQMixin, ManQMixin
+from twoq.active.mixins import ManResultMixin, AutoResultMixin
 
 from callchain.services.apps import events
 from callchain.services.queue import KResults
@@ -17,27 +17,27 @@ from callchain.active.auto.events import event as aevent
 
 @appifies(KResults)
 @inside(achain)
-class aachainq(CallChainQ, AutoQMixin):
+class aachainq(CallChainQ, AutoResultMixin):
 
     '''active queued auto-balancing call chain'''
 
 
 @appifies(KResults)
 @inside(mchain)
-class amchainq(CallChainQ, ManQMixin):
+class amchainq(CallChainQ, ManResultMixin):
 
     '''active queued manually balanced call chain'''
 
 
 @appifies(KResults)
 @einside(aevent, events)
-class aaeventq(EventChainQ, AutoQMixin):
+class aaeventq(EventChainQ, AutoResultMixin):
 
     '''active queued auto-balancing event chain'''
 
 
 @appifies(KResults)
 @einside(mevent, events)
-class ameventq(EventChainQ, ManQMixin):
+class ameventq(EventChainQ, ManResultMixin):
 
     '''active queued manually balanced event chain'''

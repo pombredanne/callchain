@@ -46,19 +46,17 @@ class QRootMixin(_QMixin):
 
         @param link: linked call chain
         '''
-        try:
-            # sync with link callable
-            self._call = link._call
-            # sync with link postitional arguments
-            self._args = link._args
-            # sync with link keyword arguments
-            self._kw = link._kw
-            # sync with link incoming things
-            self.extend(link.incoming)
-            # sync with link outgoing things
-            self.outextend(link.outgoing)
-        except AttributeError:
-            pass
+        self._rback(link)
+        # sync with link callable
+        self._call = link._call
+        # sync with link postitional arguments
+        self._args = link._args
+        # sync with link keyword arguments
+        self._kw = link._kw
+        # sync with link incoming things
+        self.extend(link.incoming)
+        # sync with link outgoing things
+        self.outextend(link.outgoing)
         return self
 
     _qback = back
@@ -70,7 +68,7 @@ class QRootedMixin(QRootMixin):
 
     def _setup(self, root):
         '''
-        init
+        setup chain
 
         @param root: root call chain
         '''

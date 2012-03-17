@@ -71,7 +71,6 @@ class ManagerMixin(ConfigMixin):
     _m_resetdefaults = _resetdefaults
 
 
-
 class EventManageMixin(ManagerMixin):
 
     '''event manager mixin'''

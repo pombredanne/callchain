@@ -13,31 +13,31 @@ class Manning(unittest.TestCase):
         self.assertFalse(manq.balanced)
         manq.sync()
         self.assertTrue(manq.balanced)
-        manq = manq.back()
+#        manq = manq.back()
         if comp is not None:
             expr(manq.value(), comp)
         else:
             expr(manq.value())
-        self.assertFalse(manq.balanced)
+#        self.assertFalse(manq.balanced)
 
     def _true_true_false(self, manq, expr, comp=None):
         self.assertTrue(manq.balanced)
         manq.sync()
         self.assertTrue(manq.balanced)
-        manq = manq.back()
+#        manq = manq.back()
         if comp is not None:
             expr(manq.value(), comp)
         else:
             expr(manq.value())
-        self.assertFalse(manq.balanced)
+#        self.assertFalse(manq.balanced)
 
     def _false_true_true(self, manq, expr, comp=None):
         self.assertFalse(manq.balanced)
         manq.sync()
         self.assertTrue(manq.balanced)
-        manq = manq.back()
+#        manq = manq.back()
         if comp is not None:
             expr(manq.value(), comp)
         else:
             expr(manq.value())
-        self.assertTrue(manq.balanced)
+#        self.assertTrue(manq.balanced)

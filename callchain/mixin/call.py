@@ -67,11 +67,13 @@ class ChainCallMixin(CallMixin):
     '''chain execution mixin'''
 
     def __enter__(self):
+        '''enter context'''
         return self
 
     _c_enter = __enter__
 
     def __exit__(self, e, t, b):
+        '''exit context'''
         # invoke call chain
         self.commit()
 
@@ -79,9 +81,7 @@ class ChainCallMixin(CallMixin):
 
     def commit(self):
         '''consume call chain until exhausted'''
-        self.outextend(
-            c() for c in iterexcept(self._chain.popleft, IndexError)
-        )
+        self.outextend(c() for c in iterexcept(self._cpopleft, IndexError))
         return self
 
     _ccommit = commit
@@ -93,8 +93,8 @@ class EventCallMixin(ChainCallMixin):
 
     def commit(self):
         '''run event chain'''
-        fire = self.fire
         try:
+            fire = self.fire
             # 1. before event then 2. work event
             self.trigger('before', 'work')
             # everything else
@@ -123,7 +123,7 @@ class EventCallMixin(ChainCallMixin):
             # queue global and local bound callables
             self._sxtend(self._events(*events))
             # run event call chain until scratch queue is exhausted
-            self.outextend(call() for call in iterexcept(
+            self.outextend(c() for c in iterexcept(
                 self._scratch.popleft, IndexError,
             ))
         finally:

@@ -27,7 +27,6 @@ class RootMixin(ResetLocalMixin):
         self.clear()
         # extend call chain with root call chain
         self._cappend(link._chain)
-        self._qback(link)
         return self
 
     _rback = back

@@ -6,16 +6,16 @@ from appspace.keys import appifies
 from callchain.keys.chain import KCallChain, KEventChain
 from callchain.assembly.chainlet import CallChainlet, Eventlet
 
-from callchain.root.mixins import RootMixin
+from callchain.root.mixins import RootableMixin
 
 
 @appifies(KCallChain)
-class chainlet(RootMixin, CallChainlet):
+class chainlet(RootableMixin, CallChainlet):
 
     '''call chain'''
 
 
 @appifies(KEventChain)
-class eventlet(RootMixin, Eventlet):
+class eventlet(RootableMixin, Eventlet):
 
     '''event chain'''

@@ -13,7 +13,7 @@ class CallChain(ChainCallMixin, ManagerMixin, RootMixin, ChainMixin):
     '''call chain'''
 
 
-class CallChainQ(CallChain, QRootMixin):
+class CallChainQ(QRootMixin, CallChain):
 
     '''queued call chain'''
 
@@ -23,6 +23,6 @@ class EventChain(EventCallMixin, EventManageMixin, EventRootMixin, EventMixin):
     '''event chain'''
 
 
-class EventChainQ(EventChain, QRootMixin):
+class EventChainQ(QRootMixin, EventChain):
 
     '''queued event chain'''

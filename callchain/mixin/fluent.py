@@ -78,14 +78,14 @@ class ChainMixin(FluentMixin):
         '''move callchain to incoming for processing'''
         self.outsync()
         self.inclear()
-        self.extend(self._call)
+        self.extend(self._chain)
 
     _c_incallsync = _incallsync
 
     def _callinsync(self):
         '''move callchain to incoming for processing'''
         self._cclear()
-        self._call(self.incoming)
+        self._chain(self.incoming)
         self.sync()
 
     _c_callinsync = _callinsync

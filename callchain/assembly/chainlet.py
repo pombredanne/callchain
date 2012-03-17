@@ -4,31 +4,31 @@
 from appspace.keys import appifies
 
 from callchain.mixin.queued import QRootedMixin
-from callchain.mixin.fluent import EventMixin, ChainMixin
 from callchain.keys.chainlet import (
     KCallChainlet, KCallChainletQ, KEventlet, KEventletQ)
-from callchain.mixin.rooted import RootletMixin, EventRootedMixin
+from callchain.mixin.fluent import EventMixin, ChainMixin
+from callchain.mixin.rooted import RootletMixin, EventRootedMixin, RootedMixin
 
 
 @appifies(KCallChainlet)
-class CallChainlet(RootletMixin, RootletMixin, ChainMixin):
+class CallChainlet(RootletMixin, RootedMixin, ChainMixin):
 
     '''call chainlet'''
 
 
 @appifies(KCallChainletQ)
-class CallChainletQ(CallChainlet, QRootedMixin):
+class CallChainletQ(QRootedMixin, CallChainlet):
 
     '''queued call chainlet'''
 
 
 @appifies(KEventlet)
-class Eventlet(EventRootedMixin, RootletMixin, EventMixin):
+class Eventlet(RootletMixin, EventRootedMixin, EventMixin):
 
     '''event chainlet'''
 
 
 @appifies(KEventletQ)
-class EventletQ(Eventlet, QRootedMixin):
+class EventletQ(QRootedMixin, Eventlet):
 
     '''queued event chainlet'''

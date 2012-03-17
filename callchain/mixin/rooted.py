@@ -10,40 +10,6 @@ from callchain.managers import Events
 from callchain.mixin.fluent import ResetLocalMixin
 
 
-class RootedMixin(ResetLocalMixin):
-
-    ''''rooted chain mixin'''
-
-    def __init__(self, root):
-        '''
-        init
-
-        @param root: root call chain
-        '''
-        super(RootedMixin, self).__init__(root)
-        self._setup(root)
-
-    def _setup(self, root):
-        '''
-        init
-
-        @param root: root object
-        '''
-        # root object
-        self.root = root
-        # root internal appspace manager
-        self._M = root._M
-        # root internal global settings
-        self._G = root._G
-        # root external appspace manager
-        self.M = root.M
-        # root external global settings
-        self.G = root.G if self.M else None
-        self._c_setup()
-
-    _r_setup = _setup
-
-
 class RootletMixin(ResetLocalMixin):
 
     '''rootlet mixin'''
@@ -59,19 +25,58 @@ class RootletMixin(ResetLocalMixin):
             return self._f_load(label)
         # ...or revert to root chain
         except NoAppError:
-            return getattr(self.back(), label)
+            return getattr(self.__rback(), label)
 
     _r_load = _load
 
     def _synchback(self, key, value):
-        self.root.__dict__[key] = value
-        self.__dict__[key] = value
+        '''
+        sync with back
+
+        @param key: key of value
+        @param value: value of value
+        '''
+        self.__dict__[key] = self.root.__dict__[key] = value
 
     def back(self):
         '''revert to root chain'''
         return self.root.back(self)
 
-    _rback = back
+    _rback = __rback = back
+
+
+class RootedMixin(ResetLocalMixin):
+
+    ''''rooted chain mixin'''
+
+    def __init__(self, root):
+        '''
+        init
+
+        @param root: root call chain
+        '''
+        super(RootedMixin, self).__init__(root)
+        self._setup(root)
+
+    def _setup(self, root):
+        '''
+        setup chain
+
+        @param root: root object
+        '''
+        self._c_setup()
+        # root object
+        self.root = root
+        # root internal appspace manager
+        self._M = root._M
+        # root internal global settings
+        self._G = root._G
+        # root external appspace manager
+        self.M = root.M
+        # root external global settings
+        self.G = root.G if self.M else None
+
+    _r_setup = _setup
 
 
 class EventRootedMixin(RootedMixin):
@@ -84,9 +89,9 @@ class EventRootedMixin(RootedMixin):
 
         @param root: root event chain
         '''
+        self._r_setup(root)
         # local event registry
         self.E = Events('events')
-        self._r_setup(root)
 
     _e_setup = _setup
 
