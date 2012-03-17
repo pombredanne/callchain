@@ -6,24 +6,24 @@ try:
 except ImportError:
     import unittest
 
-from callchain.tests.mixins.chain import CallingMixin
+from twoq.tests.mixins.auto.queuing import AQMixin
+from twoq.tests.mixins.auto.mapping import AMapQMixin
+from twoq.tests.mixins.auto.ordering import AOrderQMixin
+from twoq.tests.mixins.auto.reducing import AReduceQMixin
+from twoq.tests.mixins.auto.filtering import AFilterQMixin
 
-from callchain.tests.mixins.auto.queuing import AQMixin
-from callchain.tests.mixins.auto.mapping import AMapQMixin
-from callchain.tests.mixins.auto.ordering import AOrderQMixin
-from callchain.tests.mixins.auto.reducing import AReduceQMixin
-from callchain.tests.mixins.auto.filtering import AFilterQMixin
+from twoq.tests.mixins.man.queuing import MQMixin
+from twoq.tests.mixins.man.mapping import MMapQMixin
+from twoq.tests.mixins.man.ordering import MOrderQMixin
+from twoq.tests.mixins.man.reducing import MReduceQMixin
+from twoq.tests.mixins.man.filtering import MFilterQMixin
 
-from callchain.tests.mixins.man.manning import Manning
-from callchain.tests.mixins.man.queuing import MQMixin
-from callchain.tests.mixins.man.mapping import MMapQMixin
-from callchain.tests.mixins.man.ordering import MOrderQMixin
-from callchain.tests.mixins.man.reducing import MReduceQMixin
-from callchain.tests.mixins.man.filtering import MFilterQMixin
+from callchain.tests.chain import CallMixin
+from callchain.tests.manning import Manning
 
 
 class TestAutoChainQ(
-    unittest.TestCase, CallingMixin, AQMixin, AFilterQMixin, AMapQMixin,
+    unittest.TestCase, CallMixin, AQMixin, AFilterQMixin, AMapQMixin,
     AReduceQMixin, AOrderQMixin,
 ):
 
@@ -37,7 +37,7 @@ class TestAutoChainQ(
 
 
 class TestManChainQ(
-    Manning, CallingMixin, MQMixin, MFilterQMixin, MMapQMixin, MReduceQMixin,
+    Manning, CallMixin, MQMixin, MFilterQMixin, MMapQMixin, MReduceQMixin,
     MOrderQMixin,
 ):
 

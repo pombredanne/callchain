@@ -2,31 +2,27 @@
 '''chain assembly'''
 
 from callchain.mixin.queued import QRootMixin
-from callchain.mixin.call import CallMixin, ECallMixin
-from callchain.mixin.root import RootChainMixin, RootEventMixin, RootMixin
-from callchain.mixin.fluent import FluentMixin, ChainMixin, EventMixin
+from callchain.mixin.fluent import ChainMixin, EventMixin
+from callchain.mixin.call import ChainCallMixin, EventCallMixin
+from callchain.mixin.root import RootMixin, EventRootMixin
+from callchain.mixin.manager import EventManageMixin, ManagerMixin
 
 
-class Chain(CallMixin, RootMixin, FluentMixin):
-
-    '''chain'''
-
-
-class CallChain(CallMixin, RootChainMixin, ChainMixin):
+class CallChain(ChainCallMixin, ManagerMixin, RootMixin, ChainMixin):
 
     '''call chain'''
 
 
-class CallChainQ(CallChain, QRootMixin):
+class CallChainQ(QRootMixin, CallChain):
 
-    '''queued callchain'''
+    '''queued call chain'''
 
 
-class EventChain(ECallMixin, RootEventMixin, EventMixin):
+class EventChain(EventCallMixin, EventManageMixin, EventRootMixin, EventMixin):
 
     '''event chain'''
 
 
-class EventChainQ(EventChain, QRootMixin):
+class EventChainQ(QRootMixin, EventChain):
 
     '''queued event chain'''

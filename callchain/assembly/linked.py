@@ -1,33 +1,35 @@
 # -*- coding: utf-8 -*-
 '''linked chain assembly'''
 
+from appspace.keys import appifies
+
 from callchain.mixin.queued import QRootedMixin
-from callchain.mixin.call import CallMixin, ECallMixin
-from callchain.mixin.rooted import (
-    RootedMixin, RootedChainMixin, ERootedChainMixin)
-from callchain.mixin.fluent import FluentMixin, ChainMixin, EventMixin
+from callchain.keys.linked import (
+    KLinkedChain, KLinkedQ, KEventLink, KEventlinkQ)
+from callchain.mixin.fluent import ChainMixin, EventMixin
+from callchain.mixin.call import ChainCallMixin, EventCallMixin
+from callchain.mixin.rooted import RootedMixin, EventRootedMixin
 
 
-class Linked(RootedMixin, FluentMixin, CallMixin):
-
-    '''linked chain'''
-
-
-class LinkedChain(RootedChainMixin, ChainMixin, CallMixin):
+@appifies(KLinkedChain)
+class LinkedChain(RootedMixin, ChainMixin, ChainCallMixin):
 
     '''linked call chain'''
 
 
-class LinkedQ(LinkedChain, QRootedMixin):
+@appifies(KLinkedQ)
+class LinkedQ(QRootedMixin, LinkedChain):
 
     '''queued linked call chain'''
 
 
-class Eventlink(ERootedChainMixin, EventMixin, ECallMixin):
+@appifies(KEventLink)
+class EventLink(EventRootedMixin, EventMixin, EventCallMixin):
 
     '''event link chain'''
 
 
-class EventlinkQ(Eventlink, QRootedMixin):
+@appifies(KEventlinkQ)
+class EventLinkQ(QRootedMixin, EventLink):
 
     '''queued event link chain'''

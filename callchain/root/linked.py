@@ -1,16 +1,21 @@
 # -*- coding: utf-8 -*-
-'''active queued linked call chains'''
+'''root linked chains'''
 
-from callchain.assembly.linked import LinkedChain, Eventlink
+from appspace.keys import appifies
 
-from callchain.root.mixins import RootMixin
+from callchain.keys.linked import KLinkedChain, KEventLink
+from callchain.assembly.linked import LinkedChain, EventLink
 
-
-class chainlink(RootMixin, LinkedChain):
-
-    '''root linked chain'''
+from callchain.root.mixins import RootableMixin
 
 
-class eventlink(RootMixin, Eventlink):
+@appifies(KLinkedChain)
+class chainlink(RootableMixin, LinkedChain):
+
+    '''root linked call chain'''
+
+
+@appifies(KEventLink)
+class eventlink(RootableMixin, EventLink):
 
     '''root linked event chain'''

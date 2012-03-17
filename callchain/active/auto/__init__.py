@@ -1,2 +1,2 @@
 # -*- coding: utf-8 -*-
-'''active auto-balancing call chainlets'''
+'''active auto-balancing chainlets and eventlets'''

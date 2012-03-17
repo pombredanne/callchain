@@ -5,7 +5,7 @@ from itertools import chain
 from collections import deque
 from functools import partial
 
-from appspace.keys import imap
+from stuf.utils import imap
 from twoq.support import isstring
 from appspace.keys import AppLookupError, NoAppError
 
@@ -14,7 +14,7 @@ from callchain.mixin.reset import ResetLocalMixin
 
 class FluentMixin(ResetLocalMixin):
 
-    '''fluent-style mixin'''
+    '''fluent interface mixin'''
 
     def __getattr__(self, label):
         try:
@@ -22,7 +22,7 @@ class FluentMixin(ResetLocalMixin):
         except AttributeError:
             return self._load(label)
 
-    _fgetr = __getattr__
+    _f_getattr = __getattr__
 
     def _load(self, label):
         '''
@@ -49,15 +49,15 @@ class FluentMixin(ResetLocalMixin):
             _M._current = _M._root
             return thing
 
-    _fload = _load
+    _f_load = _load
 
 
 class ChainMixin(FluentMixin):
 
     '''chain mixin'''
 
-    def _setup_chain(self):
-        '''setup call chain'''
+    def _setup(self):
+        '''setup'''
         _chain = deque()
         # call chain right extend
         self._cxtend = _chain.extend
@@ -72,11 +72,27 @@ class ChainMixin(FluentMixin):
         # call chain
         self._chain = _chain
 
-    _csetup_chain = _setup_chain
+    _c_setup = _setup
+
+    def _incallsync(self):
+        '''move callchain to incoming for processing'''
+        self.outsync()
+        self.inclear()
+        self.extend(self._chain)
+
+    _c_incallsync = _incallsync
+
+    def _callinsync(self):
+        '''move callchain to incoming for processing'''
+        self._cclear()
+        self._chain(self.incoming)
+        self.sync()
+
+    _c_callinsync = _callinsync
 
     def chain(self, call, key=False, *args, **kw):
         '''
-        add call or appspaced call to call chain, partializing it with any
+        add `call` or appspaced `call` to call chain, partializing it with any
         passed arguments
 
         @param call: call or appspaced call label
@@ -105,7 +121,7 @@ class EventMixin(ChainMixin):
         '''calls bound to `events`'''
         return chain(*tuple(imap(self._event, events)))
 
-    _devents = _events
+    _e_events = _events
 
     def on(self, event, call, key=False, *args, **kw):
         '''
@@ -132,7 +148,11 @@ class EventMixin(ChainMixin):
     _eoff = off
 
     def trigger(self, *events):
-        '''extend primary call chain with partials bound to `events`'''
+        '''
+        extend primary call chain with partials bound to `events`
+
+        @param *events: event labels
+        '''
         self._cxtend(self._events(*events))
         return self
 

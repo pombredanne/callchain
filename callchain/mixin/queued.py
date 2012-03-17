@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
-'''fluent mixins'''
+'''queue mixins'''
 
 from twoq.support import isstring
 
 from callchain.mixin.reset import ResetLocalMixin
 
 
-class QMixin(ResetLocalMixin):
+class _QMixin(ResetLocalMixin):
 
     '''queued chain mixin'''
 
     def clear(self):
-        '''clear all queues'''
+        '''clear queues'''
         self._oclear()
         self._cclear()
         return self
@@ -36,7 +36,7 @@ class QMixin(ResetLocalMixin):
     _qtap = tap
 
 
-class QRootMixin(QMixin):
+class QRootMixin(_QMixin):
 
     '''queued root chain mixin'''
 
@@ -46,6 +46,7 @@ class QRootMixin(QMixin):
 
         @param link: linked call chain
         '''
+        self._rback(link)
         # sync with link callable
         self._call = link._call
         # sync with link postitional arguments
@@ -61,17 +62,17 @@ class QRootMixin(QMixin):
     _qback = back
 
 
-class QRootedMixin(QRootMixin):
+class QRootedMixin(_QMixin):
 
     '''queued rooted chain mixin'''
 
-    def __init__(self, root):
+    def _setup(self, root):
         '''
-        init
+        setup chain
 
         @param root: root call chain
         '''
-        super(QRootedMixin, self).__init__(root)
+        super(QRootedMixin, self)._setup(root)
         # sync with root postitional arguments
         self._args = root._args
         # sync with root keyword arguments
@@ -83,3 +84,5 @@ class QRootedMixin(QRootMixin):
         self.extend(root.incoming)
         # sync with root outgoing things
         self.outextend(root.outgoing)
+
+    _q_setup = _setup
