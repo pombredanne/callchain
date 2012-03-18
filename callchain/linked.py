@@ -3,12 +3,13 @@
 
 from appspace.keys import appifies
 
-from callchain.mixin.queued import QRootedMixin
+from callchain.queued import QRootedMixin
+from callchain.compact import CompactRootedMixin
 from callchain.keys.linked import (
     KLinkedChain, KLinkedQ, KEventLink, KEventlinkQ)
-from callchain.mixin.fluent import ChainMixin, EventMixin
-from callchain.mixin.call import ChainCallMixin, EventCallMixin
-from callchain.mixin.rooted import RootedMixin, EventRootedMixin
+from callchain.fluent import ChainMixin, EventMixin
+from callchain.call import ChainCallMixin, EventCallMixin
+from callchain.rooted import RootedMixin, EventRootedMixin
 
 
 @appifies(KLinkedChain)
@@ -33,3 +34,15 @@ class EventLink(EventRootedMixin, EventMixin, EventCallMixin):
 class EventLinkQ(QRootedMixin, EventLink):
 
     '''queued event link chain'''
+
+
+@appifies(KLinkedChain)
+class chainlink(CompactRootedMixin, LinkedChain):
+
+    '''root linked call chain'''
+
+
+@appifies(KEventLink)
+class eventlink(CompactRootedMixin, EventLink):
+
+    '''root linked event chain'''

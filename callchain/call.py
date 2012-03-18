@@ -8,7 +8,7 @@ from stuf.utils import lazy, lazy_class, either, iterexcept
 
 from callchain.keys.core import NoServiceError
 
-from callchain.mixin.reset import ResetLocalMixin
+from callchain.reset import ResetLocalMixin
 
 
 class CallMixin(ResetLocalMixin):

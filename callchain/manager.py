@@ -8,7 +8,7 @@ from stuf.utils import either, lazy, exhaustmap
 
 from callchain.patterns import Pathways
 
-from callchain.mixin.reset import ResetLocalMixin
+from callchain.reset import ResetLocalMixin
 
 
 class ConfigMixin(ResetLocalMixin):

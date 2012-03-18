@@ -4,10 +4,10 @@
 from appspace.keys import appifies
 from twoq.lazy.mixins import AutoResultMixin, ManResultMixin
 
-from callchain.services.apps import events
-from callchain.services.queue import KResults
+from callchain.keys.apps import events
+from callchain.keys.queue import KResults
 from callchain.internal import inside, einside
-from callchain.assembly.chain import ChainQ, EventChainQ
+from callchain.chain import ChainQ, EventChainQ
 
 from callchain.lazy.mixins import LazyContextMixin
 from callchain.lazy.man.apps import chain as mchain

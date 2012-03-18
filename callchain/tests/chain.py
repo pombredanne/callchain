@@ -9,7 +9,7 @@ class CallMixin(object):
     @property
     def _appconf(self):
         from callchain.patterns import Pathways, Nameways
-        from callchain.root.linked import chainlink
+        from callchain.linked import chainlink
         from math import ceil, fabs
         class testlink(chainlink): #@IgnorePep8
             def foo(self, x):

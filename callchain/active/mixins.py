@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 '''callchain active contexts'''
 
-from callchain.mixin.queued import ContextMixin
-from callchain.mixin.reset import ResetLocalMixin
-from callchain.assembly.chainlet import EventletQ, ChainletQ
-from callchain.assembly.linked import LinkedQ, EventLinkQ
+from callchain.queued import ContextMixin
+from callchain.reset import ResetLocalMixin
+from callchain.linked import LinkedQ, EventLinkQ
+from callchain.chainlet import EventletQ, ChainletQ
 
 __all__ = ['ActiveContext']
 

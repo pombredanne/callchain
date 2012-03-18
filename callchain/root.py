@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 '''root mixins'''
 
-from callchain.mixin.reset import ResetLocalMixin
+from callchain.reset import ResetLocalMixin
 
 
 class RootMixin(ResetLocalMixin):

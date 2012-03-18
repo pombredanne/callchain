@@ -6,8 +6,7 @@ from itertools import chain
 from appspace.keys import NoAppError
 
 from callchain.managers import Events
-
-from callchain.mixin.fluent import ResetLocalMixin
+from callchain.fluent import ResetLocalMixin
 
 
 class RootletMixin(ResetLocalMixin):

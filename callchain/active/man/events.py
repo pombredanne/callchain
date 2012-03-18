@@ -7,57 +7,56 @@ __all__ = ['event']
 
 
 class event(Pathways):
-    linked = 'callchain.active.linked.ameventlinkq'
-    callchain = 'callchain.root.linked.chainlink'
+    callchain = 'callchain.linked.chainlink'
 
     class filter(Nameways):
-        key = 'callchain.services.filter.KFilter'
+        key = 'callchain.keys.filter.KFilter'
         filter = 'callchain.active.man.eventlet.filterevent'
 
     class collect(Nameways):
-        key = 'callchain.services.filter.KCollect'
+        key = 'callchain.keys.filter.KCollect'
         collect = 'callchain.active.man.eventlet.collectevent'
 
     class set(Nameways):
-        key = 'callchain.services.filter.KSet'
+        key = 'callchain.keys.filter.KSet'
         set = 'callchain.active.man.eventlet.setevent'
 
     class slice(Nameways):
-        key = 'callchain.services.filter.KSlice'
+        key = 'callchain.keys.filter.KSlice'
         slice = 'callchain.active.man.eventlet.sliceevent'
 
     class map(Nameways):
-        key = 'callchain.services.map.KMap'
+        key = 'callchain.keys.map.KMap'
         map = 'callchain.active.man.eventlet.mapevent'
 
     class delay(Nameways):
-        key = 'callchain.services.map.KDelay'
+        key = 'callchain.keys.map.KDelay'
         delay = 'callchain.active.man.eventlet.delayevent'
 
     class copy(Nameways):
-        key = 'callchain.services.map.KCopy'
+        key = 'callchain.keys.map.KCopy'
         copy = 'callchain.active.man.eventlet.copyevent'
 
     class repeat(Nameways):
-        key = 'callchain.services.map.KRepeat'
+        key = 'callchain.keys.map.KRepeat'
         repeat = 'callchain.active.man.eventlet.repeatevent'
 
     class order(Nameways):
-        key = 'callchain.services.order.KOrder'
+        key = 'callchain.keys.order.KOrder'
         order = 'callchain.active.man.eventlet.orderevent'
 
     class random(Nameways):
-        key = 'callchain.services.order.KRandom'
+        key = 'callchain.keys.order.KRandom'
         random = 'callchain.active.man.eventlet.randomevent'
 
     class reduce(Nameways):
-        key = 'callchain.services.reduce.KReduce'
+        key = 'callchain.keys.reduce.KReduce'
         reduce = 'callchain.active.man.eventlet.reduceevent'
 
     class math(Nameways):
-        key = 'callchain.services.reduce.KMath'
+        key = 'callchain.keys.reduce.KMath'
         math = 'callchain.active.man.eventlet.mathevent'
 
     class truth(Nameways):
-        key = 'callchain.services.reduce.KTruth'
+        key = 'callchain.keys.reduce.KTruth'
         truth = 'callchain.active.man.eventlet.truthevent'

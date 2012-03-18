@@ -7,7 +7,7 @@ from collections import deque
 from twoq.active.mixins import ResultQMixin
 
 
-class RootMixin(ResultQMixin):
+class CompactRootMixin(ResultQMixin):
 
     '''base root chain mixin'''
 
@@ -27,7 +27,7 @@ class RootMixin(ResultQMixin):
     _d_setup = _setup
 
 
-class RootableMixin(RootMixin):
+class CompactRootedMixin(CompactRootMixin):
 
     '''base rooted root chain mixin'''
 
