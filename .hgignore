@@ -27,3 +27,5 @@ syntax: regexp
 ^graphalchemy/tests/foo3$
 syntax: regexp
 ^profile$
+syntax: glob
+tox/*

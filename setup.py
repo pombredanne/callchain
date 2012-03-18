@@ -1,24 +1,18 @@
 # -*- coding: utf-8 -*-
-'''setup for callchain'''
+'''setup callchain'''
 
 import os
-import sys
 
 try:
     from setuptools import setup
 except ImportError:
     from distutils.core import setup
 
-install_requires = [
-    'twoq>0.2.2', 'appspace>=0.5.2', 'zope.interface>=3.8.0', 'stuf>=0.8.7',
-    'distribute>=0.6.25',
-]
-if sys.version_info[0] == 2 and sys.version_info[1] < 7:
-    install_requires.extend(['importlib', 'ordereddict', 'unittest2'])
+install_requires = ['twoq>0.2.3', 'appspace>=0.5.3']
 
 setup(
     name='callchain',
-    version='0.1.2',
+    version='0.1.3',
     url='http://bitbucket.com/lcrees/callchain',
     description='callables and components joined in one big happy chain',
     long_description=open(os.path.join(os.getcwd(), 'README.rst'), 'r').read(),
