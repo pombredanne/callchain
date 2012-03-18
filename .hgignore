@@ -29,3 +29,5 @@ syntax: regexp
 ^profile$
 syntax: glob
 tox/*
+syntax: glob
+.tox/*

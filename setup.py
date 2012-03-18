@@ -8,7 +8,7 @@ try:
 except ImportError:
     from distutils.core import setup
 
-install_requires = ['twoq>0.2.3', 'appspace>=0.5.3']
+install_requires = ['twoq>0.2.2', 'appspace>=0.5.2']
 
 setup(
     name='callchain',
