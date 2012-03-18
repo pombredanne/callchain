@@ -3,45 +3,8 @@
 
 from itertools import chain
 
-from appspace.keys import NoAppError
-
 from callchain.managers import Events
 from callchain.fluent import ResetLocalMixin
-
-
-class RootletMixin(ResetLocalMixin):
-
-    '''rootlet mixin'''
-
-    def _load(self, label):
-        '''
-        silent internal switch back...
-
-        @param label: appspaced thing label
-        '''
-        # fetch appspaced thing...
-        try:
-            return self._f_load(label)
-        # ...or revert to root chain
-        except NoAppError:
-            return getattr(self.__rback(), label)
-
-    _r_load = _load
-
-    def _synchback(self, key, value):
-        '''
-        sync with back
-
-        @param key: key of value
-        @param value: value of value
-        '''
-        self.__dict__[key] = self.root.__dict__[key] = value
-
-    def back(self):
-        '''revert to root chain'''
-        return self.root.back(self)
-
-    _rback = __rback = back
 
 
 class RootedMixin(ResetLocalMixin):
@@ -121,3 +84,17 @@ class EventRootedMixin(RootedMixin):
         return chain(self.E.events(key), self.root.E.events(key))
 
     _e_event = _event
+
+
+class CompactRootedMixin(ResetLocalMixin):
+
+    '''base rooted root chain mixin'''
+
+    def _setup(self, root):
+        '''
+        setup chain
+
+        @param root: root object
+        '''
+        self._d_setup()
+        self._r_setup(root)

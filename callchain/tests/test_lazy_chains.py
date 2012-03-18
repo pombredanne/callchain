@@ -6,17 +6,16 @@ try:
 except ImportError:
     import unittest
 
-from twoq.tests.mixins.auto.queuing import AQMixin
-from twoq.tests.mixins.auto.mapping import AMapQMixin
-from twoq.tests.mixins.auto.ordering import AOrderQMixin
-from twoq.tests.mixins.auto.reducing import AReduceQMixin
-from twoq.tests.mixins.auto.filtering import AFilterQMixin
-
 from twoq.tests.mixins.man.queuing import MQMixin
+from twoq.tests.mixins.auto.queuing import AQMixin
 from twoq.tests.mixins.man.mapping import MMapQMixin
+from twoq.tests.mixins.auto.mapping import AMapQMixin
 from twoq.tests.mixins.man.ordering import MOrderQMixin
 from twoq.tests.mixins.man.reducing import MReduceQMixin
+from twoq.tests.mixins.auto.ordering import AOrderQMixin
 from twoq.tests.mixins.man.filtering import MFilterQMixin
+from twoq.tests.mixins.auto.reducing import AReduceQMixin
+from twoq.tests.mixins.auto.filtering import AFilterQMixin
 
 from callchain.tests.chain import CallMixin
 from callchain.tests.manning import Manning
@@ -32,8 +31,8 @@ class TestAutoChainQ(
 
     @property
     def _makeone(self):
-        from callchain.lazy.chain import lachainq
-        return lachainq
+        from callchain.lazy_auto.apps import chainq
+        return chainq
 
 
 class TestManChainQ(
@@ -46,8 +45,8 @@ class TestManChainQ(
 
     @property
     def _makeone(self):
-        from callchain.lazy.chain import lmchainq
-        return lmchainq
+        from callchain.lazy_man.apps import chainq
+        return chainq
 
 
 if __name__ == '__main__':

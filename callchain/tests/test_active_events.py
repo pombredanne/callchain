@@ -6,17 +6,16 @@ try:
 except ImportError:
     import unittest
 
-from twoq.tests.mixins.auto.queuing import AQMixin
-from twoq.tests.mixins.auto.mapping import AMapQMixin
-from twoq.tests.mixins.auto.ordering import AOrderQMixin
-from twoq.tests.mixins.auto.reducing import AReduceQMixin
-from twoq.tests.mixins.auto.filtering import AFilterQMixin
-
 from twoq.tests.mixins.man.queuing import MQMixin
+from twoq.tests.mixins.auto.queuing import AQMixin
 from twoq.tests.mixins.man.mapping import MMapQMixin
+from twoq.tests.mixins.auto.mapping import AMapQMixin
 from twoq.tests.mixins.man.ordering import MOrderQMixin
+from twoq.tests.mixins.auto.ordering import AOrderQMixin
 from twoq.tests.mixins.man.reducing import MReduceQMixin
+from twoq.tests.mixins.auto.reducing import AReduceQMixin
 from twoq.tests.mixins.man.filtering import MFilterQMixin
+from twoq.tests.mixins.auto.filtering import AFilterQMixin
 
 from callchain.tests.manning import Manning
 from callchain.tests.chain import CallMixin
@@ -33,13 +32,13 @@ class TestActiveAutoEventChain(
 
     @property
     def _makeone(self):
-        from callchain.active.chain import aaeventq
-        return aaeventq
+        from callchain.active_auto.events import eventq
+        return eventq
 
 
 class TestActiveManEventChain(
-    Manning, EventChainMixin, CallMixin, MQMixin, MFilterQMixin,
-    MMapQMixin, MReduceQMixin, MOrderQMixin,
+    Manning, EventChainMixin, CallMixin, MQMixin, MFilterQMixin, MMapQMixin,
+    MReduceQMixin, MOrderQMixin,
 ):
 
     def setUp(self):
@@ -47,8 +46,8 @@ class TestActiveManEventChain(
 
     @property
     def _makeone(self):
-        from callchain.active.chain import ameventq
-        return ameventq
+        from callchain.active_man.events import eventq
+        return eventq
 
 
 if __name__ == '__main__':

@@ -1,15 +1,50 @@
 # -*- coding: utf-8 -*-
 '''chainlet and eventlet assembly'''
 
-from appspace.keys import appifies
+from appspace.keys import appifies, NoAppError
 
-from callchain.queued import QRootedMixin
+from callchain.settings import ResetLocalMixin
+from callchain.fluent import EventMixin, ChainMixin
+from callchain.keys.chain import KEventChain, KCallChain
 from callchain.keys.chainlet import (
     KCallChainlet, KCallChainletQ, KEventlet, KEventletQ)
-from callchain.fluent import EventMixin, ChainMixin
-from callchain.compact import CompactRootedMixin
-from callchain.keys.chain import KEventChain, KCallChain
-from callchain.rooted import RootletMixin, EventRootedMixin, RootedMixin
+from callchain.queued import QRootedMixin, ActiveContextMixin, LazyContextMixin
+from callchain.rooted import CompactRootedMixin, EventRootedMixin, RootedMixin
+
+
+class RootletMixin(ResetLocalMixin):
+
+    '''rootlet mixin'''
+
+    def _load(self, label):
+        '''
+        silent internal switch back...
+
+        @param label: appspaced thing label
+        '''
+        # fetch appspaced thing...
+        try:
+            return self._f_load(label)
+        # ...or revert to root chain
+        except NoAppError:
+            return getattr(self.__rback(), label)
+
+    _r_load = _load
+
+    def _synchback(self, key, value):
+        '''
+        sync with back
+
+        @param key: key of value
+        @param value: value of value
+        '''
+        self.__dict__[key] = self.root.__dict__[key] = value
+
+    def back(self):
+        '''revert to root chain'''
+        return self.root.back(self)
+
+    _rback = __rback = back
 
 
 @appifies(KCallChainlet)
@@ -24,6 +59,17 @@ class ChainletQ(QRootedMixin, Chainlet):
     '''queued call chainlet'''
 
 
+class ActiveChainlet(ChainletQ, ActiveContextMixin):
+
+    '''active chainlet'''
+
+
+@appifies(KCallChain)
+class chainlet(CompactRootedMixin, Chainlet):
+
+    '''root call chainlet'''
+
+
 @appifies(KEventlet)
 class Eventlet(RootletMixin, EventRootedMixin, EventMixin):
 
@@ -36,10 +82,19 @@ class EventletQ(QRootedMixin, Eventlet):
     '''queued eventlet'''
 
 
-@appifies(KCallChain)
-class chainlet(CompactRootedMixin, Chainlet):
+class LazyChainlet(ChainletQ, LazyContextMixin):
 
-    '''root call chainlet'''
+    '''lazy chainlet'''
+
+
+class ActiveEventlet(EventletQ, ActiveContextMixin):
+
+    '''active eventlet'''
+
+
+class LazyEventlet(EventletQ, LazyContextMixin):
+
+    '''lazy eventlet'''
 
 
 @appifies(KEventChain)

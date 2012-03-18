@@ -7,8 +7,7 @@ from stuf import frozenstuf, orderedstuf
 from stuf.utils import lazy, lazy_class, either, iterexcept
 
 from callchain.keys.core import NoServiceError
-
-from callchain.reset import ResetLocalMixin
+from callchain.settings import ResetLocalMixin
 
 
 class CallMixin(ResetLocalMixin):

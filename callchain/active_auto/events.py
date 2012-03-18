@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 '''active auto-balancing eventlets appconf'''
 
-from callchain.patterns import Pathways, Nameways
+from twoq.active.mixins import AutoResultMixin
 
-__all__ = ['event']
+from callchain.keys.apps import events
+from callchain.internal import einside
+from callchain.chain import ActiveEvent
+from callchain.patterns import Pathways, Nameways
 
 
 class event(Pathways):
@@ -11,52 +14,58 @@ class event(Pathways):
 
     class filter(Nameways):
         key = 'callchain.keys.filter.KFilter'
-        filter = 'callchain.active.auto.eventlet.filterevent'
+        filter = 'callchain.active_auto.eventlet.filterevent'
 
     class collect(Nameways):
         key = 'callchain.keys.filter.KCollect'
-        collect = 'callchain.active.auto.eventlet.collectevent'
+        collect = 'callchain.active_auto.eventlet.collectevent'
 
     class set(Nameways):
         key = 'callchain.keys.filter.KSet'
-        set = 'callchain.active.auto.eventlet.setevent'
+        set = 'callchain.active_auto.eventlet.setevent'
 
     class slice(Nameways):
         key = 'callchain.keys.filter.KSlice'
-        slice = 'callchain.active.auto.eventlet.sliceevent'
+        slice = 'callchain.active_auto.eventlet.sliceevent'
 
     class map(Nameways):
         key = 'callchain.keys.map.KMap'
-        map = 'callchain.active.auto.eventlet.mapevent'
+        map = 'callchain.active_auto.eventlet.mapevent'
 
     class delay(Nameways):
         key = 'callchain.keys.map.KDelay'
-        delay = 'callchain.active.auto.eventlet.delayevent'
+        delay = 'callchain.active_auto.eventlet.delayevent'
 
     class copy(Nameways):
         key = 'callchain.keys.map.KCopy'
-        copy = 'callchain.active.auto.eventlet.copyevent'
+        copy = 'callchain.active_auto.eventlet.copyevent'
 
     class repeat(Nameways):
         key = 'callchain.keys.map.KRepeat'
-        repeat = 'callchain.active.auto.eventlet.repeatevent'
+        repeat = 'callchain.active_auto.eventlet.repeatevent'
 
     class order(Nameways):
         key = 'callchain.keys.order.KOrder'
-        order = 'callchain.active.auto.eventlet.orderevent'
+        order = 'callchain.active_auto.eventlet.orderevent'
 
     class random(Nameways):
         key = 'callchain.keys.order.KRandom'
-        random = 'callchain.active.auto.eventlet.randomevent'
+        random = 'callchain.active_auto.eventlet.randomevent'
 
     class reduce(Nameways):
         key = 'callchain.keys.reduce.KReduce'
-        reduce = 'callchain.active.auto.eventlet.reduceevent'
+        reduce = 'callchain.active_auto.eventlet.reduceevent'
 
     class math(Nameways):
         key = 'callchain.keys.reduce.KMath'
-        math = 'callchain.active.auto.eventlet.mathevent'
+        math = 'callchain.active_auto.eventlet.mathevent'
 
     class truth(Nameways):
         key = 'callchain.keys.reduce.KTruth'
-        truth = 'callchain.active.auto.eventlet.truthevent'
+        truth = 'callchain.active_auto.eventlet.truthevent'
+
+
+@einside(event, events)
+class eventq(ActiveEvent, AutoResultMixin):
+
+    '''active queued auto-balancing event chain'''
