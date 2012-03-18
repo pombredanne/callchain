@@ -7,8 +7,9 @@ from twoq.lazy.mixins import AutoResultMixin, ManResultMixin
 from callchain.services.apps import events
 from callchain.services.queue import KResults
 from callchain.internal import inside, einside
-from callchain.assembly.chain import CallChainQ, EventChainQ
+from callchain.assembly.chain import ChainQ, EventChainQ
 
+from callchain.lazy.mixins import LazyContextMixin
 from callchain.lazy.man.apps import chain as mchain
 from callchain.lazy.auto.apps import chain as achain
 from callchain.lazy.man.events import event as mevent
@@ -16,27 +17,36 @@ from callchain.lazy.auto.events import event as aevent
 
 
 @appifies(KResults)
+class LazyChain(ChainQ, LazyContextMixin):
+
+    '''lazy call chain'''
+
+
 @inside(achain)
-class lachainq(CallChainQ, AutoResultMixin):
+class lachainq(ChainQ, AutoResultMixin):
 
     '''lazy queued auto-balancing call chain'''
 
 
-@appifies(KResults)
 @inside(mchain)
-class lmchainq(CallChainQ, ManResultMixin):
+class lmchainq(ChainQ, ManResultMixin):
 
     '''lazy queued manually balanced call chain'''
 
 
 @appifies(KResults)
+@einside(mevent, events)
+class LazyEvent(EventChainQ, LazyContextMixin):
+
+    '''lazy event chain'''
+
+
 @einside(aevent, events)
 class laeventq(EventChainQ, AutoResultMixin):
 
     '''lazy queued auto-balancing event chain'''
 
 
-@appifies(KResults)
 @einside(mevent, events)
 class lmeventq(EventChainQ, ManResultMixin):
 

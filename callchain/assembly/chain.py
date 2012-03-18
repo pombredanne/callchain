@@ -8,12 +8,12 @@ from callchain.mixin.root import RootMixin, EventRootMixin
 from callchain.mixin.manager import EventManageMixin, ManagerMixin
 
 
-class CallChain(ChainCallMixin, ManagerMixin, RootMixin, ChainMixin):
+class Chain(ChainCallMixin, ManagerMixin, RootMixin, ChainMixin):
 
     '''call chain'''
 
 
-class CallChainQ(QRootMixin, CallChain):
+class ChainQ(QRootMixin, Chain):
 
     '''queued call chain'''
 

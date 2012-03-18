@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 '''queue mixins'''
 
+from stuf.utils import iterexcept
 from twoq.support import isstring
 
 from callchain.mixin.reset import ResetLocalMixin
@@ -34,6 +35,25 @@ class _QMixin(ResetLocalMixin):
         return self
 
     _qtap = tap
+
+
+class ContextMixin(ResetLocalMixin):
+
+    '''base context manager'''
+
+    def __init__(self, queue):
+        '''
+        init
+
+        @param queue: queue
+        '''
+        super(ContextMixin, self).__init__(queue)
+        self._cxtend = queue._cxtend
+        self._cpopleft = queue._cpopleft
+
+    @property
+    def iterable(self):
+        return iterexcept(self._cpopleft, IndexError)
 
 
 class QRootMixin(_QMixin):

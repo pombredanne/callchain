@@ -11,13 +11,13 @@ from callchain.mixin.rooted import RootletMixin, EventRootedMixin, RootedMixin
 
 
 @appifies(KCallChainlet)
-class CallChainlet(RootletMixin, RootedMixin, ChainMixin):
+class Chainlet(RootletMixin, RootedMixin, ChainMixin):
 
     '''call chainlet'''
 
 
 @appifies(KCallChainletQ)
-class CallChainletQ(QRootedMixin, CallChainlet):
+class ChainletQ(QRootedMixin, Chainlet):
 
     '''queued call chainlet'''
 

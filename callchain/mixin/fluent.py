@@ -74,22 +74,6 @@ class ChainMixin(FluentMixin):
 
     _c_setup = _setup
 
-    def _incallsync(self):
-        '''move callchain to incoming for processing'''
-        self.outsync()
-        self.inclear()
-        self.extend(self._chain)
-
-    _c_incallsync = _incallsync
-
-    def _callinsync(self):
-        '''move callchain to incoming for processing'''
-        self._cclear()
-        self._chain(self.incoming)
-        self.sync()
-
-    _c_callinsync = _callinsync
-
     def chain(self, call, key=False, *args, **kw):
         '''
         add `call` or appspaced `call` to call chain, partializing it with any

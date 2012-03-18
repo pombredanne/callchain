@@ -14,7 +14,7 @@ from callchain.services.reduce import KMath, KReduce, KTruth
 from callchain.services.map import KDelay, KCopy, KRepeat, KMap
 from callchain.services.filter import KCollect, KSet, KSlice, KFilter
 
-from callchain.assembly.chainlet import CallChainletQ
+from callchain.assembly.chainlet import ChainletQ
 
 __all__ = (
     'mathchain', 'truthchain', 'reducechain', 'collectchain', 'setchain',
@@ -24,78 +24,78 @@ __all__ = (
 
 
 @appifies(KDelay)
-class delaychain(CallChainletQ, AutoQMixin, DelayMixin):
+class delaychain(ChainletQ, AutoQMixin, DelayMixin):
 
     '''auto-balancing delayed mapping chainlet'''
 
 
 @appifies(KCopy)
-class copychain(CallChainletQ, AutoQMixin, CopyMixin):
+class copychain(ChainletQ, AutoQMixin, CopyMixin):
 
     '''auto-balancing copy chainlet'''
 
 
 @appifies(KRepeat)
-class repeatchain(CallChainletQ, AutoQMixin, RepeatMixin):
+class repeatchain(ChainletQ, AutoQMixin, RepeatMixin):
 
     '''auto-balancing repeat chainlet'''
 
 
 @appifies(KMap)
-class mapchain(CallChainletQ, AutoQMixin, MapMixin):
+class mapchain(ChainletQ, AutoQMixin, MapMixin):
 
     '''auto-balancing mapping chainlet'''
 
 
 @appifies(KCollect)
-class collectchain(CallChainletQ, AutoQMixin, CollectMixin):
+class collectchain(ChainletQ, AutoQMixin, CollectMixin):
 
     '''auto-balancing collecting chainlet'''
 
 
 @appifies(KSet)
-class setchain(CallChainletQ, AutoQMixin, SetMixin):
+class setchain(ChainletQ, AutoQMixin, SetMixin):
 
     '''auto-balancing seting chainlet'''
 
 
 @appifies(KSlice)
-class slicechain(CallChainletQ, AutoQMixin, SliceMixin):
+class slicechain(ChainletQ, AutoQMixin, SliceMixin):
 
     '''auto-balancing slicing chainlet'''
 
 
 @appifies(KFilter)
-class filterchain(CallChainletQ, AutoQMixin, FilterMixin):
+class filterchain(ChainletQ, AutoQMixin, FilterMixin):
 
     '''auto-balancing filtering chainlet'''
 
 
 @appifies(KRandom)
-class randomchain(CallChainletQ, AutoQMixin, RandomMixin):
+class randomchain(ChainletQ, AutoQMixin, RandomMixin):
 
     '''auto-balancing randomizing chainlet'''
 
 
 @appifies(KOrder)
-class orderchain(CallChainletQ, AutoQMixin, OrderMixin):
+class orderchain(ChainletQ, AutoQMixin, OrderMixin):
 
     '''auto-balancing ordering chainlet'''
 
 
 @appifies(KMath)
-class mathchain(CallChainletQ, AutoQMixin, MathMixin):
+class mathchain(ChainletQ, AutoQMixin, MathMixin):
 
     '''auto-balancing mathing chainlet'''
 
 
 @appifies(KReduce)
-class reducechain(CallChainletQ, AutoQMixin, ReduceMixin):
+class reducechain(ChainletQ, AutoQMixin, ReduceMixin):
 
     '''auto-balancing reducing chainlet'''
 
 
 @appifies(KTruth)
-class truthchain(CallChainletQ, AutoQMixin, TruthMixin):
+class truthchain(ChainletQ, AutoQMixin, TruthMixin):
 
     '''auto-balancing truthing chainlet'''

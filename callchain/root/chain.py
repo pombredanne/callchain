@@ -6,7 +6,7 @@ from appspace.keys import appifies
 from callchain.services.apps import events
 from callchain.internal import inside, einside
 from callchain.keys.chain import KCallChain, KEventChain
-from callchain.assembly.chain import CallChain, EventChain
+from callchain.assembly.chain import Chain, EventChain
 
 from callchain.root.mixins import RootMixin
 from callchain.root.apps import chain, event
@@ -14,7 +14,7 @@ from callchain.root.apps import chain, event
 
 @appifies(KCallChain)
 @inside(chain)
-class callchain(RootMixin, CallChain):
+class callchain(RootMixin, Chain):
 
     '''root call chain'''
 

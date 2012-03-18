@@ -14,7 +14,7 @@ from callchain.services.reduce import KMath, KReduce, KTruth
 from callchain.services.map import KDelay, KCopy, KRepeat, KMap
 from callchain.services.filter import KCollect, KSet, KSlice, KFilter
 
-from callchain.assembly.chainlet import EventletQ
+from callchain.active.mixins import ActiveEventlet
 
 __all__ = (
     'mathevent', 'truthevent', 'reduceevent', 'collectevent', 'setevent',
@@ -23,79 +23,84 @@ __all__ = (
 )
 
 
+class ManActiveEventlet(ActiveEventlet, ManQMixin):
+
+    '''active manually balanced eventlet'''
+
+
 @appifies(KDelay)
-class delayevent(EventletQ, ManQMixin, DelayMixin):
+class delayevent(ManActiveEventlet, DelayMixin):
 
     '''manually balanced delayed mapping eventlet'''
 
 
 @appifies(KCopy)
-class copyevent(EventletQ, ManQMixin, CopyMixin):
+class copyevent(ManActiveEventlet, CopyMixin):
 
     '''manually balanced copy eventlet'''
 
 
 @appifies(KRepeat)
-class repeatevent(EventletQ, ManQMixin, RepeatMixin):
+class repeatevent(ManActiveEventlet, RepeatMixin):
 
     '''manually balanced repeat eventlet'''
 
 
 @appifies(KMap)
-class mapevent(EventletQ, ManQMixin, MapMixin):
+class mapevent(ManActiveEventlet, MapMixin):
 
     '''manually balanced mapping eventlet'''
 
 
 @appifies(KCollect)
-class collectevent(EventletQ, ManQMixin, CollectMixin):
+class collectevent(ManActiveEventlet, CollectMixin):
 
     '''manually balanced collecting eventlet'''
 
 
 @appifies(KSet)
-class setevent(EventletQ, ManQMixin, SetMixin):
+class setevent(ManActiveEventlet, SetMixin):
 
     '''manually balanced seting eventlet'''
 
 
 @appifies(KSlice)
-class sliceevent(EventletQ, ManQMixin, SliceMixin):
+class sliceevent(ManActiveEventlet, SliceMixin):
 
     '''manually balanced slicing eventlet'''
 
 
 @appifies(KFilter)
-class filterevent(EventletQ, ManQMixin, FilterMixin):
+class filterevent(ManActiveEventlet, FilterMixin):
 
     '''manually balanced filtering eventlet'''
 
 
 @appifies(KRandom)
-class randomevent(EventletQ, ManQMixin, RandomMixin):
+class randomevent(ManActiveEventlet, RandomMixin):
 
     '''manually balanced randomizing eventlet'''
 
 
 @appifies(KOrder)
-class orderevent(EventletQ, ManQMixin, OrderMixin):
+class orderevent(ManActiveEventlet, OrderMixin):
 
     '''manually balanced ordering eventlet'''
 
 
 @appifies(KMath)
-class mathevent(EventletQ, ManQMixin, MathMixin):
+class mathevent(ManActiveEventlet, MathMixin):
 
     '''manually balanced mathing eventlet'''
 
 
 @appifies(KReduce)
-class reduceevent(EventletQ, ManQMixin, ReduceMixin):
+class reduceevent(ManActiveEventlet, ReduceMixin):
 
     '''manually balanced reducing eventlet'''
 
 
 @appifies(KTruth)
-class truthevent(EventletQ, ManQMixin, TruthMixin):
+class truthevent(ManActiveEventlet, TruthMixin):
 
     '''manually balanced truthing eventlet'''

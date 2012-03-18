@@ -67,7 +67,7 @@ class ManagerMixin(ConfigMixin):
 
     _m_setdefault = _setdefault
 
-    def _resetdefaults(self):
+    def _defaults(self):
         '''reset attribute values'''
         this = self.__dict__
         exhaustmap(
@@ -76,7 +76,7 @@ class ManagerMixin(ConfigMixin):
             lambda x: x[0].endswith('_d'),
         )
 
-    _m_resetdefaults = _resetdefaults
+    _m_defaults = _defaults
 
 
 class EventManageMixin(ManagerMixin):
