@@ -76,7 +76,7 @@ class KEventRoot(KChainRoot):
         @param event: event label
         '''
 
-    def unevent(eventchain):
+    def unevent(event):
         '''
         drop `event`
 

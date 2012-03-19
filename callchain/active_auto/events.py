@@ -11,7 +11,7 @@ from callchain.keys.queue import KResults
 from callchain.patterns import Pathways, Nameways
 
 
-class eventchain(Pathways):
+class event(Pathways):
     callchain = 'callchain.linked.chainlink'
 
     class filter(Nameways):
@@ -68,7 +68,7 @@ class eventchain(Pathways):
 
 
 @appifies(KResults)
-@einside(eventchain, events)
+@einside(event, events)
 class eventq(EventQ, AutoResultMixin):
 
     '''active queued auto-balancing event chain'''

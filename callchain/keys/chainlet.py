@@ -7,7 +7,7 @@ from appspace.keys import AppspaceKey
 
 from callchain.keys.queued import KQueued
 from callchain.keys.fluent import KChain, KEvent
-from callchain.keys.rooted import KBranch, KEventBranch
+from callchain.keys.branch import KBranch, KEventBranch
 
 
 class KBranchlet(AppspaceKey):

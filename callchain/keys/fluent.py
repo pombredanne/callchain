@@ -33,7 +33,7 @@ class KEvent(KChain):
         @param key: key label (default: False)
         '''
 
-    def off(eventchain):
+    def off(event):
         '''
         clear calls bound to `event`
 
@@ -44,5 +44,5 @@ class KEvent(KChain):
         '''
         extend primary call callchain with partials bound to `events`
         
-        @param *events: eventchain labels
+        @param *events: event labels
         '''

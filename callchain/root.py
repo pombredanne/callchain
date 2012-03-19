@@ -48,7 +48,7 @@ class EventRootMixin(RootMixin):
         '''
         linked chain bound to `event`
 
-        @param eventchain: event label
+        @param event: event label
         '''
         key = self.E.event(event)
         # fetch linked chain bound to event
@@ -164,7 +164,7 @@ class ManagerMixin(ConfigMixin):
 
 class EventManageMixin(ManagerMixin):
 
-    '''eventchain manager mixin'''
+    '''event manager mixin'''
 
     def __init__(
         self,
@@ -186,7 +186,7 @@ class EventManageMixin(ManagerMixin):
         super(EventManageMixin, self).__init__(
             patterns, required, defaults, *args, **kw
         )
-        # update eventchain registry with any other events
+        # update event registry with any other events
         if events is not None:
             self.E.update(events)
             

@@ -11,10 +11,10 @@ class EventChainMixin(object):
         from callchain.patterns import Pathways, Nameways
         class testlink(chainlink): #@IgnorePep8
             def foo(self, x):
-                self.callchain(ceil, x)
+                self.chain(ceil, x)
                 return self
             def bar(self, x): #@IgnorePep8
-                self.callchain(fabs, x)
+                self.chain(fabs, x)
                 return self
         class helpers(Pathways): #@IgnorePep8
             square = 'math.floor'

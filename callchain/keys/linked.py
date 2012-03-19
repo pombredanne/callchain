@@ -4,7 +4,7 @@
 from callchain.keys.queued import KQueued
 from callchain.keys.fluent import KChain, KEvent
 from callchain.keys.call import KCall, KEventCall
-from callchain.keys.rooted import KBranch, KEventBranch
+from callchain.keys.branch import KBranch, KEventBranch
 
 
 class KLinked(KBranch, KChain, KCall):

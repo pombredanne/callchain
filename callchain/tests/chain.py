@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''callchain callchain test mixins'''
+'''callchain test mixins'''
 
 from collections import deque
 
@@ -13,10 +13,10 @@ class CallMixin(object):
         from math import ceil, fabs
         class testlink(chainlink): #@IgnorePep8
             def foo(self, x):
-                self.callchain(ceil, x)
+                self.chain(ceil, x)
                 return self
             def bar(self, x): #@IgnorePep8
-                self.callchain(fabs, x)
+                self.chain(fabs, x)
                 return self
         class helpers(Pathways): #@IgnorePep8
             square = 'math.floor'
@@ -29,10 +29,10 @@ class CallMixin(object):
 
     def test_pure_calls(self):
         from math import fsum, floor, sqrt
-        self.qclass.callchain(floor, 3)
+        self.qclass.chain(floor, 3)
         (self.qclass
-        .callchain(fsum, [1.1, 1.1, 1.1])
-        .callchain(sqrt, 4))
+        .chain(fsum, [1.1, 1.1, 1.1])
+        .chain(sqrt, 4))
         self.qclass.commit()
         outgoing = deque(i for i in self.qclass.results())
         self.assertEqual(outgoing.popleft(), 3.0)
@@ -41,8 +41,8 @@ class CallMixin(object):
 
     def test_appspace_calls(self):
         qclass = self._appconf
-        qclass.callchain('square', 'helpers', 3).callchain('misc', 'subhelpers', 4)
-        qclass.callchain('formit', 'helpers', [1.1, 1.1, 1.1])
+        qclass.chain('square', 'helpers', 3).chain('misc', 'subhelpers', 4)
+        qclass.chain('formit', 'helpers', [1.1, 1.1, 1.1])
         qclass.commit()
         outgoing = deque(i for i in qclass.results())
         self.assertEqual(outgoing.popleft(), 3.0)

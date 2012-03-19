@@ -33,7 +33,7 @@ class KCall(AppspaceKey):
         '''consume call chain until exhausted'''
         
   
-class KEventCall(KChainCall):
+class KEventCall(KCall):
     
     '''event call key'''
       

@@ -120,13 +120,13 @@ class EventMixin(ChainMixin):
 
     _eon = on
 
-    def off(self, eventchain):
+    def off(self, event):
         '''
         clear calls bound to `event`
 
         @param event: event label
         '''
-        self.E.unset(eventchain)
+        self.E.unset(event)
         return self
 
     _eoff = off
