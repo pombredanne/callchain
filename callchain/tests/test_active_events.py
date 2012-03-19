@@ -32,7 +32,7 @@ class TestActiveAutoEventChain(
 
     @property
     def _makeone(self):
-        from callchain.active_auto.events import eventq
+        from callchain.active_auto.event import eventq
         return eventq
 
 
@@ -46,7 +46,7 @@ class TestActiveManEventChain(
 
     @property
     def _makeone(self):
-        from callchain.active_man.events import eventq
+        from callchain.active_man.event import eventq
         return eventq
 
 

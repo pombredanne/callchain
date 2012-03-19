@@ -10,7 +10,7 @@ from appspace.managers import Manager as _Manager
 from stuf.utils import bi, getcls, lazy, exhaustmap
 
 from callchain.settings import Settings
-from callchain.keys.event import EEvent
+from callchain.services.event import EEvent
 from callchain.keys.core import KSettings, KService, NoServiceError
 
 __all__ = ['Manager']

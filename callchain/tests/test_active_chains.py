@@ -50,7 +50,7 @@ class TestAutoChainQ(
 
     @property
     def _makeone(self):
-        from callchain.active_auto.apps import chainq
+        from callchain.active_auto.chain import chainq
         return chainq
 
 
@@ -64,7 +64,7 @@ class TestManChainQ(
 
     @property
     def _makeone(self):
-        from callchain.active_man.apps import chainq
+        from callchain.active_man.chain import chainq
         return chainq
 
 

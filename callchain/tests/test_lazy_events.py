@@ -32,7 +32,7 @@ class TestLazyAutoEventChain(
 
     @property
     def _makeone(self):
-        from callchain.lazy_auto.events import eventq
+        from callchain.lazy_auto.event import eventq
         return eventq
 
 
@@ -45,7 +45,7 @@ class TestLazyManEventChain(
 
     @property
     def _makeone(self):
-        from callchain.lazy_man.events import eventq
+        from callchain.lazy_man.event import eventq
         return eventq
 
 

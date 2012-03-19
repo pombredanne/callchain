@@ -31,7 +31,7 @@ class TestAutoChainQ(
 
     @property
     def _makeone(self):
-        from callchain.lazy_auto.apps import chainq
+        from callchain.lazy_auto.chain import chainq
         return chainq
 
 
@@ -45,7 +45,7 @@ class TestManChainQ(
 
     @property
     def _makeone(self):
-        from callchain.lazy_man.apps import chainq
+        from callchain.lazy_man.chain import chainq
         return chainq
 
 
