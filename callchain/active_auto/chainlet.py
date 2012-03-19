@@ -14,7 +14,7 @@ from callchain.keys.reduce import KMath, KReduce, KTruth
 from callchain.keys.map import KDelay, KCopy, KRepeat, KMap
 from callchain.keys.filter import KCollect, KSet, KSlice, KFilter
 
-from callchain.chainlet import ActiveChainlet
+from callchain.chainlet import ActiveChainletQ
 
 __all__ = (
     'mathchain', 'truthchain', 'reducechain', 'collectchain', 'setchain',
@@ -23,7 +23,7 @@ __all__ = (
 )
 
 
-class AutoActiveChainlet(ActiveChainlet, AutoQMixin):
+class AutoActiveChainlet(ActiveChainletQ, AutoQMixin):
 
     '''active auto-balancing chainlet'''
 

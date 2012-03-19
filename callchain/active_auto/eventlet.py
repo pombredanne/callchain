@@ -9,7 +9,7 @@ from twoq.mixins.ordering import RandomMixin, OrderMixin
 from twoq.mixins.reducing import MathMixin, TruthMixin, ReduceMixin
 from twoq.mixins.mapping import DelayMixin, CopyMixin, RepeatMixin, MapMixin
 
-from callchain.chainlet import ActiveEventlet
+from callchain.chainlet import ActiveEventletQ
 from callchain.keys.order import KRandom, KOrder
 from callchain.keys.reduce import KMath, KReduce, KTruth
 from callchain.keys.map import KDelay, KCopy, KRepeat, KMap
@@ -22,7 +22,7 @@ __all__ = (
 )
 
 
-class AutoActiveChainlet(ActiveEventlet, AutoQMixin):
+class AutoActiveChainlet(ActiveEventletQ, AutoQMixin):
 
     '''active manually balanced eventlet'''
 

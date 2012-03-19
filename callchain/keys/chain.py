@@ -8,12 +8,12 @@ from callchain.keys.root import KChainRoot, KEventRoot
 from callchain.keys.manager import KManager, KEventManager
 
 
-class KCallChain(KChainCall, KManager, KChainRoot, KChain):
+class KChain(KChainCall, KManager, KChainRoot, KChain):
 
     '''call chain key'''
 
 
-class KCallChainQ(KCallChain, KQueuedRoot):
+class KChainQ(KChain, KQueuedRoot):
 
     '''queued call chain key'''
 

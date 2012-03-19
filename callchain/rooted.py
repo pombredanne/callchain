@@ -7,7 +7,7 @@ from callchain.managers import Events
 from callchain.resets import ResetLocalMixin
 
 
-class RootedMixin(ResetLocalMixin):
+class BranchMixin(ResetLocalMixin):
 
     ''''rooted chain mixin'''
 
@@ -17,7 +17,7 @@ class RootedMixin(ResetLocalMixin):
 
         @param root: root call chain
         '''
-        super(RootedMixin, self).__init__(root)
+        super(BranchMixin, self).__init__(root)
         self._setup(root)
 
     def _setup(self, root):
@@ -41,7 +41,7 @@ class RootedMixin(ResetLocalMixin):
     _r_setup = _setup
 
 
-class EventRootedMixin(RootedMixin):
+class EventBranchMixin(BranchMixin):
 
     '''rooted event chain mixin'''
 
@@ -86,7 +86,7 @@ class EventRootedMixin(RootedMixin):
     _e_event = _event
 
 
-class SingledMixin(ResetLocalMixin):
+class RootedMixin(ResetLocalMixin):
 
     '''base rooted root chain mixin'''
 

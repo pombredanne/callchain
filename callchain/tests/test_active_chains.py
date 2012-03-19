@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''callchain active call and event chains tests'''
+'''chain active call and event chains tests'''
 
 try:
     import unittest2 as unittest
@@ -28,8 +28,8 @@ class TestCallChain(unittest.TestCase, CallMixin):
 
     @property
     def _makeone(self):
-        from callchain.chain import callchain
-        return callchain
+        from callchain.chain import chain
+        return chain
 
 #    def test_switch(self):
 #        qclass = self._appconf

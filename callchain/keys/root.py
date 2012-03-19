@@ -13,11 +13,11 @@ class KChainRoot(AppspaceKey):
     def __call__(*args):
         '''new chain session'''
 
-    def back(link):
+    def back(chainlink):
         '''
         handle chainlet end
 
-        @param link: linked chain
+        @param chainlink: chainlink chain
         '''
 
 

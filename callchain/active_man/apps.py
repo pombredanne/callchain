@@ -2,7 +2,7 @@
 '''active manually balanced chainlets appconf'''
 
 from callchain.internal import inside
-from callchain.chain import ActiveChain
+from callchain.chain import ActiveChainQ
 from twoq.active.mixins import ManResultMixin
 
 from callchain.patterns import Pathways, Nameways
@@ -64,6 +64,6 @@ class chain(Pathways):
 
 
 @inside(chain)
-class chainq(ActiveChain, ManResultMixin):
+class chainq(ActiveChainQ, ManResultMixin):
 
     '''active queued manually balanced call chain'''

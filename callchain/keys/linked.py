@@ -7,12 +7,12 @@ from callchain.keys.call import KChainCall, KEventCall
 from callchain.keys.rooted import KRooted, KEventRooted
 
 
-class KLinkedChain(KRooted, KChain, KChainCall):
+class KLinked(KRooted, KChain, KChainCall):
 
     '''linked call chain key'''
 
 
-class KLinkedQ(KLinkedChain, KQueued):
+class KLinkedQ(KLinked, KQueued):
 
     '''queued linked call chain key'''
 

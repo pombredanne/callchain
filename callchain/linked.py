@@ -1,68 +1,77 @@
 # -*- coding: utf-8 -*-
-'''linked chains'''
+'''chainlink chains'''
 
 from appspace.keys import appifies
 
 from callchain.root import SingleMixin
 from callchain.keys.linked import (
-    KLinkedChain, KLinkedQ, KEventLink, KEventlinkQ)
+    KLinked, KLinkedQ, KEventLink, KEventlinkQ)
 from callchain.fluent import ChainMixin, EventMixin
-from callchain.call import ChainCallMixin, EventCallMixin
-from callchain.rooted import RootedMixin, EventRootedMixin, SingledMixin
-from callchain.queued import QRootedMixin, ActiveContextMixin, LazyContextMixin
+from callchain.call import CallMixin, EventCallMixin
+from callchain.queued import QBranchMixin, ActiveMixin, LazyMixin
+from callchain.rooted import BranchMixin, EventBranchMixin, RootedMixin
+
+###############################################################################
+## linked chain ###############################################################
+###############################################################################
 
 
-@appifies(KLinkedChain)
-class LinkedChain(RootedMixin, ChainMixin, ChainCallMixin):
+@appifies(KLinked)
+class Linked(BranchMixin, ChainMixin, CallMixin):
 
     '''linked call chain'''
 
 
-@appifies(KLinkedQ)
-class LinkedQ(QRootedMixin, LinkedChain):
-
-    '''queued linked call chain'''
-
-
-class LazyLinkedQ(LinkedQ, LazyContextMixin):
-
-    '''lazy linked chain'''
-
-
-class ActiveLinkedQ(LinkedQ, ActiveContextMixin):
-
-    '''active linked chain'''
-
-
-@appifies(KLinkedChain)
-class chainlink(SingleMixin, SingledMixin, LinkedChain):
+@appifies(KLinked)
+class chainlink(SingleMixin, RootedMixin, Linked):
 
     '''root linked call chain'''
 
 
-@appifies(KEventLink)
-class EventLink(EventRootedMixin, EventMixin, EventCallMixin):
+@appifies(KLinkedQ)
+class LinkedQ(QBranchMixin, Linked):
 
-    '''event link chain'''
+    '''queued linked call chain'''
+
+
+class LazyLinkedQ(LinkedQ, LazyMixin):
+
+    '''lazy linked call chain'''
+
+
+class ActiveLinkedQ(LinkedQ, ActiveMixin):
+
+    '''active queued linked call chain'''
+
+
+###############################################################################
+## linked event ###############################################################
+###############################################################################
+
+
+@appifies(KEventLink)
+class EventLink(EventBranchMixin, EventMixin, EventCallMixin):
+
+    '''linked event chain'''
+
+
+@appifies(KEventLink)
+class eventlink(RootedMixin, EventLink):
+
+    '''root linked event chain'''
 
 
 @appifies(KEventlinkQ)
-class EventLinkQ(QRootedMixin, EventLink):
+class EventLinkQ(QBranchMixin, EventLink):
 
-    '''queued event link chain'''
-
-
-class ActiveEventLinkQ(EventLinkQ, ActiveContextMixin):
-
-    '''active linked event'''
+    '''queued linked event chain'''
 
 
-class LazyLinkedEventQ(EventLinkQ, LazyContextMixin):
+class ActiveEventLinkQ(EventLinkQ, ActiveMixin):
 
-    '''lazy linked event chain'''
+    '''active queued linked event chain'''
 
 
-@appifies(KEventLink)
-class eventlink(SingledMixin, EventLink):
+class LazyEventLinkQ(EventLinkQ, LazyMixin):
 
-    '''root linked event chain'''
+    '''lazy queued linked event chain'''

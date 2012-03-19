@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''chain assembly'''
+'''chain chains'''
 
 from appspace.keys import appifies
 
@@ -8,16 +8,27 @@ from callchain.apps import chain, event
 from callchain.keys.queue import KResults
 from callchain.internal import inside, einside
 from callchain.fluent import ChainMixin, EventMixin
-from callchain.keys.chain import KCallChain, KEventChain
-from callchain.call import ChainCallMixin, EventCallMixin
-from callchain.queued import QRootMixin, LazyContextMixin, ActiveContextMixin
+from callchain.keys.chain import KChain, KEventChain
+from callchain.call import CallMixin, EventCallMixin
+from callchain.queued import QRootMixin, LazyMixin, ActiveMixin
 from callchain.root import (
     RootMixin, EventRootMixin, EventManageMixin, ManagerMixin, SingleMixin)
 
+###############################################################################
+## chains #####################################################################
+###############################################################################
 
-class Chain(ChainCallMixin, ManagerMixin, RootMixin, ChainMixin):
+
+class Chain(CallMixin, ManagerMixin, RootMixin, ChainMixin):
 
     '''call chain'''
+
+
+@appifies(KChain)
+@inside(chain)
+class chain(SingleMixin, Chain):
+
+    '''root call chain'''
 
 
 class ChainQ(QRootMixin, Chain):
@@ -26,48 +37,46 @@ class ChainQ(QRootMixin, Chain):
 
 
 @appifies(KResults)
-class ActiveChain(ChainQ, ActiveContextMixin):
+class ActiveChainQ(ChainQ, ActiveMixin):
 
-    '''active call chain'''
+    '''active queued call chain'''
 
 
 @appifies(KResults)
-class LazyChain(ChainQ, LazyContextMixin):
+class LazyChainQ(ChainQ, LazyMixin):
 
-    '''lazy call chain'''
-
-
-@appifies(KCallChain)
-@inside(chain)
-class callchain(SingleMixin, Chain):
-
-    '''root call chain'''
+    '''lazy queued call chain'''
 
 
-class EventChain(EventCallMixin, EventManageMixin, EventRootMixin, EventMixin):
+###############################################################################
+## event chains ###############################################################
+###############################################################################
+
+
+class Event(EventCallMixin, EventManageMixin, EventRootMixin, EventMixin):
 
     '''event chain'''
 
 
-class EventChainQ(QRootMixin, EventChain):
+@appifies(KEventChain)
+@einside(event, events)
+class event(SingleMixin, Event):
+
+    '''root event chain'''
+
+
+class EventQ(QRootMixin, Event):
 
     '''queued event chain'''
 
 
 @appifies(KResults)
-class ActiveEvent(EventChainQ, ActiveContextMixin):
+class ActiveEventQ(EventQ, ActiveMixin):
 
-    '''active event chain'''
+    '''active queued event chain'''
 
 
 @appifies(KResults)
-class LazyEvent(EventChainQ, LazyContextMixin):
+class LazyEventQ(EventQ, LazyMixin):
 
-    '''lazy event chain'''
-
-
-@appifies(KEventChain)
-@einside(event, events)
-class eventchain(SingleMixin, EventChain):
-
-    '''root event chain'''
+    '''lazy queued event chain'''

@@ -1,18 +1,20 @@
 # -*- coding: utf-8 -*-
-'''chainlet and eventlet assembly'''
+'''callchain chainlets and eventlets'''
 
-from appspace.keys import appifies, NoAppError
+from appspace.keys import NoAppError, appifies
 
+# keys
+from callchain.keys.chainlet import (
+    KChainlet, KChainletQ, KEventlet, KEventletQ)
+from callchain.keys.chain import KEventChain, KChain
+# mixins
 from callchain.resets import ResetLocalMixin
 from callchain.fluent import EventMixin, ChainMixin
-from callchain.keys.chain import KEventChain, KCallChain
-from callchain.keys.chainlet import (
-    KCallChainlet, KCallChainletQ, KEventlet, KEventletQ)
-from callchain.rooted import SingledMixin, EventRootedMixin, RootedMixin
-from callchain.queued import QRootedMixin, ActiveContextMixin, LazyContextMixin
+from callchain.queued import QBranchMixin, ActiveMixin, LazyMixin
+from callchain.rooted import RootedMixin, EventBranchMixin, BranchMixin
 
 
-class RootletMixin(ResetLocalMixin):
+class ChainletMixin(ResetLocalMixin):
 
     '''rootlet mixin'''
 
@@ -47,57 +49,66 @@ class RootletMixin(ResetLocalMixin):
     _rback = __rback = back
 
 
-@appifies(KCallChainlet)
-class Chainlet(RootletMixin, RootedMixin, ChainMixin):
+###############################################################################
+## chainlets ##################################################################
+###############################################################################
 
-    '''call chainlet'''
+@appifies(KChainlet)
+class Chainlet(ChainletMixin, BranchMixin, ChainMixin):
 
-
-@appifies(KCallChainletQ)
-class ChainletQ(QRootedMixin, Chainlet):
-
-    '''queued call chainlet'''
+    '''chainlet'''
 
 
-class ActiveChainlet(ChainletQ, ActiveContextMixin):
+@appifies(KChain)
+class chainlet(RootedMixin, Chainlet):
 
-    '''active chainlet'''
+    '''root chainlet'''
 
 
-@appifies(KCallChain)
-class chainlet(SingledMixin, Chainlet):
+@appifies(KChainletQ)
+class ChainletQ(QBranchMixin, Chainlet):
 
-    '''root call chainlet'''
+    '''queued chainlet'''
+
+
+class ActiveChainletQ(ChainletQ, ActiveMixin):
+
+    '''active queued chainlet'''
+
+
+class LazyChainletQ(ChainletQ, LazyMixin):
+
+    '''lazy queued chainlet'''
+
+
+###############################################################################
+## eventlets ##################################################################
+###############################################################################
 
 
 @appifies(KEventlet)
-class Eventlet(RootletMixin, EventRootedMixin, EventMixin):
+class Eventlet(ChainletMixin, EventBranchMixin, EventMixin):
 
     '''eventlet'''
 
 
+@appifies(KEventChain)
+class eventlet(RootedMixin, Eventlet):
+
+    '''root eventlet'''
+
+
 @appifies(KEventletQ)
-class EventletQ(QRootedMixin, Eventlet):
+class EventletQ(QBranchMixin, Eventlet):
 
     '''queued eventlet'''
 
 
-class LazyChainlet(ChainletQ, LazyContextMixin):
+class ActiveEventletQ(EventletQ, ActiveMixin):
 
-    '''lazy chainlet'''
-
-
-class ActiveEventlet(EventletQ, ActiveContextMixin):
-
-    '''active eventlet'''
+    '''active queued eventlet'''
 
 
-class LazyEventlet(EventletQ, LazyContextMixin):
+class LazyEventletQ(EventletQ, LazyMixin):
 
-    '''lazy eventlet'''
-
-
-@appifies(KEventChain)
-class eventlet(SingledMixin, Eventlet):
-
-    '''root eventlet'''
+    '''lazy queued eventlet'''

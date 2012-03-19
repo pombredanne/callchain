@@ -26,15 +26,15 @@ class RootMixin(ResetLocalMixin):
 
     _r_call = __call__
 
-    def back(self, link):
+    def back(self, chainlink):
         '''
         handle chainlet end
 
-        @param link: linked chain
+        @param chainlink: chainlink chain
         '''
         self.clear()
         # extend call chain with root call chain
-        self._cappend(link._chain)
+        self._cappend(chainlink._chain)
         return self
 
     _rback = back
@@ -46,12 +46,12 @@ class EventRootMixin(RootMixin):
 
     def _eventq(self, event):
         '''
-        fetch linked call chain tied to `event`
+        fetch chainlink call chain tied to `event`
 
         @param event: event label
         '''
         key = self.E.event(event)
-        # fetch linked call chain bound to event
+        # fetch chainlink call chain bound to event
         queue = self.E.get(key)
         if queue is None:
             # create liked call chain if nonexistent

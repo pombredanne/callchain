@@ -4,7 +4,7 @@
 from twoq.active.mixins import AutoResultMixin
 
 from callchain.internal import inside
-from callchain.chain import ActiveChain
+from callchain.chain import ActiveChainQ
 from callchain.patterns import Pathways, Nameways
 
 __all__ = ['chain']
@@ -66,6 +66,6 @@ class chain(Pathways):
 
 
 @inside(chain)
-class chainq(ActiveChain, AutoResultMixin):
+class chainq(ActiveChainQ, AutoResultMixin):
 
     '''active queued auto-balancing call chain'''

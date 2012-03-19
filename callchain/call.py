@@ -12,7 +12,7 @@ from callchain.keys.core import NoServiceError
 
 class CallMixin(ResetLocalMixin):
 
-    '''calling mixin'''
+    '''chain execution mixin'''
 
     @either
     def L(self):
@@ -57,14 +57,6 @@ class CallMixin(ResetLocalMixin):
 
     _lswitch = switch
 
-    class Meta:
-        pass
-
-
-class ChainCallMixin(CallMixin):
-
-    '''chain execution mixin'''
-
     def __enter__(self):
         '''enter context'''
         return self
@@ -85,8 +77,11 @@ class ChainCallMixin(CallMixin):
 
     _ccommit = commit
 
+    class Meta:
+        pass
 
-class EventCallMixin(ChainCallMixin):
+
+class EventCallMixin(CallMixin):
 
     '''event execution mixin'''
 

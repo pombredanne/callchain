@@ -9,7 +9,7 @@ from twoq.mixins.ordering import RandomMixin, OrderMixin
 from twoq.mixins.reducing import MathMixin, TruthMixin, ReduceMixin
 from twoq.mixins.mapping import DelayMixin, CopyMixin, RepeatMixin, MapMixin
 
-from callchain.chainlet import LazyEventlet
+from callchain.chainlet import LazyEventletQ
 from callchain.keys.order import KRandom, KOrder
 from callchain.keys.reduce import KMath, KReduce, KTruth
 from callchain.keys.map import KDelay, KCopy, KRepeat, KMap
@@ -23,78 +23,78 @@ __all__ = (
 
 
 @appifies(KDelay)
-class delayevent(LazyEventlet, ManQMixin, DelayMixin):
+class delayevent(LazyEventletQ, ManQMixin, DelayMixin):
 
     '''manually balanced delayed mapping eventlet'''
 
 
 @appifies(KCopy)
-class copyevent(LazyEventlet, ManQMixin, CopyMixin):
+class copyevent(LazyEventletQ, ManQMixin, CopyMixin):
 
     '''manually balanced copy eventlet'''
 
 
 @appifies(KRepeat)
-class repeatevent(LazyEventlet, ManQMixin, RepeatMixin):
+class repeatevent(LazyEventletQ, ManQMixin, RepeatMixin):
 
     '''manually balanced repeat eventlet'''
 
 
 @appifies(KMap)
-class mapevent(LazyEventlet, ManQMixin, MapMixin):
+class mapevent(LazyEventletQ, ManQMixin, MapMixin):
 
     '''manually balanced mapping eventlet'''
 
 
 @appifies(KCollect)
-class collectevent(LazyEventlet, ManQMixin, CollectMixin):
+class collectevent(LazyEventletQ, ManQMixin, CollectMixin):
 
     '''manually balanced collecting eventlet'''
 
 
 @appifies(KSet)
-class setevent(LazyEventlet, ManQMixin, SetMixin):
+class setevent(LazyEventletQ, ManQMixin, SetMixin):
 
     '''manually balanced seting eventlet'''
 
 
 @appifies(KSlice)
-class sliceevent(LazyEventlet, ManQMixin, SliceMixin):
+class sliceevent(LazyEventletQ, ManQMixin, SliceMixin):
 
     '''manually balanced slicing eventlet'''
 
 
 @appifies(KFilter)
-class filterevent(LazyEventlet, ManQMixin, FilterMixin):
+class filterevent(LazyEventletQ, ManQMixin, FilterMixin):
 
     '''manually balanced filtering eventlet'''
 
 
 @appifies(KRandom)
-class randomevent(LazyEventlet, ManQMixin, RandomMixin):
+class randomevent(LazyEventletQ, ManQMixin, RandomMixin):
 
     '''manually balanced randomizing eventlet'''
 
 
 @appifies(KOrder)
-class orderevent(LazyEventlet, ManQMixin, OrderMixin):
+class orderevent(LazyEventletQ, ManQMixin, OrderMixin):
 
     '''manually balanced ordering eventlet'''
 
 
 @appifies(KMath)
-class mathevent(LazyEventlet, ManQMixin, MathMixin):
+class mathevent(LazyEventletQ, ManQMixin, MathMixin):
 
     '''manually balanced mathing eventlet'''
 
 
 @appifies(KReduce)
-class reduceevent(LazyEventlet, ManQMixin, ReduceMixin):
+class reduceevent(LazyEventletQ, ManQMixin, ReduceMixin):
 
     '''manually balanced reducing eventlet'''
 
 
 @appifies(KTruth)
-class truthevent(LazyEventlet, ManQMixin, TruthMixin):
+class truthevent(LazyEventletQ, ManQMixin, TruthMixin):
 
     '''manually balanced truthing eventlet'''

@@ -24,7 +24,7 @@ class _QMixin(ResetLocalMixin):
         add call
 
         @param call: callable or appspace label
-        @param key: linked call chain key (default: False)
+        @param key: chainlink call chain key (default: False)
         '''
         # reset postitional arguments
         self._args = ()
@@ -93,7 +93,7 @@ class ActiveContext(ContextMixin):
         self._sappend(args)
 
 
-class ActiveContextMixin(ResetLocalMixin):
+class ActiveMixin(ResetLocalMixin):
 
     '''lazy context mixin'''
 
@@ -136,7 +136,7 @@ class LazyContext(ContextMixin):
         self._queue._scratch = None
 
 
-class LazyContextMixin(ResetLocalMixin):
+class LazyMixin(ResetLocalMixin):
 
     '''lazy context mixin'''
 
@@ -149,29 +149,29 @@ class QRootMixin(_QMixin):
 
     '''queued root chain mixin'''
 
-    def back(self, link):
+    def back(self, chainlink):
         '''
-        handle return from linked call chain
+        handle return from chainlink call chain
 
-        @param link: linked call chain
+        @param chainlink: chainlink call chain
         '''
-        self._rback(link)
-        # sync with link callable
-        self._call = link._call
-        # sync with link postitional arguments
-        self._args = link._args
-        # sync with link keyword arguments
-        self._kw = link._kw
-        # sync with link incoming things
-        self.extend(link.incoming)
-        # sync with link outgoing things
-        self.outextend(link.outgoing)
+        self._rback(chainlink)
+        # sync with chainlink callable
+        self._call = chainlink._call
+        # sync with chainlink postitional arguments
+        self._args = chainlink._args
+        # sync with chainlink keyword arguments
+        self._kw = chainlink._kw
+        # sync with chainlink incoming things
+        self.extend(chainlink.incoming)
+        # sync with chainlink outgoing things
+        self.outextend(chainlink.outgoing)
         return self
 
     _qback = back
 
 
-class QRootedMixin(_QMixin):
+class QBranchMixin(_QMixin):
 
     '''queued rooted chain mixin'''
 
@@ -181,7 +181,7 @@ class QRootedMixin(_QMixin):
 
         @param root: root call chain
         '''
-        super(QRootedMixin, self)._setup(root)
+        super(QBranchMixin, self)._setup(root)
         # sync with root postitional arguments
         self._args = root._args
         # sync with root keyword arguments

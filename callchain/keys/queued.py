@@ -18,15 +18,15 @@ class KQueued(AppspaceKey):
         add call
 
         @param call: callable or appspace label
-        @param key: linked call chain key (default: False)
+        @param key: chainlink call chain key (default: False)
         '''
 
 
 class KQueuedRoot(KQueued):
     
-    def back(link):
+    def back(chainlink):
         '''
-        handle return from linked call chain
+        handle return from chainlink call chain
 
-        @param link: linked call chain
+        @param chainlink: chainlink call chain
         '''

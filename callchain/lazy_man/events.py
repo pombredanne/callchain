@@ -5,67 +5,67 @@ from twoq.lazy.mixins import ManResultMixin
 
 from callchain.internal import einside
 from callchain.keys.apps import events
-from callchain.chain import EventChainQ
+from callchain.chain import EventQ
 from callchain.patterns import Pathways, Nameways
 
 
 class event(Pathways):
-    callchain = 'callchain.linked.chainlink'
+    chain = 'chain.linked.chainlink'
 
     class filter(Nameways):
-        key = 'callchain.keys.filter.KFilter'
-        filter = 'callchain.lazy_man.eventlet.filterevent'
+        key = 'chain.keys.filter.KFilter'
+        filter = 'chain.lazy_man.eventlet.filterevent'
 
     class collect(Nameways):
-        key = 'callchain.keys.filter.KCollect'
-        collect = 'callchain.lazy_man.eventlet.collectevent'
+        key = 'chain.keys.filter.KCollect'
+        collect = 'chain.lazy_man.eventlet.collectevent'
 
     class set(Nameways):
-        key = 'callchain.keys.filter.KSet'
-        set = 'callchain.lazy_man.eventlet.setevent'
+        key = 'chain.keys.filter.KSet'
+        set = 'chain.lazy_man.eventlet.setevent'
 
     class slice(Nameways):
-        key = 'callchain.keys.filter.KSlice'
-        slice = 'callchain.lazy_man.eventlet.sliceevent'
+        key = 'chain.keys.filter.KSlice'
+        slice = 'chain.lazy_man.eventlet.sliceevent'
 
     class map(Nameways):
-        key = 'callchain.keys.map.KMap'
-        map = 'callchain.lazy_man.eventlet.mapevent'
+        key = 'chain.keys.map.KMap'
+        map = 'chain.lazy_man.eventlet.mapevent'
 
     class delay(Nameways):
-        key = 'callchain.keys.map.KDelay'
-        delay = 'callchain.lazy_man.eventlet.delayevent'
+        key = 'chain.keys.map.KDelay'
+        delay = 'chain.lazy_man.eventlet.delayevent'
 
     class copy(Nameways):
-        key = 'callchain.keys.map.KCopy'
-        copy = 'callchain.lazy_man.eventlet.copyevent'
+        key = 'chain.keys.map.KCopy'
+        copy = 'chain.lazy_man.eventlet.copyevent'
 
     class repeat(Nameways):
-        key = 'callchain.keys.map.KRepeat'
-        repeat = 'callchain.lazy_man.eventlet.repeatevent'
+        key = 'chain.keys.map.KRepeat'
+        repeat = 'chain.lazy_man.eventlet.repeatevent'
 
     class order(Nameways):
-        key = 'callchain.keys.order.KOrder'
-        order = 'callchain.lazy_man.eventlet.orderevent'
+        key = 'chain.keys.order.KOrder'
+        order = 'chain.lazy_man.eventlet.orderevent'
 
     class random(Nameways):
-        key = 'callchain.keys.order.KRandom'
-        random = 'callchain.lazy_man.eventlet.randomevent'
+        key = 'chain.keys.order.KRandom'
+        random = 'chain.lazy_man.eventlet.randomevent'
 
     class reduce(Nameways):
-        key = 'callchain.keys.reduce.KReduce'
-        reduce = 'callchain.lazy_man.eventlet.reduceevent'
+        key = 'chain.keys.reduce.KReduce'
+        reduce = 'chain.lazy_man.eventlet.reduceevent'
 
     class math(Nameways):
-        key = 'callchain.keys.reduce.KMath'
-        math = 'callchain.lazy_man.eventlet.mathevent'
+        key = 'chain.keys.reduce.KMath'
+        math = 'chain.lazy_man.eventlet.mathevent'
 
     class truth(Nameways):
-        key = 'callchain.keys.reduce.KTruth'
-        truth = 'callchain.lazy_man.eventlet.truthevent'
+        key = 'chain.keys.reduce.KTruth'
+        truth = 'chain.lazy_man.eventlet.truthevent'
 
 
 @einside(event, events)
-class eventq(EventChainQ, ManResultMixin):
+class eventq(EventQ, ManResultMixin):
 
     '''lazy queued manually balanced event chain'''
