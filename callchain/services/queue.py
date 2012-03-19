@@ -6,7 +6,12 @@
 from appspace.keys import AppspaceKey, Attribute
 
 
-class KQueue(AppspaceKey):
+class KService(AppspaceKey):
+
+    '''service key'''
+
+
+class KQueue(KService):
 
     '''queuing key'''
     
