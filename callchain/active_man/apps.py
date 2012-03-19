@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 '''active manually balanced chainlets appconf'''
 
-from callchain.internal import inside
-from callchain.chain import ActiveChainQ
+from appspace.keys import appifies
 from twoq.active.mixins import ManResultMixin
 
+from callchain.chain import ChainQ
+from callchain.internal import inside
+from callchain.keys.queue import KResults
 from callchain.patterns import Pathways, Nameways
 
 
@@ -63,7 +65,8 @@ class chain(Pathways):
         truth = 'callchain.active_man.chainlet.truthchain'
 
 
+@appifies(KResults)
 @inside(chain)
-class chainq(ActiveChainQ, ManResultMixin):
+class chainq(ChainQ, ManResultMixin):
 
     '''active queued manually balanced call chain'''

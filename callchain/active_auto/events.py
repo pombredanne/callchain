@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 '''active auto-balancing eventlets appconf'''
 
+from appspace.keys import appifies
 from twoq.active.mixins import AutoResultMixin
 
+from callchain.chain import EventQ
 from callchain.keys.apps import events
 from callchain.internal import einside
-from callchain.chain import ActiveEventQ
+from callchain.keys.queue import KResults
 from callchain.patterns import Pathways, Nameways
 
 
@@ -65,7 +67,8 @@ class event(Pathways):
         truth = 'chain.active_auto.eventlet.truthevent'
 
 
+@appifies(KResults)
 @einside(event, events)
-class eventq(ActiveEventQ, AutoResultMixin):
+class eventq(EventQ, AutoResultMixin):
 
     '''active queued auto-balancing event chain'''

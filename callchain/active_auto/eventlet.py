@@ -9,7 +9,7 @@ from twoq.mixins.ordering import RandomMixin, OrderMixin
 from twoq.mixins.reducing import MathMixin, TruthMixin, ReduceMixin
 from twoq.mixins.mapping import DelayMixin, CopyMixin, RepeatMixin, MapMixin
 
-from callchain.chainlet import ActiveEventletQ
+from callchain.chainlet import EventletQ
 from callchain.keys.order import KRandom, KOrder
 from callchain.keys.reduce import KMath, KReduce, KTruth
 from callchain.keys.map import KDelay, KCopy, KRepeat, KMap
@@ -22,84 +22,79 @@ __all__ = (
 )
 
 
-class AutoActiveChainlet(ActiveEventletQ, AutoQMixin):
-
-    '''active manually balanced eventlet'''
-
-
 @appifies(KDelay)
-class delayevent(AutoActiveChainlet, DelayMixin):
+class delayevent(EventletQ, AutoQMixin, DelayMixin):
 
     '''auto-balancing delayed mapping eventlet'''
 
 
 @appifies(KCopy)
-class copyevent(AutoActiveChainlet, CopyMixin):
+class copyevent(EventletQ, AutoQMixin, CopyMixin):
 
     '''auto-balancing copy eventlet'''
 
 
 @appifies(KRepeat)
-class repeatevent(AutoActiveChainlet, RepeatMixin):
+class repeatevent(EventletQ, AutoQMixin, RepeatMixin):
 
     '''auto-balancing repeat eventlet'''
 
 
 @appifies(KMap)
-class mapevent(AutoActiveChainlet, MapMixin):
+class mapevent(EventletQ, AutoQMixin, MapMixin):
 
     '''auto-balancing mapping eventlet'''
 
 
 @appifies(KCollect)
-class collectevent(AutoActiveChainlet, CollectMixin):
+class collectevent(EventletQ, AutoQMixin, CollectMixin):
 
     '''auto-balancing collecting eventlet'''
 
 
 @appifies(KSet)
-class setevent(AutoActiveChainlet, SetMixin):
+class setevent(EventletQ, AutoQMixin, SetMixin):
 
     '''auto-balancing seting eventlet'''
 
 
 @appifies(KSlice)
-class sliceevent(AutoActiveChainlet, SliceMixin):
+class sliceevent(EventletQ, AutoQMixin, SliceMixin):
 
     '''auto-balancing slicing eventlet'''
 
 
 @appifies(KFilter)
-class filterevent(AutoActiveChainlet, FilterMixin):
+class filterevent(EventletQ, AutoQMixin, FilterMixin):
 
     '''auto-balancing filtering eventlet'''
 
 
 @appifies(KRandom)
-class randomevent(AutoActiveChainlet, RandomMixin):
+class randomevent(EventletQ, AutoQMixin, RandomMixin):
 
     '''auto-balancing randomizing eventlet'''
 
 
 @appifies(KOrder)
-class orderevent(AutoActiveChainlet, OrderMixin):
+class orderevent(EventletQ, AutoQMixin, OrderMixin):
 
     '''auto-balancing ordering eventlet'''
 
 
 @appifies(KMath)
-class mathevent(AutoActiveChainlet, MathMixin):
+class mathevent(EventletQ, AutoQMixin, MathMixin):
 
     '''auto-balancing mathing eventlet'''
 
 
 @appifies(KReduce)
-class reduceevent(AutoActiveChainlet, ReduceMixin):
+class reduceevent(EventletQ, AutoQMixin, ReduceMixin):
 
     '''auto-balancing reducing eventlet'''
 
 
 @appifies(KTruth)
-class truthevent(AutoActiveChainlet, TruthMixin):
+class truthevent(EventletQ, AutoQMixin, TruthMixin):
 
     '''auto-balancing truthing eventlet'''

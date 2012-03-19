@@ -5,12 +5,11 @@ from appspace.keys import appifies
 
 from callchain.keys.apps import events
 from callchain.apps import chain, event
-from callchain.keys.queue import KResults
+from callchain.queued import QRootMixin
 from callchain.internal import inside, einside
 from callchain.fluent import ChainMixin, EventMixin
 from callchain.keys.chain import KChain, KEventChain
 from callchain.call import CallMixin, EventCallMixin
-from callchain.queued import QRootMixin, LazyMixin, ActiveMixin
 from callchain.root import (
     RootMixin, EventRootMixin, EventManageMixin, ManagerMixin, SingleMixin)
 
@@ -36,18 +35,6 @@ class ChainQ(QRootMixin, Chain):
     '''queued call chain'''
 
 
-@appifies(KResults)
-class ActiveChainQ(ChainQ, ActiveMixin):
-
-    '''active queued call chain'''
-
-
-@appifies(KResults)
-class LazyChainQ(ChainQ, LazyMixin):
-
-    '''lazy queued call chain'''
-
-
 ###############################################################################
 ## event chains ###############################################################
 ###############################################################################
@@ -68,15 +55,3 @@ class event(SingleMixin, Event):
 class EventQ(QRootMixin, Event):
 
     '''queued event chain'''
-
-
-@appifies(KResults)
-class ActiveEventQ(EventQ, ActiveMixin):
-
-    '''active queued event chain'''
-
-
-@appifies(KResults)
-class LazyEventQ(EventQ, LazyMixin):
-
-    '''lazy queued event chain'''

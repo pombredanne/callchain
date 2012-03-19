@@ -8,15 +8,15 @@ from callchain.keys.chainlet import (
     KChainlet, KChainletQ, KEventlet, KEventletQ)
 from callchain.keys.chain import KEventChain, KChain
 # mixins
+from callchain.queued import QBranchMixin
 from callchain.resets import ResetLocalMixin
 from callchain.fluent import EventMixin, ChainMixin
-from callchain.queued import QBranchMixin, ActiveMixin, LazyMixin
 from callchain.rooted import RootedMixin, EventBranchMixin, BranchMixin
 
 
 class ChainletMixin(ResetLocalMixin):
 
-    '''rootlet mixin'''
+    '''branchlet mixin'''
 
     def _load(self, label):
         '''
@@ -71,16 +71,6 @@ class ChainletQ(QBranchMixin, Chainlet):
     '''queued chainlet'''
 
 
-class ActiveChainletQ(ChainletQ, ActiveMixin):
-
-    '''active queued chainlet'''
-
-
-class LazyChainletQ(ChainletQ, LazyMixin):
-
-    '''lazy queued chainlet'''
-
-
 ###############################################################################
 ## eventlets ##################################################################
 ###############################################################################
@@ -102,13 +92,3 @@ class eventlet(RootedMixin, Eventlet):
 class EventletQ(QBranchMixin, Eventlet):
 
     '''queued eventlet'''
-
-
-class ActiveEventletQ(EventletQ, ActiveMixin):
-
-    '''active queued eventlet'''
-
-
-class LazyEventletQ(EventletQ, LazyMixin):
-
-    '''lazy queued eventlet'''

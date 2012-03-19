@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 '''queue mixins'''
 
-from stuf.utils import iterexcept
 from twoq.support import isstring
 
 from callchain.resets import ResetLocalMixin
@@ -24,7 +23,7 @@ class _QMixin(ResetLocalMixin):
         add call
 
         @param call: callable or appspace label
-        @param key: chainlink call chain key (default: False)
+        @param key: link call chain key (default: False)
         '''
         # reset postitional arguments
         self._args = ()
@@ -37,135 +36,27 @@ class _QMixin(ResetLocalMixin):
     _qtap = tap
 
 
-class ContextMixin(ResetLocalMixin):
-
-    '''base context manager'''
-
-    def __init__(self, queue):
-        '''
-        init
-
-        @param queue: queue
-        '''
-        super(ContextMixin, self).__init__(queue)
-        self._cxtend = queue._cxtend
-        self._cpopleft = queue._cpopleft
-
-    @property
-    def iterable(self):
-        return iterexcept(self._cpopleft, IndexError)
-
-
-class ActiveContext(ContextMixin):
-
-    '''active context manager'''
-
-    def __init__(self, queue):
-        '''
-        init
-
-        @param queue: queue
-        '''
-        super(ActiveContext, self).__init__(queue)
-        self._sxtend = queue._sxtend
-        self._sappend = queue._sappend
-        self._sclear = queue._sclear
-        self._scratch = queue._scratch
-
-    def __enter__(self):
-        # clear scratch queue
-        self._sclear()
-        return self
-
-    def __exit__(self, t, v, e):
-        # extend callchain with scratch queue
-        self._cxtend(self._scratch)
-        # clear scratch queue
-        self._sclear()
-
-    def __call__(self, args):
-        self._sxtend(args)
-
-    def iter(self, args):
-        self._sxtend(iter(args))
-
-    def append(self, args):
-        self._sappend(args)
-
-
-class ActiveMixin(ResetLocalMixin):
-
-    '''lazy context mixin'''
-
-    @property
-    def _callsync(self):
-        return ActiveContext(self)
-
-
-class LazyContext(ContextMixin):
-
-    '''lazy context manager'''
-
-    def __init__(self, queue):
-        '''
-        init
-
-        @param queue: queue
-        '''
-        super(LazyContext, self).__init__(queue)
-        self._queue = queue
-
-    def __call__(self, args):
-        self._queue._scratch = args
-
-    def iter(self, args):
-        self._queue._scratch = iter(args)
-
-    def append(self, args):
-        self._queue._scratch = iter([args])
-
-    def __enter__(self):
-        # clear scratch queue
-        self._queue._scratch = None
-        return self
-
-    def __exit__(self, t, v, e):
-        # extend incoming items with outgoing items
-        self._cxtend(self._scratch)
-        # clear scratch _queue
-        self._queue._scratch = None
-
-
-class LazyMixin(ResetLocalMixin):
-
-    '''lazy context mixin'''
-
-    @property
-    def _callsync(self):
-        return LazyContext(self)
-
-
 class QRootMixin(_QMixin):
 
     '''queued root chain mixin'''
 
-    def back(self, chainlink):
+    def back(self, link):
         '''
-        handle return from chainlink call chain
+        handle return from link call chain
 
-        @param chainlink: chainlink call chain
+        @param link: link call chain
         '''
-        self._rback(chainlink)
-        # sync with chainlink callable
-        self._call = chainlink._call
-        # sync with chainlink postitional arguments
-        self._args = chainlink._args
-        # sync with chainlink keyword arguments
-        self._kw = chainlink._kw
-        # sync with chainlink incoming things
-        self.extend(chainlink.incoming)
-        # sync with chainlink outgoing things
-        self.outextend(chainlink.outgoing)
+        self._rback(link)
+        # sync with link callable
+        self._call = link._call
+        # sync with link postitional arguments
+        self._args = link._args
+        # sync with link keyword arguments
+        self._kw = link._kw
+        # sync with link incoming things
+        self.extend(link.incoming)
+        # sync with link outgoing things
+        self.outextend(link.outgoing)
         return self
 
     _qback = back

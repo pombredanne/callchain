@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-'''call mixins'''
+'''callchain call mixins'''
 
-from twoq.support import port
 from appspace.builders import Appspace
 from stuf import frozenstuf, orderedstuf
 from stuf.utils import lazy, lazy_class, either, iterexcept
@@ -22,6 +21,7 @@ class CallMixin(ResetLocalMixin):
     @lazy_class
     def port(self):
         '''python 2.x <-> python 3.x porting helper'''
+        from twoq.support import port
         return port
 
     @lazy

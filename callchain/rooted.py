@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''callchain rooted chain mixins'''
+'''callchain branch chain mixins'''
 
 from itertools import chain
 

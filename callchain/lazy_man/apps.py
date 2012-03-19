@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 '''lazy manually balanced chainlets appconf'''
 
+from appspace.keys import appifies
 from twoq.lazy.mixins import ManResultMixin
 
 from callchain.chain import ChainQ
 from callchain.internal import inside
+from callchain.keys.queue import KResults
 from callchain.patterns import Pathways, Nameways
 
 
@@ -63,6 +65,7 @@ class chain(Pathways):
         truth = 'callchain.lazy_man.chainlet.truthchain'
 
 
+@appifies(KResults)
 @inside(chain)
 class chainq(ChainQ, ManResultMixin):
 

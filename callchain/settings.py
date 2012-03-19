@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''callchain setting management'''
+'''callchain settings management'''
 
 from inspect import isclass
 

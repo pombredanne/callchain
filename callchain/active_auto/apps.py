@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 '''active auto-balancing chainlets appconf'''
 
+from appspace.keys import appifies
 from twoq.active.mixins import AutoResultMixin
 
+from callchain.chain import ChainQ
 from callchain.internal import inside
-from callchain.chain import ActiveChainQ
+from callchain.keys.queue import KResults
 from callchain.patterns import Pathways, Nameways
-
-__all__ = ['chain']
 
 
 class chain(Pathways):
@@ -65,7 +65,8 @@ class chain(Pathways):
         truth = 'callchain.active_auto.chainlet.truthchain'
 
 
+@appifies(KResults)
 @inside(chain)
-class chainq(ActiveChainQ, AutoResultMixin):
+class chainq(ChainQ, AutoResultMixin):
 
     '''active queued auto-balancing call chain'''

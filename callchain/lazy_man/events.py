@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 '''lazy manually balanced eventlets appconf'''
 
+from appspace.keys import appifies
 from twoq.lazy.mixins import ManResultMixin
 
+from callchain.chain import EventQ
 from callchain.internal import einside
 from callchain.keys.apps import events
-from callchain.chain import EventQ
+from callchain.keys.queue import KResults
 from callchain.patterns import Pathways, Nameways
 
 
@@ -65,6 +67,7 @@ class event(Pathways):
         truth = 'chain.lazy_man.eventlet.truthevent'
 
 
+@appifies(KResults)
 @einside(event, events)
 class eventq(EventQ, ManResultMixin):
 
