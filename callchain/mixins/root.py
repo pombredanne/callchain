@@ -32,39 +32,6 @@ class ConfigMixin(ResetLocalMixin):
         '''external application global settings'''
         return self.M.settings.final if self.M is not None else frozenstuf()
 
-
-class RootMixin(ConfigMixin):
-
-    '''root chain mixin'''
-
-    def __init__(self, pattern=None, required=None, defaults=None, **kw):
-        '''
-        init
-
-        @param pattern: pattern configuration or appspace label (default: None)
-        @param required: required settings (default: None)
-        @param defaults: default settings (default: None)
-        '''
-        super(RootMixin, self).__init__()
-        if pattern is not None:
-            # external appspace
-            self.M = Pathways.appspace(pattern, required, defaults)
-            # freeze external appspace global settings
-            self.M.freeze(kw)
-        else:
-            self.M = None
-        self._setup()
-
-    def __call__(self, *args):
-        '''new chain session'''
-        # clear call chain and queues
-        self.clear()
-        # extend incoming things
-        self.extend(args)
-        return self
-
-    _r_call = __call__
-
     def back(self, branch):
         '''
         handle branch chain switch
@@ -102,6 +69,39 @@ class RootMixin(ConfigMixin):
         )
 
     _m_defaults = _defaults
+
+
+class RootMixin(ConfigMixin):
+
+    '''root chain mixin'''
+
+    def __init__(self, pattern=None, required=None, defaults=None, **kw):
+        '''
+        init
+
+        @param pattern: pattern configuration or appspace label (default: None)
+        @param required: required settings (default: None)
+        @param defaults: default settings (default: None)
+        '''
+        super(RootMixin, self).__init__()
+        if pattern is not None:
+            # external appspace
+            self.M = Pathways.appspace(pattern, required, defaults)
+            # freeze external appspace global settings
+            self.M.freeze(kw)
+        else:
+            self.M = None
+        self._setup()
+
+    def __call__(self, *args):
+        '''new chain session'''
+        # clear call chain and queues
+        self.clear()
+        # extend incoming things
+        self.extend(args)
+        return self
+
+    _r_call = __call__
 
 
 class EventRootMixin(RootMixin):

@@ -14,7 +14,7 @@ from callchain.mixins.core import EventMixin
 from callchain.mixins.call import EventCallMixin
 from callchain.mixins.root import EventRootMixin, LiteMixin, QRootMixin
 from callchain.mixins.branch import (
-        ChainletMixin, EventBranchMixin, LitedMixin, QBranchMixin)
+    ChainletMixin, EventBranchMixin, LitedMixin, QBranchMixin, LinkedMixin)
 
 ###############################################################################
 ## event chain configuration ##################################################
@@ -71,7 +71,7 @@ class Event(EventCallMixin, EventRootMixin, EventMixin):
 
 
 @appifies(KEventLink)
-class EventLink(EventBranchMixin, EventCallMixin, EventMixin):
+class EventLink(LinkedMixin, EventBranchMixin, EventCallMixin, EventMixin):
 
     '''linked event chain'''
 

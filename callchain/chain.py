@@ -10,8 +10,8 @@ from callchain.keys.chains import (
 from callchain.mixins.call import CallMixin
 from callchain.mixins.core import ChainMixin
 from callchain.mixins.branch import (
-    LitedMixin, BranchMixin, ChainletMixin, QBranchMixin)
-from callchain.mixins.root import RootMixin, LiteMixin, QRootMixin
+    LitedMixin, BranchMixin, ChainletMixin, QBranchMixin, LinkedMixin)
+from callchain.mixins.root import RootMixin, LiteMixin, QRootMixin, ConfigMixin
 
 ###############################################################################
 ## chain configuration ########################################################
@@ -68,7 +68,7 @@ class Chain(CallMixin, RootMixin, ChainMixin):
 
 
 @appifies(KLinked)
-class Linked(BranchMixin, CallMixin, ChainMixin):
+class Linked(LinkedMixin, BranchMixin, ConfigMixin, CallMixin, ChainMixin):
 
     '''linked chain'''
 

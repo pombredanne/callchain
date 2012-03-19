@@ -103,6 +103,17 @@ class LitedMixin(ResetLocalMixin):
         self._r_setup(root)
 
 
+class LinkedMixin(ResetLocalMixin):
+
+    '''linked chain mixin'''
+
+    def close(self):
+        '''close out linked chain and switch to root chain'''
+        return self.root.back(self)
+
+    _lclose = close
+
+
 class ChainletMixin(ResetLocalMixin):
 
     '''chainlet base'''
