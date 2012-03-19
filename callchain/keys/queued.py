@@ -18,15 +18,15 @@ class KQueued(AppspaceKey):
         add call
 
         @param call: callable or appspace label
-        @param key: linked call chain key (default: False)
+        @param key: appspace key (default: False)
         '''
 
 
 class KQueuedRoot(KQueued):
     
-    def back(link):
+    def back(branch):
         '''
-        handle return from linked call chain
+        handle return from branch chain
 
-        @param link: linked call chain
+        @param branch: branch chain
         '''

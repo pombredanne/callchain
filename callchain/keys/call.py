@@ -22,11 +22,7 @@ class KCall(AppspaceKey):
         @param label: linked call chain label
         @param key: linked call chain chain key (default: False)
         '''
-        
-class KChainCall(KCall):
-    
-    '''chain call key'''
-    
+
     def __enter__():
         '''enter execution context'''
 
@@ -37,7 +33,7 @@ class KChainCall(KCall):
         '''consume call chain until exhausted'''
         
   
-class KEventCall(KChainCall):
+class KEventCall(KCall):
     
     '''event call key'''
       

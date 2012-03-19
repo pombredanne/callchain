@@ -3,10 +3,10 @@
 # pylint: disable-msg=e0211,e0213
 '''reducing service keys'''
 
-from appspace.keys import AppspaceKey
+from callchain.services.queue import KService
 
 
-class KMath(AppspaceKey):
+class KMath(KService):
 
     '''math mixin'''
 
@@ -47,7 +47,7 @@ class KMath(AppspaceKey):
         @param start: starting number (default: 0)
         '''
 
-class KTruth(AppspaceKey):
+class KTruth(KService):
 
     '''truth mixin'''
 
@@ -68,7 +68,7 @@ class KTruth(AppspaceKey):
         '''how many times call is `True` for incoming things'''
 
 
-class KReduce(AppspaceKey):
+class KReduce(KService):
 
     '''reducing mixin'''
 

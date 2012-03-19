@@ -3,10 +3,10 @@
 # pylint: disable-msg=e0211,e0213
 '''filtering services keys'''
 
-from appspace.keys import AppspaceKey
+from callchain.services.queue import KService
 
 
-class KCollect(AppspaceKey):
+class KCollect(KService):
 
     '''collection key'''
 
@@ -23,7 +23,7 @@ class KCollect(AppspaceKey):
         '''collect object items from incoming things by item `*keys`'''
 
 
-class KSet(AppspaceKey):
+class KSet(KService):
 
     '''set uniqueness key'''
 
@@ -55,7 +55,7 @@ class KSet(AppspaceKey):
         '''
 
 
-class KSlice(AppspaceKey):
+class KSlice(KService):
 
     '''slicing key'''
 
@@ -88,7 +88,7 @@ class KSlice(AppspaceKey):
         '''
 
 
-class KFilter(AppspaceKey):
+class KFilter(KService):
 
     '''filter key'''
 
