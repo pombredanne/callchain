@@ -8,7 +8,7 @@ from appspace.keys import AppspaceKey
 
 class KChain(AppspaceKey):
 
-    '''callchain key'''
+    '''chain key'''
 
     def callchain(call, key=False, *args, **kw):
         '''
@@ -22,22 +22,22 @@ class KChain(AppspaceKey):
 
 class KEvent(KChain):
 
-    '''eventchain key'''
+    '''event chain key'''
 
-    def on(eventchain, call, key=False, *args, **kw):
+    def on(event, call, key=False, *args, **kw):
         '''
-        bind call to `eventchain`
+        bind call to `event`
 
-        @param eventchain: eventchain label
+        @param event: event label
         @param call: label for call or eventspaced thing
         @param key: key label (default: False)
         '''
 
     def off(eventchain):
         '''
-        clear calls bound to `eventchain`
+        clear calls bound to `event`
 
-        @param eventchain: eventchain label
+        @param event: event label
         '''
 
     def trigger(*events):

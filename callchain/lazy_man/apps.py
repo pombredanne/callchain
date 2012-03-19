@@ -69,4 +69,4 @@ class callchain(Pathways):
 @inside(callchain)
 class chainq(ChainQ, ManResultMixin):
 
-    '''lazy queued manually balanced call callchain'''
+    '''lazy queued manually balanced call chain'''

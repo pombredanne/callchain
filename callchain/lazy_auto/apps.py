@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''lazy auto-balancing call chainlets appconf'''
+'''lazy auto-balancing chainlets appconf'''
 
 from appspace.keys import appifies
 from twoq.lazy.mixins import AutoResultMixin
@@ -69,4 +69,4 @@ class callchain(Pathways):
 @inside(callchain)
 class chainq(ChainQ, AutoResultMixin):
 
-    '''lazy queued auto-balancing call callchain'''
+    '''lazy queued auto-balancing call chain'''

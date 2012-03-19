@@ -1,22 +1,14 @@
 # -*- coding: utf-8 -*-
 #@PydevCodeAnalysisIgnore
 #pylint: disable-msg=e0211,e0213
-'''rooted keys'''
+'''branch keys'''
 
 from appspace.keys import AppspaceKey, Attribute
 
 
-class KRootlet(AppspaceKey):
-    
-    '''rootlet key'''
+class KBranch(AppspaceKey):
 
-    def back():
-        '''revert to root chain'''
-
-
-class KRooted(AppspaceKey):
-
-    ''''rooted chain mixin'''
+    ''''branch key'''
     
     G = Attribute('root external global settings')
     M = Attribute('root external appspace manager')
@@ -28,12 +20,12 @@ class KRooted(AppspaceKey):
         '''
         init
 
-        @param root: root call chain
+        @param root: root object
         '''
 
 
-class KEventRooted(KRooted):
+class KEventBranch(KBranch):
 
-    '''rooted event chain mixin'''
+    '''event branch key'''
     
     E = Attribute('local event registry')

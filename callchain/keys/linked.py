@@ -3,11 +3,11 @@
 
 from callchain.keys.queued import KQueued
 from callchain.keys.fluent import KChain, KEvent
-from callchain.keys.call import KChainCall, KEventCall
-from callchain.keys.rooted import KRooted, KEventRooted
+from callchain.keys.call import KCall, KEventCall
+from callchain.keys.rooted import KBranch, KEventBranch
 
 
-class KLinked(KRooted, KChain, KChainCall):
+class KLinked(KBranch, KChain, KCall):
 
     '''linked call chain key'''
 
@@ -17,7 +17,7 @@ class KLinkedQ(KLinked, KQueued):
     '''queued linked call chain key'''
 
 
-class KEventLink(KEventRooted, KEvent, KEventCall):
+class KEventLink(KEventBranch, KEvent, KEventCall):
 
     '''event link chain key'''
 

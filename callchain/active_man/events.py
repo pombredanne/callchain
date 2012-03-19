@@ -71,4 +71,4 @@ class eventchain(Pathways):
 @einside(eventchain, events)
 class eventq(EventQ, ManResultMixin):
 
-    '''active queued manually balanced eventchain callchain'''
+    '''active queued manually balanced event chain'''

@@ -3,12 +3,12 @@
 
 from callchain.keys.queued import KQueuedRoot
 from callchain.keys.fluent import KChain, KEvent
-from callchain.keys.call import KChainCall, KEventCall
+from callchain.keys.call import KCall, KEventCall
 from callchain.keys.root import KChainRoot, KEventRoot
 from callchain.keys.manager import KManager, KEventManager
 
 
-class KChain(KChainCall, KManager, KChainRoot, KChain):
+class KChain(KCall, KManager, KChainRoot, KChain):
 
     '''call chain key'''
 

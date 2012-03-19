@@ -69,4 +69,4 @@ class callchain(Pathways):
 @inside(callchain)
 class chainq(ChainQ, AutoResultMixin):
 
-    '''active queued auto-balancing call callchain'''
+    '''active queued auto-balancing call chain'''
