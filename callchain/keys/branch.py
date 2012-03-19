@@ -29,3 +29,11 @@ class KEventBranch(KBranch):
     '''event branch key'''
     
     E = Attribute('local event registry')
+
+
+class KBranchlet(AppspaceKey):
+    
+    '''rootlet key'''
+
+    def back():
+        '''revert to root chain'''

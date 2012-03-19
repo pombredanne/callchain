@@ -3,7 +3,7 @@
 
 from twoq.support import isstring
 
-from callchain.resets import ResetLocalMixin
+from callchain.mixins.resets import ResetLocalMixin
 
 
 class _QMixin(ResetLocalMixin):

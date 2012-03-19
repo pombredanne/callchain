@@ -4,7 +4,9 @@
 from itertools import chain
 
 from callchain.managers import Events
-from callchain.resets import ResetLocalMixin
+
+from callchain.mixins.resets import ResetLocalMixin
+from appspace.keys import NoAppError
 
 
 class BranchMixin(ResetLocalMixin):
@@ -98,3 +100,40 @@ class LitedMixin(ResetLocalMixin):
         '''
         self._d_setup()
         self._r_setup(root)
+
+
+class ChainletMixin(ResetLocalMixin):
+
+    '''chainlet base'''
+
+    def _load(self, label):
+        '''
+        silent internal switch back...
+
+        @param label: appspaced thing label
+        '''
+        # fetch appspaced thing...
+        try:
+            return self._f_load(label)
+        # ...or revert to root chain
+        except NoAppError:
+            return getattr(self.__rback(), label)
+
+    _r_load = _load
+
+    def _syncback(self, key, value):
+        '''
+        sync chainlet with root chain
+
+        @param key: key of value
+        @param value: value of value
+        '''
+        self.__dict__[key] = self.root.__dict__[key] = value
+
+    _r_syncback = _syncback
+
+    def back(self):
+        '''switch to root chain'''
+        return self.root.back(self)
+
+    _rback = __rback = back

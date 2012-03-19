@@ -9,7 +9,7 @@ from stuf.utils import imap
 from twoq.support import isstring
 from appspace.keys import AppLookupError, NoAppError
 
-from callchain.resets import ResetLocalMixin
+from callchain.mixins.resets import ResetLocalMixin
 
 
 class FluentMixin(ResetLocalMixin):

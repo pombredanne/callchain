@@ -9,7 +9,7 @@ from twoq.active.mixins import ResultQMixin
 from stuf.utils import either, lazy, exhaustmap
 
 from callchain.patterns import Pathways
-from callchain.resets import ResetLocalMixin
+from callchain.mixins.resets import ResetLocalMixin
 
 
 class RootMixin(ResetLocalMixin):

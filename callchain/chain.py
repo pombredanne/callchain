@@ -3,19 +3,18 @@
 
 from appspace.keys import appifies
 
-from callchain.keys.apps import events
 from callchain.patterns import Pathways
-from callchain.internal import inside, einside
-from callchain.keys.chain import KChain, KEventChain
-# mixins
-from callchain.queued import QRootMixin
-from callchain.fluent import ChainMixin, EventMixin
-from callchain.call import CallMixin, EventCallMixin
-from callchain.root import (
-    RootMixin, EventRootMixin, EventManageMixin, ManagerMixin, LiteMixin)
+from callchain.keys.chains import (
+    KLinkedQ, KChain, KLinked, KChainlet, KChainletQ)
+
+from callchain.mixins.call import CallMixin
+from callchain.mixins.fluent import ChainMixin
+from callchain.mixins.queued import QRootMixin, QBranchMixin
+from callchain.mixins.root import RootMixin, ManagerMixin, LiteMixin
+from callchain.mixins.branch import LitedMixin, BranchMixin, ChainletMixin
 
 ###############################################################################
-## call chain #################################################################
+## chain configuration ########################################################
 ###############################################################################
 
 
@@ -23,9 +22,86 @@ class chain(Pathways):
     link = 'callchain.link.chainlink'
 
 
+class inside(object):
+
+    '''internal appspace configuration'''
+
+    def __init__(self, pattern, required=None, defaults=None, *args, **kw):
+        '''
+        init
+
+        @param pattern: pattern configuration class or appspace label
+        @param required: required global settings (default: None)
+        @param defaults: default global settings (default: None)
+        '''
+        self.pattern = pattern
+        self.required = required
+        self.defaults = defaults
+        self.args = args
+        self.kw = kw
+
+    def __call__(self, that):
+        # internal appspace manager
+        that._M = Pathways.appspace(
+            self.pattern,
+            self.required,
+            self.defaults,
+            *self.args,
+            **self.kw
+        )
+        # lock internal appspace global settings
+        that._M.settings.lock()
+        # set internal appspace global settings
+        that._G = that._M.settings.final
+        return that
+
+    _o_call = __call__
+
+###############################################################################
+## vanilla chain ##############################################################
+###############################################################################
+
+
 class Chain(CallMixin, ManagerMixin, RootMixin, ChainMixin):
 
     '''call chain'''
+
+
+@appifies(KLinked)
+class Linked(BranchMixin, CallMixin, ChainMixin):
+
+    '''linked call chain'''
+
+
+@appifies(KChainlet)
+class Chainlet(ChainletMixin, BranchMixin, ChainMixin):
+
+    '''chainlet'''
+
+###############################################################################
+## vanilla queued chains ######################################################
+###############################################################################
+
+
+class ChainQ(QRootMixin, Chain):
+
+    '''queued call chain'''
+
+
+@appifies(KLinkedQ)
+class LinkedQ(QBranchMixin, Linked):
+
+    '''queued linked call chain'''
+
+
+@appifies(KChainletQ)
+class ChainletQ(QBranchMixin, Chainlet):
+
+    '''queued chainlet'''
+
+###############################################################################
+## vanilla lite chains ########################################################
+###############################################################################
 
 
 @appifies(KChain)
@@ -35,32 +111,13 @@ class callchain(LiteMixin, Chain):
     '''root call chain'''
 
 
-class ChainQ(QRootMixin, Chain):
+@appifies(KLinked)
+class chainlink(LitedMixin, LiteMixin, Linked):
 
-    '''queued call chain'''
-
-###############################################################################
-## event chains ##########################################################
-###############################################################################
+    '''lite linked call chain'''
 
 
-class event(Pathways):
-    event = 'callchain.linked.eventlink'
-    chain = 'callchain.linked.chainlink'
+@appifies(KChainlet)
+class chainlet(LitedMixin, Chainlet):
 
-
-class Event(EventCallMixin, EventManageMixin, EventRootMixin, EventMixin):
-
-    '''event chain'''
-
-
-@appifies(KEventChain)
-@einside(event, events)
-class eventchain(LiteMixin, Event):
-
-    '''root event chain'''
-
-
-class EventQ(QRootMixin, Event):
-
-    '''queued event chain'''
+    '''root chainlet'''
