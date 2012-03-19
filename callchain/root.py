@@ -9,7 +9,7 @@ from twoq.active.mixins import ResultQMixin
 from stuf.utils import either, lazy, exhaustmap
 
 from callchain.patterns import Pathways
-from callchain.internal import ResetLocalMixin
+from callchain.resets import ResetLocalMixin
 
 
 class RootMixin(ResetLocalMixin):
@@ -191,7 +191,7 @@ class EventManageMixin(ManagerMixin):
             self.E.update(events)
             
             
-class CompactRootMixin(ResultQMixin):
+class SingleMixin(ResultQMixin):
 
     '''base root chain mixin'''
 

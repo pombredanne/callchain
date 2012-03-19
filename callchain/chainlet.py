@@ -3,13 +3,13 @@
 
 from appspace.keys import appifies, NoAppError
 
-from callchain.settings import ResetLocalMixin
+from callchain.resets import ResetLocalMixin
 from callchain.fluent import EventMixin, ChainMixin
 from callchain.keys.chain import KEventChain, KCallChain
 from callchain.keys.chainlet import (
     KCallChainlet, KCallChainletQ, KEventlet, KEventletQ)
+from callchain.rooted import SingledMixin, EventRootedMixin, RootedMixin
 from callchain.queued import QRootedMixin, ActiveContextMixin, LazyContextMixin
-from callchain.rooted import CompactRootedMixin, EventRootedMixin, RootedMixin
 
 
 class RootletMixin(ResetLocalMixin):
@@ -65,7 +65,7 @@ class ActiveChainlet(ChainletQ, ActiveContextMixin):
 
 
 @appifies(KCallChain)
-class chainlet(CompactRootedMixin, Chainlet):
+class chainlet(SingledMixin, Chainlet):
 
     '''root call chainlet'''
 
@@ -98,6 +98,6 @@ class LazyEventlet(EventletQ, LazyContextMixin):
 
 
 @appifies(KEventChain)
-class eventlet(CompactRootedMixin, Eventlet):
+class eventlet(SingledMixin, Eventlet):
 
     '''root eventlet'''

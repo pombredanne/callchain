@@ -12,7 +12,7 @@ from callchain.keys.chain import KCallChain, KEventChain
 from callchain.call import ChainCallMixin, EventCallMixin
 from callchain.queued import QRootMixin, LazyContextMixin, ActiveContextMixin
 from callchain.root import (
-    RootMixin, EventRootMixin, EventManageMixin, ManagerMixin, CompactRootMixin)
+    RootMixin, EventRootMixin, EventManageMixin, ManagerMixin, SingleMixin)
 
 
 class Chain(ChainCallMixin, ManagerMixin, RootMixin, ChainMixin):
@@ -39,7 +39,7 @@ class LazyChain(ChainQ, LazyContextMixin):
 
 @appifies(KCallChain)
 @inside(chain)
-class callchain(CompactRootMixin, Chain):
+class callchain(SingleMixin, Chain):
 
     '''root call chain'''
 
@@ -68,6 +68,6 @@ class LazyEvent(EventChainQ, LazyContextMixin):
 
 @appifies(KEventChain)
 @einside(event, events)
-class eventchain(CompactRootMixin, EventChain):
+class eventchain(SingleMixin, EventChain):
 
     '''root event chain'''

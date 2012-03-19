@@ -7,9 +7,9 @@ from functools import partial
 
 from stuf.utils import imap
 from twoq.support import isstring
-
-from callchain.settings import ResetLocalMixin
 from appspace.keys import AppLookupError, NoAppError
+
+from callchain.resets import ResetLocalMixin
 
 
 class FluentMixin(ResetLocalMixin):

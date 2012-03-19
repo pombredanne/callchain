@@ -4,7 +4,7 @@
 from stuf.utils import iterexcept
 from twoq.support import isstring
 
-from callchain.settings import ResetLocalMixin
+from callchain.resets import ResetLocalMixin
 
 
 class _QMixin(ResetLocalMixin):

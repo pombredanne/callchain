@@ -6,8 +6,8 @@ from appspace.builders import Appspace
 from stuf import frozenstuf, orderedstuf
 from stuf.utils import lazy, lazy_class, either, iterexcept
 
+from callchain.resets import ResetLocalMixin
 from callchain.keys.core import NoServiceError
-from callchain.settings import ResetLocalMixin
 
 
 class CallMixin(ResetLocalMixin):

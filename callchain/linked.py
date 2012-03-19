@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
-'''linked chain assembly'''
+'''linked chains'''
 
 from appspace.keys import appifies
 
-from callchain.root import CompactRootMixin
+from callchain.root import SingleMixin
 from callchain.keys.linked import (
     KLinkedChain, KLinkedQ, KEventLink, KEventlinkQ)
 from callchain.fluent import ChainMixin, EventMixin
 from callchain.call import ChainCallMixin, EventCallMixin
+from callchain.rooted import RootedMixin, EventRootedMixin, SingledMixin
 from callchain.queued import QRootedMixin, ActiveContextMixin, LazyContextMixin
-from callchain.rooted import RootedMixin, EventRootedMixin, CompactRootedMixin
 
 
 @appifies(KLinkedChain)
@@ -22,9 +22,9 @@ class LinkedChain(RootedMixin, ChainMixin, ChainCallMixin):
 class LinkedQ(QRootedMixin, LinkedChain):
 
     '''queued linked call chain'''
-    
-    
-class LazyLinked(LinkedQ, LazyContextMixin):
+
+
+class LazyLinkedQ(LinkedQ, LazyContextMixin):
 
     '''lazy linked chain'''
 
@@ -35,12 +35,9 @@ class ActiveLinkedQ(LinkedQ, ActiveContextMixin):
 
 
 @appifies(KLinkedChain)
-class chainlink(CompactRootMixin, CompactRootedMixin, LinkedChain):
+class chainlink(SingleMixin, SingledMixin, LinkedChain):
 
     '''root linked call chain'''
-
-
-
 
 
 @appifies(KEventLink)
@@ -60,12 +57,12 @@ class ActiveEventLinkQ(EventLinkQ, ActiveContextMixin):
     '''active linked event'''
 
 
-class LazyLinkedEvent(EventLinkQ, LazyContextMixin):
+class LazyLinkedEventQ(EventLinkQ, LazyContextMixin):
 
     '''lazy linked event chain'''
 
 
 @appifies(KEventLink)
-class eventlink(CompactRootedMixin, EventLink):
+class eventlink(SingledMixin, EventLink):
 
     '''root linked event chain'''

@@ -4,7 +4,7 @@
 from itertools import chain
 
 from callchain.managers import Events
-from callchain.fluent import ResetLocalMixin
+from callchain.resets import ResetLocalMixin
 
 
 class RootedMixin(ResetLocalMixin):
@@ -86,7 +86,7 @@ class EventRootedMixin(RootedMixin):
     _e_event = _event
 
 
-class CompactRootedMixin(ResetLocalMixin):
+class SingledMixin(ResetLocalMixin):
 
     '''base rooted root chain mixin'''
 
