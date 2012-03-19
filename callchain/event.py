@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''chainlink linked chains'''
+'''callchain event chains'''
 
 from appspace.keys import appifies
 
@@ -10,11 +10,11 @@ from callchain.services.apps import events
 from callchain.keys.events import (
     KEventChain, KEventLink, KEventLinkQ, KEventlet, KEventletQ)
 
-from callchain.mixins.fluent import EventMixin
+from callchain.mixins.core import EventMixin
 from callchain.mixins.call import EventCallMixin
-from callchain.mixins.queued import QBranchMixin, QRootMixin
-from callchain.mixins.root import EventManageMixin, EventRootMixin, LiteMixin
-from callchain.mixins.branch import ChainletMixin, EventBranchMixin, LitedMixin
+from callchain.mixins.root import EventRootMixin, LiteMixin, QRootMixin
+from callchain.mixins.branch import (
+        ChainletMixin, EventBranchMixin, LitedMixin, QBranchMixin)
 
 ###############################################################################
 ## event chain configuration ##################################################
@@ -57,15 +57,15 @@ class einside(inside):
 
 
 class event(Pathways):
-    event = 'callchain.linked.eventlink'
-    chain = 'callchain.linked.chainlink'
+    event = 'callchain.event.eventlink'
+    chain = 'callchain.chain.chainlink'
 
 ###############################################################################
-## event chains ###############################################################
+## vanilla event chains #######################################################
 ###############################################################################
 
 
-class Event(EventCallMixin, EventManageMixin, EventRootMixin, EventMixin):
+class Event(EventCallMixin, EventRootMixin, EventMixin):
 
     '''event chain'''
 
@@ -82,7 +82,7 @@ class Eventlet(ChainletMixin, EventBranchMixin, EventMixin):
     '''eventlet'''
 
 ###############################################################################
-## linked event ###############################################################
+## vanilla queued event chains ################################################
 ###############################################################################
 
 
@@ -104,7 +104,7 @@ class EventletQ(QBranchMixin, Eventlet):
 
 
 ###############################################################################
-## eventlets ##################################################################
+## vanilla lite chains ########################################################
 ###############################################################################
 
 
@@ -112,7 +112,7 @@ class EventletQ(QBranchMixin, Eventlet):
 @einside(event, events)
 class eventchain(LiteMixin, Event):
 
-    '''root event chain'''
+    '''lite event chain'''
 
 
 @appifies(KEventLink)
@@ -124,4 +124,4 @@ class eventlink(LitedMixin, EventLink):
 @appifies(KEventlet)
 class eventlet(LitedMixin, Eventlet):
 
-    '''root eventlet'''
+    '''lite eventlet'''

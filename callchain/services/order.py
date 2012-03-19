@@ -3,10 +3,10 @@
 # pylint: disable-msg=e0211,e0213
 '''ordering services keys'''
 
-from appspace.keys import AppspaceKey
+from callchain.services.queue import KService
 
 
-class KRandom(AppspaceKey):
+class KRandom(KService):
 
     '''random key'''
 
@@ -24,7 +24,7 @@ class KRandom(AppspaceKey):
         '''randomly order incoming things'''
 
 
-class KOrder(AppspaceKey):
+class KOrder(KService):
 
     '''ordering key'''
     

@@ -12,9 +12,9 @@ from appspace.keys import AppLookupError, NoAppError
 from callchain.mixins.resets import ResetLocalMixin
 
 
-class FluentMixin(ResetLocalMixin):
+class ChainMixin(ResetLocalMixin):
 
-    '''fluent interface mixin'''
+    '''chain mixin'''
 
     def __getattr__(self, label):
         try:
@@ -22,7 +22,7 @@ class FluentMixin(ResetLocalMixin):
         except AttributeError:
             return self._load(label)
 
-    _f_getattr = __getattr__
+    _c_getattr = __getattr__
 
     def _load(self, label):
         '''
@@ -49,12 +49,7 @@ class FluentMixin(ResetLocalMixin):
             _M._current = _M._root
             return thing
 
-    _f_load = _load
-
-
-class ChainMixin(FluentMixin):
-
-    '''chain mixin'''
+    _c_load = _load
 
     def _setup(self):
         '''configure chain'''
@@ -71,6 +66,8 @@ class ChainMixin(FluentMixin):
         self._cclear = _chain.clear
         # call chain
         self._chain = _chain
+        # chain label
+        self._callq = '_chain'
 
     _c_setup = _setup
 
@@ -141,3 +138,50 @@ class EventMixin(ChainMixin):
         return self
 
     _etrigger = trigger
+
+
+class QMixin(ResetLocalMixin):
+
+    '''queued chain mixin'''
+
+    def clear(self):
+        '''clear queues'''
+        self._oclear()
+        self._cclear()
+        return self
+
+    _qclear = clear
+
+    def tap(self, call, key=False):
+        '''
+        add call
+
+        @param call: callable or appspace label
+        @param key: link call chain key (default: False)
+        '''
+        # reset postitional arguments
+        self._args = ()
+        # reset keyword arguments
+        self._kw = {}
+        # set current application
+        self._call = self._M.get(call, key) if isstring(call) else call
+        return self
+
+    _qtap = tap
+
+    def swap(
+        self, inq='incoming', outq='outgoing', tmpq='_scratch', callq='_chain',
+    ):
+        '''
+        swap queues
+
+        @param inq: incoming queue (default: 'incoming')
+        @param outq: outcoming queue (default: 'outcoming')
+        @param tmpq: temporary queue (default: '_scratch')
+        @param callq: temporary queue (default: '_chain')
+        '''
+        self._inq = inq
+        self._outq = outq
+        self._tmpq = tmpq
+        self._callq = callq
+        return self

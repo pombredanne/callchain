@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 '''event chain keys'''
 
-from callchain.keys.fluent import KEvent
+from callchain.keys.core import KEvent
 from callchain.keys.queued import KQueued
 from callchain.keys.call import KEventCall
 from callchain.keys.queued import KQueuedRoot

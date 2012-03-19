@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''callchain chains and events'''
+'''callchain chains'''
 
 from appspace.keys import appifies
 
@@ -8,10 +8,10 @@ from callchain.keys.chains import (
     KLinkedQ, KChain, KLinked, KChainlet, KChainletQ)
 
 from callchain.mixins.call import CallMixin
-from callchain.mixins.fluent import ChainMixin
-from callchain.mixins.queued import QRootMixin, QBranchMixin
-from callchain.mixins.root import RootMixin, ManagerMixin, LiteMixin
-from callchain.mixins.branch import LitedMixin, BranchMixin, ChainletMixin
+from callchain.mixins.core import ChainMixin
+from callchain.mixins.branch import (
+    LitedMixin, BranchMixin, ChainletMixin, QBranchMixin)
+from callchain.mixins.root import RootMixin, LiteMixin, QRootMixin
 
 ###############################################################################
 ## chain configuration ########################################################
@@ -19,7 +19,7 @@ from callchain.mixins.branch import LitedMixin, BranchMixin, ChainletMixin
 
 
 class chain(Pathways):
-    link = 'callchain.link.chainlink'
+    link = 'callchain.chain.chainlink'
 
 
 class inside(object):
@@ -62,7 +62,7 @@ class inside(object):
 ###############################################################################
 
 
-class Chain(CallMixin, ManagerMixin, RootMixin, ChainMixin):
+class Chain(CallMixin, RootMixin, ChainMixin):
 
     '''call chain'''
 
@@ -70,7 +70,7 @@ class Chain(CallMixin, ManagerMixin, RootMixin, ChainMixin):
 @appifies(KLinked)
 class Linked(BranchMixin, CallMixin, ChainMixin):
 
-    '''linked call chain'''
+    '''linked chain'''
 
 
 @appifies(KChainlet)
@@ -85,13 +85,13 @@ class Chainlet(ChainletMixin, BranchMixin, ChainMixin):
 
 class ChainQ(QRootMixin, Chain):
 
-    '''queued call chain'''
+    '''queued chain'''
 
 
 @appifies(KLinkedQ)
 class LinkedQ(QBranchMixin, Linked):
 
-    '''queued linked call chain'''
+    '''queued linked chain'''
 
 
 @appifies(KChainletQ)
@@ -108,16 +108,16 @@ class ChainletQ(QBranchMixin, Chainlet):
 @inside(chain)
 class callchain(LiteMixin, Chain):
 
-    '''root call chain'''
+    '''lite chain'''
 
 
 @appifies(KLinked)
 class chainlink(LitedMixin, LiteMixin, Linked):
 
-    '''lite linked call chain'''
+    '''lite linked chain'''
 
 
 @appifies(KChainlet)
 class chainlet(LitedMixin, Chainlet):
 
-    '''root chainlet'''
+    '''lite chainlet'''

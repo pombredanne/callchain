@@ -3,7 +3,7 @@
 
 from appspace.builders import Appspace
 from stuf import frozenstuf, orderedstuf
-from stuf.utils import lazy, lazy_class, either, iterexcept
+from stuf.utils import either, iterexcept, lazy, lazy_class
 
 from callchain.keys.core import NoServiceError
 
@@ -56,7 +56,7 @@ class CallMixin(ResetLocalMixin):
             return getattr(_M.get(key, key)(self), label)
         except NoServiceError:
             # ...or lookup other appspaced thing
-            return self._f_load(label)
+            return self._c_load(label)
 
     _c_load = _load
 

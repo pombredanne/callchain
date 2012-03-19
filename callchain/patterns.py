@@ -9,7 +9,8 @@ from appspace.keys import ConfigurationError, ANamespace
 from appspace.spaces import Branch, Namespace, Patterns, patterns
 
 from callchain.managers import Manager
-from callchain.keys.core import KService
+from callchain.services.queue import KService
+
 
 __all__ = ['Pathways', 'Branchways', 'Nameways']
 

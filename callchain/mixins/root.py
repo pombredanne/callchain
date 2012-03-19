@@ -10,11 +10,50 @@ from stuf.utils import either, lazy, exhaustmap
 
 from callchain.patterns import Pathways
 from callchain.mixins.resets import ResetLocalMixin
+from callchain.mixins.core import QMixin
 
 
-class RootMixin(ResetLocalMixin):
+class ConfigMixin(ResetLocalMixin):
+
+    '''configuration access mixin'''
+
+    @lazy
+    def defaults(self):
+        '''default settings by their lonesome'''
+        return self.M.settings.defaults if self.M is not None else frozenstuf()
+
+    @lazy
+    def required(self):
+        '''required settings by their lonesome'''
+        return self.M.settings.required if self.M is not None else frozenstuf()
+
+    @either
+    def G(self):
+        '''external application global settings'''
+        return self.M.settings.final if self.M is not None else frozenstuf()
+
+
+class RootMixin(ConfigMixin):
 
     '''root chain mixin'''
+
+    def __init__(self, pattern=None, required=None, defaults=None, **kw):
+        '''
+        init
+
+        @param pattern: pattern configuration or appspace label (default: None)
+        @param required: required settings (default: None)
+        @param defaults: default settings (default: None)
+        '''
+        super(RootMixin, self).__init__()
+        if pattern is not None:
+            # external appspace
+            self.M = Pathways.appspace(pattern, required, defaults)
+            # freeze external appspace global settings
+            self.M.freeze(kw)
+        else:
+            self.M = None
+        self._setup()
 
     def __call__(self, *args):
         '''new chain session'''
@@ -39,10 +78,59 @@ class RootMixin(ResetLocalMixin):
 
     _rback = back
 
+    def _setdefault(self, key, value, default):
+        '''
+        set default value for instance attribute
+
+        @param key: attribute name
+        @param value: attribute value
+        @param default: default value
+        '''
+        value = value if value is not None else default
+        self.__dict__[key] = value
+        self.__dict__[key + '_d'] = value
+
+    _m_setdefault = _setdefault
+
+    def _defaults(self):
+        '''reset attribute values'''
+        this = self.__dict__
+        exhaustmap(
+            vars(self),
+            lambda x, y: setitem(this, x.rstrip('_d'), y),
+            lambda x: x[0].endswith('_d'),
+        )
+
+    _m_defaults = _defaults
+
 
 class EventRootMixin(RootMixin):
 
     '''root event mixin'''
+    
+    def __init__(
+        self,
+        patterns=None,
+        events=None,
+        required=None,
+        defaults=None,
+        *args,
+        **kw
+    ):
+        '''
+        init
+
+        @param patterns: pattern config or eventspace label (default: None)
+        @param events: events configuration (default: None)
+        @param required: required settings (default: None)
+        @param defaults: default settings (default: None)
+        '''
+        super(EventRootMixin, self).__init__(
+            patterns, required, defaults, *args, **kw
+        )
+        # update event registry with any other events
+        if events is not None:
+            self.E.update(events)
 
     def _eventq(self, event):
         '''
@@ -92,103 +180,6 @@ class EventRootMixin(RootMixin):
         return self
 
     _eunevent = unevent
-
-
-class ConfigMixin(ResetLocalMixin):
-
-    '''configuration access mixin'''
-
-    @lazy
-    def defaults(self):
-        '''default settings by their lonesome'''
-        return self.M.settings.defaults if self.M is not None else frozenstuf()
-
-    @lazy
-    def required(self):
-        '''required settings by their lonesome'''
-        return self.M.settings.required if self.M is not None else frozenstuf()
-
-    @either
-    def G(self):
-        '''external application global settings'''
-        return self.M.settings.final if self.M is not None else frozenstuf()
-
-
-class ManagerMixin(ConfigMixin):
-
-    '''manager mixin'''
-
-    def __init__(self, pattern=None, required=None, defaults=None, **kw):
-        '''
-        init
-
-        @param pattern: pattern configuration or appspace label (default: None)
-        @param required: required settings (default: None)
-        @param defaults: default settings (default: None)
-        '''
-        super(ManagerMixin, self).__init__()
-        if pattern is not None:
-            # external appspace
-            self.M = Pathways.appspace(pattern, required, defaults)
-            # freeze external appspace global settings
-            self.M.freeze(kw)
-        else:
-            self.M = None
-        self._setup()
-
-    def _setdefault(self, key, value, default):
-        '''
-        set default value for instance attribute
-
-        @param key: attribute name
-        @param value: attribute value
-        @param default: default value
-        '''
-        value = value if value is not None else default
-        self.__dict__[key] = value
-        self.__dict__[key + '_d'] = value
-
-    _m_setdefault = _setdefault
-
-    def _defaults(self):
-        '''reset attribute values'''
-        this = self.__dict__
-        exhaustmap(
-            vars(self),
-            lambda x, y: setitem(this, x.rstrip('_d'), y),
-            lambda x: x[0].endswith('_d'),
-        )
-
-    _m_defaults = _defaults
-
-
-class EventManageMixin(ManagerMixin):
-
-    '''event manager mixin'''
-
-    def __init__(
-        self,
-        patterns=None,
-        events=None,
-        required=None,
-        defaults=None,
-        *args,
-        **kw
-    ):
-        '''
-        init
-
-        @param patterns: pattern config or eventspace label (default: None)
-        @param events: events configuration (default: None)
-        @param required: required settings (default: None)
-        @param defaults: default settings (default: None)
-        '''
-        super(EventManageMixin, self).__init__(
-            patterns, required, defaults, *args, **kw
-        )
-        # update event registry with any other events
-        if events is not None:
-            self.E.update(events)
             
             
 class LiteMixin(ResultQMixin):
@@ -209,3 +200,29 @@ class LiteMixin(ResultQMixin):
         self._c_setup()
 
     _d_setup = _setup
+
+
+class QRootMixin(QMixin):
+
+    '''queued root mixin'''
+
+    def back(self, branch):
+        '''
+        handle switch from branch chain
+
+        @param branch: branch chain
+        '''
+        self._rback(branch)
+        # sync with branch callable
+        self._call = branch._call
+        # sync with branch postitional arguments
+        self._args = branch._args
+        # sync with branch keyword arguments
+        self._kw = branch._kw
+        # sync with branch incoming things
+        self.extend(branch.incoming)
+        # sync with branch outgoing things
+        self.outextend(branch.outgoing)
+        return self
+
+    _qback = back

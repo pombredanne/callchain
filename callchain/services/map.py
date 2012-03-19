@@ -3,10 +3,10 @@
 # pylint: disable-msg=e0211,e0213
 '''mapping services keys'''
 
-from appspace.keys import AppspaceKey
+from callchain.services.queue import KService
 
 
-class KDelay(AppspaceKey):
+class KDelay(KService):
 
     '''delayed map key'''
 
@@ -36,7 +36,7 @@ class KDelay(AppspaceKey):
         '''
 
 
-class KCopy(AppspaceKey):
+class KCopy(KService):
 
     '''copy key'''
 
@@ -47,7 +47,7 @@ class KCopy(AppspaceKey):
         '''copy each incoming thing deeply'''
 
 
-class KRepeat(AppspaceKey):
+class KRepeat(KService):
 
     '''repetition key'''
 
@@ -79,7 +79,7 @@ class KRepeat(AppspaceKey):
         '''
 
 
-class KMap(AppspaceKey):
+class KMap(KService):
 
     '''mapping key'''
 

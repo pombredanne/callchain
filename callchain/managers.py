@@ -11,7 +11,8 @@ from stuf.utils import bi, getcls, lazy, exhaustmap
 
 from callchain.settings import Settings
 from callchain.services.event import EEvent
-from callchain.keys.core import KSettings, KService, NoServiceError
+from callchain.keys.core import KSettings, NoServiceError
+from callchain.services.queue import KService
 
 __all__ = ['Manager']
 

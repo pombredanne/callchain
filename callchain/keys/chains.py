@@ -2,7 +2,7 @@
 '''chain keys'''
 
 from callchain.keys.call import KCall
-from callchain.keys.fluent import KChain
+from callchain.keys.core import KChain
 from callchain.keys.root import KChainRoot, KManager
 from callchain.keys.branch import KBranch, KBranchlet
 from callchain.keys.queued import KQueued, KQueuedRoot

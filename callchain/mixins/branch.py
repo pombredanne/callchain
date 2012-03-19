@@ -7,6 +7,7 @@ from callchain.managers import Events
 
 from callchain.mixins.resets import ResetLocalMixin
 from appspace.keys import NoAppError
+from callchain.mixins.core import QMixin
 
 
 class BranchMixin(ResetLocalMixin):
@@ -114,7 +115,7 @@ class ChainletMixin(ResetLocalMixin):
         '''
         # fetch appspaced thing...
         try:
-            return self._f_load(label)
+            return self._c_load(label)
         # ...or revert to root chain
         except NoAppError:
             return getattr(self.__rback(), label)
@@ -137,3 +138,29 @@ class ChainletMixin(ResetLocalMixin):
         return self.root.back(self)
 
     _rback = __rback = back
+
+
+class QBranchMixin(QMixin):
+
+    '''queued branch mixin'''
+
+    def _setup(self, root):
+        '''
+        configure call chain
+
+        @param root: root object
+        '''
+        super(QBranchMixin, self)._setup(root)
+        # sync with root postitional arguments
+        self._args = root._args
+        # sync with root keyword arguments
+        self._kw = root._kw
+        # sync with root callable
+        self._call = root._call
+        # sync with root incoming things
+        self.inclear()
+        self.extend(root.incoming)
+        # sync with root outgoing things
+        self.outextend(root.outgoing)
+
+    _q_setup = _setup
