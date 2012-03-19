@@ -38,25 +38,25 @@ class _QMixin(ResetLocalMixin):
 
 class QRootMixin(_QMixin):
 
-    '''queued root chain mixin'''
+    '''queued root mixin'''
 
-    def back(self, link):
+    def back(self, branch):
         '''
-        handle return from link call chain
+        handle switch from branch chain
 
-        @param link: link call chain
+        @param branch: branch chain
         '''
-        self._rback(link)
-        # sync with link callable
-        self._call = link._call
-        # sync with link postitional arguments
-        self._args = link._args
-        # sync with link keyword arguments
-        self._kw = link._kw
-        # sync with link incoming things
-        self.extend(link.incoming)
-        # sync with link outgoing things
-        self.outextend(link.outgoing)
+        self._rback(branch)
+        # sync with branch callable
+        self._call = branch._call
+        # sync with branch postitional arguments
+        self._args = branch._args
+        # sync with branch keyword arguments
+        self._kw = branch._kw
+        # sync with branch incoming things
+        self.extend(branch.incoming)
+        # sync with branch outgoing things
+        self.outextend(branch.outgoing)
         return self
 
     _qback = back
@@ -64,13 +64,13 @@ class QRootMixin(_QMixin):
 
 class QBranchMixin(_QMixin):
 
-    '''queued rooted chain mixin'''
+    '''queued branch mixin'''
 
     def _setup(self, root):
         '''
-        setup chain
+        configure call chain
 
-        @param root: root call chain
+        @param root: root object
         '''
         super(QBranchMixin, self)._setup(root)
         # sync with root postitional arguments

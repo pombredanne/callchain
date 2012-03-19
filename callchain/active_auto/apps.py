@@ -10,7 +10,7 @@ from callchain.keys.queue import KResults
 from callchain.patterns import Pathways, Nameways
 
 
-class chain(Pathways):
+class callchain(Pathways):
 
     class filter(Nameways):
         key = 'callchain.keys.filter.KFilter'
@@ -66,7 +66,7 @@ class chain(Pathways):
 
 
 @appifies(KResults)
-@inside(chain)
+@inside(callchain)
 class chainq(ChainQ, AutoResultMixin):
 
-    '''active queued auto-balancing call chain'''
+    '''active queued auto-balancing call callchain'''

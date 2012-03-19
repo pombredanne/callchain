@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''root mixins'''
+'''root chain mixins'''
 
 from operator import setitem
 from collections import deque
@@ -26,15 +26,15 @@ class RootMixin(ResetLocalMixin):
 
     _r_call = __call__
 
-    def back(self, chainlink):
+    def back(self, branch):
         '''
-        handle chainlet end
+        handle branch chain switch
 
-        @param chainlink: chainlink chain
+        @param branch: branch object
         '''
         self.clear()
-        # extend call chain with root call chain
-        self._cappend(chainlink._chain)
+        # extend root call chain with branch call chain
+        self._cappend(branch._chain)
         return self
 
     _rback = back
@@ -46,15 +46,15 @@ class EventRootMixin(RootMixin):
 
     def _eventq(self, event):
         '''
-        fetch chainlink call chain tied to `event`
+        linked chain bound to `event`
 
-        @param event: event label
+        @param eventchain: event label
         '''
         key = self.E.event(event)
-        # fetch chainlink call chain bound to event
+        # fetch linked chain bound to event
         queue = self.E.get(key)
         if queue is None:
-            # create liked call chain if nonexistent
+            # create linked chain if nonexistent
             queue = self._callchain
             self.E.on(key, queue)
         return queue
@@ -63,7 +63,7 @@ class EventRootMixin(RootMixin):
 
     def _event(self, event):
         '''
-        fetch calls bound to `event`
+        calls bound to `event`
 
         @param event: event label
         '''
@@ -138,7 +138,7 @@ class ManagerMixin(ConfigMixin):
 
     def _setdefault(self, key, value, default):
         '''
-        set default value for an instance attribute
+        set default value for instance attribute
 
         @param key: attribute name
         @param value: attribute value
@@ -164,7 +164,7 @@ class ManagerMixin(ConfigMixin):
 
 class EventManageMixin(ManagerMixin):
 
-    '''event manager mixin'''
+    '''eventchain manager mixin'''
 
     def __init__(
         self,
@@ -186,17 +186,17 @@ class EventManageMixin(ManagerMixin):
         super(EventManageMixin, self).__init__(
             patterns, required, defaults, *args, **kw
         )
-        # update event registry with any other events
+        # update eventchain registry with any other events
         if events is not None:
             self.E.update(events)
             
             
-class SingleMixin(ResultQMixin):
+class LiteMixin(ResultQMixin):
 
-    '''base root chain mixin'''
+    '''lite root chain mixin'''
 
     def _setup(self):
-        '''setup chain'''
+        '''configure chain'''
         self.outgoing = deque()
         # outgoing things right extend
         self.outextend = self.outgoing.extend

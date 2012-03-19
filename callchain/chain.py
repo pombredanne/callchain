@@ -1,21 +1,26 @@
 # -*- coding: utf-8 -*-
-'''chain chains'''
+'''callchain chains and events'''
 
 from appspace.keys import appifies
 
 from callchain.keys.apps import events
-from callchain.apps import chain, event
-from callchain.queued import QRootMixin
+from callchain.patterns import Pathways
 from callchain.internal import inside, einside
-from callchain.fluent import ChainMixin, EventMixin
 from callchain.keys.chain import KChain, KEventChain
+# mixins
+from callchain.queued import QRootMixin
+from callchain.fluent import ChainMixin, EventMixin
 from callchain.call import CallMixin, EventCallMixin
 from callchain.root import (
-    RootMixin, EventRootMixin, EventManageMixin, ManagerMixin, SingleMixin)
+    RootMixin, EventRootMixin, EventManageMixin, ManagerMixin, LiteMixin)
 
 ###############################################################################
-## chains #####################################################################
+## call chain #################################################################
 ###############################################################################
+
+
+class chain(Pathways):
+    link = 'callchain.link.chainlink'
 
 
 class Chain(CallMixin, ManagerMixin, RootMixin, ChainMixin):
@@ -25,7 +30,7 @@ class Chain(CallMixin, ManagerMixin, RootMixin, ChainMixin):
 
 @appifies(KChain)
 @inside(chain)
-class chain(SingleMixin, Chain):
+class callchain(LiteMixin, Chain):
 
     '''root call chain'''
 
@@ -34,10 +39,14 @@ class ChainQ(QRootMixin, Chain):
 
     '''queued call chain'''
 
+###############################################################################
+## eventchain chains ##########################################################
+###############################################################################
 
-###############################################################################
-## event chains ###############################################################
-###############################################################################
+
+class event(Pathways):
+    event = 'callchain.linked.eventlink'
+    chain = 'callchain.linked.chainlink'
 
 
 class Event(EventCallMixin, EventManageMixin, EventRootMixin, EventMixin):
@@ -47,7 +56,7 @@ class Event(EventCallMixin, EventManageMixin, EventRootMixin, EventMixin):
 
 @appifies(KEventChain)
 @einside(event, events)
-class event(SingleMixin, Event):
+class eventchain(LiteMixin, Event):
 
     '''root event chain'''
 

@@ -49,7 +49,6 @@ class Settings(ResetLocalMixin):
     '''settings management'''
 
     def __init__(self):
-        '''init'''
         super(Settings, self).__init__()
         # default settings
         self._default = dict()
@@ -132,7 +131,7 @@ class Settings(ResetLocalMixin):
 
     def get(self, key, default=None):
         '''
-        get value from settings
+        value from settings
 
         @param key: key in settings
         @param default: default value (default: None)

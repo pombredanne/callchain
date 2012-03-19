@@ -29,6 +29,19 @@ class CallMixin(ResetLocalMixin):
         '''external appspace interface'''
         return Appspace(self.M) if self.M is not None else None
 
+    def __enter__(self):
+        '''enter context'''
+        return self
+
+    _c_enter = __enter__
+
+    def __exit__(self, e, t, b):
+        '''exit context'''
+        # invoke call chain
+        self.commit()
+
+    _c_exit = __exit__
+
     def _load(self, label):
         '''
         silent internal switch to...
@@ -44,31 +57,18 @@ class CallMixin(ResetLocalMixin):
             # ...or lookup other appspaced thing
             return self._f_load(label)
 
-    _l_load = _load
+    _c_load = _load
 
     def switch(self, label, key=False):
         '''
-        overt switch to linked call chain configured in external appspace
+        overt switch to linked chain configured in external appspace
 
-        @param label: linked call chain label
-        @param key: linked call chain chain key (default: False)
+        @param label: linked chain label
+        @param key: linked chain chain key (default: False)
         '''
         return self.M.get(label, key)(self)
 
-    _lswitch = switch
-
-    def __enter__(self):
-        '''enter context'''
-        return self
-
-    _c_enter = __enter__
-
-    def __exit__(self, e, t, b):
-        '''exit context'''
-        # invoke call chain
-        self.commit()
-
-    _c_exit = __exit__
+    _cswitch = switch
 
     def commit(self):
         '''consume call chain until exhausted'''

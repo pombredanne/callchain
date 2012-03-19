@@ -11,64 +11,64 @@ from callchain.keys.queue import KResults
 from callchain.patterns import Pathways, Nameways
 
 
-class event(Pathways):
-    chain = 'chain.linked.chainlink'
+class eventchain(Pathways):
+    callchain = 'callchain.linked.chainlink'
 
     class filter(Nameways):
-        key = 'chain.keys.filter.KFilter'
-        filter = 'chain.lazy_auto.eventlet.filterevent'
+        key = 'callchain.keys.filter.KFilter'
+        filter = 'callchain.lazy_auto.eventlet.filterevent'
 
     class collect(Nameways):
-        key = 'chain.keys.filter.KCollect'
-        collect = 'chain.lazy_auto.eventlet.collectevent'
+        key = 'callchain.keys.filter.KCollect'
+        collect = 'callchain.lazy_auto.eventlet.collectevent'
 
     class set(Nameways):
-        key = 'chain.keys.filter.KSet'
-        set = 'chain.lazy_auto.eventlet.setevent'
+        key = 'callchain.keys.filter.KSet'
+        set = 'callchain.lazy_auto.eventlet.setevent'
 
     class slice(Nameways):
-        key = 'chain.keys.filter.KSlice'
-        slice = 'chain.lazy_auto.eventlet.sliceevent'
+        key = 'callchain.keys.filter.KSlice'
+        slice = 'callchain.lazy_auto.eventlet.sliceevent'
 
     class map(Nameways):
-        key = 'chain.keys.map.KMap'
-        map = 'chain.lazy_auto.eventlet.mapevent'
+        key = 'callchain.keys.map.KMap'
+        map = 'callchain.lazy_auto.eventlet.mapevent'
 
     class delay(Nameways):
-        key = 'chain.keys.map.KDelay'
-        delay = 'chain.lazy_auto.eventlet.delayevent'
+        key = 'callchain.keys.map.KDelay'
+        delay = 'callchain.lazy_auto.eventlet.delayevent'
 
     class copy(Nameways):
-        key = 'chain.keys.map.KCopy'
-        copy = 'chain.lazy_auto.eventlet.copyevent'
+        key = 'callchain.keys.map.KCopy'
+        copy = 'callchain.lazy_auto.eventlet.copyevent'
 
     class repeat(Nameways):
-        key = 'chain.keys.map.KRepeat'
-        repeat = 'chain.lazy_auto.eventlet.repeatevent'
+        key = 'callchain.keys.map.KRepeat'
+        repeat = 'callchain.lazy_auto.eventlet.repeatevent'
 
     class order(Nameways):
-        key = 'chain.keys.order.KOrder'
-        order = 'chain.lazy_auto.eventlet.orderevent'
+        key = 'callchain.keys.order.KOrder'
+        order = 'callchain.lazy_auto.eventlet.orderevent'
 
     class random(Nameways):
-        key = 'chain.keys.order.KRandom'
-        random = 'chain.lazy_auto.eventlet.randomevent'
+        key = 'callchain.keys.order.KRandom'
+        random = 'callchain.lazy_auto.eventlet.randomevent'
 
     class reduce(Nameways):
-        key = 'chain.keys.reduce.KReduce'
-        reduce = 'chain.lazy_auto.eventlet.reduceevent'
+        key = 'callchain.keys.reduce.KReduce'
+        reduce = 'callchain.lazy_auto.eventlet.reduceevent'
 
     class math(Nameways):
-        key = 'chain.keys.reduce.KMath'
-        math = 'chain.lazy_auto.eventlet.mathevent'
+        key = 'callchain.keys.reduce.KMath'
+        math = 'callchain.lazy_auto.eventlet.mathevent'
 
     class truth(Nameways):
-        key = 'chain.keys.reduce.KTruth'
-        truth = 'chain.lazy_auto.eventlet.truthevent'
+        key = 'callchain.keys.reduce.KTruth'
+        truth = 'callchain.lazy_auto.eventlet.truthevent'
 
 
 @appifies(KResults)
-@einside(event, events)
+@einside(eventchain, events)
 class eventq(EventQ, AutoResultMixin):
 
-    '''lazy queued auto-balancing event chain'''
+    '''lazy queued auto-balancing eventchain callchain'''

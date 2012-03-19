@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''callchain branch chain mixins'''
+'''callchain branch mixins'''
 
 from itertools import chain
 
@@ -9,20 +9,20 @@ from callchain.resets import ResetLocalMixin
 
 class BranchMixin(ResetLocalMixin):
 
-    ''''rooted chain mixin'''
+    ''''branch mixin'''
 
     def __init__(self, root):
         '''
         init
 
-        @param root: root call chain
+        @param root: root object
         '''
         super(BranchMixin, self).__init__(root)
         self._setup(root)
 
     def _setup(self, root):
         '''
-        setup chain
+        configure branch
 
         @param root: root object
         '''
@@ -43,31 +43,19 @@ class BranchMixin(ResetLocalMixin):
 
 class EventBranchMixin(BranchMixin):
 
-    '''rooted event chain mixin'''
-
-    def _setup(self, root):
-        '''
-        init
-
-        @param root: root event chain
-        '''
-        self._r_setup(root)
-        # local event registry
-        self.E = Events('events')
-
-    _e_setup = _setup
+    '''event branch mixin'''
 
     def _eventq(self, event):
         '''
-        fetch linked call chain tied to ``event``
+        linked chain bound to `event`
 
         @param event: event label
         '''
-        # fetch linked call chain bound to event
+        # fetch linked chain bound to event
         key = self.root.event(event)
         queue = self.E.get(key)
         if queue is None:
-            # create liked call chain if nonexistent
+            # create linked chain if nonexistent
             queue = self._callchain
             self.E.on(key, queue)
         return queue
@@ -76,7 +64,7 @@ class EventBranchMixin(BranchMixin):
 
     def _event(self, event):
         '''
-        fetch calls bound to ``event``
+        calls bound to `event`
 
         @param event: event label
         '''
@@ -85,14 +73,26 @@ class EventBranchMixin(BranchMixin):
 
     _e_event = _event
 
+    def _setup(self, root):
+        '''
+        configure branch
 
-class RootedMixin(ResetLocalMixin):
+        @param root: root object
+        '''
+        self._r_setup(root)
+        # local event registry
+        self.E = Events('events')
 
-    '''base rooted root chain mixin'''
+    _e_setup = _setup
+
+
+class LitedMixin(ResetLocalMixin):
+
+    '''lite branch chain mixin'''
 
     def _setup(self, root):
         '''
-        setup chain
+        configure branch
 
         @param root: root object
         '''

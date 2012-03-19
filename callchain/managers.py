@@ -18,7 +18,7 @@ __all__ = ['Manager']
 
 class Manager(_Manager):
 
-    '''callchain manager'''
+    '''chain manager'''
 
     __slots__ = ('_current', '_root', '_key')
 
@@ -67,7 +67,7 @@ class Manager(_Manager):
 
 class Events(Registry):
 
-    '''event registry'''
+    '''eventchain registry'''
 
     __slots__ = ('_root', '_key')
 
@@ -75,24 +75,24 @@ class Events(Registry):
         '''
         init
 
-        @param label: label for event registry
-        @param key: default key for event registry (default: EEvent)
+        @param label: label for eventchain registry
+        @param key: default key for eventchain registry (default: EEvent)
         '''
         super(Events, self).__init__(label, key)
 
-    def event(self, label):
+    def eventchain(self, label):
         '''
-        create or fetch event
+        create or fetch eventchain
 
-        @param event: event label
+        @param eventchain: eventchain label
         '''
         return self._unlazy(label, self._key, self.key(self._key, label))
 
     def events(self, key):
         '''
-        fetch things bound to event
+        fetch things bound to eventchain
 
-        @param label: event label
+        @param label: eventchain label
         '''
         return self.subscriptions(self._key, key)
 
@@ -100,26 +100,26 @@ class Events(Registry):
         '''
         fetch thing from events
 
-        @param key: event key
+        @param key: eventchain key
         '''
         return self.lookup1(self._key, key)
 
     def set(self, key, call):
         '''
-        bind thing to event
+        bind thing to eventchain
 
-        @param label: event label
-        @param key: event key
+        @param label: eventchain label
+        @param key: eventchain key
         @param call: some thing
         '''
         self.register([self._key], key, call)
 
     def on(self, key, thing):
         '''
-        bind thing to event
+        bind thing to eventchain
 
-        @param label: event label
-        @param key: event key
+        @param label: eventchain label
+        @param key: eventchain key
         @param call: some thing
         '''
         self.subscribe(self._key, key, thing.commit)
@@ -127,32 +127,32 @@ class Events(Registry):
 
     def unevent(self, label):
         '''
-        drop event
+        drop eventchain
 
-        @param event: event label
+        @param eventchain: eventchain label
         '''
-        self.E.unkey(self._key, self.event(label))
+        self.E.unkey(self._key, self.eventchain(label))
 
     def unset(self, label):
         '''
-        clear all callables bound to event
+        clear all callables bound to eventchain
 
-        @param event: event label
+        @param eventchain: eventchain label
         '''
-        self.ez_unsubscribe(self._key, self.event(label))
+        self.ez_unsubscribe(self._key, self.eventchain(label))
 
     def pack(self, label, call):
         '''
         pack things into registry
 
-        @param label: event label
+        @param label: eventchain label
         @param call: some thing
         '''
         self.ez_register(self._key, label, self._lazy(call))
 
     def update(self, labels):
         '''
-        update event registry with other events
+        update eventchain registry with other events
 
         @param labels: eventconf
         '''

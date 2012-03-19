@@ -23,18 +23,18 @@ class KChainRoot(AppspaceKey):
 
 class KEventRoot(KChainRoot):
 
-    '''root event key'''
+    '''root eventchain key'''
 
-    def event(event):
+    def eventchain(eventchain):
         '''
-        create or fetch `event`
+        create or fetch `eventchain`
 
-        @param event: event label
+        @param eventchain: eventchain label
         '''
 
-    def unevent(event):
+    def unevent(eventchain):
         '''
-        drop `event`
+        drop `eventchain`
 
-        @param event: event label
+        @param eventchain: eventchain label
         '''

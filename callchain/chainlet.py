@@ -11,12 +11,12 @@ from callchain.keys.chain import KEventChain, KChain
 from callchain.queued import QBranchMixin
 from callchain.resets import ResetLocalMixin
 from callchain.fluent import EventMixin, ChainMixin
-from callchain.rooted import RootedMixin, EventBranchMixin, BranchMixin
+from callchain.branch import LitedMixin, EventBranchMixin, BranchMixin
 
 
 class ChainletMixin(ResetLocalMixin):
 
-    '''branchlet mixin'''
+    '''chainlet mixin'''
 
     def _load(self, label):
         '''
@@ -33,17 +33,19 @@ class ChainletMixin(ResetLocalMixin):
 
     _r_load = _load
 
-    def _synchback(self, key, value):
+    def _syncback(self, key, value):
         '''
-        sync with back
+        sync chainlet with root chain
 
         @param key: key of value
         @param value: value of value
         '''
         self.__dict__[key] = self.root.__dict__[key] = value
 
+    _r_syncback = _syncback
+
     def back(self):
-        '''revert to root chain'''
+        '''switch to root chain'''
         return self.root.back(self)
 
     _rback = __rback = back
@@ -60,7 +62,7 @@ class Chainlet(ChainletMixin, BranchMixin, ChainMixin):
 
 
 @appifies(KChain)
-class chainlet(RootedMixin, Chainlet):
+class chainlet(LitedMixin, Chainlet):
 
     '''root chainlet'''
 
@@ -83,7 +85,7 @@ class Eventlet(ChainletMixin, EventBranchMixin, EventMixin):
 
 
 @appifies(KEventChain)
-class eventlet(RootedMixin, Eventlet):
+class eventlet(LitedMixin, Eventlet):
 
     '''root eventlet'''
 

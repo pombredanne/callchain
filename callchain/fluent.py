@@ -57,7 +57,7 @@ class ChainMixin(FluentMixin):
     '''chain mixin'''
 
     def _setup(self):
-        '''setup'''
+        '''configure chain'''
         _chain = deque()
         # call chain right extend
         self._cxtend = _chain.extend
@@ -94,12 +94,12 @@ class ChainMixin(FluentMixin):
 
 class EventMixin(ChainMixin):
 
-    '''event mixin'''
+    '''event chain mixin'''
 
     @property
     def _callchain(self):
         '''new linked chain'''
-        return self._M.get('callchain', 'event')(self)
+        return self._M.get('chain', 'event')(self)
 
     def _events(self, *events):
         '''calls bound to `events`'''
@@ -120,13 +120,13 @@ class EventMixin(ChainMixin):
 
     _eon = on
 
-    def off(self, event):
+    def off(self, eventchain):
         '''
         clear calls bound to `event`
 
         @param event: event label
         '''
-        self.E.unset(event)
+        self.E.unset(eventchain)
         return self
 
     _eoff = off
