@@ -8,11 +8,11 @@ try:
 except ImportError:
     from distutils.core import setup
 
-install_requires = ['twoq>0.2.3', 'appspace>=0.5.2']
+install_requires = ['twoq>=0.2.3', 'appspace>=0.5.3']
 
 setup(
     name='callchain',
-    version='0.1.3',
+    version='0.2.0',
     url='http://bitbucket.com/lcrees/callchain',
     description='callables and components joined in one big happy chain',
     long_description=open(os.path.join(os.getcwd(), 'README.rst'), 'r').read(),
@@ -37,6 +37,6 @@ setup(
         'Topic :: Software Development :: Libraries',
         'Topic :: Utilities',
     ],
-    requirements=install_requires,
+    install_requires=install_requires,
     zip_safe=False,
 )
