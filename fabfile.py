@@ -41,4 +41,4 @@ def release():
         local('hg tag "%(tag)s"' % env)
         local('hg push ssh://hg@bitbucket.org/lcrees/callchain')
         local('hg push git+ssh://git@github.com:kwarterthieves/callchain.git')
-    local('./setup.py sdist --format=bztar,gztar,zip')
+    local('./setup.py register sdist --format=bztar,gztar,zip upload')

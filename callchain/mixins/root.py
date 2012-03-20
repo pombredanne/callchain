@@ -45,15 +45,13 @@ class ConfigMixin(ResetLocalMixin):
 
     _rback = back
 
-    def _setdefault(self, key, value, default):
+    def _setdefault(self, key, value):
         '''
         set default value for instance attribute
 
         @param key: attribute name
         @param value: attribute value
-        @param default: default value
         '''
-        value = value if value is not None else default
         self.__dict__[key] = value
         self.__dict__[key + '_d'] = value
 

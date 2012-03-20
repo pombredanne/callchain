@@ -18,7 +18,7 @@ class BranchMixin(ResetLocalMixin):
         '''
         init
 
-        @param root: root object
+        @param root: root chain
         '''
         super(BranchMixin, self).__init__(root)
         self._setup(root)
@@ -27,7 +27,7 @@ class BranchMixin(ResetLocalMixin):
         '''
         configure branch
 
-        @param root: root object
+        @param root: root chain
         '''
         self._c_setup()
         # root object
@@ -78,9 +78,9 @@ class EventBranchMixin(BranchMixin):
 
     def _setup(self, root):
         '''
-        configure branch
+        configure branch chain
 
-        @param root: root object
+        @param root: root chain
         '''
         self._r_setup(root)
         # local event registry
@@ -95,12 +95,14 @@ class LitedMixin(ResetLocalMixin):
 
     def _setup(self, root):
         '''
-        configure branch
+        configure branch chain
 
-        @param root: root object
+        @param root: root chain
         '''
         self._d_setup()
         self._r_setup(root)
+
+    _l_setup = _setup
 
 
 class LinkedMixin(ResetLocalMixin):
@@ -145,7 +147,7 @@ class ChainletMixin(ResetLocalMixin):
     _r_syncback = _syncback
 
     def back(self):
-        '''switch to root chain'''
+        '''switch vack to root chain'''
         return self.root.back(self)
 
     _rback = __rback = back
@@ -157,9 +159,9 @@ class QBranchMixin(QMixin):
 
     def _setup(self, root):
         '''
-        configure call chain
+        configure branch chain
 
-        @param root: root object
+        @param root: root chain
         '''
         super(QBranchMixin, self)._setup(root)
         # sync with root postitional arguments
