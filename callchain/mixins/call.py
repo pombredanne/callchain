@@ -88,19 +88,19 @@ class EventCallMixin(CallMixin):
 
     def commit(self):
         '''run event chain'''
+        fire = self.__fire
         try:
-            fire = self.fire
-            # 1. "before" event then 2. "work" event
+            # 1. "before" event 2. "work" event
             self.trigger('before', 'work')
             # everything else
             self._ccommit()
-            # 3. "change" event then 4. "any" event then 5. "after" event
+            # 3. "change" event 4. "any" event 5. "after" event
             fire('change', 'any', 'after')
         except:
             # 6. "problem" event
             fire('problem')
         finally:
-            # 7. event that runs irrespective and "anyway"
+            # 7. event that runs "anyway"
             fire('anyway')
         return self
 
@@ -112,21 +112,16 @@ class EventCallMixin(CallMixin):
 
         @param events: event labels
         '''
-        try:
-            # clear scratch queue
-            self._sclear()
-            # queue global and local bound callables
-            self._sxtend(self._events(*events))
+        foo = self._events(*events)
+        self._rextend(foo)
+        self.swap('_read')
+        # queue global and local bound callables
+        with self._sync() as sync:
             # run event call chain until scratch queue is exhausted
-            self.outextend(c() for c in iterexcept(
-                self._scratch.popleft, IndexError,
-            ))
-        finally:
-            # clear scratch queue
-            self._sclear()
-        return self
+            sync(c() for c in sync.iterable)
+        return self.unswap()
 
-    _efire = fire
+    _efire = __fire = fire
 
     def queues(self, *events):
         '''

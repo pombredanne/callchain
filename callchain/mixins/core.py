@@ -162,7 +162,7 @@ class QMixin(ResetLocalMixin):
         # reset postitional arguments
         self._args = ()
         # reset keyword arguments
-        self._kw = {}
+        self._kw.clear()
         # set current application
         self._call = self._M.get(call, key) if isstring(call) else call
         return self
@@ -178,10 +178,22 @@ class QMixin(ResetLocalMixin):
         @param inq: incoming queue (default: 'incoming')
         @param outq: outcoming queue (default: 'outcoming')
         @param tmpq: temporary queue (default: '_scratch')
-        @param callq: temporary queue (default: '_chain')
+        @param callq: call chain (default: '_chain')
         '''
         self._inq = inq
         self._outq = outq
         self._tmpq = tmpq
         self._callq = callq
         return self
+
+    _qswap = swap
+
+    def wrap(self, call, key=False):
+        '''build current callable from factory'''
+        call = self._M.get(call, key) if isstring(call) else call
+        def factory(*args, **kw): #@IgnorePep8
+            return call(*args, **kw)
+        self._call = factory
+        return self
+
+    _owrap = wrap

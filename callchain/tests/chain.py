@@ -29,8 +29,7 @@ class CallMixin(object):
 
     def test_pure_calls(self):
         from math import fsum, floor, sqrt
-        self.qclass.chain(floor, 3)
-        (self.qclass
+        (self.qclass.chain(floor, 3)
         .chain(fsum, [1.1, 1.1, 1.1])
         .chain(sqrt, 4))
         self.qclass.commit()
