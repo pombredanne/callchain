@@ -34,14 +34,10 @@ class CallMixin(ResetLocalMixin):
         '''enter context'''
         return self
 
-    _c_enter = __enter__
-
     def __exit__(self, e, t, b):
         '''exit context'''
         # invoke call chain
         self.commit()
-
-    _c_exit = __exit__
 
     def _load(self, label):
         '''
@@ -56,9 +52,7 @@ class CallMixin(ResetLocalMixin):
             return getattr(_M.get(key, key)(self), label)
         except NoServiceError:
             # ...or lookup other appspaced thing
-            return self._c_load(label)
-
-    _c_load = _load
+            return super(CallMixin, self)._load(label)
 
     def switch(self, label, key=False):
         '''
@@ -69,14 +63,12 @@ class CallMixin(ResetLocalMixin):
         '''
         return self.M.get(label, key)(self)
 
-    _cswitch = switch
-
     def commit(self):
         '''consume call chain until exhausted'''
-        self.outextend(c() for c in iterexcept(self._cpopleft, IndexError))
+        self.outextend(
+            c() for c in iterexcept(self._chain.popleft, IndexError)
+        )
         return self
-
-    _ccommit = commit
 
     class Meta:
         pass
@@ -88,12 +80,12 @@ class EventCallMixin(CallMixin):
 
     def commit(self):
         '''run event chain'''
-        fire = self.__fire
+        fire = self.fire
         try:
             # 1. "before" event 2. "work" event
             self.trigger('before', 'work')
             # everything else
-            self._ccommit()
+            super(EventCallMixin, self).commit()
             # 3. "change" event 4. "any" event 5. "after" event
             fire('change', 'any', 'after')
         except:
@@ -104,24 +96,27 @@ class EventCallMixin(CallMixin):
             fire('anyway')
         return self
 
-    _ecommit = commit
-
     def fire(self, *events):
         '''
         run calls bound to `events` **NOW**
 
         @param events: event labels
         '''
-        foo = self._events(*events)
-        self._rextend(foo)
-        self.swap('_read')
-        # queue global and local bound callables
-        with self._sync() as sync:
+        try:
+            # clear scratch queue
+            self._scratch.clear()
+            # queue global and local bound callables
+            self._scratch.extend(self._events(*events))
             # run event call chain until scratch queue is exhausted
-            sync(c() for c in sync.iterable)
-        return self.unswap()
+            self.outgoing.extend(c() for c in iterexcept(
+                self._scratch.popleft, IndexError,
+            ))
+        finally:
+            # clear scratch queue
+            self._scratch.clear()
+        return self
 
-    _efire = __fire = fire
+    _efire = fire
 
     def queues(self, *events):
         '''
@@ -130,5 +125,3 @@ class EventCallMixin(CallMixin):
         @param events: event labels
         '''
         return orderedstuf((e, self._eventq(e).outgoing) for e in events)
-
-    _equeues = queues

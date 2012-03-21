@@ -14,7 +14,7 @@ from callchain.mixins.core import EventMixin
 from callchain.mixins.call import EventCallMixin
 from callchain.mixins.root import EventRootMixin, LiteMixin, QRootMixin
 from callchain.mixins.branch import (
-    ChainletMixin, EventBranchMixin, LitedMixin, QBranchMixin, LinkedMixin)
+    ChainletMixin, EventBranchMixin, QBranchMixin, LinkedMixin)
 
 ###############################################################################
 ## event chain configuration ##################################################
@@ -48,12 +48,10 @@ class einside(inside):
         self.events = events
 
     def __call__(self, that):
-        that = self._o_call(that)
+        that = super(einside, self).__call__(that)
         that.E = Events('events')
         that.E.update(self.events)
         return that
-
-    _e_call = __call__
 
 
 class event(Pathways):
@@ -116,12 +114,12 @@ class eventchain(LiteMixin, Event):
 
 
 @appifies(KEventLink)
-class eventlink(LitedMixin, EventLink):
+class eventlink(EventLink):
 
     '''lite linked event chain'''
 
 
 @appifies(KEventlet)
-class eventlet(LitedMixin, Eventlet):
+class eventlet(Eventlet):
 
     '''lite eventlet'''

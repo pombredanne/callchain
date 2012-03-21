@@ -10,7 +10,7 @@ from callchain.keys.chains import (
 from callchain.mixins.call import CallMixin
 from callchain.mixins.core import ChainMixin
 from callchain.mixins.branch import (
-    LitedMixin, BranchMixin, ChainletMixin, QBranchMixin, LinkedMixin)
+    BranchMixin, ChainletMixin, QBranchMixin, LinkedMixin)
 from callchain.mixins.root import RootMixin, LiteMixin, QRootMixin, ConfigMixin
 
 ###############################################################################
@@ -54,8 +54,6 @@ class inside(object):
         # set internal appspace global settings
         that._G = that._M.settings.final
         return that
-
-    _o_call = __call__
 
 ###############################################################################
 ## vanilla chain ##############################################################
@@ -112,12 +110,12 @@ class callchain(LiteMixin, Chain):
 
 
 @appifies(KLinked)
-class chainlink(LitedMixin, LiteMixin, Linked):
+class chainlink(LiteMixin, Linked):
 
     '''lite linked chain'''
 
 
 @appifies(KChainlet)
-class chainlet(LitedMixin, Chainlet):
+class chainlet(Chainlet):
 
     '''lite chainlet'''

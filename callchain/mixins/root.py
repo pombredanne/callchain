@@ -32,31 +32,6 @@ class ConfigMixin(ResetLocalMixin):
         '''external application global settings'''
         return self.M.settings.final if self.M is not None else frozenstuf()
 
-    def back(self, branch):
-        '''
-        handle branch chain switch
-
-        @param branch: branch object
-        '''
-        self.clear()
-        # extend root call chain with branch call chain
-        self._cappend(branch._chain)
-        return self
-
-    _rback = back
-
-    def _setdefault(self, key, value):
-        '''
-        set default value for instance attribute
-
-        @param key: attribute name
-        @param value: attribute value
-        '''
-        self.__dict__[key] = value
-        self.__dict__[key + '_d'] = value
-
-    _m_setdefault = _setdefault
-
     def _defaults(self):
         '''reset attribute values'''
         this = self.__dict__
@@ -66,7 +41,25 @@ class ConfigMixin(ResetLocalMixin):
             lambda x: x[0].endswith('_d'),
         )
 
-    _m_defaults = _defaults
+    def _setdefault(self, key, value):
+        '''
+        set default value for instance attribute
+
+        @param key: attribute name
+        @param value: attribute value
+        '''
+        self.__dict__[key] = self.__dict__[key + '_d'] = value
+
+    def back(self, branch):
+        '''
+        handle branch chain switch
+
+        @param branch: branch object
+        '''
+        self.clear()
+        # extend root call chain with branch call chain
+        self._chain.append(branch._chain)
+        return self
 
 
 class RootMixin(ConfigMixin):
@@ -81,7 +74,7 @@ class RootMixin(ConfigMixin):
         @param required: required settings (default: None)
         @param defaults: default settings (default: None)
         '''
-        super(RootMixin, self).__init__()
+        super(RootMixin, self).__init__(pattern)
         if pattern is not None:
             # external appspace
             self.M = Pathways.appspace(pattern, required, defaults)
@@ -89,7 +82,6 @@ class RootMixin(ConfigMixin):
             self.M.freeze(kw)
         else:
             self.M = None
-        self._setup()
 
     def __call__(self, *args):
         '''new chain session'''
@@ -98,8 +90,6 @@ class RootMixin(ConfigMixin):
         # extend incoming things
         self.extend(args)
         return self
-
-    _r_call = __call__
 
 
 class EventRootMixin(RootMixin):
@@ -141,11 +131,9 @@ class EventRootMixin(RootMixin):
         queue = self.E.get(key)
         if queue is None:
             # create linked chain if nonexistent
-            queue = self._callchain
+            queue = self._linkedchain
             self.E.on(key, queue)
         return queue
-
-    _e_eventq = _eventq
 
     def _event(self, event):
         '''
@@ -154,8 +142,6 @@ class EventRootMixin(RootMixin):
         @param event: event label
         '''
         return self.E.events(self.E.event(event))
-
-    _e_event = _event
 
     def event(self, event):
         '''
@@ -166,8 +152,6 @@ class EventRootMixin(RootMixin):
         self.E.event(event)
         return self
 
-    _eevent = event
-
     def unevent(self, event):
         '''
         drop `event`
@@ -176,28 +160,18 @@ class EventRootMixin(RootMixin):
         '''
         self.E.unevent(event)
         return self
-
-    _eunevent = unevent
             
             
 class LiteMixin(ResultQMixin):
 
     '''lite root chain mixin'''
 
-    def _setup(self):
+    def _setup(self, root):
         '''configure chain'''
         self.outgoing = deque()
         # outgoing things right extend
         self.outextend = self.outgoing.extend
-        # outgoing things clear
-        self._outclear = self.outgoing.clear
-        # outgoing things right append
-        self._outappend = self.outgoing.append
-        # outgoing things left pop
-        self.popleft = self.outgoing.popleft
-        self._c_setup()
-
-    _d_setup = _setup
+        super(LiteMixin, self)._setup(root)
 
 
 class QRootMixin(QMixin):
@@ -210,7 +184,7 @@ class QRootMixin(QMixin):
 
         @param branch: branch chain
         '''
-        self._rback(branch)
+        super(QRootMixin, self).back(branch)
         # sync with branch callable
         self._call = branch._call
         # sync with branch postitional arguments
@@ -222,5 +196,3 @@ class QRootMixin(QMixin):
         # sync with branch outgoing things
         self.outextend(branch.outgoing)
         return self
-
-    _qback = back

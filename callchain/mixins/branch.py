@@ -8,20 +8,12 @@ from callchain.managers import Events
 from callchain.mixins.resets import ResetLocalMixin
 from appspace.keys import NoAppError
 from callchain.mixins.core import QMixin
+from stuf.utils import lazy
 
 
 class BranchMixin(ResetLocalMixin):
 
     ''''branch mixin'''
-
-    def __init__(self, root):
-        '''
-        init
-
-        @param root: root chain
-        '''
-        super(BranchMixin, self).__init__(root)
-        self._setup(root)
 
     def _setup(self, root):
         '''
@@ -29,7 +21,7 @@ class BranchMixin(ResetLocalMixin):
 
         @param root: root chain
         '''
-        self._c_setup()
+        super(BranchMixin, self)._setup(root)
         # root object
         self.root = root
         # root internal appspace manager
@@ -41,12 +33,15 @@ class BranchMixin(ResetLocalMixin):
         # root external global settings
         self.G = root.G if self.M else None
 
-    _r_setup = _setup
-
 
 class EventBranchMixin(BranchMixin):
 
     '''event branch mixin'''
+
+    @lazy
+    def E(self):
+        '''local event registry'''
+        return Events('events')
 
     def _eventq(self, event):
         '''
@@ -59,11 +54,9 @@ class EventBranchMixin(BranchMixin):
         queue = self.E.get(key)
         if queue is None:
             # create linked chain if nonexistent
-            queue = self._callchain
+            queue = self._linkedchain
             self.E.on(key, queue)
         return queue
-
-    _e_eventq = _eventq
 
     def _event(self, event):
         '''
@@ -74,36 +67,6 @@ class EventBranchMixin(BranchMixin):
         key = self.root.event(event)
         return chain(self.E.events(key), self.root.E.events(key))
 
-    _e_event = _event
-
-    def _setup(self, root):
-        '''
-        configure branch chain
-
-        @param root: root chain
-        '''
-        self._r_setup(root)
-        # local event registry
-        self.E = Events('events')
-
-    _e_setup = _setup
-
-
-class LitedMixin(ResetLocalMixin):
-
-    '''lite branch chain mixin'''
-
-    def _setup(self, root):
-        '''
-        configure branch chain
-
-        @param root: root chain
-        '''
-        self._d_setup()
-        self._r_setup(root)
-
-    _l_setup = _setup
-
 
 class LinkedMixin(ResetLocalMixin):
 
@@ -112,8 +75,6 @@ class LinkedMixin(ResetLocalMixin):
     def close(self):
         '''close out linked chain and switch to root chain'''
         return self.root.back(self)
-
-    _lclose = close
 
 
 class ChainletMixin(ResetLocalMixin):
@@ -128,12 +89,10 @@ class ChainletMixin(ResetLocalMixin):
         '''
         # fetch appspaced thing...
         try:
-            return self._c_load(label)
+            return super(ChainletMixin, self)._load(label)
         # ...or revert to root chain
         except NoAppError:
-            return getattr(self.__rback(), label)
-
-    _r_load = _load
+            return getattr(self.back(), label)
 
     def _syncback(self, key, value):
         '''
@@ -144,13 +103,9 @@ class ChainletMixin(ResetLocalMixin):
         '''
         self.__dict__[key] = self.root.__dict__[key] = value
 
-    _r_syncback = _syncback
-
     def back(self):
         '''switch vack to root chain'''
         return self.root.back(self)
-
-    _rback = __rback = back
 
 
 class QBranchMixin(QMixin):
@@ -175,5 +130,3 @@ class QBranchMixin(QMixin):
         self.extend(root.incoming)
         # sync with root outgoing things
         self.outextend(root.outgoing)
-
-    _q_setup = _setup
