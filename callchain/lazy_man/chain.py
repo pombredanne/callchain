@@ -2,8 +2,7 @@
 '''lazy manually balanced chains appconf'''
 
 from appspace.keys import appifies
-from twoq.active.mixins import ManMixin
-from twoq.mixins.queuing import ResultMixin
+from twoq.lazy.mixins import ManResultMixin
 
 from callchain.chain import ChainQ, inside
 from callchain.services.queue import KQueue
@@ -11,18 +10,6 @@ from callchain.patterns import Pathways, Nameways
 
 
 class callchain(Pathways):
-
-    class finger(Nameways):
-        key = 'callchain.services.queue.KFinger'
-        filter = 'callchain.lazy_man.chainlet.fingerchain'
-
-    class result(Nameways):
-        key = 'callchain.services.queue.KResults'
-        filter = 'callchain.lazy_man.chainlet.resultchain'
-
-    class callable(Nameways):
-        key = 'callchain.services.queue.KCallable'
-        filter = 'callchain.lazy_man.chainlet.callablechain'
 
     class filter(Nameways):
         key = 'callchain.services.filter.KFilter'
@@ -75,6 +62,6 @@ class callchain(Pathways):
 
 @appifies(KQueue)
 @inside(callchain)
-class chainq(ChainQ, ManMixin, ResultMixin):
+class chainq(ChainQ, ManResultMixin):
 
     '''lazy queued manually balanced call chain'''
