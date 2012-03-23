@@ -36,20 +36,12 @@ class KDelay(KService):
         '''
 
 
-class KCopy(KService):
-
-    '''copy key'''
-
-    def copy(self):
-        '''copy each incoming thing'''
-
-    def deepcopy(self):
-        '''copy each incoming thing deeply'''
-
-
 class KRepeat(KService):
 
     '''repetition key'''
+    
+    def copy(self):
+        '''copy each incoming thing'''
 
     def padnone():
         '''incoming things and then `None` indefinitely'''

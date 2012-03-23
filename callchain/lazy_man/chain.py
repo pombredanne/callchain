@@ -35,10 +35,6 @@ class callchain(Pathways):
         key = 'callchain.services.map.KDelay'
         delay = 'callchain.lazy_man.chainlet.delaychain'
 
-    class copy(Nameways):
-        key = 'callchain.services.map.KCopy'
-        copy = 'callchain.lazy_man.chainlet.copychain'
-
     class repeat(Nameways):
         key = 'callchain.services.map.KRepeat'
         repeat = 'callchain.lazy_man.chainlet.repeatchain'

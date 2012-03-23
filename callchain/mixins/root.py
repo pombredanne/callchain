@@ -5,7 +5,7 @@ from operator import setitem
 from collections import deque
 
 from stuf.core import frozenstuf
-from twoq.active.mixins import ResultQMixin
+from twoq.active.mixins import ResultMixin
 from stuf.utils import either, lazy, exhaustmap
 
 from callchain.patterns import Pathways
@@ -162,7 +162,7 @@ class EventRootMixin(RootMixin):
         return self
             
             
-class LiteMixin(ResultQMixin):
+class LiteMixin(ResultMixin):
 
     '''lite root chain mixin'''
 

@@ -102,18 +102,21 @@ class EventCallMixin(CallMixin):
 
         @param events: event labels
         '''
-        try:
-            # clear scratch queue
-            self._scratch.clear()
-            # queue global and local bound callables
-            self._scratch.extend(self._events(*events))
-            # run event call chain until scratch queue is exhausted
-            self.outgoing.extend(c() for c in iterexcept(
-                self._scratch.popleft, IndexError,
-            ))
-        finally:
-            # clear scratch queue
-            self._scratch.clear()
+        self._work
+        self
+#        try:
+#            # clear scratch queue
+#            self._work.clear()
+#            # queue global and local bound callables
+#            self._work.extend(self._events(*events))
+#            # run event call chain until scratch queue is exhausted
+#            self.outgoing.extend(c() for c in iterexcept(
+#                self._workq.popleft, IndexError,
+#            ))
+#        finally:
+#            # clear scratch queue
+#            self._work.clear()
+        self.swap()
         return self
 
     _efire = fire

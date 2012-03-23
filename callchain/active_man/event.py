@@ -37,10 +37,6 @@ class event(Pathways):
         key = 'callchain.services.map.KDelay'
         delay = 'callchain.active_man.eventlet.delayevent'
 
-    class copy(Nameways):
-        key = 'callchain.services.map.KCopy'
-        copy = 'callchain.active_man.eventlet.copyevent'
-
     class repeat(Nameways):
         key = 'callchain.services.map.KRepeat'
         repeat = 'callchain.active_man.eventlet.repeatevent'

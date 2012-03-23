@@ -48,23 +48,9 @@ class KQueue(KService):
     def outcount():
         '''count of outgoing items'''
 
-    def index(thing):
-        '''
-        insert thing into incoming things
-
-        @param thing: some thing
-        '''
-
     ###########################################################################
     ## clear queues ###########################################################
     ###########################################################################
-
-    def remove(thing):
-        '''
-        remove thing from incoming things
-
-        @param thing: some thing
-        '''
 
     def clear():
         '''clear every thing'''
@@ -90,14 +76,6 @@ class KQueue(KService):
         '''
         append `thing` to left side of incoming things 
         
-        @param thing: some thing
-        '''
-
-    def insert(index, thing):
-        '''
-        insert thing into incoming things
-
-        @param index: index position
         @param thing: some thing
         '''
 

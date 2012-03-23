@@ -135,23 +135,6 @@ class QMixin(ResetLocalMixin):
         self._chain.clear()
         return self
 
-    def swap(
-        self, inq='incoming', outq='outgoing', tmpq='_scratch', callq='_chain',
-    ):
-        '''
-        swap queues
-
-        @param inq: incoming queue (default: 'incoming')
-        @param outq: outcoming queue (default: 'outcoming')
-        @param tmpq: temporary queue (default: '_scratch')
-        @param callq: call chain (default: '_chain')
-        '''
-        self._inq = inq
-        self._outq = outq
-        self._tmpq = tmpq
-        self._callq = callq
-        return self
-
     def tap(self, call, key=False):
         '''
         add call

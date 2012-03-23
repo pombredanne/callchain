@@ -6,30 +6,17 @@ from inspect import ismodule
 from twoq.support import port
 
 
-class ACopyQMixin(object):
+class ARepeatQMixin(object):
 
     def test_copy(self):
-        testlist = [[1, 2, 3], [4, 5, 6]]
-        newlist = self.qclass(testlist).copy().end()
-        self.assertFalse(newlist is testlist)
-        self.assertListEqual(newlist, testlist)
-        self.assertTrue(newlist[0] is testlist[0])
-        self.assertListEqual(newlist[0], testlist[0])
-        self.assertTrue(newlist[1] is testlist[1])
-        self.assertListEqual(newlist[1], testlist[1])
-
-    def test_deepcopy(self):
         testlist = [[1, [2, 3]], [4, [5, 6]]]
-        newlist = self.qclass(testlist).deepcopy().end()
+        newlist = self.qclass(testlist).copy().end()
         self.assertFalse(newlist is testlist)
         self.assertListEqual(newlist, testlist)
         self.assertFalse(newlist[0] is testlist[0])
         self.assertListEqual(newlist[0], testlist[0])
         self.assertFalse(newlist[1] is testlist[1])
         self.assertListEqual(newlist[1], testlist[1])
-
-
-class ARepeatQMixin(object):
 
     def test_range(self):
         self.assertEqual(self.qclass().range(3).end(), [0, 1, 2])
@@ -81,7 +68,7 @@ class ADelayQMixin(object):
         )
 
 
-class AMapQMixin(ACopyQMixin, ADelayQMixin, ARepeatQMixin):
+class AMapQMixin(ADelayQMixin, ARepeatQMixin):
 
     def test_wrap(self):
         from stuf import stuf

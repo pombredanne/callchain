@@ -6,19 +6,19 @@ from twoq.active.mixins import AutoQMixin
 from twoq.mixins.filtering import (
     FilterMixin, CollectMixin, SetMixin, SliceMixin)
 from twoq.mixins.ordering import RandomMixin, OrderMixin
+from twoq.mixins.mapping import DelayMixin, RepeatMixin, MapMixin
 from twoq.mixins.reducing import MathMixin, TruthMixin, ReduceMixin
-from twoq.mixins.mapping import DelayMixin, CopyMixin, RepeatMixin, MapMixin
 
 from callchain.chain import ChainletQ
 from callchain.services.order import KRandom, KOrder
+from callchain.services.map import KDelay, KRepeat, KMap
 from callchain.services.reduce import KMath, KReduce, KTruth
-from callchain.services.map import KDelay, KCopy, KRepeat, KMap
 from callchain.services.filter import KCollect, KSet, KSlice, KFilter
 
 __all__ = (
     'mathchain', 'truthchain', 'reducechain', 'collectchain', 'setchain',
-    'slicechain', 'filterchain', 'delaychain', 'copychain', 'repeatchain',
-    'mapchain', 'randomchain', 'orderchain',
+    'slicechain', 'filterchain', 'delaychain', 'repeatchain', 'mapchain',
+    'randomchain', 'orderchain',
 )
 
 
@@ -26,12 +26,6 @@ __all__ = (
 class delaychain(ChainletQ, AutoQMixin, DelayMixin):
 
     '''auto-balancing delayed mapping chainlet'''
-
-
-@appifies(KCopy)
-class copychain(ChainletQ, AutoQMixin, CopyMixin):
-
-    '''auto-balancing copy chainlet'''
 
 
 @appifies(KRepeat)

@@ -6,19 +6,19 @@ from twoq.lazy.mixins import ManQMixin
 from twoq.mixins.filtering import (
     FilterMixin, CollectMixin, SetMixin, SliceMixin)
 from twoq.mixins.ordering import RandomMixin, OrderMixin
+from twoq.mixins.mapping import DelayMixin, RepeatMixin, MapMixin
 from twoq.mixins.reducing import MathMixin, TruthMixin, ReduceMixin
-from twoq.mixins.mapping import DelayMixin, CopyMixin, RepeatMixin, MapMixin
 
 from callchain.event import EventletQ
 from callchain.services.order import KRandom, KOrder
+from callchain.services.map import KDelay, KRepeat, KMap
 from callchain.services.reduce import KMath, KReduce, KTruth
-from callchain.services.map import KDelay, KCopy, KRepeat, KMap
 from callchain.services.filter import KCollect, KSet, KSlice, KFilter
 
 __all__ = (
     'mathevent', 'truthevent', 'reduceevent', 'collectevent', 'setevent',
-    'sliceevent', 'filterevent', 'delayevent', 'copyevent', 'repeatevent',
-    'mapevent', 'randomevent', 'orderevent',
+    'sliceevent', 'filterevent', 'delayevent', 'repeatevent', 'mapevent',
+    'randomevent', 'orderevent',
 )
 
 
@@ -26,12 +26,6 @@ __all__ = (
 class delayevent(EventletQ, ManQMixin, DelayMixin):
 
     '''manually balanced delayed mapping eventlet'''
-
-
-@appifies(KCopy)
-class copyevent(EventletQ, ManQMixin, CopyMixin):
-
-    '''manually balanced copy eventlet'''
 
 
 @appifies(KRepeat)
