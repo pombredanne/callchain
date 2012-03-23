@@ -12,9 +12,10 @@ from callchain.keys.events import (
 
 from callchain.mixins.core import EventMixin
 from callchain.mixins.call import EventCallMixin
-from callchain.mixins.root import EventRootMixin, LiteMixin, QRootMixin
 from callchain.mixins.branch import (
     ChainletMixin, EventBranchMixin, QBranchMixin, LinkedMixin)
+from callchain.mixins.root import EventRootMixin, LiteMixin, QRootMixin
+
 
 ###############################################################################
 ## event chain configuration ##################################################

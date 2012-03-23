@@ -19,6 +19,59 @@ class KQueue(KService):
     outgoing = Attribute('outgoing queue')
     balanced = Attribute('if queues are balanced')
 
+    def outcount():
+        '''count of outgoing things'''
+
+    def clear():
+        '''clear every thing'''
+
+    def inclear():
+        '''clear incoming things'''
+
+    def outclear():
+        '''clear outgoing things'''
+        
+    def __iter__():
+        '''yield outgoing things, clearing outgoing things as it iterates'''
+
+    def _wclear():
+        '''clear work queue'''
+
+    def _uclear():
+        '''clear utility queue'''
+
+    def ro():
+        '''switch to read-only mode'''
+
+    def ctx1(workq='incoming'):
+        '''switch to ctx1-armed context manager'''
+
+    def ctx2(workq='_work', outq='incoming'):
+        '''switch to two-armed context manager'''
+
+    def ctx3(workq='_work', outq='outgoing', inq='incoming'):
+        '''switch to three-armed context manager'''
+
+    def ctx4(**kw):
+        '''switch to four-armed context manager'''
+
+    def autoctx(**kw):
+        '''switch to auto-synchronizing context manager'''
+
+    def swap(**kw):
+        '''swap queues'''
+
+    def unswap():
+        '''rotate queues to default'''
+        
+    def rw():
+        '''rotate queues to default'''
+
+
+class KCallable(KService):
+    
+    '''current callable management key'''
+    
     def args(*args, **kw):
         '''arguments for current callable'''
 
@@ -38,32 +91,17 @@ class KQueue(KService):
     def unwrap():
         '''clear factory'''
         
+
+class KFinger(KService):  
+
+    '''manipulate queues'''
+    
     def ahead(n=None):
         '''
         move iterator n-steps ahead or, if n is `None`, consume entirely
 
         @param n: number of steps to advance (default: None)
         '''
-
-    def outcount():
-        '''count of outgoing items'''
-
-    ###########################################################################
-    ## clear queues ###########################################################
-    ###########################################################################
-
-    def clear():
-        '''clear every thing'''
-
-    def inclear():
-        '''clear incoming things'''
-
-    def outclear():
-        '''clear outgoing things'''
-
-    ###########################################################################
-    ## manipulate queues ######################################################
-    ###########################################################################
 
     def append(thing):
         '''
@@ -93,10 +131,13 @@ class KQueue(KService):
         @param thing: some things
         '''
 
-    ###########################################################################
-    ## balance queues #########################################################
-    ###########################################################################
+    def outextend(things):
+        '''
+        extend right side of outgoing things with `things`
 
+        @param thing: some things
+        '''
+        
     def reup():
         '''put incoming things in incoming things as one incoming thing'''
 
@@ -117,7 +158,7 @@ class KQueue(KService):
         '''
 
 
-class KResults(KQueue):
+class KResults(KService):
 
     def end():
         '''return outgoing things and clear out all things'''

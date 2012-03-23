@@ -2,16 +2,29 @@
 '''lazy auto-balancing event chains appconf'''
 
 from appspace.keys import appifies
-from twoq.lazy.mixins import AutoResultMixin
+from twoq.active.mixins import AutoMixin
+from twoq.mixins.queuing import ResultMixin
 
-from callchain.event import EventQ, einside
 from callchain.services.apps import events
+from callchain.event import EventQ, einside
 from callchain.services.queue import KResults
 from callchain.patterns import Pathways, Nameways
 
 
 class event(Pathways):
     chain = 'callchain.chain.chainlink'
+
+    class finger(Nameways):
+        key = 'callchain.services.queue.KFinger'
+        filter = 'callchain.lazy_auto.chainlet.fingerevent'
+
+    class result(Nameways):
+        key = 'callchain.services.queue.KResults'
+        filter = 'callchain.lazy_auto.chainlet.resultevent'
+
+    class callable(Nameways):
+        key = 'callchain.services.queue.KCallable'
+        filter = 'callchain.lazy_auto.chainlet.callableevent'
 
     class filter(Nameways):
         key = 'callchain.services.filter.KFilter'
@@ -64,6 +77,6 @@ class event(Pathways):
 
 @appifies(KResults)
 @einside(event, events)
-class eventq(EventQ, AutoResultMixin):
+class eventq(EventQ, AutoMixin, ResultMixin):
 
     '''lazy queued auto-balancing event chain'''

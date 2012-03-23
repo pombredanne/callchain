@@ -2,14 +2,27 @@
 '''lazy auto-balancing chains appconf'''
 
 from appspace.keys import appifies
-from twoq.lazy.mixins import AutoResultMixin
+from twoq.active.mixins import AutoMixin
+from twoq.mixins.queuing import ResultMixin
 
 from callchain.chain import ChainQ, inside
-from callchain.services.queue import KResults
+from callchain.services.queue import KQueue
 from callchain.patterns import Pathways, Nameways
 
 
 class callchain(Pathways):
+
+    class finger(Nameways):
+        key = 'callchain.services.queue.KFinger'
+        filter = 'callchain.lazy_auto.chainlet.fingerchain'
+
+    class result(Nameways):
+        key = 'callchain.services.queue.KResults'
+        filter = 'callchain.lazy_auto.chainlet.resultchain'
+
+    class callable(Nameways):
+        key = 'callchain.services.queue.KCallable'
+        filter = 'callchain.lazy_auto.chainlet.callablechain'
 
     class filter(Nameways):
         key = 'callchain.services.filter.KFilter'
@@ -60,8 +73,8 @@ class callchain(Pathways):
         truth = 'callchain.lazy_auto.chainlet.truthchain'
 
 
-@appifies(KResults)
+@appifies(KQueue)
 @inside(callchain)
-class chainq(ChainQ, AutoResultMixin):
+class chainq(ChainQ, AutoMixin, ResultMixin):
 
     '''lazy queued auto-balancing call chain'''
