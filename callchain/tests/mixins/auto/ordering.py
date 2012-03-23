@@ -9,7 +9,9 @@ from twoq.support import port
 class ARandomQMixin(object):
 
     def test_choice(self):
-        self.assertEqual(len(list(self.qclass(1, 2, 3, 4, 5, 6).choice())), 1)
+        self.assertEqual(len(list(
+            self.qclass(1, 2, 3, 4, 5, 6).choice()
+        )), 1)
 
     def test_sample(self):
         self.assertEqual(len(self.qclass(1, 2, 3, 4, 5, 6).sample(3).end()), 3)
