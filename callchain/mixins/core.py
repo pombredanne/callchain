@@ -131,9 +131,8 @@ class QMixin(ResetLocalMixin):
 
     def clear(self):
         '''clear queues'''
-        super(QMixin, self).clear()
         self._chain.clear()
-        return self
+        return super(QMixin, self).clear()
 
     def tap(self, call, key=False):
         '''
@@ -142,15 +141,12 @@ class QMixin(ResetLocalMixin):
         @param call: callable or appspace label
         @param key: link call chain key (default: False)
         '''
-        super(QMixin, self).tap(
+        return super(QMixin, self).tap(
             self._M.get(call, key) if isstring(call) else call
         )
-        return self
 
     def wrap(self, call, key=False):
         '''build current callable from factory'''
-        call = self._M.get(call, key) if isstring(call) else call
-        def factory(*args, **kw): #@IgnorePep8
-            return call(*args, **kw)
-        self._call = factory
-        return self
+        return super(QMixin, self).wrap(
+            self._M.get(call, key) if isstring(call) else call
+        )

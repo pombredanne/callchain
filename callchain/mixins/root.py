@@ -85,9 +85,8 @@ class RootMixin(ConfigMixin):
 
     def __call__(self, *args):
         '''new chain session'''
-        # clear call chain and queues
+        # clear call chain and queues and extend incoming things
         self.clear()
-        # extend incoming things
         self.extend(args)
         return self
 
@@ -191,8 +190,5 @@ class QRootMixin(QMixin):
         self._args = branch._args
         # sync with branch keyword arguments
         self._kw = branch._kw
-        # sync with branch incoming things
-        self.extend(branch.incoming)
-        # sync with branch outgoing things
-        self.outextend(branch.outgoing)
-        return self
+        # sync with branch incoming and outgoing things
+        return self.extend(branch.incoming).outextend(branch.outgoing)

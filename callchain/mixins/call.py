@@ -102,22 +102,12 @@ class EventCallMixin(CallMixin):
 
         @param events: event labels
         '''
-        self._work
-        self
-#        try:
-#            # clear scratch queue
-#            self._work.clear()
-#            # queue global and local bound callables
-#            self._work.extend(self._events(*events))
-#            # run event call chain until scratch queue is exhausted
-#            self.outgoing.extend(c() for c in iterexcept(
-#                self._workq.popleft, IndexError,
-#            ))
-#        finally:
-#            # clear scratch queue
-#            self._work.clear()
-        self.swap()
-        return self
+        '''switch to read-only mode'''
+        with self.ctx1(workq='_util')._sync as sync:
+            sync(self._events(*events))
+        with self.ctx3(inq='_util')._sync as sync:
+            sync(c() for c in sync.iterable)
+        return self.unswap()
 
     _efire = fire
 

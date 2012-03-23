@@ -125,8 +125,5 @@ class QBranchMixin(QMixin):
         self._kw = root._kw
         # sync with root callable
         self._call = root._call
-        # sync with root incoming things
-        self.inclear()
-        self.extend(root.incoming)
-        # sync with root outgoing things
-        self.outextend(root.outgoing)
+        # sync with root incoming things and outgoing things
+        self.inclear().extend(root.incoming).outextend(root.outgoing)
