@@ -94,7 +94,7 @@ class RootMixin(ConfigMixin):
 class EventRootMixin(RootMixin):
 
     '''root event mixin'''
-    
+
     def __init__(
         self,
         patterns=None,
@@ -159,8 +159,8 @@ class EventRootMixin(RootMixin):
         '''
         self.E.unevent(event)
         return self
-            
-            
+
+
 class LiteMixin(ResultMixin):
 
     '''lite root chain mixin'''

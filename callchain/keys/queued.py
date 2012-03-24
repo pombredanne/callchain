@@ -3,13 +3,13 @@
 #pylint: disable-msg=e0211,e0213
 '''queue keys'''
 
-from appspace.keys import AppspaceKey
+from callchain.keys.reset import KResetLocal
 
 
-class KQueued(AppspaceKey):
+class KQueued(KResetLocal):
 
     '''queued key'''
-    
+
     def clear():
         '''clear queues'''
 
@@ -23,7 +23,7 @@ class KQueued(AppspaceKey):
 
 
 class KQueuedRoot(KQueued):
-    
+
     def back(branch):
         '''
         handle return from branch chain

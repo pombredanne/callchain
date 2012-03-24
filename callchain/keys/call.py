@@ -3,10 +3,12 @@
 #pylint: disable-msg=e0211,e0213
 '''call keys'''
 
-from appspace.keys import AppspaceKey, Attribute
+from appspace.keys import Attribute
+
+from callchain.keys.reset import KResetLocal
 
 
-class KCall(AppspaceKey):
+class KCall(KResetLocal):
 
     '''call key'''
 

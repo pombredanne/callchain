@@ -5,8 +5,10 @@
 
 from appspace.keys import AppspaceKey
 
+from callchain.keys.reset import KResetLocal
 
-class KSettings(AppspaceKey):
+
+class KSettings(KResetLocal):
 
     '''settings key'''
 
@@ -19,13 +21,13 @@ class KDefaults(AppspaceKey):
 class KRequired(AppspaceKey):
 
     '''required settings key'''
-    
-    
-class KChain(AppspaceKey):
+
+
+class KChain(KResetLocal):
 
     '''chain key'''
 
-    def callchain(call, key=False, *args, **kw):
+    def chain(call, key=False, *args, **kw):
         '''
         add `call` or appspaced `call` to call callchain, partializing it with any
         passed arguments

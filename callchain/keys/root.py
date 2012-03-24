@@ -3,10 +3,12 @@
 #pylint: disable-msg=e0211,e0213
 '''root keys'''
 
-from appspace.keys import AppspaceKey, Attribute
+from appspace.keys import Attribute
+
+from callchain.keys.reset import KResetLocal
 
 
-class KConfig(AppspaceKey):
+class KConfig(KResetLocal):
 
     '''configuration access key'''
 
@@ -50,7 +52,7 @@ class KEventManager(KConfig):
         '''
 
 
-class KChainRoot(AppspaceKey):
+class KChainRoot(KResetLocal):
 
     '''root chain key'''
 

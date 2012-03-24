@@ -43,7 +43,7 @@ class CallMixin(object):
         qclass.chain('square', 'helpers', 3).chain('misc', 'subhelpers', 4)
         qclass.chain('formit', 'helpers', [1.1, 1.1, 1.1])
         qclass.commit()
-        outgoing = deque(qclass.results())
+        outgoing = deque(i for i in qclass.results())
         self.assertEqual(outgoing.popleft(), 3.0)
         self.assertEqual(outgoing.popleft(), 2)
         self.assertEqual(outgoing.popleft(), 3.3000000000000003)

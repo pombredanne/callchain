@@ -3,10 +3,12 @@
 #pylint: disable-msg=e0211,e0213
 '''branch keys'''
 
-from appspace.keys import AppspaceKey, Attribute
+from appspace.keys import Attribute
+
+from callchain.keys.reset import KResetLocal
 
 
-class KBranch(AppspaceKey):
+class KBranch(KResetLocal):
 
     ''''branch key'''
     
@@ -31,9 +33,9 @@ class KEventBranch(KBranch):
     E = Attribute('local event registry')
 
 
-class KBranchlet(AppspaceKey):
+class KBranchlet(KResetLocal):
     
-    '''rootlet key'''
+    '''branchlet key'''
 
     def back():
         '''revert to root chain'''
