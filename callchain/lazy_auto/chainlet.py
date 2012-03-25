@@ -11,7 +11,6 @@ from twoq.mixins.reducing import MathMixin, TruthMixin, ReduceMixin
 
 from callchain.chain import ChainletQ
 from callchain.services.order import KRandom, KOrder
-from callchain.services.queue import KFinger, KResults, KCallable
 from callchain.services.map import KDelay, KRepeat, KMap
 from callchain.services.reduce import KMath, KReduce, KTruth
 from callchain.services.filter import KCollect, KSet, KSlice, KFilter

@@ -103,13 +103,9 @@ class EventCallMixin(CallMixin):
         @param events: event labels
         '''
         '''switch to read-only mode'''
-        with self.ctx1(workq='_util')._sync as sync:
-            sync(self._events(*events))
-        with self.ctx3(inq='_util')._sync as sync:
-            sync(c() for c in sync.iterable)
-        return self.unswap()
-
-    _efire = fire
+        (self.ctx1(workq='_util')._extend(self._events(*events))
+        .ctx3(inq='_util', clearout=False)
+        .outextend(c() for c in self._iterable).unswap())
 
     def queues(self, *events):
         '''
