@@ -9,6 +9,11 @@ class AQMixin(object):
     ## queue manipulation #####################################################
     ###########################################################################
 
+    def test_ro(self):
+        self.assertListEqual(
+            self.qclass([1, 2, 3, 4, 5, 6]).ro().peek(), [1, 2, 3, 4, 5, 6],
+        )
+
     def test_extend(self):
         self.assertEqual(
             self.qclass().extend([1, 2, 3, 4, 5, 6]).outsync().end(),
@@ -16,7 +21,7 @@ class AQMixin(object):
         )
 
     def test_extendleft(self):
-        self.assertEqual(
+        self.assertListEqual(
             self.qclass().extendleft([1, 2, 3, 4, 5, 6]).outsync().end(),
             [6, 5, 4, 3, 2, 1]
         )
@@ -43,26 +48,26 @@ class AQMixin(object):
 
     def test_insync(self):
         q = self.qclass([1, 2, 3, 4, 5, 6]).outshift().inclear().shift()
-        self.assertEqual(list(q.incoming), list(q.outgoing))
+        self.assertListEqual(list(q.incoming), list(q.outgoing))
 
     def test_inshift(self):
         q = self.qclass([1, 2, 3, 4, 5, 6]).outshift().sync()
-        self.assertEqual(list(q.incoming), list(q.outgoing))
+        self.assertListEqual(list(q.incoming), list(q.outgoing))
 
     def test_outsync(self):
         q = self.qclass([1, 2, 3, 4, 5, 6]).outshift()
-        self.assertEqual(list(q.incoming), list(q.outgoing))
+        self.assertListEqual(list(q.incoming), list(q.outgoing))
 
     def test_outshift(self):
         q = self.qclass([1, 2, 3, 4, 5, 6]).outsync()
-        self.assertEqual(list(q.incoming), list(q.outgoing))
+        self.assertListEqual(list(q.incoming), list(q.outgoing))
 
     ##########################################################################
     # queue information ######################################################
     ##########################################################################
 
     def test_results(self):
-        self.assertEqual(
+        self.assertListEqual(
             list(self.qclass(1, 2, 3, 4, 5, 6).outsync().results()),
             [1, 2, 3, 4, 5, 6],
         )

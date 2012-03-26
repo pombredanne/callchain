@@ -101,13 +101,12 @@ class EventCallMixin(CallMixin):
 
         @param events: event labels
         '''
-        return (
-            self.ctx1(hard=True, workq='_util')
-            ._xtend(self._events(*events))
-            .ctx3(hard=True, inq='_util', clearout=False)
-            .outextend(c() for c in self._iterable)
-            .unswap()
-        )
+        self.ctx1(hard=True, workq='_util')
+        with self._context():
+            self._xtend(self._events(*events))
+        self.ctx3(hard=True, inq='_util', clearout=False)
+        with self._context():
+            return self.outextend(c() for c in self._iterable).unswap()
 
     def queues(self, *events):
         '''
@@ -115,4 +114,4 @@ class EventCallMixin(CallMixin):
 
         @param events: event labels
         '''
-        return orderedstuf((e, self._eventq(e).end()) for e in events)
+        return orderedstuf((e, self._eventq(e)) for e in events)

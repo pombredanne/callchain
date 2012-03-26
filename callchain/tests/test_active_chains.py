@@ -21,15 +21,15 @@ from callchain.tests.chain import CallMixin
 from callchain.tests.manning import Manning
 
 
-class TestCallChain(unittest.TestCase, CallMixin):
-
-    def setUp(self):
-        self.qclass = self._makeone()
-
-    @property
-    def _makeone(self):
-        from callchain.chain import callchain
-        return callchain
+#class TestCallChain(unittest.TestCase, CallMixin):
+#
+#    def setUp(self):
+#        self.qclass = self._makeone()
+#
+#    @property
+#    def _makeone(self):
+#        from callchain.chain import callchain
+#        return callchain
 
 #    def test_switch(self):
 #        qclass = self._appconf
