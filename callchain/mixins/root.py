@@ -4,13 +4,14 @@
 from operator import setitem
 from collections import deque
 
-from stuf.core import frozenstuf
+from stuf import frozenstuf
+from stuf.utils import either, lazy
 from twoq.active.mixins import ResultMixin
-from stuf.utils import either, lazy, exhaustmap
 
 from callchain.patterns import Pathways
-from callchain.mixins.resets import ResetLocalMixin
+
 from callchain.mixins.core import QMixin
+from callchain.mixins.resets import ResetLocalMixin
 
 
 class ConfigMixin(ResetLocalMixin):
@@ -35,7 +36,7 @@ class ConfigMixin(ResetLocalMixin):
     def _defaults(self):
         '''reset attribute values'''
         this = self.__dict__
-        exhaustmap(
+        self.exhaustmap(
             vars(self),
             lambda x, y: setitem(this, x.rstrip('_d'), y),
             lambda x: x[0].endswith('_d'),
@@ -86,9 +87,7 @@ class RootMixin(ConfigMixin):
     def __call__(self, *args):
         '''new chain session'''
         # clear call chain and queues and extend incoming things
-        self.clear()
-        self.extend(args)
-        return self
+        return self.clear().extend(args)
 
 
 class EventRootMixin(RootMixin):

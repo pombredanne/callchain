@@ -64,7 +64,7 @@ class ChainMixin(ResetLocalMixin):
     def _setup(self, root):
         '''call chain'''
         # chain label
-        self._callq = '_chain'
+        self._CALLQ = '_chain'
 
     def chain(self, call, key=False, *args, **kw):
         '''

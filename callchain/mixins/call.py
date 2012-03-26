@@ -3,7 +3,7 @@
 
 from appspace.builders import Appspace
 from stuf import frozenstuf, orderedstuf
-from stuf.utils import either, iterexcept, lazy, lazy_class
+from stuf.utils import either, lazy, lazy_class
 
 from callchain.keys.core import NoServiceError
 
@@ -65,10 +65,9 @@ class CallMixin(ResetLocalMixin):
 
     def commit(self):
         '''consume call chain until exhausted'''
-        self.outextend(
-            c() for c in iterexcept(self._chain.popleft, IndexError)
+        return self.outextend(
+            c() for c in self.iterexcept(self._chain.popleft, IndexError)
         )
-        return self
 
     class Meta:
         pass
@@ -102,10 +101,13 @@ class EventCallMixin(CallMixin):
 
         @param events: event labels
         '''
-        '''switch to read-only mode'''
-        (self.ctx1(workq='_util')._extend(self._events(*events))
-        .ctx3(inq='_util', clearout=False)
-        .outextend(c() for c in self._iterable).unswap())
+        return (
+            self.ctx1(hard=True, workq='_util')
+            ._xtend(self._events(*events))
+            .ctx3(hard=True, inq='_util', clearout=False)
+            .outextend(c() for c in self._iterable)
+            .unswap()
+        )
 
     def queues(self, *events):
         '''
@@ -113,4 +115,4 @@ class EventCallMixin(CallMixin):
 
         @param events: event labels
         '''
-        return orderedstuf((e, self._eventq(e).outgoing) for e in events)
+        return orderedstuf((e, self._eventq(e).end()) for e in events)

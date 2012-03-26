@@ -3,12 +3,13 @@
 
 from itertools import chain
 
+from stuf.utils import lazy
+from appspace.keys import NoAppError
+
 from callchain.managers import Events
 
-from callchain.mixins.resets import ResetLocalMixin
-from appspace.keys import NoAppError
 from callchain.mixins.core import QMixin
-from stuf.utils import lazy
+from callchain.mixins.resets import ResetLocalMixin
 
 
 class BranchMixin(ResetLocalMixin):
