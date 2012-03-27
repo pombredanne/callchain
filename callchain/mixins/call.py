@@ -5,7 +5,7 @@ from appspace.builders import Appspace
 from stuf import frozenstuf, orderedstuf
 from stuf.utils import either, lazy, lazy_class
 
-from callchain.keys.core import NoServiceError
+from callchain.keys.base import NoServiceError
 
 from callchain.mixins.resets import ResetLocalMixin
 
@@ -31,11 +31,11 @@ class CallMixin(ResetLocalMixin):
         return Appspace(self.M) if self.M is not None else None
 
     def __enter__(self):
-        '''enter context'''
+        '''enter execution context'''
         return self
 
     def __exit__(self, e, t, b):
-        '''exit context'''
+        '''exit execution context'''
         # invoke call chain
         self.commit()
 
@@ -64,10 +64,12 @@ class CallMixin(ResetLocalMixin):
         return self.M.get(label, key)(self)
 
     def commit(self):
-        '''consume call chain until exhausted'''
-        return self.outextend(
-            c() for c in self.iterexcept(self._chain.popleft, IndexError)
-        )
+        '''consume call chain'''
+        with self.ctx3():
+            self._xtend(
+                c() for c in self.iterexcept(self._chain.popleft, IndexError)
+            )
+        return self
 
     class Meta:
         pass
@@ -99,19 +101,18 @@ class EventCallMixin(CallMixin):
         '''
         run calls bound to `events` **NOW**
 
-        @param events: event labels
+        @param *events: event labels
         '''
-        self.ctx1(hard=True, workq='_util')
-        with self._context():
+        with self.ctx1(workq='_util'):
             self._xtend(self._events(*events))
-        self.ctx3(hard=True, inq='_util', clearout=False)
-        with self._context():
-            return self.outextend(c() for c in self._iterable).unswap()
+        with self.ctx3(inq='_util', clearout=False):
+            self._xtend(c() for c in self._iterable)
+            return self
 
     def queues(self, *events):
         '''
         ordered mapping of processing queues for `events`
 
-        @param events: event labels
+        @param *events: event labels
         '''
         return orderedstuf((e, self._eventq(e)) for e in events)

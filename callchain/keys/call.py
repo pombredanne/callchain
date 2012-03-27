@@ -1,7 +1,4 @@
-# -*- coding: utf-8 -*-
-#@PydevCodeAnalysisIgnore
-#pylint: disable-msg=e0211,e0213
-'''call keys'''
+# -*- coding: utf-8 -*-'''call keys'''
 
 from appspace.keys import Attribute
 
@@ -17,36 +14,36 @@ class KCall(KResetLocal):
     port = Attribute('python 2.x <-> python 3.x porting helper')
     space = Attribute('external appspace interface')
 
-    def switch(label, key=False):
-        '''
-        overt switch to linked call chain configured in external appspace
-
-        @param label: linked call chain label
-        @param key: linked call chain chain key (default: False)
-        '''
-
-    def __enter__():
+    def __enter__():  # @NoSelf
         '''enter execution context'''
 
-    def __exit__(e, t, b):
+    def __exit__(e, t, b):  # @NoSelf
         '''exit execution context'''
-    
-    def commit():
-        '''consume call chain until exhausted'''
-        
-  
+
+    def switch(label, key=False):  # @NoSelf
+        '''
+        overt switch to linked chain configured in external appspace
+
+        @param label: linked chain label
+        @param key: linked chain chain key (default: False)
+        '''
+
+    def commit():  # @NoSelf
+        '''consume call chain'''
+
+
 class KEventCall(KCall):
-    
+
     '''event call key'''
-      
-    def fire(*events):
+
+    def fire(*events):  # @NoSelf
         '''
         run calls bound to `events` **NOW**
 
         @param *events: event labels
         '''
 
-    def queues(*events):
+    def queues(*events):  # @NoSelf
         '''
         ordered mapping of processing queues for `events`
 

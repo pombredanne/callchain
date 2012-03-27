@@ -2,15 +2,12 @@
 '''root chain mixins'''
 
 from operator import setitem
-from collections import deque
 
 from stuf import frozenstuf
 from stuf.utils import either, lazy
-from twoq.active.mixins import ResultMixin
 
 from callchain.patterns import Pathways
 
-from callchain.mixins.core import QMixin
 from callchain.mixins.resets import ResetLocalMixin
 
 
@@ -51,17 +48,6 @@ class ConfigMixin(ResetLocalMixin):
         '''
         self.__dict__[key] = self.__dict__[key + '_d'] = value
 
-    def back(self, branch):
-        '''
-        handle branch chain switch
-
-        @param branch: branch object
-        '''
-        self.clear()
-        # extend root call chain with branch call chain
-        self._chain.append(branch._chain)
-        return self
-
 
 class RootMixin(ConfigMixin):
 
@@ -88,6 +74,24 @@ class RootMixin(ConfigMixin):
         '''new chain session'''
         # clear call chain and queues and extend incoming things
         return self.clear().extend(args)
+    
+    def back(self, branch):
+        '''
+        handle switch from branch chain
+
+        @param branch: branch chain
+        '''
+        self.clear()
+        # extend root call chain with branch call chain
+        self._chain.append(branch._chain)
+        # sync with branch callable
+        self._call = branch._call
+        # sync with branch postitional arguments
+        self._args = branch._args
+        # sync with branch keyword arguments
+        self._kw = branch._kw
+        # sync with branch incoming and outgoing things
+        return self.extend(branch.incoming).outextend(branch.outgoing)
 
 
 class EventRootMixin(RootMixin):
@@ -158,36 +162,3 @@ class EventRootMixin(RootMixin):
         '''
         self.E.unevent(event)
         return self
-
-
-class LiteMixin(ResultMixin):
-
-    '''lite root chain mixin'''
-
-    def _setup(self, root):
-        '''configure chain'''
-        self.outgoing = deque()
-        # outgoing things right extend
-        self.outextend = self.outgoing.extend
-        super(LiteMixin, self)._setup(root)
-
-
-class QRootMixin(QMixin):
-
-    '''queued root mixin'''
-
-    def back(self, branch):
-        '''
-        handle switch from branch chain
-
-        @param branch: branch chain
-        '''
-        super(QRootMixin, self).back(branch)
-        # sync with branch callable
-        self._call = branch._call
-        # sync with branch postitional arguments
-        self._args = branch._args
-        # sync with branch keyword arguments
-        self._kw = branch._kw
-        # sync with branch incoming and outgoing things
-        return self.extend(branch.incoming).outextend(branch.outgoing)

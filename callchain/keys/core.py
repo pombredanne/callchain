@@ -1,47 +1,42 @@
 # -*- coding: utf-8 -*-
-#@PydevCodeAnalysisIgnore
-#pylint: disable-msg=e0211,e0213
 '''callchain core keys'''
-
-from appspace.keys import AppspaceKey
 
 from callchain.keys.reset import KResetLocal
 
 
-class KSettings(KResetLocal):
-
-    '''settings key'''
-
-
-class KDefaults(AppspaceKey):
-
-    '''default settings key'''
-
-
-class KRequired(AppspaceKey):
-
-    '''required settings key'''
-
-
-class KChain(KResetLocal):
+class KChainKey(KResetLocal):
 
     '''chain key'''
 
-    def chain(call, key=False, *args, **kw):
+    def chain(call, key=False, *args, **kw):  # @NoSelf
         '''
-        add `call` or appspaced `call` to call callchain, partializing it with any
+        add `call` or appspaced `call` to call chain, partializing it with any
         passed arguments
 
         @param call: call or appspaced call label
         @param key: appspace key (default: False)
         '''
 
+    def clear():  # @NoSelf
+        '''clear things'''
 
-class KEvent(KChain):
+    def tap(call, key=False):  # @NoSelf
+        '''
+        add call
+
+        @param call: callable or appspace label
+        @param key: link call chain key (default: False)
+        '''
+
+    def wrap(call, key=False):  # @NoSelf
+        '''build current callable from factory'''
+
+
+class KEvent(KChainKey):
 
     '''event chain key'''
 
-    def on(event, call, key=False, *args, **kw):
+    def on(event, call, key=False, *args, **kw):  # @NoSelf
         '''
         bind call to `event`
 
@@ -50,22 +45,16 @@ class KEvent(KChain):
         @param key: key label (default: False)
         '''
 
-    def off(event):
+    def off(event):  # @NoSelf
         '''
         clear calls bound to `event`
 
         @param event: event label
         '''
 
-    def trigger(*events):
+    def trigger(*events):  # @NoSelf
         '''
-        extend primary call callchain with partials bound to `events`
-        
+        extend primary call chain with partials bound to `events`
+
         @param *events: event labels
         '''
-
-
-
-class NoServiceError(Exception):
-
-    '''no service error'''

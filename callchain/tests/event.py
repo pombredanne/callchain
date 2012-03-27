@@ -7,7 +7,7 @@ class EventChainMixin(object):
     @property
     def _appconf(self):
         from math import ceil, fabs
-        from callchain.chain import chainlink
+        from callchain.lazy_auto.chainlet import chainlink
         from callchain.patterns import Pathways, Nameways
         class testlink(chainlink): #@IgnorePep8
             def foo(self, x):

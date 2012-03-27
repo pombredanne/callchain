@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-#@PydevCodeAnalysisIgnore
-# pylint: disable-msg=e0211,e0213
 '''mapping services keys'''
 
 from callchain.services.queue import KService
@@ -10,7 +8,7 @@ class KDelay(KService):
 
     '''delayed map key'''
 
-    def delay_each(wait):
+    def delay_each(wait):  # @NoSelf
         '''
         invoke call with passed arguments, keywords in incoming things after
         delay `wait`
@@ -18,7 +16,7 @@ class KDelay(KService):
         @param wait: time in seconds
         '''
 
-    def delay_invoke(name, wait):
+    def delay_invoke(name, wait):  # @NoSelf
         '''
         invoke method `name` on each incoming thing with passed arguments,
         keywords after delay `wait` but return incoming thing instead if method
@@ -28,7 +26,7 @@ class KDelay(KService):
         @param wait: time in seconds
         '''
 
-    def delay_map(wait):
+    def delay_map(wait):  # @NoSelf
         '''
         invoke call on each incoming thing after delay `wait`
 
@@ -39,14 +37,14 @@ class KDelay(KService):
 class KRepeat(KService):
 
     '''repetition key'''
-    
-    def copy(self):
+
+    def copy():  # @NoSelf
         '''copy each incoming thing'''
 
-    def padnone():
-        '''incoming things and then `None` indefinitely'''
+    def padnone():  # @NoSelf
+        '''repeat incoming things and then `None` indefinitely'''
 
-    def range(start, stop=0, step=1):
+    def range(start, stop=0, step=1):  # @NoSelf
         '''
         put sequence of numbers in incoming things
 
@@ -55,19 +53,18 @@ class KRepeat(KService):
         @param step: number of steps to advance per iteration (default: 1)
         '''
 
-    def repeat(n):
+    def repeat(n):  # @NoSelf
         '''
         repeat incoming things `n` times
 
         @param n: number of times to repeat
         '''
 
-    def times(n=None):
+    def times(n=None):  # @NoSelf
         '''
         repeat call with incoming things `n` times
 
-        @param n: number of times to repeat calls with incoming things 
-            (default: None)
+        @param n: repeat call n times on incoming things (default: None)
         '''
 
 
@@ -75,10 +72,10 @@ class KMap(KService):
 
     '''mapping key'''
 
-    def each():
-        '''invoke call with passed arguments, keywords in incoming things'''
+    def map():  # @NoSelf
+        '''invoke call on each incoming thing'''
 
-    def invoke(name):
+    def invoke(name):  # @NoSelf
         '''
         invoke method `name` on each incoming thing with passed arguments,
         keywords but return incoming thing instead if method returns `None`
@@ -86,11 +83,11 @@ class KMap(KService):
         @param name: name of method
         '''
 
-    def items():
-        '''invoke call on each mapping to get key, value pairs'''
+    def each():  # @NoSelf
+        '''invoke call with passed arguments, keywords in incoming things'''
 
-    def map():
-        '''invoke call on each incoming thing'''
-
-    def starmap():
+    def starmap():  # @NoSelf
         '''invoke call on each sequence of incoming things'''
+
+    def items():  # @NoSelf
+        '''invoke call on each mapping to get key, value pairs'''

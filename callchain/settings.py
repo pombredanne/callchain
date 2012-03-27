@@ -9,7 +9,7 @@ from appspace.keys import appifies
 from stuf.utils import deepget, lazy_set, setter
 
 from callchain.mixins.resets import ResetLocalMixin
-from callchain.keys.core import KDefaults, KRequired, KSettings
+from callchain.keys.base import KDefaults, KRequired, KSettings
 
 __all__ = ('DefaultSettings', 'RequiredSettings', 'Settings')
 

@@ -18,7 +18,7 @@ class MMathQMixin(object):
             stuf(name='larry', age=50),
             stuf(name='curly', age=60),
         ]
-        manq = self.qclass(*stooges).tap(lambda x: x.age).max()
+        manq = self.qclass(*stooges).tap(lambda x: x.age).max().back()
         self.assertFalse(manq.balanced)
         manq.sync()
         self.assertTrue(manq.balanced)

@@ -8,7 +8,6 @@ from appspace.keys import NoAppError
 
 from callchain.managers import Events
 
-from callchain.mixins.core import QMixin
 from callchain.mixins.resets import ResetLocalMixin
 
 
@@ -33,6 +32,14 @@ class BranchMixin(ResetLocalMixin):
         self.M = root.M
         # root external global settings
         self.G = root.G if self.M else None
+        # sync with root postitional arguments
+        self._args = root._args
+        # sync with root keyword arguments
+        self._kw = root._kw
+        # sync with root callable
+        self._call = root._call
+        # sync with root incoming things and outgoing things
+        self.inclear().extend(root.incoming).outextend(root.outgoing)
 
 
 class EventBranchMixin(BranchMixin):
@@ -105,26 +112,5 @@ class ChainletMixin(ResetLocalMixin):
         self.__dict__[key] = self.root.__dict__[key] = value
 
     def back(self):
-        '''switch vack to root chain'''
+        '''switch back to root chain'''
         return self.root.back(self)
-
-
-class QBranchMixin(QMixin):
-
-    '''queued branch mixin'''
-
-    def _setup(self, root):
-        '''
-        configure branch chain
-
-        @param root: root chain
-        '''
-        super(QBranchMixin, self)._setup(root)
-        # sync with root postitional arguments
-        self._args = root._args
-        # sync with root keyword arguments
-        self._kw = root._kw
-        # sync with root callable
-        self._call = root._call
-        # sync with root incoming things and outgoing things
-        self.inclear().extend(root.incoming).outextend(root.outgoing)

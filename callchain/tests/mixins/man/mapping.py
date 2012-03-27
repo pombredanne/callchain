@@ -37,7 +37,7 @@ class MRepeatQMixin(object):
 
     def test_copy(self):
         testlist = [[1, [2, 3]], [4, [5, 6]]]
-        manq = self.qclass(testlist).copy()
+        manq = self.qclass(testlist).copy().back()
         self.assertTrue(manq.balanced)
         manq.sync()
         self.assertTrue(manq.balanced)

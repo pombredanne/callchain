@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-'''fluent mixins'''
+'''callchain core mixins'''
 
 from itertools import chain
 from collections import deque
 from functools import partial
 
-from stuf.utils import imap, lazy
+from stuf.utils import lazy
 from twoq.support import isstring
 from appspace.keys import AppLookupError, NoAppError
 
@@ -62,7 +62,7 @@ class ChainMixin(ResetLocalMixin):
         return deque()
 
     def _setup(self, root):
-        '''call chain'''
+        '''call chain setup'''
         # chain label
         self._CALLQ = '_chain'
 
@@ -81,6 +81,28 @@ class ChainMixin(ResetLocalMixin):
         self._chain.append(call)
         return self
 
+    def clear(self):
+        '''clear things'''
+        self._chain.clear()
+        return super(ChainMixin, self).clear()
+
+    def tap(self, call, key=False):
+        '''
+        add call
+
+        @param call: callable or appspace label
+        @param key: link call chain key (default: False)
+        '''
+        return super(ChainMixin, self).tap(
+            self._M.get(call, key) if isstring(call) else call
+        )
+
+    def wrap(self, call, key=False):
+        '''build current callable from factory'''
+        return super(ChainMixin, self).wrap(
+            self._M.get(call, key) if isstring(call) else call
+        )
+
 
 class EventMixin(ChainMixin):
 
@@ -93,7 +115,7 @@ class EventMixin(ChainMixin):
 
     def _events(self, *events):
         '''calls bound to `events`'''
-        return chain(*tuple(imap(self._event, events)))
+        return chain(*tuple(self._imap(self._event, events)))
 
     def on(self, event, call, key=False, *args, **kw):
         '''
@@ -123,30 +145,3 @@ class EventMixin(ChainMixin):
         '''
         self._chain.extend(self._events(*events))
         return self
-
-
-class QMixin(ResetLocalMixin):
-
-    '''queued chain mixin'''
-
-    def clear(self):
-        '''clear queues'''
-        self._chain.clear()
-        return super(QMixin, self).clear()
-
-    def tap(self, call, key=False):
-        '''
-        add call
-
-        @param call: callable or appspace label
-        @param key: link call chain key (default: False)
-        '''
-        return super(QMixin, self).tap(
-            self._M.get(call, key) if isstring(call) else call
-        )
-
-    def wrap(self, call, key=False):
-        '''build current callable from factory'''
-        return super(QMixin, self).wrap(
-            self._M.get(call, key) if isstring(call) else call
-        )
