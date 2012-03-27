@@ -14,6 +14,7 @@ from callchain.keys.root import KConfig
 from callchain.keys.core import KChainKey
 from callchain.keys.branch import KLinkedKey
 from callchain.chain import Chainlet, Linked
+from callchain.services.queue import KResult
 from callchain.services.order import KRandom, KOrder
 from callchain.services.map import KDelay, KRepeat, KMap
 from callchain.services.reduce import KMath, KReduce, KTruth
@@ -98,7 +99,7 @@ class truthchain(Chainlet, AutoQMixin, TruthMixin):
     '''auto-balancing truthing chainlet'''
 
 
-@appifies(KLinkedKey, KConfig, KCall, KChainKey. KResult)
+@appifies(KLinkedKey, KConfig, KCall, KChainKey, KResult)
 class chainlink(Linked, AutoResultMixin):
 
     '''auto-balancing linked chain'''

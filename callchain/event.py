@@ -49,7 +49,7 @@ class Event(EventCallMixin, EventRootMixin, EventMixin):
     '''event chain'''
 
 
-class EventLink(LinkedMixin, EventBranchMixin, EventCallMixin, EventMixin):
+class EventLink(EventCallMixin, EventBranchMixin, EventMixin, LinkedMixin):
 
     '''linked event chain'''
 

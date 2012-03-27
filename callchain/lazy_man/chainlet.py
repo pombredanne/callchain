@@ -18,6 +18,7 @@ from callchain.services.order import KRandom, KOrder
 from callchain.services.map import KDelay, KRepeat, KMap
 from callchain.services.reduce import KMath, KReduce, KTruth
 from callchain.services.filter import KCollect, KSet, KSlice, KFilter
+from callchain.services.queue import KResult
 
 __all__ = (
     'mathchain', 'truthchain', 'reducechain', 'collectchain', 'setchain',
@@ -98,7 +99,7 @@ class truthchain(Chainlet, ManQMixin, TruthMixin):
     '''manually balanced truthing chainlet'''
 
 
-@appifies(KLinkedKey, KConfig, KCall, KChainKey. KResult)
+@appifies(KLinkedKey, KConfig, KCall, KChainKey, KResult)
 class chainlink(Linked, ManResultMixin):
 
     '''manually balanced linked chain'''

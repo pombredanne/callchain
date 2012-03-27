@@ -17,8 +17,8 @@ class baseevent(Pathways):
     chain = 'callchain.lazy_auto.chainlet.chainlink'
 
 
-class event(baseevent):
-    chain = 'callchain.lazy_auto.chainlet.chainlink'
+class event(Pathways):
+    chain = 'callchain.lazy_man.chainlet.chainlink'
 
     class filter(Nameways):
         key = 'callchain.services.filter.KFilter'

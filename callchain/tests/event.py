@@ -27,6 +27,7 @@ class EventChainMixin(object):
 
     def test_pure_on(self):
         from math import fsum, floor, sqrt
+        from collections import deque
         self.qclass.on('before', floor, 1)
         self.qclass.on('before', fsum, [1.1, 1.1, 1.1]).on('before', sqrt, 1)
         self.qclass.on('work', floor, 2)
@@ -39,28 +40,29 @@ class EventChainMixin(object):
         self.qclass.on('anyway', fsum, [1.1, 1.1, 1.1]).on('anyway', sqrt, 5)
         self.qclass.commit()
         queues = self.qclass.queues('before', 'work', 'any', 'after', 'anyway')
-        outgoing = queues['before']
+        outgoing = deque(queues['before'])
         self.assertEqual(outgoing.popleft(), 1.0)
         self.assertEqual(outgoing.popleft(), 3.3000000000000003)
         self.assertEqual(outgoing.popleft(), 1.0)
-        outgoing = queues['work']
+        outgoing = deque(queues['work'])
         self.assertEqual(outgoing.popleft(), 2.0)
         self.assertEqual(outgoing.popleft(), 3.3000000000000003)
         self.assertEqual(outgoing.popleft(), 1.4142135623730951)
-        outgoing = queues['any']
+        outgoing = deque(queues['any'])
         self.assertEqual(outgoing.popleft(), 3.0)
         self.assertEqual(outgoing.popleft(), 3.3000000000000003)
         self.assertEqual(outgoing.popleft(), 1.7320508075688772)
-        outgoing = queues['after']
+        outgoing = deque(queues['after'])
         self.assertEqual(outgoing.popleft(), 4.0)
         self.assertEqual(outgoing.popleft(), 3.3000000000000003)
         self.assertEqual(outgoing.popleft(), 2)
-        outgoing = queues['anyway']
+        outgoing = deque(queues['anyway'])
         self.assertEqual(outgoing.popleft(), 5.0)
         self.assertEqual(outgoing.popleft(), 3.3000000000000003)
         self.assertEqual(outgoing.popleft(), 2.23606797749979)
 
     def test_appspaced_on(self):
+        from collections import deque
         qclass = self._appconf
         qclass.on('before', 'square', 'helpers', 1)
         qclass.on('before', 'formit', 'helpers',  [1.1, 1.1, 1.1]).on(
@@ -84,23 +86,23 @@ class EventChainMixin(object):
         )
         qclass.commit()
         queues = qclass.queues('before', 'work', 'any', 'after', 'anyway')
-        outgoing = queues['before']
+        outgoing = deque(queues['before'])
         self.assertEqual(outgoing.popleft(), 1.0)
         self.assertEqual(outgoing.popleft(), 3.3000000000000003)
         self.assertEqual(outgoing.popleft(), 1.0)
-        outgoing = queues['work']
+        outgoing = deque(queues['work'])
         self.assertEqual(outgoing.popleft(), 2.0)
         self.assertEqual(outgoing.popleft(), 3.3000000000000003)
         self.assertEqual(outgoing.popleft(), 1.4142135623730951)
-        outgoing = queues['any']
+        outgoing = deque(queues['any'])
         self.assertEqual(outgoing.popleft(), 3.0)
         self.assertEqual(outgoing.popleft(), 3.3000000000000003)
         self.assertEqual(outgoing.popleft(), 1.7320508075688772)
-        outgoing = queues['after']
+        outgoing = deque(queues['after'])
         self.assertEqual(outgoing.popleft(), 4.0)
         self.assertEqual(outgoing.popleft(), 3.3000000000000003)
         self.assertEqual(outgoing.popleft(), 2)
-        outgoing = queues['anyway']
+        outgoing = deque(queues['anyway'])
         self.assertEqual(outgoing.popleft(), 5.0)
         self.assertEqual(outgoing.popleft(), 3.3000000000000003)
         self.assertEqual(outgoing.popleft(), 2.23606797749979)
