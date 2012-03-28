@@ -1,19 +1,17 @@
 # -*- coding: utf-8 -*-
-'''callchain core'''
+'''callchain core mixins'''
 
-from appspace.keys import appifies
+from itertools import chain
+from collections import deque
+from functools import partial
+
+from stuf.utils import lazy
+from twoq.support import isstring
+from appspace.keys import AppLookupError, NoAppError
 
 from callchain.managers import Events
 from callchain.patterns import Pathways
-from callchain.keys.core import KChain, KEvent
-from callchain.keys.root import KRoot, KEventRoot
-from callchain.keys.call import KCall, KEventCall
-from callchain.base import ChainMixin, EventMixin
-from callchain.root import RootMixin, EventRootMixin
-from callchain.call import CallMixin, EventCallMixin
-from callchain.branch import (
-    BranchMixin, BranchletMixin, ChainletMixin, EventBranchMixin, LinkedMixin)
-
+from callchain.resets import ResetLocalMixin
 
 ###############################################################################
 ## chain components ###########################################################
@@ -54,20 +52,87 @@ class inside(object):
         return that
 
 
-@appifies(KRoot, KChain, KCall)
-class Chain(CallMixin, RootMixin, ChainMixin):
+class ChainMixin(ResetLocalMixin):
 
-    '''call chain'''
+    '''chain mixin'''
 
+    def __getattr__(self, label):
+        try:
+            return object.__getattribute__(self, label)
+        except AttributeError:
+            return self._load(label)
 
-class Linked(CallMixin, BranchMixin, LinkedMixin, ChainMixin):
+    def _load(self, label):
+        '''
+        load thing from appspace
 
-    '''linked chain'''
+        @param label: label of appspaced thing
+        '''
+        _M = self._M
+        try:
+            # get appspace thing
+            thing = _M.get(label, _M._current)
+        except AppLookupError:
+            try:
+                # verify namespace
+                _M.namespace(label)
+            except AppLookupError:
+                raise NoAppError(label)
+            else:
+                # temporarily swap current label
+                _M._current = label
+                return self
+        else:
+            # set current label back to root label
+            _M._current = _M._root
+            return thing
 
+    @lazy
+    def _chain(self):
+        '''call chain queue'''
+        return deque()
 
-class Chainlet(ChainletMixin, BranchletMixin, BranchMixin, ChainMixin):
+    def _setup(self, root):
+        '''call chain setup'''
+        # chain label
+        self._CALLQ = '_chain'
 
-    '''chainlet'''
+    def chain(self, call, key=False, *args, **kw):
+        '''
+        add `call` or appspaced `call` to call chain, partializing it with any
+        passed arguments
+
+        @param call: call or appspaced call label
+        @param key: appspace key (default: False)
+        '''
+        if not isstring(call):
+            call = partial(call, *(key,) + args, **kw)
+        else:
+            call = partial(self.M.get(call, key), *args, **kw)
+        self._chain.append(call)
+        return self
+
+    def clear(self):
+        '''clear things'''
+        self._chain.clear()
+        return super(ChainMixin, self).clear()
+
+    def tap(self, call, key=False):
+        '''
+        add call
+
+        @param call: callable or appspace label
+        @param key: link call chain key (default: False)
+        '''
+        return super(ChainMixin, self).tap(
+            self._M.get(call, key) if isstring(call) else call
+        )
+
+    def wrap(self, call, key=False):
+        '''build current callable from factory'''
+        return super(ChainMixin, self).wrap(
+            self._M.get(call, key) if isstring(call) else call
+        )
 
 
 ###############################################################################
@@ -108,17 +173,44 @@ class einside(inside):
         return that
 
 
-@appifies(KEventRoot, KEvent, KEventCall)
-class Event(EventCallMixin, EventRootMixin, EventMixin):
+class EventMixin(ChainMixin):
 
-    '''event chain'''
+    '''event chain mixin'''
 
+    @property
+    def _linkedchain(self):
+        '''new linked chain'''
+        return self._M.get('chain', 'event')(self)
 
-class EventLink(EventCallMixin, EventBranchMixin, LinkedMixin, EventMixin):
+    def _events(self, *events):
+        '''calls bound to `events`'''
+        return chain(*tuple(self._imap(self._event, events)))
 
-    '''linked event chain'''
+    def on(self, event, call, key=False, *args, **kw):
+        '''
+        bind call to `event`
 
+        @param event: event label
+        @param call: label for call or eventspaced thing
+        @param key: key label (default: False)
+        '''
+        self._eventq(event).chain(call, key, *args, **kw)
+        return self
 
-class Eventlet(ChainletMixin, EventBranchMixin, BranchletMixin, EventMixin):
+    def off(self, event):
+        '''
+        clear calls bound to `event`
 
-    '''eventlet'''
+        @param event: event label
+        '''
+        self.E.unset(event)
+        return self
+
+    def trigger(self, *events):
+        '''
+        extend primary call chain with partials bound to `events`
+
+        @param *events: event labels
+        '''
+        self._chain.extend(self._events(*events))
+        return self

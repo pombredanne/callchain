@@ -3,10 +3,10 @@
 
 from appspace.keys import Attribute
 
-from callchain.keys.reset import KResetLocal
+from callchain.keys.reset import KCore
 
 
-class KBranch(KResetLocal):
+class KBranch(KCore):
 
     ''''branch key'''
 
@@ -15,13 +15,6 @@ class KBranch(KResetLocal):
     _G = Attribute('root internal global settings')
     _M = Attribute('root internal appspace manager')
     root = Attribute('root object')
-
-    def __init__(root):  # @NoSelf
-        '''
-        init
-
-        @param root: root chain
-        '''
 
 
 class KEventBranch(KBranch):

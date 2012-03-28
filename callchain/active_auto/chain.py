@@ -4,7 +4,14 @@
 from appspace.keys import appifies
 from twoq.active.mixins import AutoResultMixin, AutoQMixin
 
-from callchain.core import Chain, inside
+from callchain.core import inside
+from callchain.root import RootMixin
+from callchain.call import CallMixin
+from callchain.keys.root import KRoot
+from callchain.keys.call import KCall
+from callchain.core import ChainMixin
+from callchain.keys.core import KChain
+
 from callchain.patterns import Pathways, Nameways
 from callchain.services.queue import KThings, KResult
 
@@ -17,9 +24,9 @@ class thingchain(Pathways):
     link = 'callchain.active_auto.chainlet.chainlink'
 
 
-@appifies(KThings)
+@appifies(KThings, KRoot, KChain, KCall)
 @inside(thingchain)
-class callchain(Chain, AutoQMixin):
+class callchain(CallMixin, RootMixin, ChainMixin, AutoQMixin):
 
     '''active queued auto-balancing lite call chain'''
 
@@ -28,7 +35,9 @@ class callchain(Chain, AutoQMixin):
 ## result chain ###############################################################
 ###############################################################################
 
+
 class chain(Pathways):
+    link = 'callchain.active_auto.chainlet.chainlink'
 
     class filter(Nameways):
         key = 'callchain.services.filter.KFilter'
@@ -79,8 +88,8 @@ class chain(Pathways):
         truth = 'callchain.active_auto.chainlet.truthchain'
 
 
-@appifies(KResult)
+@appifies(KResult, KRoot, KChain, KCall)
 @inside(chain)
-class chainq(Chain, AutoResultMixin):
+class chainq(CallMixin, RootMixin, ChainMixin, AutoResultMixin):
 
     '''active queued auto-balancing call chain'''

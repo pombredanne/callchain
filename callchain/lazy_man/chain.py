@@ -4,7 +4,14 @@
 from appspace.keys import appifies
 from twoq.lazy.mixins import ManResultMixin, ManQMixin
 
-from callchain.core import Chain, inside
+from callchain.core import inside
+from callchain.root import RootMixin
+from callchain.call import CallMixin
+from callchain.keys.root import KRoot
+from callchain.keys.call import KCall
+from callchain.core import ChainMixin
+from callchain.keys.core import KChain
+
 from callchain.patterns import Pathways, Nameways
 from callchain.services.queue import KThings, KResult
 
@@ -17,9 +24,9 @@ class thingchain(Pathways):
     link = 'callchain.lazy_man.chainlet.chainlink'
 
 
-@appifies(KThings)
+@appifies(KThings, KRoot, KChain, KCall)
 @inside(thingchain)
-class callchain(Chain, ManQMixin):
+class callchain(CallMixin, RootMixin, ChainMixin, ManQMixin):
 
     ''''lazy queued manually balanced lite call chain'''
 
@@ -30,6 +37,7 @@ class callchain(Chain, ManQMixin):
 
 
 class chain(Pathways):
+    link = 'callchain.lazy_man.chainlet.chainlink'
 
     class filter(Nameways):
         key = 'callchain.services.filter.KFilter'
@@ -80,8 +88,8 @@ class chain(Pathways):
         truth = 'callchain.lazy_man.chainlet.truthchain'
 
 
-@appifies(KResult)
+@appifies(KResult, KRoot, KChain, KCall)
 @inside(chain)
-class chainq(Chain, ManResultMixin):
+class chainq(CallMixin, RootMixin, ChainMixin, ManResultMixin):
 
     '''lazy queued manually balanced call chain'''

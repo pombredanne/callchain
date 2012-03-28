@@ -9,16 +9,19 @@ from twoq.mixins.ordering import RandomMixin, OrderMixin
 from twoq.mixins.mapping import DelayMixin, RepeatMixin, MapMixin
 from twoq.mixins.reducing import MathMixin, TruthMixin, ReduceMixin
 
+from callchain.call import CallMixin
 from callchain.keys.call import KCall
-from callchain.keys.root import KConfig
 from callchain.keys.core import KChain
+from callchain.core import ChainMixin
+from callchain.keys.root import KConfig
 from callchain.keys.branch import KLinked
-from callchain.core import Chainlet, Linked
+from callchain.services.queue import KResult
 from callchain.services.order import KRandom, KOrder
 from callchain.services.map import KDelay, KRepeat, KMap
 from callchain.services.reduce import KMath, KReduce, KTruth
+from callchain.branch import (
+    BranchMixin, BranchletMixin, ChainletMixin, LinkedMixin)
 from callchain.services.filter import KCollect, KSet, KSlice, KFilter
-from callchain.services.queue import KResult
 
 __all__ = (
     'mathchain', 'truthchain', 'reducechain', 'collectchain', 'setchain',
@@ -28,78 +31,164 @@ __all__ = (
 
 
 @appifies(KDelay)
-class delaychain(Chainlet, AutoQMixin, DelayMixin):
+class delaychain(
+    ChainletMixin,
+    BranchletMixin,
+    BranchMixin,
+    ChainMixin,
+    AutoQMixin,
+    DelayMixin,
+):
 
     '''lazy balanced delayed mapping chainlet'''
 
 
 @appifies(KRepeat)
-class repeatchain(Chainlet, AutoQMixin, RepeatMixin):
+class repeatchain(
+    ChainletMixin,
+    BranchletMixin,
+    BranchMixin,
+    ChainMixin,
+    AutoQMixin,
+    RepeatMixin,
+):
 
     '''lazy balanced repeat chainlet'''
 
 
 @appifies(KMap)
-class mapchain(Chainlet, AutoQMixin, MapMixin):
+class mapchain(
+    ChainletMixin,
+    BranchletMixin,
+    BranchMixin,
+    ChainMixin,
+    AutoQMixin,
+    MapMixin,
+):
 
     '''lazy balanced mapping chainlet'''
 
 
 @appifies(KCollect)
-class collectchain(Chainlet, AutoQMixin, CollectMixin):
+class collectchain(
+    ChainletMixin,
+    BranchletMixin,
+    BranchMixin,
+    ChainMixin,
+    AutoQMixin,
+    CollectMixin,
+):
 
     '''lazy balanced collecting chainlet'''
 
 
 @appifies(KSet)
-class setchain(Chainlet, AutoQMixin, SetMixin):
+class setchain(
+    ChainletMixin,
+    BranchletMixin,
+    BranchMixin,
+    ChainMixin,
+    AutoQMixin,
+    SetMixin,
+):
 
     '''lazy balanced seting chainlet'''
 
 
 @appifies(KSlice)
-class slicechain(Chainlet, AutoQMixin, SliceMixin):
+class slicechain(
+    ChainletMixin,
+    BranchletMixin,
+    BranchMixin,
+    ChainMixin,
+    AutoQMixin,
+    SliceMixin,
+):
 
     '''lazy balanced slicing chainlet'''
 
 
 @appifies(KFilter)
-class filterchain(Chainlet, AutoQMixin, FilterMixin):
+class filterchain(
+    ChainletMixin,
+    BranchletMixin,
+    BranchMixin,
+    ChainMixin,
+    AutoQMixin,
+    FilterMixin,
+):
 
     '''lazy balanced filtering chainlet'''
 
 
 @appifies(KRandom)
-class randomchain(Chainlet, AutoQMixin, RandomMixin):
+class randomchain(
+    ChainletMixin,
+    BranchletMixin,
+    BranchMixin,
+    ChainMixin,
+    AutoQMixin,
+    RandomMixin,
+):
 
     '''lazy balanced randomizing chainlet'''
 
 
 @appifies(KOrder)
-class orderchain(Chainlet, AutoQMixin, OrderMixin):
+class orderchain(
+    ChainletMixin,
+    BranchletMixin,
+    BranchMixin,
+    ChainMixin,
+    AutoQMixin,
+    OrderMixin,
+):
 
     '''lazy balanced ordering chainlet'''
 
 
 @appifies(KMath)
-class mathchain(Chainlet, AutoQMixin, MathMixin):
+class mathchain(
+    ChainletMixin,
+    BranchletMixin,
+    BranchMixin,
+    ChainMixin,
+    AutoQMixin,
+    MathMixin,
+):
 
     '''lazy balanced mathing chainlet'''
 
 
 @appifies(KReduce)
-class reducechain(Chainlet, AutoQMixin, ReduceMixin):
+class reducechain(
+    ChainletMixin,
+    BranchletMixin,
+    BranchMixin,
+    ChainMixin,
+    AutoQMixin,
+    ReduceMixin,
+):
 
     '''lazy balanced reducing chainlet'''
 
 
 @appifies(KTruth)
-class truthchain(Chainlet, AutoQMixin, TruthMixin):
+class truthchain(
+    ChainletMixin,
+    BranchletMixin,
+    BranchMixin,
+    ChainMixin,
+    AutoQMixin,
+    TruthMixin,
+):
 
     '''lazy balanced truthing chainlet'''
 
 
 @appifies(KLinked, KConfig, KCall, KChain, KResult)
-class chainlink(Linked, AutoResultMixin):
+class chainlink(
+    CallMixin, BranchMixin, LinkedMixin, ChainMixin, AutoResultMixin,
+):
 
     '''lazy balanced linked chain'''

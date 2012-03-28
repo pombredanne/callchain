@@ -1,18 +1,7 @@
 # -*- coding: utf-8 -*-
 '''root chain keys'''
 
-from appspace.keys import Attribute
-
-from callchain.keys.reset import KResetLocal
-
-
-class KConfig(KResetLocal):
-
-    '''configuration access key'''
-
-    defaults = Attribute('default settings by their lonesome')
-    required = Attribute('required settings by their lonesome')
-    G = Attribute('external application global settings')
+from callchain.keys.reset import KConfig
 
 
 class KRoot(KConfig):
