@@ -8,7 +8,7 @@ from stuf import frozenstuf
 from appspace.keys import appifies
 from stuf.utils import deepget, lazy_set, setter
 
-from callchain.mixins.resets import ResetLocalMixin
+from callchain.resets import ResetLocalMixin
 from callchain.keys.base import KDefaults, KRequired, KSettings
 
 __all__ = ('DefaultSettings', 'RequiredSettings', 'Settings')

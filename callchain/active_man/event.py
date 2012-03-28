@@ -5,7 +5,7 @@ from appspace.keys import appifies
 from twoq.active.mixins import ManResultMixin, ManQMixin
 
 from callchain.keys.core import KEvent
-from callchain.event import einside, Event
+from callchain.core import einside, Event
 from callchain.keys.call import KEventCall
 from callchain.keys.root import KEventRoot
 from callchain.services.apps import events

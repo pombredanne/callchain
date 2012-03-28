@@ -6,7 +6,7 @@ from twoq.lazy.mixins import AutoResultMixin, AutoQMixin
 
 from callchain.keys.root import KRoot
 from callchain.keys.call import KCall
-from callchain.chain import Chain, inside
+from callchain.core import Chain, inside
 from callchain.keys.core import KChainKey
 from callchain.patterns import Pathways, Nameways
 from callchain.services.queue import KThings, KResult

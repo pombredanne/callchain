@@ -13,7 +13,7 @@ from callchain.keys.call import KCall
 from callchain.keys.root import KConfig
 from callchain.keys.core import KChainKey
 from callchain.keys.branch import KLinkedKey
-from callchain.chain import Chainlet, Linked
+from callchain.core import Chainlet, Linked
 from callchain.services.order import KRandom, KOrder
 from callchain.services.map import KDelay, KRepeat, KMap
 from callchain.services.reduce import KMath, KReduce, KTruth

@@ -9,21 +9,12 @@ from stuf.utils import lazy
 from twoq.support import isstring
 from appspace.keys import AppLookupError, NoAppError
 
-from callchain.mixins.resets import ResetLocalMixin
+from callchain.resets import ResetLocalMixin
 
 
 class ChainMixin(ResetLocalMixin):
 
     '''chain mixin'''
-
-    def __init__(self, root):
-        '''
-        init
-
-        @param root: root chain
-        '''
-        super(ChainMixin, self).__init__()
-        self._setup(root)
 
     def __getattr__(self, label):
         try:

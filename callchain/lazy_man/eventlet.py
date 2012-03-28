@@ -14,7 +14,7 @@ from callchain.keys.root import KConfig
 from callchain.keys.call import KEventCall
 from callchain.services.queue import KResult
 from callchain.keys.branch import KLinkedKey
-from callchain.event import Eventlet, EventLink
+from callchain.core import Eventlet, EventLink
 from callchain.services.order import KRandom, KOrder
 from callchain.services.map import KDelay, KRepeat, KMap
 from callchain.services.reduce import KMath, KReduce, KTruth
