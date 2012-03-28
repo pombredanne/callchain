@@ -82,6 +82,7 @@ class EventCallMixin(CallMixin):
         '''run event chain'''
         fire = self.fire
         try:
+            #TODO: consider how this piles up
             # 1. "before" event 2. "work" event
             fire('before', 'work')
             # everything else
