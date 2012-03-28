@@ -4,7 +4,7 @@
 from callchain.keys.reset import KResetLocal
 
 
-class KChainKey(KResetLocal):
+class KChain(KResetLocal):
 
     '''chain key'''
 
@@ -32,7 +32,7 @@ class KChainKey(KResetLocal):
         '''build current callable from factory'''
 
 
-class KEvent(KChainKey):
+class KEvent(KChain):
 
     '''event chain key'''
 

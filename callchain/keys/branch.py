@@ -31,7 +31,7 @@ class KEventBranch(KBranch):
     E = Attribute('local event registry')
 
 
-class KLinkedKey(KBranch):
+class KLinked(KBranch):
 
     '''linked chain mixin'''
 

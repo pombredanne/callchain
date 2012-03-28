@@ -13,7 +13,7 @@ from callchain.keys.core import KEvent
 from callchain.keys.root import KConfig
 from callchain.keys.call import KEventCall
 from callchain.services.queue import KResult
-from callchain.keys.branch import KLinkedKey
+from callchain.keys.branch import KLinked
 from callchain.core import Eventlet, EventLink
 from callchain.services.order import KRandom, KOrder
 from callchain.services.map import KDelay, KRepeat, KMap
@@ -99,7 +99,7 @@ class truthevent(Eventlet, ManQMixin, TruthMixin):
     '''manually balanced truthing eventlet'''
 
 
-@appifies(KLinkedKey, KConfig, KEventCall, KEvent, KResult)
+@appifies(KLinked, KConfig, KEventCall, KEvent, KResult)
 class eventlink(EventLink, ManResultMixin):
 
     '''manually balanced lite linked event chain'''

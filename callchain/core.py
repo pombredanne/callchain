@@ -1,8 +1,13 @@
 # -*- coding: utf-8 -*-
 '''callchain core'''
 
+from appspace.keys import appifies
+
 from callchain.managers import Events
 from callchain.patterns import Pathways
+from callchain.keys.core import KChain, KEvent
+from callchain.keys.root import KRoot, KEventRoot
+from callchain.keys.call import KCall, KEventCall
 from callchain.base import ChainMixin, EventMixin
 from callchain.root import RootMixin, EventRootMixin
 from callchain.call import CallMixin, EventCallMixin
@@ -49,6 +54,7 @@ class inside(object):
         return that
 
 
+@appifies(KRoot, KChain, KCall)
 class Chain(CallMixin, RootMixin, ChainMixin):
 
     '''call chain'''
@@ -102,6 +108,7 @@ class einside(inside):
         return that
 
 
+@appifies(KEventRoot, KEvent, KEventCall)
 class Event(EventCallMixin, EventRootMixin, EventMixin):
 
     '''event chain'''

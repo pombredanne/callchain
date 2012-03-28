@@ -11,8 +11,8 @@ from twoq.mixins.reducing import MathMixin, TruthMixin, ReduceMixin
 
 from callchain.keys.call import KCall
 from callchain.keys.root import KConfig
-from callchain.keys.core import KChainKey
-from callchain.keys.branch import KLinkedKey
+from callchain.keys.core import KChain
+from callchain.keys.branch import KLinked
 from callchain.core import Chainlet, Linked
 from callchain.services.order import KRandom, KOrder
 from callchain.services.map import KDelay, KRepeat, KMap
@@ -99,7 +99,7 @@ class truthchain(Chainlet, AutoQMixin, TruthMixin):
     '''lazy balanced truthing chainlet'''
 
 
-@appifies(KLinkedKey, KConfig, KCall, KChainKey, KResult)
+@appifies(KLinked, KConfig, KCall, KChain, KResult)
 class chainlink(Linked, AutoResultMixin):
 
     '''lazy balanced linked chain'''

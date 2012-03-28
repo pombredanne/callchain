@@ -4,19 +4,33 @@
 from appspace.keys import appifies
 from twoq.active.mixins import ManResultMixin, ManQMixin
 
-from callchain.keys.root import KRoot
-from callchain.keys.call import KCall
 from callchain.core import Chain, inside
-from callchain.keys.core import KChainKey
 from callchain.patterns import Pathways, Nameways
 from callchain.services.queue import KThings, KResult
+
+###############################################################################
+## thing chain ################################################################
+###############################################################################
 
 
 class chainbase(Pathways):
     link = 'callchain.active_man.chainlet.chainlink'
 
 
+@appifies(KThings)
+@inside(chainbase)
+class callchain(Chain, ManQMixin):
+
+    ''''active queued manually balanced lite call chain'''
+
+
+###############################################################################
+## result chain ###############################################################
+###############################################################################
+
+
 class chain(chainbase):
+    link = 'callchain.active_man.chainlet.chainlink'
 
     class filter(Nameways):
         key = 'callchain.services.filter.KFilter'
@@ -67,14 +81,7 @@ class chain(chainbase):
         truth = 'callchain.active_man.chainlet.truthchain'
 
 
-@appifies(KThings, KRoot, KChainKey, KCall)
-@inside(chainbase)
-class callchain(Chain, ManQMixin):
-
-    ''''active queued manually balanced lite call chain'''
-
-
-@appifies(KRoot, KChainKey, KResult, KCall)
+@appifies(KResult)
 @inside(chain)
 class chainq(Chain, ManResultMixin):
 

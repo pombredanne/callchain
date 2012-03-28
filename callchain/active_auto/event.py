@@ -4,17 +4,30 @@
 from appspace.keys import appifies
 from twoq.active.mixins import AutoResultMixin, AutoQMixin
 
-from callchain.keys.core import KEvent
 from callchain.core import einside, Event
-from callchain.keys.call import KEventCall
-from callchain.keys.root import KEventRoot
 from callchain.services.apps import events
 from callchain.patterns import Pathways, Nameways
 from callchain.services.queue import KThings, KResult
 
+###############################################################################
+## thing event chain ##########################################################
+###############################################################################
 
-class baseevent(Pathways):
+
+class thingevent(Pathways):
     chain = 'callchain.active_auto.chainlet.chainlink'
+
+
+@appifies(KThings)
+@einside(thingevent, events)
+class eventchain(Event, AutoQMixin):
+
+    '''active queued auto-balancing lite event chain'''
+
+
+###############################################################################
+## result event chain #########################################################
+###############################################################################
 
 
 class event(Pathways):
@@ -69,14 +82,7 @@ class event(Pathways):
         truth = 'callchain.active_auto.eventlet.truthevent'
 
 
-@appifies(KThings, KEventRoot, KEvent, KEventCall)
-@einside(baseevent, events)
-class eventchain(Event, AutoQMixin):
-
-    '''active queued auto-balancing lite event chain'''
-
-
-@appifies(KResult, KEventRoot, KEvent, KEventCall)
+@appifies(KResult)
 @einside(event, events)
 class eventq(Event, AutoResultMixin):
 
