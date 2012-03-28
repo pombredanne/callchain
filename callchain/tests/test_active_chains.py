@@ -28,7 +28,7 @@ from callchain.tests.manning import Manning
 #
 #    @property
 #    def _makeone(self):
-#        from callchain.chain import callchain
+#        from callchain.core import callchain
 #        return callchain
 
 #    def test_switch(self):

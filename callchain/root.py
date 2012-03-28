@@ -1,52 +1,8 @@
 # -*- coding: utf-8 -*-
 '''root chain mixins'''
 
-from operator import setitem
-
-from stuf import frozenstuf
-from stuf.utils import either, lazy
-
 from callchain.patterns import Pathways
-
-from callchain.mixins.resets import ResetLocalMixin
-
-
-class ConfigMixin(ResetLocalMixin):
-
-    '''configuration access mixin'''
-
-    @lazy
-    def defaults(self):
-        '''default settings by their lonesome'''
-        return self.M.settings.defaults if self.M is not None else frozenstuf()
-
-    @lazy
-    def required(self):
-        '''required settings by their lonesome'''
-        return self.M.settings.required if self.M is not None else frozenstuf()
-
-    @either
-    def G(self):
-        '''external application global settings'''
-        return self.M.settings.final if self.M is not None else frozenstuf()
-
-    def _defaults(self):
-        '''reset attribute values'''
-        this = self.__dict__
-        self.exhaustmap(
-            vars(self),
-            lambda x, y: setitem(this, x.rstrip('_d'), y),
-            lambda x: x[0].endswith('_d'),
-        )
-
-    def _setdefault(self, key, value):
-        '''
-        set default value for instance attribute
-
-        @param key: attribute name
-        @param value: attribute value
-        '''
-        self.__dict__[key] = self.__dict__[key + '_d'] = value
+from callchain.resets import ConfigMixin
 
 
 class RootMixin(ConfigMixin):
@@ -74,7 +30,7 @@ class RootMixin(ConfigMixin):
         '''new chain session'''
         # clear call chain and queues and extend incoming things
         return self.clear().extend(args)
-    
+
     def back(self, branch):
         '''
         handle switch from branch chain
