@@ -9,16 +9,19 @@ from twoq.mixins.ordering import RandomMixin, OrderMixin
 from twoq.mixins.mapping import DelayMixin, RepeatMixin, MapMixin
 from twoq.mixins.reducing import MathMixin, TruthMixin, ReduceMixin
 
+from callchain.call import CallMixin
 from callchain.keys.call import KCall
+from callchain.keys.core import KChain
+from callchain.core import ChainMixin
 from callchain.keys.root import KConfig
-from callchain.keys.core import KChainKey
-from callchain.keys.branch import KLinkedKey
-from callchain.chain import Chainlet, Linked
+from callchain.keys.branch import KLinked
+from callchain.services.queue import KResult
 from callchain.services.order import KRandom, KOrder
 from callchain.services.map import KDelay, KRepeat, KMap
 from callchain.services.reduce import KMath, KReduce, KTruth
+from callchain.branch import (
+    BranchMixin, BranchletMixin, ChainletMixin, LinkedMixin)
 from callchain.services.filter import KCollect, KSet, KSlice, KFilter
-from callchain.services.queue import KResult
 
 __all__ = (
     'mathchain', 'truthchain', 'reducechain', 'collectchain', 'setchain',
@@ -28,78 +31,164 @@ __all__ = (
 
 
 @appifies(KDelay)
-class delaychain(Chainlet, ManQMixin, DelayMixin):
+class delaychain(
+    ChainletMixin,
+    BranchletMixin,
+    BranchMixin,
+    ChainMixin,
+    ManQMixin,
+    DelayMixin,
+):
 
     '''manually balanced delayed mapping chainlet'''
 
 
 @appifies(KRepeat)
-class repeatchain(Chainlet, ManQMixin, RepeatMixin):
+class repeatchain(
+    ChainletMixin,
+    BranchletMixin,
+    BranchMixin,
+    ChainMixin,
+    ManQMixin,
+    RepeatMixin,
+):
 
     '''manually balanced repeat chainlet'''
 
 
 @appifies(KMap)
-class mapchain(Chainlet, ManQMixin, MapMixin):
+class mapchain(
+    ChainletMixin,
+    BranchletMixin,
+    BranchMixin,
+    ChainMixin,
+    ManQMixin,
+    MapMixin,
+):
 
     '''manually balanced mapping chainlet'''
 
 
 @appifies(KCollect)
-class collectchain(Chainlet, ManQMixin, CollectMixin):
+class collectchain(
+    ChainletMixin,
+    BranchletMixin,
+    BranchMixin,
+    ChainMixin,
+    ManQMixin,
+    CollectMixin,
+):
 
     '''manually balanced collecting chainlet'''
 
 
 @appifies(KSet)
-class setchain(Chainlet, ManQMixin, SetMixin):
+class setchain(
+    ChainletMixin,
+    BranchletMixin,
+    BranchMixin,
+    ChainMixin,
+    ManQMixin,
+    SetMixin,
+):
 
     '''manually balanced setting chainlet'''
 
 
 @appifies(KSlice)
-class slicechain(Chainlet, ManQMixin, SliceMixin):
+class slicechain(
+    ChainletMixin,
+    BranchletMixin,
+    BranchMixin,
+    ChainMixin,
+    ManQMixin,
+    SliceMixin,
+):
 
     '''manually balanced slicing chainlet'''
 
 
 @appifies(KFilter)
-class filterchain(Chainlet, ManQMixin, FilterMixin):
+class filterchain(
+    ChainletMixin,
+    BranchletMixin,
+    BranchMixin,
+    ChainMixin,
+    ManQMixin,
+    FilterMixin,
+):
 
     '''manually balanced filtering chainlet'''
 
 
 @appifies(KRandom)
-class randomchain(Chainlet, ManQMixin, RandomMixin):
+class randomchain(
+    ChainletMixin,
+    BranchletMixin,
+    BranchMixin,
+    ChainMixin,
+    ManQMixin,
+    RandomMixin,
+):
 
     '''manually balanced randomizing chainlet'''
 
 
 @appifies(KOrder)
-class orderchain(Chainlet, ManQMixin, OrderMixin):
+class orderchain(
+    ChainletMixin,
+    BranchletMixin,
+    BranchMixin,
+    ChainMixin,
+    ManQMixin,
+    OrderMixin,
+):
 
     '''manually balanced ordering chainlet'''
 
 
 @appifies(KMath)
-class mathchain(Chainlet, ManQMixin, MathMixin):
+class mathchain(
+    ChainletMixin,
+    BranchletMixin,
+    BranchMixin,
+    ChainMixin,
+    ManQMixin,
+    MathMixin,
+):
 
     '''manually balanced mathing chainlet'''
 
 
 @appifies(KReduce)
-class reducechain(Chainlet, ManQMixin, ReduceMixin):
+class reducechain(
+    ChainletMixin,
+    BranchletMixin,
+    BranchMixin,
+    ChainMixin,
+    ManQMixin,
+    ReduceMixin,
+):
 
     '''manually balanced reducing chainlet'''
 
 
 @appifies(KTruth)
-class truthchain(Chainlet, ManQMixin, TruthMixin):
+class truthchain(
+    ChainletMixin,
+    BranchletMixin,
+    BranchMixin,
+    ChainMixin,
+    ManQMixin,
+    TruthMixin,
+):
 
     '''manually balanced truthing chainlet'''
 
 
-@appifies(KLinkedKey, KConfig, KCall, KChainKey, KResult)
-class chainlink(Linked, ManResultMixin):
+@appifies(KLinked, KConfig, KCall, KChain, KResult)
+class chainlink(
+    CallMixin, BranchMixin, LinkedMixin, ChainMixin, ManResultMixin,
+):
 
     '''manually balanced linked chain'''

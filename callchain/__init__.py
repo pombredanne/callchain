@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 '''callchain: callables and components joined in one big happy callchain'''
 
-from callchain.chain import inside
-from callchain.event import einside
+from callchain.core import inside, einside
+from callchain.resets import ResetLocalMixin, ResetTypeMixin
 from callchain.patterns import Pathways, Branchways, Nameways
 from callchain.settings import DefaultSettings, RequiredSettings
-from callchain.mixins.resets import ResetLocalMixin, ResetTypeMixin
 from callchain.active_auto.chain import (
     chainq as aachainq, callchain as aacallchain)
 from callchain.active_auto.event import (

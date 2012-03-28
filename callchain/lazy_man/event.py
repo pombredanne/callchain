@@ -4,17 +4,36 @@
 from appspace.keys import appifies
 from twoq.lazy.mixins import ManResultMixin, ManQMixin
 
+from callchain.core import einside
 from callchain.keys.core import KEvent
-from callchain.event import einside, Event
-from callchain.keys.call import KEventCall
+from callchain.core import EventMixin
+from callchain.root import EventRootMixin
+from callchain.call import EventCallMixin
 from callchain.keys.root import KEventRoot
+from callchain.keys.call import KEventCall
 from callchain.services.apps import events
 from callchain.patterns import Pathways, Nameways
 from callchain.services.queue import KThings, KResult
 
+###############################################################################
+## thing event chain ##########################################################
+###############################################################################
 
-class baseevent(Pathways):
+
+class thingevent(Pathways):
     chain = 'callchain.lazy_man.chainlet.chainlink'
+
+
+@appifies(KThings, KEventRoot, KEvent, KEventCall)
+@einside(thingevent, events)
+class eventchain(EventCallMixin, EventRootMixin, EventMixin, ManQMixin):
+
+    '''lazy queued manually balanced lite event chain'''
+
+
+###############################################################################
+## result event chain #########################################################
+###############################################################################
 
 
 class event(Pathways):
@@ -69,15 +88,8 @@ class event(Pathways):
         truth = 'callchain.lazy_man.eventlet.truthevent'
 
 
-@appifies(KThings, KEventRoot, KEvent, KEventCall)
-@einside(baseevent, events)
-class eventchain(Event, ManQMixin):
-
-    '''lazy queued manually balanced lite event chain'''
-
-
 @appifies(KResult, KEventRoot, KEvent, KEventCall)
 @einside(event, events)
-class eventq(Event, ManResultMixin):
+class eventq(EventCallMixin, EventRootMixin, EventMixin, ManResultMixin):
 
     '''lazy queued manually balanced event chain'''

@@ -3,10 +3,10 @@
 
 from appspace.keys import Attribute
 
-from callchain.keys.reset import KResetLocal
+from callchain.keys.reset import KCore
 
 
-class KBranch(KResetLocal):
+class KBranch(KCore):
 
     ''''branch key'''
 
@@ -16,13 +16,6 @@ class KBranch(KResetLocal):
     _M = Attribute('root internal appspace manager')
     root = Attribute('root object')
 
-    def __init__(root):  # @NoSelf
-        '''
-        init
-
-        @param root: root chain
-        '''
-
 
 class KEventBranch(KBranch):
 
@@ -31,7 +24,7 @@ class KEventBranch(KBranch):
     E = Attribute('local event registry')
 
 
-class KLinkedKey(KBranch):
+class KLinked(KBranch):
 
     '''linked chain mixin'''
 

@@ -5,9 +5,8 @@ from stuf import frozenstuf
 from appspace.builders import Appspace
 from stuf.utils import OrderedDict, either, lazy, lazy_class
 
+from callchain.resets import ResetLocalMixin
 from callchain.keys.base import NoServiceError
-
-from callchain.mixins.resets import ResetLocalMixin
 
 
 class CallMixin(ResetLocalMixin):
