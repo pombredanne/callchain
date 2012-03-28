@@ -14,11 +14,11 @@ from callchain.services.queue import KThings, KResult
 
 
 class baseevent(Pathways):
-    chain = 'callchain.lazy_auto.chainlet.chainlink'
+    chain = 'callchain.lazy_man.chainlet.chainlink'
 
 
 class event(Pathways):
-    chain = 'callchain.lazy_auto.chainlet.chainlink'
+    chain = 'callchain.lazy_man.chainlet.chainlink'
 
     class filter(Nameways):
         key = 'callchain.services.filter.KFilter'

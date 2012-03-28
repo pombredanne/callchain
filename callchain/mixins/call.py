@@ -69,7 +69,7 @@ class CallMixin(ResetLocalMixin):
             self._xtend(
                 c() for c in self.iterexcept(self._chain.popleft, IndexError)
             )
-        return self
+            return self
 
     class Meta:
         pass
@@ -106,7 +106,9 @@ class EventCallMixin(CallMixin):
         with self.ctx1(workq='_util'):
             self._xtend(self._events(*events))
         with self.ctx3(inq='_util', clearout=False):
-            self._xtend(c() for c in self._iterable)
+            for c in self._iterable:
+                foo = c
+                foo()
             return self
 
     def queues(self, *events):
