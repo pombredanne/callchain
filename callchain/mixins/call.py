@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 '''callchain call mixins'''
 
+from stuf import frozenstuf
 from appspace.builders import Appspace
-from stuf import frozenstuf, orderedstuf
-from stuf.utils import either, lazy, lazy_class
+from stuf.utils import OrderedDict, either, lazy, lazy_class
 
 from callchain.keys.base import NoServiceError
 
@@ -66,10 +66,9 @@ class CallMixin(ResetLocalMixin):
     def commit(self):
         '''consume call chain'''
         with self.ctx3():
-            self._xtend(
+            return self._xtend(
                 c() for c in self.iterexcept(self._chain.popleft, IndexError)
             )
-            return self
 
     class Meta:
         pass
@@ -84,7 +83,7 @@ class EventCallMixin(CallMixin):
         fire = self.fire
         try:
             # 1. "before" event 2. "work" event
-            self.trigger('before', 'work')
+            fire('before', 'work')
             # everything else
             super(EventCallMixin, self).commit()
             # 3. "change" event 4. "any" event 5. "after" event
@@ -94,8 +93,7 @@ class EventCallMixin(CallMixin):
             fire('problem')
         finally:
             # 7. event that runs "anyway"
-            fire('anyway')
-        return self
+            return fire('anyway')
 
     def fire(self, *events):
         '''
@@ -103,12 +101,10 @@ class EventCallMixin(CallMixin):
 
         @param *events: event labels
         '''
-        with self.ctx1(workq='_util'):
-            self._xtend(self._events(*events))
-        with self.ctx3(inq='_util', clearout=False):
-            for c in self._iterable:
-                foo = c
-                foo()
+        with self.ctx1(workq='_work'):
+            self.exhaustcall(
+                lambda x: x(), self._xtend(self._events(*events))._iterable,
+            )
             return self
 
     def queues(self, *events):
@@ -117,4 +113,4 @@ class EventCallMixin(CallMixin):
 
         @param *events: event labels
         '''
-        return orderedstuf((e, self._eventq(e)) for e in events)
+        return OrderedDict((e, self._eventq(e)) for e in events)

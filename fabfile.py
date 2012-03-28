@@ -42,3 +42,21 @@ def release():
         local('hg push ssh://hg@bitbucket.org/lcrees/callchain')
         local('hg push git+ssh://git@github.com:kwarterthieves/callchain.git')
     local('./setup.py register sdist --format=bztar,gztar,zip upload')
+    local('rm -rf dist')
+
+
+def release_next():
+    '''release callchain from next branch'''
+    local('hg update maint')
+    local('hg merge default; hg ci -m automerge')
+    local('hg update default')
+    local('hg merge next; hg ci -m automerge')
+    local('hg update next')
+    local('hg merge default; hg ci -m automerge')
+    prompt('Enter tag: ', 'tag')
+    with settings(warn_only=True):
+        local('hg tag "%(tag)s"' % env)
+        local('hg push ssh://hg@bitbucket.org/lcrees/callchain')
+        local('hg push git+ssh://git@github.com:kwarterthieves/callchain.git')
+    local('./setup.py register sdist --format=bztar,gztar,zip upload')
+    local('rm -rf dist')
