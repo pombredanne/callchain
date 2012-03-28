@@ -9,11 +9,10 @@ from twoq.lazy.mixins import AutoQMixin, AutoResultMixin
 from twoq.mixins.mapping import DelayMixin, RepeatMixin, MapMixin
 from twoq.mixins.reducing import MathMixin, TruthMixin, ReduceMixin
 
-from callchain.core import EventMixin
+from callchain.call import EventMixin
 from callchain.keys.core import KEvent
 from callchain.keys.root import KConfig
 from callchain.keys.branch import KLinked
-from callchain.call import EventCallMixin
 from callchain.keys.call import KEventCall
 from callchain.services.queue import KResult
 from callchain.services.order import KRandom, KOrder
@@ -35,7 +34,6 @@ class delayevent(
     ChainletMixin,
     EventBranchMixin,
     BranchletMixin,
-    EventMixin,
     AutoQMixin,
     DelayMixin,
 ):
@@ -48,7 +46,6 @@ class repeatevent(
     ChainletMixin,
     EventBranchMixin,
     BranchletMixin,
-    EventMixin,
     AutoQMixin,
     RepeatMixin,
 ):
@@ -61,7 +58,6 @@ class mapevent(
     ChainletMixin,
     EventBranchMixin,
     BranchletMixin,
-    EventMixin,
     AutoQMixin,
     MapMixin,
 ):
@@ -74,7 +70,6 @@ class collectevent(
     ChainletMixin,
     EventBranchMixin,
     BranchletMixin,
-    EventMixin,
     AutoQMixin,
     CollectMixin,
 ):
@@ -99,7 +94,6 @@ class sliceevent(
     ChainletMixin,
     EventBranchMixin,
     BranchletMixin,
-    EventMixin,
     AutoQMixin,
     SliceMixin,
 ):
@@ -112,7 +106,6 @@ class filterevent(
     ChainletMixin,
     EventBranchMixin,
     BranchletMixin,
-    EventMixin,
     AutoQMixin,
     FilterMixin,
 ):
@@ -125,7 +118,6 @@ class randomevent(
     ChainletMixin,
     EventBranchMixin,
     BranchletMixin,
-    EventMixin,
     AutoQMixin,
     RandomMixin,
 ):
@@ -138,7 +130,6 @@ class orderevent(
     ChainletMixin,
     EventBranchMixin,
     BranchletMixin,
-    EventMixin,
     AutoQMixin,
     OrderMixin,
 ):
@@ -151,7 +142,6 @@ class mathevent(
     ChainletMixin,
     EventBranchMixin,
     BranchletMixin,
-    EventMixin,
     AutoQMixin,
     MathMixin,
 ):
@@ -164,7 +154,6 @@ class reduceevent(
     ChainletMixin,
     EventBranchMixin,
     BranchletMixin,
-    EventMixin,
     AutoQMixin,
     ReduceMixin,
 ):
@@ -177,7 +166,6 @@ class truthevent(
     ChainletMixin,
     EventBranchMixin,
     BranchletMixin,
-    EventMixin,
     AutoQMixin,
     TruthMixin,
 ):
@@ -186,8 +174,6 @@ class truthevent(
 
 
 @appifies(KLinked, KConfig, KEventCall, KEvent, KResult)
-class eventlink(
-    EventCallMixin, EventBranchMixin, LinkedMixin, EventMixin, AutoResultMixin,
-):
+class eventlink(EventBranchMixin, LinkedMixin, EventMixin, AutoResultMixin):
 
     '''auto-balancing lite linked event chain'''

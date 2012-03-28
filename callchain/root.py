@@ -2,10 +2,10 @@
 '''root chain mixins'''
 
 from callchain.patterns import Pathways
-from callchain.resets import ConfigMixin
+from callchain.core import ResetLocalMixin
 
 
-class RootMixin(ConfigMixin):
+class RootMixin(ResetLocalMixin):
 
     '''root chain mixin'''
 
@@ -38,8 +38,6 @@ class RootMixin(ConfigMixin):
         @param branch: branch chain
         '''
         self.clear()
-        # extend root call chain with branch call chain
-        self._chain.append(branch._chain)
         # sync with branch callable
         self._call = branch._call
         # sync with branch postitional arguments
