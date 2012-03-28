@@ -3,33 +3,25 @@
 
 from itertools import chain
 
+from stuf.utils import lazy
+from appspace.keys import NoAppError
+
 from callchain.managers import Events
 
 from callchain.mixins.resets import ResetLocalMixin
-from appspace.keys import NoAppError
-from callchain.mixins.core import QMixin
 
 
 class BranchMixin(ResetLocalMixin):
 
     ''''branch mixin'''
 
-    def __init__(self, root):
-        '''
-        init
-
-        @param root: root object
-        '''
-        super(BranchMixin, self).__init__(root)
-        self._setup(root)
-
     def _setup(self, root):
         '''
         configure branch
 
-        @param root: root object
+        @param root: root chain
         '''
-        self._c_setup()
+        super(BranchMixin, self)._setup(root)
         # root object
         self.root = root
         # root internal appspace manager
@@ -40,13 +32,24 @@ class BranchMixin(ResetLocalMixin):
         self.M = root.M
         # root external global settings
         self.G = root.G if self.M else None
-
-    _r_setup = _setup
+        # sync with root postitional arguments
+        self._args = root._args
+        # sync with root keyword arguments
+        self._kw = root._kw
+        # sync with root callable
+        self._call = root._call
+        # sync with root incoming things and outgoing things
+        self.inclear().extend(root.incoming).outextend(root.outgoing)
 
 
 class EventBranchMixin(BranchMixin):
 
     '''event branch mixin'''
+
+    @lazy
+    def E(self):
+        '''local event registry'''
+        return Events('events')
 
     def _eventq(self, event):
         '''
@@ -59,11 +62,9 @@ class EventBranchMixin(BranchMixin):
         queue = self.E.get(key)
         if queue is None:
             # create linked chain if nonexistent
-            queue = self._callchain
+            queue = self._linkedchain
             self.E.on(key, queue)
         return queue
-
-    _e_eventq = _eventq
 
     def _event(self, event):
         '''
@@ -74,34 +75,6 @@ class EventBranchMixin(BranchMixin):
         key = self.root.event(event)
         return chain(self.E.events(key), self.root.E.events(key))
 
-    _e_event = _event
-
-    def _setup(self, root):
-        '''
-        configure branch
-
-        @param root: root object
-        '''
-        self._r_setup(root)
-        # local event registry
-        self.E = Events('events')
-
-    _e_setup = _setup
-
-
-class LitedMixin(ResetLocalMixin):
-
-    '''lite branch chain mixin'''
-
-    def _setup(self, root):
-        '''
-        configure branch
-
-        @param root: root object
-        '''
-        self._d_setup()
-        self._r_setup(root)
-
 
 class LinkedMixin(ResetLocalMixin):
 
@@ -110,8 +83,6 @@ class LinkedMixin(ResetLocalMixin):
     def close(self):
         '''close out linked chain and switch to root chain'''
         return self.root.back(self)
-
-    _lclose = close
 
 
 class ChainletMixin(ResetLocalMixin):
@@ -126,12 +97,10 @@ class ChainletMixin(ResetLocalMixin):
         '''
         # fetch appspaced thing...
         try:
-            return self._c_load(label)
+            return super(ChainletMixin, self)._load(label)
         # ...or revert to root chain
         except NoAppError:
-            return getattr(self.__rback(), label)
-
-    _r_load = _load
+            return getattr(self.back(), label)
 
     def _syncback(self, key, value):
         '''
@@ -142,36 +111,6 @@ class ChainletMixin(ResetLocalMixin):
         '''
         self.__dict__[key] = self.root.__dict__[key] = value
 
-    _r_syncback = _syncback
-
     def back(self):
-        '''switch to root chain'''
+        '''switch back to root chain'''
         return self.root.back(self)
-
-    _rback = __rback = back
-
-
-class QBranchMixin(QMixin):
-
-    '''queued branch mixin'''
-
-    def _setup(self, root):
-        '''
-        configure call chain
-
-        @param root: root object
-        '''
-        super(QBranchMixin, self)._setup(root)
-        # sync with root postitional arguments
-        self._args = root._args
-        # sync with root keyword arguments
-        self._kw = root._kw
-        # sync with root callable
-        self._call = root._call
-        # sync with root incoming things
-        self.inclear()
-        self.extend(root.incoming)
-        # sync with root outgoing things
-        self.outextend(root.outgoing)
-
-    _q_setup = _setup

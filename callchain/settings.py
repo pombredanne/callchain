@@ -9,25 +9,9 @@ from appspace.keys import appifies
 from stuf.utils import deepget, lazy_set, setter
 
 from callchain.mixins.resets import ResetLocalMixin
-from callchain.keys.core import KDefaults, KRequired, KSettings
+from callchain.keys.base import KDefaults, KRequired, KSettings
 
 __all__ = ('DefaultSettings', 'RequiredSettings', 'Settings')
-
-
-def object_walk(this):
-    '''
-    transform classes within an instance into a dictionary
-
-    @param this: object
-    '''
-    this_stuf = dict()
-    for k, v in items(vars(this)):
-        if not k.startswith('_'):
-            if isclass(v):
-                this_stuf[k] = object_walk(v)
-            else:
-                this_stuf[k] = v
-    return this_stuf
 
 
 class lock_set(lazy_set):
@@ -62,6 +46,24 @@ class Settings(ResetLocalMixin):
     def __repr__(self, *args, **kwargs):
         return str(self._final)
 
+    @classmethod
+    def _object_walk(cls, this):
+        '''
+        transform classes within an instance into a dictionary
+
+        @param this: object
+        '''
+        this_stuf = dict()
+        object_walk_ = cls._object_walk
+        isclass_ = isclass
+        for k, v in items(vars(this)):
+            if not k.startswith('_'):
+                if isclass_(v):
+                    this_stuf[k] = object_walk_(v)
+                else:
+                    this_stuf[k] = v
+        return this_stuf
+
     def _update_default(self, settings):
         '''
         update default settings
@@ -69,7 +71,7 @@ class Settings(ResetLocalMixin):
         @param settings: new settings
         '''
         if KDefaults.implementedBy(settings):
-            self._default.update(object_walk(settings))
+            self._default.update(self._object_walk(settings))
         else:
             raise TypeError('invalid default settings')
 
@@ -80,7 +82,7 @@ class Settings(ResetLocalMixin):
         @param settings: new settings
         '''
         if KRequired.implementedBy(settings):
-            self._required.update(object_walk(settings))
+            self._required.update(self._object_walk(settings))
         else:
             raise TypeError('invalid required settings')
 

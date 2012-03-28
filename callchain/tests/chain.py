@@ -9,7 +9,7 @@ class CallMixin(object):
     @property
     def _appconf(self):
         from callchain.patterns import Pathways, Nameways
-        from callchain.chain import chainlink
+        from callchain.lazy_auto.chainlet import chainlink
         from math import ceil, fabs
         class testlink(chainlink): #@IgnorePep8
             def foo(self, x):
@@ -29,12 +29,11 @@ class CallMixin(object):
 
     def test_pure_calls(self):
         from math import fsum, floor, sqrt
-        self.qclass.chain(floor, 3)
-        (self.qclass
-        .chain(fsum, [1.1, 1.1, 1.1])
-        .chain(sqrt, 4))
+        (self.qclass.chain(floor, 3).chain(
+            fsum, [1.1, 1.1, 1.1]
+        ).chain(sqrt, 4))
         self.qclass.commit()
-        outgoing = deque(i for i in self.qclass.results())
+        outgoing = deque(self.qclass)
         self.assertEqual(outgoing.popleft(), 3.0)
         self.assertEqual(outgoing.popleft(), 3.3000000000000003)
         self.assertEqual(outgoing.popleft(), 2)
@@ -44,7 +43,7 @@ class CallMixin(object):
         qclass.chain('square', 'helpers', 3).chain('misc', 'subhelpers', 4)
         qclass.chain('formit', 'helpers', [1.1, 1.1, 1.1])
         qclass.commit()
-        outgoing = deque(i for i in qclass.results())
+        outgoing = deque(qclass)
         self.assertEqual(outgoing.popleft(), 3.0)
         self.assertEqual(outgoing.popleft(), 2)
         self.assertEqual(outgoing.popleft(), 3.3000000000000003)

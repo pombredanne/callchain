@@ -37,8 +37,8 @@ class TestLazyAutoEventChain(
 
 
 class TestLazyManEventChain(
-    Manning, EventChainMixin, CallMixin, MQMixin, MFilterQMixin, MMapQMixin,
-    MReduceQMixin, MOrderQMixin,
+    Manning, EventChainMixin, MQMixin, MFilterQMixin, MMapQMixin,
+    MReduceQMixin, MOrderQMixin, CallMixin,
 ):
     def setUp(self):
         self.qclass = self._makeone()

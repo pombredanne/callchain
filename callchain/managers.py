@@ -11,8 +11,8 @@ from stuf.utils import bi, getcls, lazy, exhaustmap
 
 from callchain.settings import Settings
 from callchain.services.event import EEvent
-from callchain.keys.core import KSettings, NoServiceError
 from callchain.services.queue import KService
+from callchain.keys.base import KSettings, NoServiceError
 
 __all__ = ['Manager']
 
@@ -45,9 +45,9 @@ class Manager(_Manager):
 
         @param thing: some thing with local settings
         '''
-        return twoq([type.mro(getcls(thing)), [thing]]).smash().pick('Meta'
-        ).members().tap(lambda x: not x[0].startswith('__')).filter().reup(
-        ).wrap(stuf).map().invoke('update', *args, **kw).value()
+        return (twoq([type.mro(getcls(thing)), [thing]]).smash().pick('Meta')
+        .members().tap(lambda x: not x[0].startswith('__')).filter()
+        .reup().wrap(stuf).map().invoke('update', *args, **kw).value())
 
     def freeze(self, *args, **kw):
         '''finalize settings, adding any passed settings'''

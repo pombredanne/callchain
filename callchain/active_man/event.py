@@ -2,16 +2,23 @@
 '''active manually balanced event chains appconf'''
 
 from appspace.keys import appifies
-from twoq.active.mixins import ManResultMixin
+from twoq.active.mixins import ManResultMixin, ManQMixin
 
+from callchain.keys.core import KEvent
+from callchain.event import einside, Event
+from callchain.keys.call import KEventCall
+from callchain.keys.root import KEventRoot
 from callchain.services.apps import events
-from callchain.event import EventQ, einside
-from callchain.services.queue import KResults
 from callchain.patterns import Pathways, Nameways
+from callchain.services.queue import KThings, KResult
+
+
+class baseevent(Pathways):
+    chain = 'callchain.active_man.chainlet.chainlink'
 
 
 class event(Pathways):
-    chain = 'callchain.chain.chainlink'
+    chain = 'callchain.active_man.chainlet.chainlink'
 
     class filter(Nameways):
         key = 'callchain.services.filter.KFilter'
@@ -36,10 +43,6 @@ class event(Pathways):
     class delay(Nameways):
         key = 'callchain.services.map.KDelay'
         delay = 'callchain.active_man.eventlet.delayevent'
-
-    class copy(Nameways):
-        key = 'callchain.services.map.KCopy'
-        copy = 'callchain.active_man.eventlet.copyevent'
 
     class repeat(Nameways):
         key = 'callchain.services.map.KRepeat'
@@ -66,8 +69,15 @@ class event(Pathways):
         truth = 'callchain.active_man.eventlet.truthevent'
 
 
-@appifies(KResults)
+@appifies(KThings, KEventRoot, KEvent, KEventCall)
+@einside(baseevent, events)
+class eventchain(Event, ManQMixin):
+
+    '''active queued manually balanced lite event chain'''
+
+
+@appifies(KResult, KEventRoot, KEvent, KEventCall)
 @einside(event, events)
-class eventq(EventQ, ManResultMixin):
+class eventq(Event, ManResultMixin):
 
     '''active queued manually balanced event chain'''

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 '''callchain call mixins'''
 
+from stuf import frozenstuf
 from appspace.builders import Appspace
-from stuf import frozenstuf, orderedstuf
-from stuf.utils import either, iterexcept, lazy, lazy_class
+from stuf.utils import OrderedDict, either, lazy, lazy_class
 
-from callchain.keys.core import NoServiceError
+from callchain.keys.base import NoServiceError
 
 from callchain.mixins.resets import ResetLocalMixin
 
@@ -31,17 +31,13 @@ class CallMixin(ResetLocalMixin):
         return Appspace(self.M) if self.M is not None else None
 
     def __enter__(self):
-        '''enter context'''
+        '''enter execution context'''
         return self
 
-    _c_enter = __enter__
-
     def __exit__(self, e, t, b):
-        '''exit context'''
+        '''exit execution context'''
         # invoke call chain
         self.commit()
-
-    _c_exit = __exit__
 
     def _load(self, label):
         '''
@@ -56,9 +52,7 @@ class CallMixin(ResetLocalMixin):
             return getattr(_M.get(key, key)(self), label)
         except NoServiceError:
             # ...or lookup other appspaced thing
-            return self._c_load(label)
-
-    _c_load = _load
+            return super(CallMixin, self)._load(label)
 
     def switch(self, label, key=False):
         '''
@@ -69,14 +63,12 @@ class CallMixin(ResetLocalMixin):
         '''
         return self.M.get(label, key)(self)
 
-    _cswitch = switch
-
     def commit(self):
-        '''consume call chain until exhausted'''
-        self.outextend(c() for c in iterexcept(self._cpopleft, IndexError))
-        return self
-
-    _ccommit = commit
+        '''consume call chain'''
+        with self.ctx3():
+            return self._xtend(
+                c() for c in self.iterexcept(self._chain.popleft, IndexError)
+            )
 
     class Meta:
         pass
@@ -88,52 +80,38 @@ class EventCallMixin(CallMixin):
 
     def commit(self):
         '''run event chain'''
+        fire = self.fire
         try:
-            fire = self.fire
-            # 1. "before" event then 2. "work" event
-            self.trigger('before', 'work')
+            #TODO: consider how this piles up
+            # 1. "before" event 2. "work" event
+            fire('before', 'work')
             # everything else
-            self._ccommit()
-            # 3. "change" event then 4. "any" event then 5. "after" event
+            super(EventCallMixin, self).commit()
+            # 3. "change" event 4. "any" event 5. "after" event
             fire('change', 'any', 'after')
         except:
             # 6. "problem" event
             fire('problem')
         finally:
-            # 7. event that runs irrespective and "anyway"
-            fire('anyway')
-        return self
-
-    _ecommit = commit
+            # 7. event that runs "anyway"
+            return fire('anyway')
 
     def fire(self, *events):
         '''
         run calls bound to `events` **NOW**
 
-        @param events: event labels
+        @param *events: event labels
         '''
-        try:
-            # clear scratch queue
-            self._sclear()
-            # queue global and local bound callables
-            self._sxtend(self._events(*events))
-            # run event call chain until scratch queue is exhausted
-            self.outextend(c() for c in iterexcept(
-                self._scratch.popleft, IndexError,
-            ))
-        finally:
-            # clear scratch queue
-            self._sclear()
-        return self
-
-    _efire = fire
+        with self.ctx1(workq='_work'):
+            self.exhaustcall(
+                lambda x: x(), self._xtend(self._events(*events))._iterable,
+            )
+            return self
 
     def queues(self, *events):
         '''
         ordered mapping of processing queues for `events`
 
-        @param events: event labels
+        @param *events: event labels
         '''
-        return orderedstuf((e, self._eventq(e).outgoing) for e in events)
-
-    _equeues = queues
+        return OrderedDict((e, self._eventq(e)) for e in events)
