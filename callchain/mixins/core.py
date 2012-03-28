@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-'''fluent mixins'''
+'''callchain core mixins'''
 
 from itertools import chain
 from collections import deque
 from functools import partial
 
-from stuf.utils import imap
+from stuf.utils import lazy
 from twoq.support import isstring
 from appspace.keys import AppLookupError, NoAppError
 
@@ -16,13 +16,20 @@ class ChainMixin(ResetLocalMixin):
 
     '''chain mixin'''
 
+    def __init__(self, root):
+        '''
+        init
+
+        @param root: root chain
+        '''
+        super(ChainMixin, self).__init__()
+        self._setup(root)
+
     def __getattr__(self, label):
         try:
             return object.__getattribute__(self, label)
         except AttributeError:
             return self._load(label)
-
-    _c_getattr = __getattr__
 
     def _load(self, label):
         '''
@@ -49,27 +56,15 @@ class ChainMixin(ResetLocalMixin):
             _M._current = _M._root
             return thing
 
-    _c_load = _load
+    @lazy
+    def _chain(self):
+        '''call chain queue'''
+        return deque()
 
-    def _setup(self):
-        '''configure chain'''
-        _chain = deque()
-        # call chain right extend
-        self._cxtend = _chain.extend
-        # call chain right append
-        self._cappend = _chain.append
-        # call chain left append
-        self._cappendleft = _chain.appendleft
-        # call chain left pop
-        self._cpopleft = _chain.popleft
-        # call chain clear
-        self._cclear = _chain.clear
-        # call chain
-        self._chain = _chain
+    def _setup(self, root):
+        '''call chain setup'''
         # chain label
-        self._callq = '_chain'
-
-    _c_setup = _setup
+        self._CALLQ = '_chain'
 
     def chain(self, call, key=False, *args, **kw):
         '''
@@ -83,10 +78,30 @@ class ChainMixin(ResetLocalMixin):
             call = partial(call, *(key,) + args, **kw)
         else:
             call = partial(self.M.get(call, key), *args, **kw)
-        self._cappend(call)
+        self._chain.append(call)
         return self
 
-    _cchain = chain
+    def clear(self):
+        '''clear things'''
+        self._chain.clear()
+        return super(ChainMixin, self).clear()
+
+    def tap(self, call, key=False):
+        '''
+        add call
+
+        @param call: callable or appspace label
+        @param key: link call chain key (default: False)
+        '''
+        return super(ChainMixin, self).tap(
+            self._M.get(call, key) if isstring(call) else call
+        )
+
+    def wrap(self, call, key=False):
+        '''build current callable from factory'''
+        return super(ChainMixin, self).wrap(
+            self._M.get(call, key) if isstring(call) else call
+        )
 
 
 class EventMixin(ChainMixin):
@@ -94,15 +109,13 @@ class EventMixin(ChainMixin):
     '''event chain mixin'''
 
     @property
-    def _callchain(self):
+    def _linkedchain(self):
         '''new linked chain'''
         return self._M.get('chain', 'event')(self)
 
     def _events(self, *events):
         '''calls bound to `events`'''
-        return chain(*tuple(imap(self._event, events)))
-
-    _e_events = _events
+        return chain(*tuple(self._imap(self._event, events)))
 
     def on(self, event, call, key=False, *args, **kw):
         '''
@@ -115,8 +128,6 @@ class EventMixin(ChainMixin):
         self._eventq(event).chain(call, key, *args, **kw)
         return self
 
-    _eon = on
-
     def off(self, event):
         '''
         clear calls bound to `event`
@@ -126,62 +137,11 @@ class EventMixin(ChainMixin):
         self.E.unset(event)
         return self
 
-    _eoff = off
-
     def trigger(self, *events):
         '''
         extend primary call chain with partials bound to `events`
 
         @param *events: event labels
         '''
-        self._cxtend(self._events(*events))
-        return self
-
-    _etrigger = trigger
-
-
-class QMixin(ResetLocalMixin):
-
-    '''queued chain mixin'''
-
-    def clear(self):
-        '''clear queues'''
-        self._oclear()
-        self._cclear()
-        return self
-
-    _qclear = clear
-
-    def tap(self, call, key=False):
-        '''
-        add call
-
-        @param call: callable or appspace label
-        @param key: link call chain key (default: False)
-        '''
-        # reset postitional arguments
-        self._args = ()
-        # reset keyword arguments
-        self._kw = {}
-        # set current application
-        self._call = self._M.get(call, key) if isstring(call) else call
-        return self
-
-    _qtap = tap
-
-    def swap(
-        self, inq='incoming', outq='outgoing', tmpq='_scratch', callq='_chain',
-    ):
-        '''
-        swap queues
-
-        @param inq: incoming queue (default: 'incoming')
-        @param outq: outcoming queue (default: 'outcoming')
-        @param tmpq: temporary queue (default: '_scratch')
-        @param callq: temporary queue (default: '_chain')
-        '''
-        self._inq = inq
-        self._outq = outq
-        self._tmpq = tmpq
-        self._callq = callq
+        self._chain.extend(self._events(*events))
         return self

@@ -9,7 +9,7 @@ from twoq.support import port
 class MRandomQMixin(object):
 
     def test_choice(self):
-        manq = self.qclass(1, 2, 3, 4, 5, 6).choice()
+        manq = self.qclass(1, 2, 3, 4, 5, 6).choice().back()
         self.assertFalse(manq.balanced)
         manq.sync()
         self.assertTrue(manq.balanced)
@@ -17,7 +17,7 @@ class MRandomQMixin(object):
         self.assertTrue(manq.balanced)
 
     def test_sample(self):
-        manq = self.qclass(1, 2, 3, 4, 5, 6).sample(3)
+        manq = self.qclass(1, 2, 3, 4, 5, 6).sample(3).back()
         self.assertFalse(manq.balanced)
         manq.sync()
         self.assertTrue(manq.balanced)
@@ -25,9 +25,9 @@ class MRandomQMixin(object):
         self.assertTrue(manq.balanced)
 
     def test_shuffle(self):
-        manq = self.qclass(1, 2, 3, 4, 5, 6).shuffle()
+        manq = self.qclass(1, 2, 3, 4, 5, 6).shuffle().back()
         self.assertTrue(manq.balanced)
-        manq.sync()
+        manq = manq.sync()
         self.assertTrue(manq.balanced)
         manq.end()
         self.assertTrue(manq.balanced)

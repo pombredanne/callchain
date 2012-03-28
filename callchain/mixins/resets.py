@@ -17,8 +17,6 @@ class ResetTypeMixin(object):
         t = lambda x, y: x in this and isinstance(y, lazybase)
         exhaustmap(items(vars(getcls(self))), delattr, t)
 
-    _rreset = reset
-
 
 class ResetLocalMixin(local):
 
@@ -29,5 +27,3 @@ class ResetLocalMixin(local):
         this = vars(self)
         t = lambda x, y: x in this and isinstance(y, lazybase)
         exhaustmap(items(vars(getcls(self))), delattr, t)
-
-    _rreset = reset

@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-#@PydevCodeAnalysisIgnore
-# pylint: disable-msg=e0211,e0213
 '''twoq queuing mixins'''
 
 from appspace.keys import AppspaceKey, Attribute
@@ -11,147 +9,213 @@ class KService(AppspaceKey):
     '''service key'''
 
 
-class KQueue(KService):
+class KThings(KService):
 
     '''queuing key'''
-    
+
     incoming = Attribute('incoming queue')
     outgoing = Attribute('outgoing queue')
-    balanced = Attribute('if queues are balanced')
+    balanced = Attribute('if incoming and outgoing things are balanced')
 
-    def args(*args, **kw):
-        '''arguments for current callable'''
+    def __len__():  # @NoSelf
+        '''number of incoming things'''
 
-    def tap(call, label=True):
-        '''
-        add call
-
-        @param call: a call
-        '''
-
-    def detap():
-        '''clear call'''
-
-    def wrap(call):
-        '''build factory callable and make call'''
-
-    def unwrap():
-        '''clear factory'''
-        
-    def ahead(n=None):
-        '''
-        move iterator n-steps ahead or, if n is `None`, consume entirely
-
-        @param n: number of steps to advance (default: None)
-        '''
-
-    def outcount():
-        '''count of outgoing items'''
-
-    def index(thing):
-        '''
-        insert thing into incoming things
-
-        @param thing: some thing
-        '''
+    def outcount():  # @NoSelf
+        '''number of outgoing things'''
 
     ###########################################################################
-    ## clear queues ###########################################################
+    ## queue clearance ########################################################
     ###########################################################################
 
-    def remove(thing):
-        '''
-        remove thing from incoming things
-
-        @param thing: some thing
-        '''
-
-    def clear():
+    def clear():  # @NoSelf
         '''clear every thing'''
 
-    def inclear():
+    def inclear():  # @NoSelf
         '''clear incoming things'''
 
-    def outclear():
+    def outclear():  # @NoSelf
         '''clear outgoing things'''
 
     ###########################################################################
-    ## manipulate queues ######################################################
+    ## context rotation #######################################################
     ###########################################################################
 
-    def append(thing):
-        '''
-        append `thing` to right side of incoming things 
-        
-        @param thing: some thing
-        '''
+    def ctx1(**kw):  # @NoSelf
+        '''swap to one-armed context'''
 
-    def appendleft(thing):
-        '''
-        append `thing` to left side of incoming things 
-        
-        @param thing: some thing
-        '''
+    def ctx2(**kw):  # @NoSelf
+        '''swap to two-armed context'''
 
-    def insert(index, thing):
-        '''
-        insert thing into incoming things
+    def ctx3(**kw):  # @NoSelf
+        '''swap to three-armed context'''
 
-        @param index: index position
-        @param thing: some thing
-        '''
+    def ctx4(**kw):  # @NoSelf
+        '''swap to four-armed context'''
 
-    def extend(things):
-        '''
-        extend right side of incoming things with `things`
-        
-        @param thing: some things
-        '''
+    def autoctx(**kw):  # @NoSelf
+        '''swap to auto-synchronizing context'''
 
-    def extendleft(things):
-        '''
-        extend left side of incoming things with `things`
-        
-        @param thing: some things
-        '''
+    def ro():  # @NoSelf
+        '''swap to read-only context'''
+
+    def swap(**kw):  # @NoSelf
+        '''swap contexts'''
+
+    def reswap(self):  # @NoSelfs
+        '''swap to current preferred context'''
+
+    def unswap():  # @NoSelf
+        '''swap to default context'''
+
+    def rw():  # @NoSelf
+        '''swap to default context'''
 
     ###########################################################################
-    ## balance queues #########################################################
+    ## current callable management ############################################
     ###########################################################################
 
-    def reup():
-        '''put incoming things in incoming things as one incoming thing'''
+    def args(*args, **kw):  # @NoSelf
+        '''arguments for current callable'''
 
-    def shift():
-        '''shift outgoing things to incoming things'''
+    def detap():  # @NoSelf
+        '''clear current callable'''
 
-    def sync():
+    def wrap(call):  # @NoSelf
         '''
-        shift outgoing things to incoming things, clearing incoming things
+        build current callable from factory
+
+        @param call: a callable
         '''
 
-    def outshift():
+    def unwrap():  # @NoSelf
+        '''clear factory'''
+
+    ###########################################################################
+    ## things rotation ########################################################
+    ###########################################################################
+
+    def outshift():  # @NoSelf
         '''shift incoming things to outgoing things'''
 
-    def outsync():
+    def outsync():  # @NoSelf
         '''
         shift incoming things to outgoing things, clearing outgoing things
         '''
 
+    def reup():  # @NoSelf
+        '''put incoming things in incoming things as one incoming thing'''
 
-class KResults(KQueue):
+    def shift():  # @NoSelf
+        '''shift outgoing things to incoming things'''
 
-    def end():
-        '''return outgoing things and clear out all things'''
+    def sync():  # @NoSelf
+        '''
+        shift outgoing things to incoming things, clearing incoming things
+        '''
 
-    def results():
-        '''yield outgoing things and clear outgoing things'''
+    ###########################################################################
+    ## things appending #######################################################
+    ###########################################################################
 
-    def value():
-        '''return outgoing things and clear outgoing things'''
+    def append(thing):  # @NoSelf
+        '''
+        append `thing` to right side of incoming things
 
-    def first():
+        @param thing: some thing
+        '''
+
+    def appendleft(thing):  # @NoSelf
+        '''
+        append `thing` to left side of incoming things
+
+        @param thing: some thing
+        '''
+
+    ###########################################################################
+    ## things extension #######################################################
+    ###########################################################################
+
+    def extend(things):  # @NoSelf
+        '''
+        extend right side of incoming things with `things`
+
+        @param thing: some things
+        '''
+
+    def extendleft(things):  # @NoSelf
+        '''
+        extend left side of incoming things with `things`
+
+        @param thing: some things
+        '''
+
+    def outextend(things):  # @NoSelf
+        '''
+        extend right side of outgoing things with `things`
+
+        @param thing: some things
+        '''
+
+    ###########################################################################
+    ## iteration runners ######################################################
+    ###########################################################################
+
+    def __iter__():  # @NoSelf
+        '''yield outgoing things, clearing outgoing things as it iterates'''
+
+    def breakcount(call, length, exception=StopIteration):  # @NoSelf
+        '''
+        rotate through iterator until it reaches its original length
+
+        @param iterable: an iterable to exhaust
+        '''
+
+    def exhaust(iterable, exception=StopIteration):  # @NoSelf
+        '''
+        call next on an iterator until it's exhausted
+
+        @param iterable: iterable to exhaust
+        @param exception: exception marking end of iteration
+        '''
+
+    def exhaustmap(map, call, filter=False, exception=StopIteration):  # @NoSelf @IgnorePep8
+        '''
+        call `next` on an iterator until it's exhausted
+
+        @param mapping: a mapping to exhaust
+        @param call: call to handle what survives the filter
+        @param filter: a filter to apply to mapping (default: `None`)
+        @param exception: exception sentinel (default: `StopIteration`)
+        '''
+
+    def iterexcept(call, exception, start=None):  # @NoSelf
+        '''
+        call a function repeatedly until an exception is raised
+
+        Converts a call-until-exception interface to an iterator interface.
+        Like `iter(call, sentinel)` but uses an exception instead of a sentinel
+        to end the loop.
+
+        Raymond Hettinger, Python Cookbook recipe # 577155
+        '''
+
+
+class KResult(KThings):
+
+    def end():  # @NoSelf
+        '''return outgoing things then clear out everything'''
+
+    def first():  # @NoSelf
         '''first incoming thing'''
 
-    def last():
+    def last():  # @NoSelf
         '''last incoming thing'''
+
+    def peek():  # @NoSelf
+        '''results from read-only context'''
+
+    def results():  # @NoSelf
+        '''yield outgoing things, clearing outgoing things as it iterates'''
+
+    def value():  # @NoSelf
+        '''return outgoing things and clear outgoing things'''

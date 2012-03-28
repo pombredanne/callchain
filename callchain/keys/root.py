@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-#@PydevCodeAnalysisIgnore
-#pylint: disable-msg=e0211,e0213
-'''root keys'''
+'''root chain keys'''
 
-from appspace.keys import AppspaceKey, Attribute
+from appspace.keys import Attribute
+
+from callchain.keys.reset import KResetLocal
 
 
-class KConfig(AppspaceKey):
+class KConfig(KResetLocal):
 
     '''configuration access key'''
 
@@ -15,11 +15,11 @@ class KConfig(AppspaceKey):
     G = Attribute('external application global settings')
 
 
-class KManager(KConfig):
+class KRoot(KConfig):
 
-    '''chain manager key'''
+    '''root chain key'''
 
-    def __init__(pattern=None, required=None, defaults=None, **kw):
+    def __init__(pattern=None, required=None, defaults=None, **kw):  # @NoSelf
         '''
         init
 
@@ -28,11 +28,22 @@ class KManager(KConfig):
         @param defaults: default settings (default: None)
         '''
 
-class KEventManager(KConfig):
+    def __call__(*args):  # @NoSelf
+        '''new chain session'''
 
-    '''event manager key'''
+    def back(branch):  # @NoSelf
+        '''
+        handle return from branch chain
 
-    def __init__(
+        @param branch: branch chain
+        '''
+
+
+class KEventRoot(KRoot):
+
+    '''root event key'''
+
+    def __init__(  # @NoSelf
         patterns=None,
         events=None,
         required=None,
@@ -49,34 +60,14 @@ class KEventManager(KConfig):
         @param defaults: default settings (default: None)
         '''
 
-
-class KChainRoot(AppspaceKey):
-
-    '''root chain key'''
-
-    def __call__(*args):
-        '''new chain session'''
-
-    def back(branch):
-        '''
-        handle branch chain switch
-
-        @param branch: branch chain
-        '''
-
-
-class KEventRoot(KChainRoot):
-
-    '''root event key'''
-
-    def event(event):
+    def event(event):  # @NoSelf
         '''
         create or fetch `event`
 
         @param event: event label
         '''
 
-    def unevent(event):
+    def unevent(event):  # @NoSelf
         '''
         drop `event`
 

@@ -1,17 +1,24 @@
 # -*- coding: utf-8 -*-
-'''lazy manually balanced eventlets appconf'''
+'''lazy manually balanced event chains appconf'''
 
 from appspace.keys import appifies
-from twoq.lazy.mixins import ManResultMixin
+from twoq.lazy.mixins import ManResultMixin, ManQMixin
 
-from callchain.event import EventQ, einside
+from callchain.keys.core import KEvent
+from callchain.event import einside, Event
+from callchain.keys.call import KEventCall
+from callchain.keys.root import KEventRoot
 from callchain.services.apps import events
-from callchain.services.queue import KResults
 from callchain.patterns import Pathways, Nameways
+from callchain.services.queue import KThings, KResult
+
+
+class baseevent(Pathways):
+    chain = 'callchain.lazy_man.chainlet.chainlink'
 
 
 class event(Pathways):
-    chain = 'callchain.chain.chainlink'
+    chain = 'callchain.lazy_man.chainlet.chainlink'
 
     class filter(Nameways):
         key = 'callchain.services.filter.KFilter'
@@ -36,10 +43,6 @@ class event(Pathways):
     class delay(Nameways):
         key = 'callchain.services.map.KDelay'
         delay = 'callchain.lazy_man.eventlet.delayevent'
-
-    class copy(Nameways):
-        key = 'callchain.services.map.KCopy'
-        copy = 'callchain.lazy_man.eventlet.copyevent'
 
     class repeat(Nameways):
         key = 'callchain.services.map.KRepeat'
@@ -66,8 +69,15 @@ class event(Pathways):
         truth = 'callchain.lazy_man.eventlet.truthevent'
 
 
-@appifies(KResults)
+@appifies(KThings, KEventRoot, KEvent, KEventCall)
+@einside(baseevent, events)
+class eventchain(Event, ManQMixin):
+
+    '''lazy queued manually balanced lite event chain'''
+
+
+@appifies(KResult, KEventRoot, KEvent, KEventCall)
 @einside(event, events)
-class eventq(EventQ, ManResultMixin):
+class eventq(Event, ManResultMixin):
 
     '''lazy queued manually balanced event chain'''

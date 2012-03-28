@@ -2,14 +2,21 @@
 '''lazy manually balanced chains appconf'''
 
 from appspace.keys import appifies
-from twoq.lazy.mixins import ManResultMixin
+from twoq.lazy.mixins import ManResultMixin, ManQMixin
 
-from callchain.chain import ChainQ, inside
-from callchain.services.queue import KResults
+from callchain.keys.root import KRoot
+from callchain.keys.call import KCall
+from callchain.chain import Chain, inside
+from callchain.keys.core import KChainKey
 from callchain.patterns import Pathways, Nameways
+from callchain.services.queue import KThings, KResult
 
 
-class callchain(Pathways):
+class chainbase(Pathways):
+    link = 'callchain.lazy_man.chainlet.chainlink'
+
+
+class chain(chainbase):
 
     class filter(Nameways):
         key = 'callchain.services.filter.KFilter'
@@ -34,10 +41,6 @@ class callchain(Pathways):
     class delay(Nameways):
         key = 'callchain.services.map.KDelay'
         delay = 'callchain.lazy_man.chainlet.delaychain'
-
-    class copy(Nameways):
-        key = 'callchain.services.map.KCopy'
-        copy = 'callchain.lazy_man.chainlet.copychain'
 
     class repeat(Nameways):
         key = 'callchain.services.map.KRepeat'
@@ -64,8 +67,15 @@ class callchain(Pathways):
         truth = 'callchain.lazy_man.chainlet.truthchain'
 
 
-@appifies(KResults)
-@inside(callchain)
-class chainq(ChainQ, ManResultMixin):
+@appifies(KThings, KRoot, KChainKey, KCall)
+@inside(chainbase)
+class callchain(Chain, ManQMixin):
+
+    ''''lazy queued manually balanced lite call chain'''
+
+
+@appifies(KRoot, KChainKey, KResult, KCall)
+@inside(chain)
+class chainq(Chain, ManResultMixin):
 
     '''lazy queued manually balanced call chain'''

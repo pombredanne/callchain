@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-#@PydevCodeAnalysisIgnore
-#pylint: disable-msg=e0211,e0213
-'''reset keys'''
+'''callchain reset keys'''
 
 from appspace.keys import AppspaceKey
 
@@ -10,8 +8,8 @@ class KResetType(AppspaceKey):
 
     '''reset type key'''
 
-    def reset():
-        '''reset previously accessed ``lazybase`` attributes'''
+    def reset():  # @NoSelf
+        '''reset previously accessed `lazybase` attributes'''
 
 
 class KResetLocal(KResetType):
