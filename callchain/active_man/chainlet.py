@@ -9,10 +9,9 @@ from twoq.mixins.ordering import RandomMixin, OrderMixin
 from twoq.mixins.mapping import DelayMixin, RepeatMixin, MapMixin
 from twoq.mixins.reducing import MathMixin, TruthMixin, ReduceMixin
 
-from callchain.call import CallMixin
+from callchain.call import ChainMixin
 from callchain.keys.call import KCall
 from callchain.keys.core import KChain
-from callchain.core import ChainMixin
 from callchain.keys.root import KConfig
 from callchain.keys.branch import KLinked
 from callchain.services.queue import KResult
@@ -30,12 +29,16 @@ __all__ = (
 )
 
 
+class chainlet(ChainletMixin, BranchMixin, BranchletMixin, ManQMixin):
+
+    '''chainlet mixin'''
+
+
 @appifies(KDelay)
 class delaychain(
     ChainletMixin,
-    BranchletMixin,
     BranchMixin,
-    ChainMixin,
+    BranchletMixin,
     ManQMixin,
     DelayMixin,
 ):
@@ -46,9 +49,8 @@ class delaychain(
 @appifies(KRepeat)
 class repeatchain(
     ChainletMixin,
-    BranchletMixin,
     BranchMixin,
-    ChainMixin,
+    BranchletMixin,
     ManQMixin,
     RepeatMixin,
 ):
@@ -59,9 +61,8 @@ class repeatchain(
 @appifies(KMap)
 class mapchain(
     ChainletMixin,
-    BranchletMixin,
     BranchMixin,
-    ChainMixin,
+    BranchletMixin,
     ManQMixin,
     MapMixin,
 ):
@@ -72,9 +73,8 @@ class mapchain(
 @appifies(KCollect)
 class collectchain(
     ChainletMixin,
-    BranchletMixin,
     BranchMixin,
-    ChainMixin,
+    BranchletMixin,
     ManQMixin,
     CollectMixin,
 ):
@@ -85,9 +85,8 @@ class collectchain(
 @appifies(KSet)
 class setchain(
     ChainletMixin,
-    BranchletMixin,
     BranchMixin,
-    ChainMixin,
+    BranchletMixin,
     ManQMixin,
     SetMixin,
 ):
@@ -98,9 +97,8 @@ class setchain(
 @appifies(KSlice)
 class slicechain(
     ChainletMixin,
-    BranchletMixin,
     BranchMixin,
-    ChainMixin,
+    BranchletMixin,
     ManQMixin,
     SliceMixin,
 ):
@@ -111,9 +109,8 @@ class slicechain(
 @appifies(KFilter)
 class filterchain(
     ChainletMixin,
-    BranchletMixin,
     BranchMixin,
-    ChainMixin,
+    BranchletMixin,
     ManQMixin,
     FilterMixin,
 ):
@@ -124,9 +121,8 @@ class filterchain(
 @appifies(KRandom)
 class randomchain(
     ChainletMixin,
-    BranchletMixin,
     BranchMixin,
-    ChainMixin,
+    BranchletMixin,
     ManQMixin,
     RandomMixin,
 ):
@@ -137,9 +133,8 @@ class randomchain(
 @appifies(KOrder)
 class orderchain(
     ChainletMixin,
-    BranchletMixin,
     BranchMixin,
-    ChainMixin,
+    BranchletMixin,
     ManQMixin,
     OrderMixin,
 ):
@@ -150,9 +145,8 @@ class orderchain(
 @appifies(KMath)
 class mathchain(
     ChainletMixin,
-    BranchletMixin,
     BranchMixin,
-    ChainMixin,
+    BranchletMixin,
     ManQMixin,
     MathMixin,
 ):
@@ -163,9 +157,8 @@ class mathchain(
 @appifies(KReduce)
 class reducechain(
     ChainletMixin,
-    BranchletMixin,
     BranchMixin,
-    ChainMixin,
+    BranchletMixin,
     ManQMixin,
     ReduceMixin,
 ):
@@ -176,9 +169,8 @@ class reducechain(
 @appifies(KTruth)
 class truthchain(
     ChainletMixin,
-    BranchletMixin,
     BranchMixin,
-    ChainMixin,
+    BranchletMixin,
     ManQMixin,
     TruthMixin,
 ):
@@ -187,8 +179,6 @@ class truthchain(
 
 
 @appifies(KLinked, KConfig, KCall, KChain, KResult)
-class chainlink(
-    CallMixin, BranchMixin, LinkedMixin, ChainMixin, ManResultMixin,
-):
+class chainlink(BranchMixin, LinkedMixin, ChainMixin, ManResultMixin):
 
     '''manually balanced linked chain'''

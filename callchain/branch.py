@@ -7,10 +7,10 @@ from stuf.utils import lazy
 from appspace.keys import NoAppError
 
 from callchain.managers import Events
-from callchain.resets import ConfigMixin, ResetLocalMixin, CoreMixin
+from callchain.core import ResetLocalMixin, CoreMixin
 
 
-class BranchMixin(ConfigMixin):
+class BranchMixin(ResetLocalMixin):
 
     ''''branch mixin'''
 
@@ -65,7 +65,7 @@ class EventBranchMixin(BranchMixin):
         return chain(self.E.events(key), self.root.E.events(key))
 
 
-class BranchletMixin(ResetLocalMixin):
+class BranchletMixin(CoreMixin):
 
     '''chainlet mixin'''
 
@@ -95,7 +95,7 @@ class LinkedMixin(ResetLocalMixin):
         return self.root.back(self)
 
 
-class ChainletMixin(CoreMixin):
+class ChainletMixin(ResetLocalMixin):
 
     '''chainlet mixin'''
 
