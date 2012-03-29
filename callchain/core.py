@@ -84,12 +84,6 @@ class CoreMixin(ResetLocalMixin):
             _M._current = _M._root
             return thing
 
-    def clear(self):
-        '''clear things'''
-        self._chain.clear()
-        return super(CoreMixin, self).clear()
-
-        
 
 class ConfigMixin(CoreMixin):
     

@@ -29,6 +29,11 @@ __all__ = (
 )
 
 
+class eventlet(ChainletMixin, EventBranchMixin, BranchletMixin, ManQMixin):
+
+    '''eventlet mixin'''
+
+
 @appifies(KDelay)
 class delayevent(
     ChainletMixin,

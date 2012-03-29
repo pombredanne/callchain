@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 '''callchain call mixins'''
 
-from itertools import chain
-from collections import deque
-from functools import partial
+#from collections import deque
+from itertools import chain, count
+from functools import partial, total_ordering
 
 from stuf import frozenstuf
 from twoq.support import isstring
@@ -13,6 +13,7 @@ from stuf.utils import OrderedDict, either, lazy, lazy_class
 from callchain.managers import Events
 from callchain.core import ConfigMixin
 from callchain.patterns import Pathways
+from callchain.compat import PriorityQueue
 from callchain.keys.base import NoServiceError
 
 ###############################################################################
@@ -20,9 +21,29 @@ from callchain.keys.base import NoServiceError
 ###############################################################################
 
 
+@total_ordering
+class cury(object):
+
+    __slots__ = ['_call', 'count']
+
+    counter = count()
+
+    def __init__(self, call, *args, **kw):
+        self._call = partial(call, *args, **kw)
+        self.count = next(self.counter)
+
+    def __call__(self):
+        return self._call()
+
+    def __lt__(self, other):
+        return self.count < other
+
+
 class inside(object):
 
     '''internal chain configuration'''
+
+    __slots__ = ('pattern', 'required', 'defaults', 'args', 'kw')
 
     def __init__(self, pattern, required=None, defaults=None, *args, **kw):
         '''
@@ -88,7 +109,7 @@ class ChainMixin(ConfigMixin):
         # chain label
         self._CALLQ = '_chain'
         # call chain queue
-        self._chain = deque()
+        self._chain = PriorityQueue()
 
     def _load(self, label):
         '''
@@ -105,15 +126,6 @@ class ChainMixin(ConfigMixin):
             # ...or lookup other appspaced thing
             return super(ChainMixin, self)._load(label)
 
-    def switch(self, label, key=False):
-        '''
-        overt switch to linked chain configured in external appspace
-
-        @param label: linked chain label
-        @param key: linked chain chain key (default: False)
-        '''
-        return self.M.get(label, key)(self)
-
     def chain(self, call, key=False, *args, **kw):
         '''
         add `call` or appspaced `call` to call chain, partializing it with any
@@ -122,19 +134,27 @@ class ChainMixin(ConfigMixin):
         @param call: call or appspaced call label
         @param key: appspace key (default: False)
         '''
-        if not isstring(call):
-            call = partial(call, *(key,) + args, **kw)
-        else:
-            call = partial(self.M.get(call, key), *args, **kw)
-        self._chain.append(call)
+        self._chain.put(cury(
+            call, *(key,) + args, **kw) if not isstring(call) else cury(
+            self.M.get(call, key), *args, **kw))
         return self
 
     def commit(self):
         '''consume call chain'''
         with self.ctx3():
+            ln = self._chain.qsize()
             return self._xtend(
-                c() for c in self.iterexcept(self._chain.popleft, IndexError)
+                c() for c in self.breakcount(self._chain.get, ln)
             )
+
+    def switch(self, label, key=False):
+        '''
+        overt switch to linked chain configured in external appspace
+
+        @param label: linked chain label
+        @param key: linked chain chain key (default: False)
+        '''
+        return self.M.get(label, key)(self)
 
     def tap(self, call, key=False):
         '''
@@ -153,6 +173,11 @@ class ChainMixin(ConfigMixin):
             self._M.get(call, key) if isstring(call) else call
         )
 
+#    def clear(self):
+#        '''clear things'''
+##        self._chain.clear()
+#        return super(ChainMixin, self).clear()
+
     class Meta:
         pass
 
@@ -166,14 +191,10 @@ class einside(inside):
 
     '''internal event chain configuration'''
 
+    __slots__ = ('pattern', 'required', 'defaults', 'args', 'kw', 'events')
+
     def __init__(
-        self,
-        patterns=None,
-        events=None,
-        required=None,
-        defaults=None,
-        *args,
-        **kw
+        self, patterns, events=None, required=None, defaults=None, *args, **kw
     ):
         '''
         init
