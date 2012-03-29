@@ -4,14 +4,12 @@
 from appspace.keys import appifies
 from twoq.active.mixins import AutoResultMixin, AutoQMixin
 
-from callchain.core import einside
 from callchain.keys.core import KEvent
-from callchain.core import EventMixin
 from callchain.root import EventRootMixin
-from callchain.call import EventCallMixin
 from callchain.keys.root import KEventRoot
 from callchain.keys.call import KEventCall
 from callchain.services.apps import events
+from callchain.call import EventMixin, einside
 from callchain.patterns import Pathways, Nameways
 from callchain.services.queue import KThings, KResult
 
@@ -26,7 +24,7 @@ class thingevent(Pathways):
 
 @appifies(KThings, KEventRoot, KEvent, KEventCall)
 @einside(thingevent, events)
-class eventchain(EventCallMixin, EventRootMixin, EventMixin, AutoQMixin):
+class eventchain(EventRootMixin, EventMixin, AutoQMixin):
 
     '''active queued auto-balancing lite event chain'''
 
@@ -90,6 +88,6 @@ class event(Pathways):
 
 @appifies(KResult, KEventRoot, KEvent, KEventCall)
 @einside(event, events)
-class eventq(EventCallMixin, EventRootMixin, EventMixin, AutoResultMixin):
+class eventq(EventRootMixin, EventMixin, AutoResultMixin):
 
     '''active queued auto-balancing event chain'''

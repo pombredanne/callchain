@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 '''root chain mixins'''
 
+from stuf.utils import lazy_class
+
 from callchain.patterns import Pathways
-from callchain.resets import ConfigMixin
+from callchain.core import ResetLocalMixin
 
 
-class RootMixin(ConfigMixin):
+class RootMixin(ResetLocalMixin):
 
     '''root chain mixin'''
 
@@ -31,6 +33,12 @@ class RootMixin(ConfigMixin):
         # clear call chain and queues and extend incoming things
         return self.clear().extend(args)
 
+    @lazy_class
+    def port(self):
+        '''python 2.x <-> python 3.x porting helper'''
+        from twoq.support import port
+        return port
+
     def back(self, branch):
         '''
         handle switch from branch chain
@@ -38,8 +46,6 @@ class RootMixin(ConfigMixin):
         @param branch: branch chain
         '''
         self.clear()
-        # extend root call chain with branch call chain
-        self._chain.append(branch._chain)
         # sync with branch callable
         self._call = branch._call
         # sync with branch postitional arguments

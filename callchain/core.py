@@ -1,67 +1,69 @@
 # -*- coding: utf-8 -*-
-'''callchain core mixins'''
+'''callchain core'''
 
-from itertools import chain
-from collections import deque
-from functools import partial
+from threading import local
+from operator import setitem
 
-from stuf.utils import lazy
-from twoq.support import isstring
+from stuf.six import items
+from stuf import frozenstuf
 from appspace.keys import AppLookupError, NoAppError
-
-from callchain.managers import Events
-from callchain.patterns import Pathways
-from callchain.resets import ResetLocalMixin
-
-###############################################################################
-## chain components ###########################################################
-###############################################################################
+from stuf.utils import getcls, either, lazy, lazybase, exhaustmap
 
 
-class inside(object):
+class ResetTypeMixin(object):
 
-    '''internal chain configuration'''
+    '''`reset` descriptors that subclass `lazybase`'''
 
-    def __init__(self, pattern, required=None, defaults=None, *args, **kw):
+    def reset(self):
+        '''reset previously accessed `lazybase` attributes'''
+        this = vars(self)
+        t = lambda x, y: x in this and isinstance(y, lazybase)
+        exhaustmap(items(vars(getcls(self))), delattr, t)
+
+
+class ResetLocalMixin(local):
+
+    '''`reset` descriptors that subclass `lazybase`'''
+
+    def reset(self):
+        '''reset previously accessed `lazybase` attributes'''
+        this = vars(self)
+        t = lambda x, y: x in this and isinstance(y, lazybase)
+        exhaustmap(items(vars(getcls(self))), delattr, t)
+        
+        
+class CoreMixin(ResetLocalMixin):
+
+    '''core mixin'''
+    
+    def __init__(self, root):
         '''
         init
 
-        @param pattern: pattern configuration class or appspace label
-        @param required: required global settings (default: None)
-        @param defaults: default global settings (default: None)
+        @param root: root chain
         '''
-        self.pattern = pattern
-        self.required = required
-        self.defaults = defaults
-        self.args = args
-        self.kw = kw
-
-    def __call__(self, that):
-        # internal appspace manager
-        that._M = Pathways.appspace(
-            self.pattern,
-            self.required,
-            self.defaults,
-            *self.args,
-            **self.kw
-        )
-        # lock internal appspace global settings
-        that._M.settings.lock()
-        # set internal appspace global settings
-        that._G = that._M.settings.final
-        return that
-
-
-class ChainMixin(ResetLocalMixin):
-
-    '''chain mixin'''
-
+        super(CoreMixin, self).__init__()
+        self._setup(root)
+        
     def __getattr__(self, label):
         try:
             return object.__getattribute__(self, label)
         except AttributeError:
             return self._load(label)
 
+    @either
+    def G(self):
+        '''external application global settings'''
+        return self.M.settings.final if self.M is not None else frozenstuf()
+    
+    @either
+    def L(self):
+        '''local settings'''
+        return self._M.localize(self) if self._M is not None else frozenstuf()
+    
+    def _setup(self, root):
+        '''call chain setup'''
+    
     def _load(self, label):
         '''
         load thing from appspace
@@ -87,130 +89,35 @@ class ChainMixin(ResetLocalMixin):
             _M._current = _M._root
             return thing
 
+
+class ConfigMixin(CoreMixin):
+    
+    '''configuration access mixin'''
+        
     @lazy
-    def _chain(self):
-        '''call chain queue'''
-        return deque()
+    def defaults(self):
+        '''default settings by their lonesome'''
+        return self.M.settings.defaults if self.M is not None else frozenstuf()
 
-    def _setup(self, root):
-        '''call chain setup'''
-        # chain label
-        self._CALLQ = '_chain'
-
-    def chain(self, call, key=False, *args, **kw):
-        '''
-        add `call` or appspaced `call` to call chain, partializing it with any
-        passed arguments
-
-        @param call: call or appspaced call label
-        @param key: appspace key (default: False)
-        '''
-        if not isstring(call):
-            call = partial(call, *(key,) + args, **kw)
-        else:
-            call = partial(self.M.get(call, key), *args, **kw)
-        self._chain.append(call)
-        return self
-
-    def clear(self):
-        '''clear things'''
-        self._chain.clear()
-        return super(ChainMixin, self).clear()
-
-    def tap(self, call, key=False):
-        '''
-        add call
-
-        @param call: callable or appspace label
-        @param key: link call chain key (default: False)
-        '''
-        return super(ChainMixin, self).tap(
-            self._M.get(call, key) if isstring(call) else call
+    @lazy
+    def required(self):
+        '''required settings by their lonesome'''
+        return self.M.settings.required if self.M is not None else frozenstuf()
+    
+    def _defaults(self):
+        '''reset attribute values'''
+        this = self.__dict__
+        self.exhaustitems(
+            vars(self),
+            lambda x, y: setitem(this, x.rstrip('_d'), y),
+            lambda x: x[0].endswith('_d'),
         )
-
-    def wrap(self, call, key=False):
-        '''build current callable from factory'''
-        return super(ChainMixin, self).wrap(
-            self._M.get(call, key) if isstring(call) else call
-        )
-
-
-###############################################################################
-## event chain components #####################################################
-###############################################################################
-
-
-class einside(inside):
-
-    '''internal event chain configuration'''
-
-    def __init__(
-        self,
-        patterns=None,
-        events=None,
-        required=None,
-        defaults=None,
-        *args,
-        **kw
-    ):
+        
+    def _setdefault(self, key, value):
         '''
-        init
+        set default value for instance attribute
 
-        @param patterns: pattern config or appspace label (default: None)
-        @param events: events configuration (default: None)
-        @param required: required settings (default: None)
-        @param defaults: default settings (default: None)
+        @param key: attribute name
+        @param value: attribute value
         '''
-        super(einside, self).__init__(
-            patterns, required, defaults, *args, **kw
-        )
-        self.events = events
-
-    def __call__(self, that):
-        that = super(einside, self).__call__(that)
-        that.E = Events('events')
-        that.E.update(self.events)
-        return that
-
-
-class EventMixin(ChainMixin):
-
-    '''event chain mixin'''
-
-    @property
-    def _linkedchain(self):
-        '''new linked chain'''
-        return self._M.get('chain', 'event')(self)
-
-    def _events(self, *events):
-        '''calls bound to `events`'''
-        return chain(*tuple(self._imap(self._event, events)))
-
-    def on(self, event, call, key=False, *args, **kw):
-        '''
-        bind call to `event`
-
-        @param event: event label
-        @param call: label for call or eventspaced thing
-        @param key: key label (default: False)
-        '''
-        self._eventq(event).chain(call, key, *args, **kw)
-        return self
-
-    def off(self, event):
-        '''
-        clear calls bound to `event`
-
-        @param event: event label
-        '''
-        self.E.unset(event)
-        return self
-
-    def trigger(self, *events):
-        '''
-        extend primary call chain with partials bound to `events`
-
-        @param *events: event labels
-        '''
-        self._chain.extend(self._events(*events))
-        return self
+        self.__dict__[key] = self.__dict__[key + '_d'] = value
