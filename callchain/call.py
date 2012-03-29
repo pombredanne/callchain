@@ -1,42 +1,21 @@
 # -*- coding: utf-8 -*-
 '''callchain call mixins'''
 
-#from collections import deque
-from itertools import chain, count
-from functools import partial, total_ordering
+from itertools import chain
+from collections import deque
 
-from stuf import frozenstuf
 from twoq.support import isstring
 from appspace.builders import Appspace
-from stuf.utils import OrderedDict, either, lazy, lazy_class
+from stuf.utils import OrderedDict, lazy
 
 from callchain.managers import Events
 from callchain.core import ConfigMixin
 from callchain.patterns import Pathways
-from callchain.compat import PriorityQueue
 from callchain.keys.base import NoServiceError
 
 ###############################################################################
 ## chain components ###########################################################
 ###############################################################################
-
-
-@total_ordering
-class cury(object):
-
-    __slots__ = ['_call', 'count']
-
-    counter = count()
-
-    def __init__(self, call, *args, **kw):
-        self._call = partial(call, *args, **kw)
-        self.count = next(self.counter)
-
-    def __call__(self):
-        return self._call()
-
-    def __lt__(self, other):
-        return self.count < other
 
 
 class inside(object):
@@ -88,28 +67,12 @@ class ChainMixin(ConfigMixin):
         # invoke call chain
         self.commit()
 
-    @either
-    def L(self):
-        '''local settings'''
-        return self._M.localize(self) if self._M is not None else frozenstuf()
-
-    @lazy_class
-    def port(self):
-        '''python 2.x <-> python 3.x porting helper'''
-        from twoq.support import port
-        return port
-
-    @lazy
-    def space(self):
-        '''external appspace interface'''
-        return Appspace(self.M) if self.M is not None else None
-
     def _setup(self, root):
         '''call chain setup'''
         # chain label
         self._CALLQ = '_chain'
         # call chain queue
-        self._chain = PriorityQueue()
+        self._chain = deque()
 
     def _load(self, label):
         '''
@@ -126,6 +89,11 @@ class ChainMixin(ConfigMixin):
             # ...or lookup other appspaced thing
             return super(ChainMixin, self)._load(label)
 
+    @lazy
+    def space(self):
+        '''external appspace interface'''
+        return Appspace(self.M) if self.M is not None else None
+
     def chain(self, call, key=False, *args, **kw):
         '''
         add `call` or appspaced `call` to call chain, partializing it with any
@@ -134,17 +102,19 @@ class ChainMixin(ConfigMixin):
         @param call: call or appspaced call label
         @param key: appspace key (default: False)
         '''
-        self._chain.put(cury(
-            call, *(key,) + args, **kw) if not isstring(call) else cury(
-            self.M.get(call, key), *args, **kw))
+        if not isstring(call):
+            self._chain.append(self._partial(call, *(key,) + args, **kw))
+        else:
+            self._chain.append(
+                self._partial(self.M.get(call, key), *args, **kw)
+            )
         return self
 
     def commit(self):
         '''consume call chain'''
         with self.ctx3():
-            ln = self._chain.qsize()
             return self._xtend(
-                c() for c in self.breakcount(self._chain.get, ln)
+                c() for c in self.iterexcept(self._chain.popleft, IndexError)
             )
 
     def switch(self, label, key=False):
@@ -173,10 +143,10 @@ class ChainMixin(ConfigMixin):
             self._M.get(call, key) if isstring(call) else call
         )
 
-#    def clear(self):
-#        '''clear things'''
-##        self._chain.clear()
-#        return super(ChainMixin, self).clear()
+    def clear(self):
+        '''clear things'''
+        self._chain.clear()
+        return super(ChainMixin, self).clear()
 
     class Meta:
         pass
@@ -233,7 +203,6 @@ class EventMixin(ChainMixin):
         '''run event chain'''
         fire = self.fire
         try:
-            #TODO: consider how this piles up
             # 1. "before" event 2. "work" event
             fire('before', 'work')
             # everything else
@@ -254,10 +223,9 @@ class EventMixin(ChainMixin):
         @param *events: event labels
         '''
         with self.ctx1(workq='_work'):
-            self.exhaustcall(
+            return self.exhaustcall(
                 lambda x: x(), self._xtend(self._events(*events))._iterable,
             )
-            return self
         
     def on(self, event, call, key=False, *args, **kw):
         '''

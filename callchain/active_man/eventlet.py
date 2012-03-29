@@ -25,7 +25,7 @@ from callchain.branch import (
 __all__ = (
     'mathevent', 'truthevent', 'reduceevent', 'collectevent', 'setevent',
     'sliceevent', 'filterevent', 'delayevent', 'repeatevent', 'mapevent',
-    'randomevent', 'orderevent',
+    'randomevent', 'orderevent', 'eventlet'
 )
 
 
@@ -35,150 +35,78 @@ class eventlet(ChainletMixin, EventBranchMixin, BranchletMixin, ManQMixin):
 
 
 @appifies(KDelay)
-class delayevent(
-    ChainletMixin,
-    EventBranchMixin,
-    BranchletMixin,
-    ManQMixin,
-    DelayMixin,
-):
+class delayevent(eventlet, DelayMixin):
 
-    '''manually balanced delayed mapping eventlet'''
+    '''delayed mapping eventlet'''
 
 
 @appifies(KRepeat)
-class repeatevent(
-    ChainletMixin,
-    EventBranchMixin,
-    BranchletMixin,
-    ManQMixin,
-    RepeatMixin,
-):
+class repeatevent(eventlet, RepeatMixin):
 
-    '''manually balanced repeat eventlet'''
+    '''repeat eventlet'''
 
 
 @appifies(KMap)
-class mapevent(
-    ChainletMixin,
-    EventBranchMixin,
-    BranchletMixin,
-    ManQMixin,
-    MapMixin,
-):
+class mapevent(eventlet, MapMixin):
 
-    '''manually balanced mapping eventlet'''
+    '''mapping eventlet'''
 
 
 @appifies(KCollect)
-class collectevent(
-    ChainletMixin,
-    EventBranchMixin,
-    BranchletMixin,
-    ManQMixin,
-    CollectMixin,
-):
+class collectevent(eventlet, CollectMixin):
 
-    '''manually balanced collecting eventlet'''
+    '''collecting eventlet'''
 
 
 @appifies(KSet)
-class setevent(
-    ChainletMixin,
-    EventBranchMixin,
-    BranchletMixin,
-    ManQMixin,
-    SetMixin,
-):
+class setevent(eventlet, SetMixin):
 
-    '''manually balanced seting eventlet'''
+    '''seting eventlet'''
 
 
 @appifies(KSlice)
-class sliceevent(
-    ChainletMixin,
-    EventBranchMixin,
-    BranchletMixin,
-    ManQMixin,
-    SliceMixin,
-):
+class sliceevent(eventlet, SliceMixin):
 
-    '''manually balanced slicing eventlet'''
+    '''slicing eventlet'''
 
 
 @appifies(KFilter)
-class filterevent(
-    ChainletMixin,
-    EventBranchMixin,
-    BranchletMixin,
-    ManQMixin,
-    FilterMixin,
-):
+class filterevent(eventlet, FilterMixin):
 
-    '''manually balanced filtering eventlet'''
+    '''filtering eventlet'''
 
 
 @appifies(KRandom)
-class randomevent(
-    ChainletMixin,
-    EventBranchMixin,
-    BranchletMixin,
-    ManQMixin,
-    RandomMixin,
-):
+class randomevent(eventlet, RandomMixin):
 
-    '''manually balanced randomizing eventlet'''
+    '''randomizing eventlet'''
 
 
 @appifies(KOrder)
-class orderevent(
-    ChainletMixin,
-    EventBranchMixin,
-    BranchletMixin,
-    ManQMixin,
-    OrderMixin,
-):
+class orderevent(eventlet, OrderMixin):
 
-    '''manually balanced ordering eventlet'''
+    '''ordering eventlet'''
 
 
 @appifies(KMath)
-class mathevent(
-    ChainletMixin,
-    EventBranchMixin,
-    BranchletMixin,
-    ManQMixin,
-    MathMixin,
-):
+class mathevent(eventlet, MathMixin):
 
-    '''manually balanced mathing eventlet'''
+    '''mathing eventlet'''
 
 
 @appifies(KReduce)
-class reduceevent(
-    ChainletMixin,
-    EventBranchMixin,
-    BranchletMixin,
-    ManQMixin,
-    ReduceMixin,
-):
+class reduceevent(eventlet, ReduceMixin):
 
-    '''manually balanced reducing eventlet'''
+    '''reducing eventlet'''
 
 
 @appifies(KTruth)
-class truthevent(
-    ChainletMixin,
-    EventBranchMixin,
-    BranchletMixin,
-    ManQMixin,
-    TruthMixin,
-):
+class truthevent(eventlet, TruthMixin):
 
-    '''manually balanced truthing eventlet'''
+    '''truthing eventlet'''
 
 
 @appifies(KLinked, KConfig, KEventCall, KEvent, KResult)
 class eventlink(EventBranchMixin, LinkedMixin, EventMixin, ManResultMixin):
 
-    '''manually balanced lite linked event chain'''
+    '''lite linked event chain'''

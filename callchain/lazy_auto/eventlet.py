@@ -18,14 +18,14 @@ from callchain.services.queue import KResult
 from callchain.services.order import KRandom, KOrder
 from callchain.services.map import KDelay, KRepeat, KMap
 from callchain.services.reduce import KMath, KReduce, KTruth
-from callchain.services.filter import KCollect, KSet, KSlice, KFilter
 from callchain.branch import (
     ChainletMixin, EventBranchMixin, BranchletMixin, LinkedMixin)
+from callchain.services.filter import KCollect, KSet, KSlice, KFilter
 
 __all__ = (
     'mathevent', 'truthevent', 'reduceevent', 'collectevent', 'setevent',
     'sliceevent', 'filterevent', 'delayevent', 'repeatevent', 'mapevent',
-    'randomevent', 'orderevent',
+    'randomevent', 'orderevent', 'eventlet'
 )
 
 
@@ -35,150 +35,78 @@ class eventlet(ChainletMixin, EventBranchMixin, BranchletMixin, AutoQMixin):
 
 
 @appifies(KDelay)
-class delayevent(
-    ChainletMixin,
-    EventBranchMixin,
-    BranchletMixin,
-    AutoQMixin,
-    DelayMixin,
-):
+class delayevent(eventlet, DelayMixin):
 
-    '''auto-balancing delayed mapping eventlet'''
+    '''delayed mapping eventlet'''
 
 
 @appifies(KRepeat)
-class repeatevent(
-    ChainletMixin,
-    EventBranchMixin,
-    BranchletMixin,
-    AutoQMixin,
-    RepeatMixin,
-):
+class repeatevent(eventlet, RepeatMixin):
 
-    '''auto-balancing repeat eventlet'''
+    '''repeat eventlet'''
 
 
 @appifies(KMap)
-class mapevent(
-    ChainletMixin,
-    EventBranchMixin,
-    BranchletMixin,
-    AutoQMixin,
-    MapMixin,
-):
+class mapevent(eventlet, MapMixin):
 
-    '''auto-balancing mapping eventlet'''
+    '''mapping eventlet'''
 
 
 @appifies(KCollect)
-class collectevent(
-    ChainletMixin,
-    EventBranchMixin,
-    BranchletMixin,
-    AutoQMixin,
-    CollectMixin,
-):
+class collectevent(eventlet, CollectMixin):
 
-    '''auto-balancing collecting eventlet'''
+    '''collecting eventlet'''
 
 
 @appifies(KSet)
-class setevent(
-    ChainletMixin,
-    EventBranchMixin,
-    BranchletMixin, EventMixin,
-    AutoQMixin,
-    SetMixin,
-):
+class setevent(eventlet, SetMixin):
 
-    '''auto-balancing seting eventlet'''
+    '''seting eventlet'''
 
 
 @appifies(KSlice)
-class sliceevent(
-    ChainletMixin,
-    EventBranchMixin,
-    BranchletMixin,
-    AutoQMixin,
-    SliceMixin,
-):
+class sliceevent(eventlet, SliceMixin):
 
-    '''auto-balancing slicing eventlet'''
+    '''slicing eventlet'''
 
 
 @appifies(KFilter)
-class filterevent(
-    ChainletMixin,
-    EventBranchMixin,
-    BranchletMixin,
-    AutoQMixin,
-    FilterMixin,
-):
+class filterevent(eventlet, FilterMixin):
 
-    '''auto-balancing filtering eventlet'''
+    '''filtering eventlet'''
 
 
 @appifies(KRandom)
-class randomevent(
-    ChainletMixin,
-    EventBranchMixin,
-    BranchletMixin,
-    AutoQMixin,
-    RandomMixin,
-):
+class randomevent(eventlet, RandomMixin):
 
-    '''auto-balancing randomizing eventlet'''
+    '''randomizing eventlet'''
 
 
 @appifies(KOrder)
-class orderevent(
-    ChainletMixin,
-    EventBranchMixin,
-    BranchletMixin,
-    AutoQMixin,
-    OrderMixin,
-):
+class orderevent(eventlet, OrderMixin):
 
-    '''auto-balancing ordering eventlet'''
+    '''ordering eventlet'''
 
 
 @appifies(KMath)
-class mathevent(
-    ChainletMixin,
-    EventBranchMixin,
-    BranchletMixin,
-    AutoQMixin,
-    MathMixin,
-):
+class mathevent(eventlet, MathMixin):
 
-    '''auto-balancing mathing eventlet'''
+    '''mathing eventlet'''
 
 
 @appifies(KReduce)
-class reduceevent(
-    ChainletMixin,
-    EventBranchMixin,
-    BranchletMixin,
-    AutoQMixin,
-    ReduceMixin,
-):
+class reduceevent(eventlet, ReduceMixin):
 
-    '''auto-balancing reducing eventlet'''
+    '''reducing eventlet'''
 
 
 @appifies(KTruth)
-class truthevent(
-    ChainletMixin,
-    EventBranchMixin,
-    BranchletMixin,
-    AutoQMixin,
-    TruthMixin,
-):
+class truthevent(eventlet, TruthMixin):
 
-    '''auto-balancing truthing eventlet'''
+    '''truthing eventlet'''
 
 
 @appifies(KLinked, KConfig, KEventCall, KEvent, KResult)
 class eventlink(EventBranchMixin, LinkedMixin, EventMixin, AutoResultMixin):
 
-    '''auto-balancing lite linked event chain'''
+    '''lite linked event chain'''

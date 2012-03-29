@@ -56,6 +56,11 @@ class CoreMixin(ResetLocalMixin):
         '''external application global settings'''
         return self.M.settings.final if self.M is not None else frozenstuf()
     
+    @either
+    def L(self):
+        '''local settings'''
+        return self._M.localize(self) if self._M is not None else frozenstuf()
+    
     def _setup(self, root):
         '''call chain setup'''
     
@@ -102,7 +107,7 @@ class ConfigMixin(CoreMixin):
     def _defaults(self):
         '''reset attribute values'''
         this = self.__dict__
-        self.exhaustmap(
+        self.exhaustitems(
             vars(self),
             lambda x, y: setitem(this, x.rstrip('_d'), y),
             lambda x: x[0].endswith('_d'),

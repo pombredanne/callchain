@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 '''root chain mixins'''
 
+from stuf.utils import lazy_class
+
 from callchain.patterns import Pathways
 from callchain.core import ResetLocalMixin
 
@@ -30,6 +32,12 @@ class RootMixin(ResetLocalMixin):
         '''new chain session'''
         # clear call chain and queues and extend incoming things
         return self.clear().extend(args)
+
+    @lazy_class
+    def port(self):
+        '''python 2.x <-> python 3.x porting helper'''
+        from twoq.support import port
+        return port
 
     def back(self, branch):
         '''
