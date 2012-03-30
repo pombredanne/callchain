@@ -21,25 +21,6 @@ from callchain.tests.chain import CallMixin
 from callchain.tests.manning import Manning
 
 
-#class TestCallChain(unittest.TestCase, CallMixin):
-#
-#    def setUp(self):
-#        self.qclass = self._makeone()
-#
-#    @property
-#    def _makeone(self):
-#        from callchain.core import callchain
-#        return callchain
-
-#    def test_switch(self):
-#        qclass = self._appconf
-#        foo = qclass.switch('test', 'sublink').foo(3).bar(3).back()
-#        foo.commit()
-#        outgoing = foo.outgoing
-#        self.assertEqual(outgoing.popleft(), 3.0)
-#        self.assertEqual(outgoing.popleft(), 3.0)
-
-
 class TestAutoChainQ(
     unittest.TestCase, AQMixin, AFilterQMixin, AMapQMixin, AReduceQMixin,
     AOrderQMixin, CallMixin,
@@ -54,6 +35,20 @@ class TestAutoChainQ(
         return chainq
 
 
+class TestAutoPriorityChainQ(
+    unittest.TestCase, AQMixin, AFilterQMixin, AMapQMixin, AReduceQMixin,
+    AOrderQMixin, CallMixin,
+):
+
+    def setUp(self):
+        self.qclass = self._makeone()
+
+    @property
+    def _makeone(self):
+        from callchain.active_auto.chain import priorityq
+        return priorityq
+
+
 class TestManChainQ(
     Manning, MQMixin, MFilterQMixin, MMapQMixin, MReduceQMixin, MOrderQMixin,
     CallMixin,
@@ -66,6 +61,20 @@ class TestManChainQ(
     def _makeone(self):
         from callchain.active_man.chain import chainq
         return chainq
+
+
+class TestManPriorityChainQ(
+    Manning, MQMixin, MFilterQMixin, MMapQMixin, MReduceQMixin, MOrderQMixin,
+    CallMixin,
+):
+
+    def setUp(self):
+        self.qclass = self._makeone()
+
+    @property
+    def _makeone(self):
+        from callchain.active_man.chain import priorityq
+        return priorityq
 
 
 if __name__ == '__main__':

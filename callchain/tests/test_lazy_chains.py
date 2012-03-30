@@ -35,6 +35,20 @@ class TestAutoChainQ(
         return chainq
 
 
+class TestAutoPriorityChainQ(
+    unittest.TestCase, CallMixin, AQMixin, AFilterQMixin, AMapQMixin,
+    AReduceQMixin, AOrderQMixin,
+):
+
+    def setUp(self):
+        self.qclass = self._makeone()
+
+    @property
+    def _makeone(self):
+        from callchain.lazy_auto.chain import priorityq
+        return priorityq
+
+
 class TestManChainQ(
     Manning, CallMixin, MQMixin, MFilterQMixin, MMapQMixin, MReduceQMixin,
     MOrderQMixin,
@@ -47,6 +61,20 @@ class TestManChainQ(
     def _makeone(self):
         from callchain.lazy_man.chain import chainq
         return chainq
+
+
+class TestManPriorityChainQ(
+    Manning, CallMixin, MQMixin, MFilterQMixin, MMapQMixin, MReduceQMixin,
+    MOrderQMixin,
+):
+
+    def setUp(self):
+        self.qclass = self._makeone()
+
+    @property
+    def _makeone(self):
+        from callchain.lazy_man.chain import priorityq
+        return priorityq
 
 
 if __name__ == '__main__':

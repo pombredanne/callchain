@@ -30,12 +30,12 @@ class ResetLocalMixin(local):
         this = vars(self)
         t = lambda x, y: x in this and isinstance(y, lazybase)
         exhaustmap(items(vars(getcls(self))), delattr, t)
-        
-        
+
+
 class CoreMixin(ResetLocalMixin):
 
     '''core mixin'''
-    
+
     def __init__(self, root):
         '''
         init
@@ -44,7 +44,7 @@ class CoreMixin(ResetLocalMixin):
         '''
         super(CoreMixin, self).__init__()
         self._setup(root)
-        
+
     def __getattr__(self, label):
         try:
             return object.__getattribute__(self, label)
@@ -55,15 +55,15 @@ class CoreMixin(ResetLocalMixin):
     def G(self):
         '''external application global settings'''
         return self.M.settings.final if self.M is not None else frozenstuf()
-    
+
     @either
     def L(self):
         '''local settings'''
         return self._M.localize(self) if self._M is not None else frozenstuf()
-    
+
     def _setup(self, root):
         '''call chain setup'''
-    
+
     def _load(self, label):
         '''
         load thing from appspace
@@ -91,9 +91,9 @@ class CoreMixin(ResetLocalMixin):
 
 
 class ConfigMixin(CoreMixin):
-    
+
     '''configuration access mixin'''
-        
+
     @lazy
     def defaults(self):
         '''default settings by their lonesome'''
@@ -103,7 +103,7 @@ class ConfigMixin(CoreMixin):
     def required(self):
         '''required settings by their lonesome'''
         return self.M.settings.required if self.M is not None else frozenstuf()
-    
+
     def _defaults(self):
         '''reset attribute values'''
         this = self.__dict__
@@ -112,7 +112,7 @@ class ConfigMixin(CoreMixin):
             lambda x, y: setitem(this, x.rstrip('_d'), y),
             lambda x: x[0].endswith('_d'),
         )
-        
+
     def _setdefault(self, key, value):
         '''
         set default value for instance attribute
