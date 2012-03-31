@@ -7,6 +7,7 @@ from twoq.active.mixins import AutoResultMixin
 from callchain.root import RootMixin
 from callchain.keys.root import KRoot
 from callchain.keys.call import KCall
+from callchain.config import Defaults
 from callchain.keys.core import KChain
 from callchain.patterns import Pathways, Nameways
 from callchain.services.queue import KThings, KResult
@@ -18,18 +19,20 @@ from callchain.call import ChainMixin, PriorityMixin, inside
 
 
 class thingchain(Pathways):
-    link = 'callchain.active_auto.chainlet.chainlink'
+    class logging:
+        key = 'callchain.contrib.keys.KLogger'
+        logger = 'callchain.contrib.logger.loglet'
 
 
 @appifies(KThings, KRoot, KChain, KCall)
-@inside(thingchain)
+@inside(thingchain, defaults=Defaults)
 class callchain(RootMixin, ChainMixin, AutoResultMixin):
 
     '''active queued auto-balancing lite call chain'''
 
 
 @appifies(KThings, KRoot, KChain, KCall)
-@inside(thingchain)
+@inside(thingchain, defaults=Defaults)
 class prioritychain(RootMixin, PriorityMixin, AutoResultMixin):
 
     '''active priority queued auto-balancing lite call chain'''
@@ -41,7 +44,9 @@ class prioritychain(RootMixin, PriorityMixin, AutoResultMixin):
 
 
 class chain(Pathways):
-    link = 'callchain.active_auto.chainlet.chainlink'
+    class logging:
+        key = 'callchain.contrib.keys.KLogger'
+        logger = 'callchain.contrib.logger.loglet'
 
     class filter(Nameways):
         key = 'callchain.services.filter.KFilter'
@@ -93,14 +98,14 @@ class chain(Pathways):
 
 
 @appifies(KResult, KRoot, KChain, KCall)
-@inside(chain)
+@inside(chain, defaults=Defaults)
 class chainq(RootMixin, ChainMixin, AutoResultMixin):
 
     '''active queued auto-balancing call chain'''
 
 
 @appifies(KThings, KRoot, KChain, KCall)
-@inside(chain)
+@inside(chain, defaults=Defaults)
 class priorityq(RootMixin, PriorityMixin, AutoResultMixin):
 
     '''active priority queued auto-balancing lite call chain'''

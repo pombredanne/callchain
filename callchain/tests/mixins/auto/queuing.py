@@ -9,6 +9,25 @@ class AQMixin(object):
     ## queue manipulation #####################################################
     ###########################################################################
 
+    def test_debug(self):
+        self.assertIsNone(self.qclass.debug('this is a debug message'))
+
+    def test_info(self):
+        self.assertIsNone(self.qclass.info('this is a info message'))
+
+    def test_warning(self):
+        self.assertIsNone(self.qclass.warning('this is a info message'))
+
+    def test_error(self):
+        self.assertIsNone(self.qclass.error('this is a error message'))
+
+    def test_critical(self):
+        self.assertIsNone(self.qclass.critical('this is a critical message'))
+
+    def test_exception(self):
+        raise TypeError()
+        self.assertIsNone(self.qclass.exception('this is a exception message'))
+
     def test_ro(self):
         self.assertListEqual(
             self.qclass([1, 2, 3, 4, 5, 6]).ro().peek(), [1, 2, 3, 4, 5, 6],

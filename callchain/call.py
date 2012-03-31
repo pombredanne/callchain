@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 '''callchain call mixins'''
 
-from itertools import chain
+from functools import partial
+from itertools import chain, count
 
 from twoq.support import isstring
 from appspace.builders import Appspace
@@ -11,7 +12,26 @@ from callchain.managers import Events
 from callchain.core import ConfigMixin
 from callchain.patterns import Pathways
 from callchain.keys.base import NoServiceError
-from callchain.support import Queue, PriorityQueue, Empty, cury
+from callchain.support import Empty, Queue, PriorityQueue, total_ordering
+
+
+@total_ordering
+class Partial(object):
+
+    '''partial wrapper'''
+
+    __slots__ = ('_call', 'count')
+
+    counter = count()
+
+    def __init__(self, call, *args, **settings):
+        self.__call__ = partial(call, *args, **settings)
+        priority = settings.pop('priority', None)
+        self.count = next(self.counter) if priority is None else priority
+
+    def __lt__(self, other):
+        return self.count < other
+
 
 ###############################################################################
 ## chain components ###########################################################
@@ -89,8 +109,6 @@ class CallMixin(ConfigMixin):
 
     def _setup(self, root):
         '''call chain setup'''
-        # chain label
-        self._CALLQ = '_chain'
         # call chain queue
         self._chain = self._queue()
 
@@ -103,8 +121,8 @@ class CallMixin(ConfigMixin):
         @param key: appspace key (default: False)
         '''
         self._chain.put(
-            cury(call, *(key,) + args, **kw) if not isstring(call)
-            else cury(self.M.get(call, key), *args, **kw)
+            Partial(call, *(key,) + args, **kw) if not isstring(call)
+            else Partial(self.M.get(call, key), *args, **kw)
         )
         return self
 
@@ -160,9 +178,9 @@ class PriorityMixin(CallMixin):
         @param key: appspace key (default: False)
         '''
         self._chain.put(
-            cury(call, *(key,) + args, **kw)
+            Partial(call, *(key,) + args, **kw)
             if not isstring(call)
-            else cury(self.M.get(call, key), *args, **kw)
+            else Partial(self.M.get(call, key), *args, **kw)
         )
         return self
 
@@ -228,6 +246,12 @@ class EventMixin(ChainMixin):
 
     '''event chain mixin'''
 
+    def _setup(self, root):
+        '''call chain setup'''
+        super(EventMixin, self)._setup(root)
+        # call chain queue
+        self._superchain = self._queue()
+
     @property
     def _linkedchain(self):
         '''new linked chain'''
@@ -240,13 +264,18 @@ class EventMixin(ChainMixin):
     def commit(self):
         '''run event chain'''
         fire = self.fire
+        trigger = self.trigger
         try:
             # 1. "before" event 2. "work" event
-            fire('before', 'work')
+            trigger('before', 'work')
             # everything else
-            super(EventMixin, self).commit()
+            self._superchain.extend(self._chain)
             # 3. "change" event 4. "any" event 5. "after" event
-            fire('change', 'any', 'after')
+            trigger('change', 'any', 'after')
+            with self.ctx3():
+                self._xtend(c() for c in self.iterexcept(
+                    self._superchain.get_nowait, Empty,
+                ))
         except:
             # 6. "problem" event
             fire('problem')
@@ -291,7 +320,7 @@ class EventMixin(ChainMixin):
 
         @param *events: event labels
         '''
-        self._chain.extend(self._events(*events))
+        self._superchain.extend(self._events(*events))
         return self
 
     def queues(self, *events):

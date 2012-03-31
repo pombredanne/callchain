@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''callchain core'''
+'''callchain core mixins'''
 
 from threading import local
 from operator import setitem

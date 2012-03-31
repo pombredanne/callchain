@@ -4,6 +4,7 @@
 from appspace.keys import appifies
 from twoq.lazy.mixins import ManResultMixin
 
+from callchain.config import Defaults
 from callchain.keys.core import KEvent
 from callchain.root import EventRootMixin
 from callchain.keys.root import KEventRoot
@@ -21,9 +22,12 @@ from callchain.services.queue import KThings, KResult
 class thingevent(Pathways):
     chain = 'callchain.lazy_man.chainlet.chainlink'
 
+    class logging:
+        key = 'callchain.contrib.keys.KLogger'
+        logger = 'callchain.contrib.logger.loglet'
 
 @appifies(KThings, KEventRoot, KEvent, KEventCall)
-@einside(thingevent, events)
+@einside(thingevent, events, defaults=Defaults)
 class eventchain(EventRootMixin, EventMixin, ManResultMixin):
 
     '''lazy queued manually balanced lite event chain'''
@@ -36,6 +40,10 @@ class eventchain(EventRootMixin, EventMixin, ManResultMixin):
 
 class event(Pathways):
     chain = 'callchain.lazy_man.chainlet.chainlink'
+
+    class logging:
+        key = 'callchain.contrib.keys.KLogger'
+        logger = 'callchain.contrib.logger.loglet'
 
     class filter(Nameways):
         key = 'callchain.services.filter.KFilter'
@@ -87,7 +95,7 @@ class event(Pathways):
 
 
 @appifies(KResult, KEventRoot, KEvent, KEventCall)
-@einside(event, events)
+@einside(event, events, defaults=Defaults)
 class eventq(EventRootMixin, EventMixin, ManResultMixin):
 
     '''lazy queued manually balanced event chain'''
