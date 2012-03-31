@@ -2,7 +2,7 @@
 '''lazy auto-balancing chains appconf'''
 
 from appspace.keys import appifies
-from twoq.lazy.mixins import AutoResultMixin, AutoQMixin
+from twoq.lazy.mixins import AutoResultMixin
 
 from callchain.root import RootMixin
 from callchain.keys.root import KRoot
@@ -23,14 +23,14 @@ class thingchain(Pathways):
 
 @appifies(KThings, KRoot, KChain, KCall)
 @inside(thingchain)
-class callchain(RootMixin, ChainMixin, AutoQMixin):
+class callchain(RootMixin, ChainMixin, AutoResultMixin):
 
     '''lazy queued auto-balancing lite call chain'''
 
 
 @appifies(KThings, KRoot, KChain, KCall)
 @inside(thingchain)
-class prioritychain(RootMixin, PriorityMixin, AutoQMixin):
+class prioritychain(RootMixin, PriorityMixin, AutoResultMixin):
 
     '''lazy priority queued auto-balancing lite call chain'''
 

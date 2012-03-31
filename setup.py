@@ -13,7 +13,7 @@ install_requires = ['twoq>=0.4.8', 'appspace>=0.5.3', 'stuf>=0.8.11']
 
 setup(
     name='callchain',
-    version='0.2.3',
+    version='0.2.4',
     url='http://bitbucket.com/lcrees/callchain',
     description='callables and components joined in one big happy call chain',
     long_description=open(os.path.join(os.getcwd(), 'README.rst'), 'r').read(),

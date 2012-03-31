@@ -2,7 +2,7 @@
 '''lazy manually balanced chains appconf'''
 
 from appspace.keys import appifies
-from twoq.lazy.mixins import ManResultMixin, ManQMixin
+from twoq.lazy.mixins import ManResultMixin
 
 from callchain.root import RootMixin
 from callchain.keys.root import KRoot
@@ -23,14 +23,14 @@ class thingchain(Pathways):
 
 @appifies(KThings, KRoot, KChain, KCall)
 @inside(thingchain)
-class callchain(RootMixin, ChainMixin, ManQMixin):
+class callchain(RootMixin, ChainMixin, ManResultMixin):
 
     ''''lazy queued manually balanced lite call chain'''
 
 
 @appifies(KThings, KRoot, KChain, KCall)
 @inside(thingchain)
-class prioritychain(RootMixin, PriorityMixin, ManQMixin):
+class prioritychain(RootMixin, PriorityMixin, ManResultMixin):
 
     '''lazy priority queued manually balanced lite call chain'''
 

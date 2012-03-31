@@ -2,7 +2,7 @@
 '''active manually balanced event chains appconf'''
 
 from appspace.keys import appifies
-from twoq.active.mixins import ManResultMixin, ManQMixin
+from twoq.active.mixins import ManResultMixin
 
 from callchain.keys.core import KEvent
 from callchain.root import EventRootMixin
@@ -24,7 +24,7 @@ class thingevent(Pathways):
 
 @appifies(KThings, KEventRoot, KEvent, KEventCall)
 @einside(thingevent, events)
-class eventchain(EventRootMixin, EventMixin, ManQMixin):
+class eventchain(EventRootMixin, EventMixin, ManResultMixin):
 
     '''active queued manually balanced lite event chain'''
 
