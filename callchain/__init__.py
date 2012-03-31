@@ -22,4 +22,4 @@ from callchain.lazy_man.chain import (
 from callchain.lazy_man.event import (
     eventq as lmeventq, eventchain as lmeventchain)
 
-__version__ = (0, 2, 3)
+__version__ = (0, 2, 4)

@@ -6,25 +6,13 @@ from inspect import isclass
 from stuf.six import items
 from stuf import frozenstuf
 from appspace.keys import appifies
-from stuf.utils import deepget, lazy_set, setter
+from stuf.utils import deepget
 
+from callchain.support import lock_set
 from callchain.core import ResetLocalMixin
 from callchain.keys.base import KDefaults, KRequired, KSettings
 
 __all__ = ('DefaultSettings', 'RequiredSettings', 'Settings')
-
-
-class lock_set(lazy_set):
-
-    '''lazily assign attributes with a custom setter'''
-
-    def __get__(self, this, that):
-        if this is None:
-            return self
-        # check if settings are locked
-        if this._locked:
-            return setter(this, self.name, self.method(this))
-        return self.method(this)
 
 
 @appifies(KSettings)

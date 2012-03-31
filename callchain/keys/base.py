@@ -3,10 +3,8 @@
 
 from appspace.keys import AppspaceKey
 
-from callchain.keys.reset import KResetLocal
 
-
-class KSettings(KResetLocal):
+class KSettings(AppspaceKey):
 
     '''settings key'''
 

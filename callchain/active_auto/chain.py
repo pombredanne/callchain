@@ -2,15 +2,15 @@
 '''active auto-balancing chains appconf'''
 
 from appspace.keys import appifies
-from twoq.active.mixins import AutoResultMixin, AutoQMixin
+from twoq.active.mixins import AutoResultMixin
 
 from callchain.root import RootMixin
 from callchain.keys.root import KRoot
 from callchain.keys.call import KCall
 from callchain.keys.core import KChain
-from callchain.call import ChainMixin, inside
 from callchain.patterns import Pathways, Nameways
 from callchain.services.queue import KThings, KResult
+from callchain.call import ChainMixin, PriorityMixin, inside
 
 ###############################################################################
 ## thing chain ################################################################
@@ -23,9 +23,16 @@ class thingchain(Pathways):
 
 @appifies(KThings, KRoot, KChain, KCall)
 @inside(thingchain)
-class callchain(RootMixin, ChainMixin, AutoQMixin):
+class callchain(RootMixin, ChainMixin, AutoResultMixin):
 
     '''active queued auto-balancing lite call chain'''
+
+
+@appifies(KThings, KRoot, KChain, KCall)
+@inside(thingchain)
+class prioritychain(RootMixin, PriorityMixin, AutoResultMixin):
+
+    '''active priority queued auto-balancing lite call chain'''
 
 
 ###############################################################################
@@ -90,3 +97,10 @@ class chain(Pathways):
 class chainq(RootMixin, ChainMixin, AutoResultMixin):
 
     '''active queued auto-balancing call chain'''
+
+
+@appifies(KThings, KRoot, KChain, KCall)
+@inside(chain)
+class priorityq(RootMixin, PriorityMixin, AutoResultMixin):
+
+    '''active priority queued auto-balancing lite call chain'''

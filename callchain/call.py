@@ -2,7 +2,6 @@
 '''callchain call mixins'''
 
 from itertools import chain
-from collections import deque
 
 from twoq.support import isstring
 from appspace.builders import Appspace
@@ -12,6 +11,7 @@ from callchain.managers import Events
 from callchain.core import ConfigMixin
 from callchain.patterns import Pathways
 from callchain.keys.base import NoServiceError
+from callchain.support import Queue, PriorityQueue, Empty, cury
 
 ###############################################################################
 ## chain components ###########################################################
@@ -54,7 +54,7 @@ class inside(object):
         return that
 
 
-class ChainMixin(ConfigMixin):
+class CallMixin(ConfigMixin):
 
     '''chain mixin'''
 
@@ -66,13 +66,6 @@ class ChainMixin(ConfigMixin):
         '''exit execution context'''
         # invoke call chain
         self.commit()
-
-    def _setup(self, root):
-        '''call chain setup'''
-        # chain label
-        self._CALLQ = '_chain'
-        # call chain queue
-        self._chain = deque()
 
     def _load(self, label):
         '''
@@ -87,12 +80,19 @@ class ChainMixin(ConfigMixin):
             return getattr(_M.get(key, key)(self), label)
         except NoServiceError:
             # ...or lookup other appspaced thing
-            return super(ChainMixin, self)._load(label)
+            return super(CallMixin, self)._load(label)
 
     @lazy
     def space(self):
         '''external appspace interface'''
         return Appspace(self.M) if self.M is not None else None
+
+    def _setup(self, root):
+        '''call chain setup'''
+        # chain label
+        self._CALLQ = '_chain'
+        # call chain queue
+        self._chain = self._queue()
 
     def chain(self, call, key=False, *args, **kw):
         '''
@@ -102,19 +102,17 @@ class ChainMixin(ConfigMixin):
         @param call: call or appspaced call label
         @param key: appspace key (default: False)
         '''
-        if not isstring(call):
-            self._chain.append(self._partial(call, *(key,) + args, **kw))
-        else:
-            self._chain.append(
-                self._partial(self.M.get(call, key), *args, **kw)
-            )
+        self._chain.put(
+            cury(call, *(key,) + args, **kw) if not isstring(call)
+            else cury(self.M.get(call, key), *args, **kw)
+        )
         return self
 
     def commit(self):
         '''consume call chain'''
         with self.ctx3():
             return self._xtend(
-                c() for c in self.iterexcept(self._chain.popleft, IndexError)
+                c() for c in self.iterexcept(self._chain.get_nowait, Empty)
             )
 
     def switch(self, label, key=False):
@@ -133,23 +131,63 @@ class ChainMixin(ConfigMixin):
         @param call: callable or appspace label
         @param key: link call chain key (default: False)
         '''
-        return super(ChainMixin, self).tap(
+        return super(CallMixin, self).tap(
             self._M.get(call, key) if isstring(call) else call
         )
 
     def wrap(self, call, key=False):
         '''build current callable from factory'''
-        return super(ChainMixin, self).wrap(
+        return super(CallMixin, self).wrap(
             self._M.get(call, key) if isstring(call) else call
         )
 
-    def clear(self):
-        '''clear things'''
-        self._chain.clear()
-        return super(ChainMixin, self).clear()
-
     class Meta:
         pass
+
+
+class PriorityMixin(CallMixin):
+
+    '''chain mixin'''
+
+    _queue = PriorityQueue
+
+    def chain(self, call, key=False, *args, **kw):
+        '''
+        add `call` or appspaced `call` to call chain, partializing it with any
+        passed arguments
+
+        @param call: call or appspaced call label
+        @param key: appspace key (default: False)
+        '''
+        self._chain.put(
+            cury(call, *(key,) + args, **kw)
+            if not isstring(call)
+            else cury(self.M.get(call, key), *args, **kw)
+        )
+        return self
+
+
+class ChainMixin(CallMixin):
+
+    '''chain mixin'''
+
+    _queue = Queue
+
+    def chain(self, call, key=False, *args, **kw):
+        '''
+        add `call` or appspaced `call` to call chain, partializing it with any
+        passed arguments
+
+        @param call: call or appspaced call label
+        @param key: appspace key (default: False)
+        '''
+        if not isstring(call):
+            self._chain.put_nowait(self._partial(call, *(key,) + args, **kw))
+        else:
+            self._chain.put_nowait(
+                self._partial(self.M.get(call, key), *args, **kw)
+            )
+        return self
 
 
 ###############################################################################
@@ -226,7 +264,7 @@ class EventMixin(ChainMixin):
             return self.exhaustcall(
                 lambda x: x(), self._xtend(self._events(*events))._iterable,
             )
-        
+
     def on(self, event, call, key=False, *args, **kw):
         '''
         bind call to `event`

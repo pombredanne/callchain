@@ -12,9 +12,6 @@ from callchain.managers import Manager
 from callchain.services.queue import KService
 
 
-__all__ = ['Pathways', 'Branchways', 'Nameways']
-
-
 class Pathways(Patterns):
 
     '''chain configuration patterns'''
