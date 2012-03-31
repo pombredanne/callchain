@@ -13,19 +13,23 @@ install_requires = ['twoq>=0.4.8', 'appspace>=0.5.3', 'stuf>=0.8.11']
 
 setup(
     name='callchain',
-    version='0.2.3',
+    version='0.2.4',
     url='http://bitbucket.com/lcrees/callchain',
-    description='callables and components joined in one big happy call chain',
+    description='callables and components joined in one big happy chain',
     long_description=open(os.path.join(os.getcwd(), 'README.rst'), 'r').read(),
     author='L. C. Rees',
     license='BSD',
     author_email='lcrees@gmail.com',
-    packages=['callchain'],
+    packages=[
+        'callchain',  'callchain.services', 'callchain.keys',
+        'callchain.lazy_auto', 'callchain.lazy_man', 'callchain.active_man',
+        'callchain.active_auto',
+    ],
     tests='callchain.tests',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: MIT License',
+        'License :: OSI Approved :: BSD License',
         'Natural Language :: English',
         'Operating System :: OS Independent',
         'Programming Language :: Python',

@@ -2,7 +2,7 @@
 '''lazy auto-balancing event chains appconf'''
 
 from appspace.keys import appifies
-from twoq.lazy.mixins import AutoResultMixin, AutoQMixin
+from twoq.lazy.mixins import AutoResultMixin
 
 from callchain.keys.core import KEvent
 from callchain.root import EventRootMixin
@@ -24,7 +24,7 @@ class thingevent(Pathways):
 
 @appifies(KThings, KEventRoot, KEvent, KEventCall)
 @einside(thingevent, events)
-class eventchain(EventRootMixin, EventMixin, AutoQMixin):
+class eventchain(EventRootMixin, EventMixin, AutoResultMixin):
 
     '''lazy queued auto-balancing lite event chain'''
 

@@ -14,8 +14,6 @@ from callchain.services.event import EEvent
 from callchain.services.queue import KService
 from callchain.keys.base import KSettings, NoServiceError
 
-__all__ = ['Manager']
-
 
 class Manager(_Manager):
 
