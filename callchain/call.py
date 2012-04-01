@@ -99,7 +99,7 @@ class CallMixin(ConfigMixin):
             key = _M.service(label)
             return getattr(_M.get(key, key)(self), label)
         except NoServiceError:
-            # ...or lookup other appspaced thing
+            # ...or lookup some other appspaced thing
             return super(CallMixin, self)._load(label)
 
     @lazy
