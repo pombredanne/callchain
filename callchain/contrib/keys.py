@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 '''callchain contrib keys'''
 
-from appspace.keys import Attribute
+#from appspace.keys import Attribute
 
 from callchain.services.queue import KService
 
@@ -10,7 +10,7 @@ class KLogger(KService):
 
     '''logging key'''
 
-    logger = Attribute('the logger')
+#    logger = Attribute('the logger')
 
     def debug(msg):  # @NoSelf
         '''log debug message'''

@@ -19,7 +19,7 @@ from callchain.call import ChainMixin, PriorityMixin, inside
 
 
 class thingchain(Pathways):
-    class logging:
+    class logger(Nameways):
         key = 'callchain.contrib.keys.KLogger'
         logger = 'callchain.contrib.logger.loglet'
 
@@ -44,7 +44,7 @@ class prioritychain(RootMixin, PriorityMixin, ManResultMixin):
 
 
 class chain(Pathways):
-    class logging:
+    class logger(Nameways):
         key = 'callchain.contrib.keys.KLogger'
         logger = 'callchain.contrib.logger.loglet'
 

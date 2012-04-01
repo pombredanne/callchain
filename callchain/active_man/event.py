@@ -22,7 +22,7 @@ from callchain.services.queue import KThings, KResult
 class thingevent(Pathways):
     chain = 'callchain.active_man.chainlet.chainlink'
 
-    class logging:
+    class logger(Nameways):
         key = 'callchain.contrib.keys.KLogger'
         logger = 'callchain.contrib.logger.loglet'
 
@@ -42,7 +42,7 @@ class eventchain(EventRootMixin, EventMixin, ManResultMixin):
 class event(Pathways):
     chain = 'callchain.active_man.chainlet.chainlink'
 
-    class logging:
+    class logger(Nameways):
         key = 'callchain.contrib.keys.KLogger'
         logger = 'callchain.contrib.logger.loglet'
 

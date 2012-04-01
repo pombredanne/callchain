@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 '''callchain support'''
 
+from stuf.six.moves import StringIO  # @UnusedImport @UnresolvedImport
 try:
     from Queue import PriorityQueue, Queue, Empty
 except ImportError:

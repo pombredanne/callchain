@@ -22,9 +22,10 @@ from callchain.services.queue import KThings, KResult
 class thingevent(Pathways):
     chain = 'callchain.lazy_auto.chainlet.chainlink'
 
-    class logging:
+    class logger(Nameways):
         key = 'callchain.contrib.keys.KLogger'
         logger = 'callchain.contrib.logger.loglet'
+
 
 @appifies(KThings, KEventRoot, KEvent, KEventCall)
 @einside(thingevent, events, defaults=Defaults)
@@ -41,7 +42,7 @@ class eventchain(EventRootMixin, EventMixin, AutoResultMixin):
 class event(Pathways):
     chain = 'callchain.lazy_auto.chainlet.chainlink'
 
-    class logging:
+    class logger(Nameways):
         key = 'callchain.contrib.keys.KLogger'
         logger = 'callchain.contrib.logger.loglet'
 

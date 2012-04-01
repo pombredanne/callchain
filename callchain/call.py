@@ -20,7 +20,7 @@ class Partial(object):
 
     '''partial wrapper'''
 
-    __slots__ = ('_call', 'count')
+    __slots__ = ('_call', 'count', '__call__')
 
     counter = count()
 
@@ -246,12 +246,6 @@ class EventMixin(ChainMixin):
 
     '''event chain mixin'''
 
-    def _setup(self, root):
-        '''call chain setup'''
-        super(EventMixin, self)._setup(root)
-        # call chain queue
-        self._superchain = self._queue()
-
     @property
     def _linkedchain(self):
         '''new linked chain'''
@@ -264,18 +258,13 @@ class EventMixin(ChainMixin):
     def commit(self):
         '''run event chain'''
         fire = self.fire
-        trigger = self.trigger
         try:
             # 1. "before" event 2. "work" event
-            trigger('before', 'work')
+            fire('before', 'work')
             # everything else
-            self._superchain.extend(self._chain)
+            super(EventMixin, self).commit()
             # 3. "change" event 4. "any" event 5. "after" event
-            trigger('change', 'any', 'after')
-            with self.ctx3():
-                self._xtend(c() for c in self.iterexcept(
-                    self._superchain.get_nowait, Empty,
-                ))
+            fire('change', 'any', 'after')
         except:
             # 6. "problem" event
             fire('problem')
@@ -289,7 +278,7 @@ class EventMixin(ChainMixin):
 
         @param *events: event labels
         '''
-        with self.ctx1(workq='_work'):
+        with self.ctx1(workq=self._WORKVAR):
             return self.exhaustcall(
                 lambda x: x(), self._xtend(self._events(*events))._iterable,
             )
@@ -320,7 +309,7 @@ class EventMixin(ChainMixin):
 
         @param *events: event labels
         '''
-        self._superchain.extend(self._events(*events))
+        self._chain.extend(self._events(*events))
         return self
 
     def queues(self, *events):

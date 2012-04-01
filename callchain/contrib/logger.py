@@ -11,6 +11,7 @@ from appspace.keys import appifies
 
 from callchain.contrib.keys import KLogger
 from callchain.branch import BranchMixin, ChainletMixin
+from callchain.core import CoreMixin
 
 
 class _LogStdout(object):
@@ -30,7 +31,7 @@ class _LogStdout(object):
         elif level == logging.CRITICAL:
             self.logger = logger.critical
         elif level == logging.ERROR:
-            self.logger = logger.warning
+            self.logger = logger.error
         elif level == logging.WARNING:
             self.logger = logger.warning
         elif level == logging.INFO:
@@ -43,7 +44,7 @@ class _LogStdout(object):
 
 
 @appifies(KLogger)
-class loglet(ChainletMixin, BranchMixin):
+class loglet(ChainletMixin, BranchMixin, CoreMixin):
 
     '''logging chainlet'''
 
@@ -54,7 +55,7 @@ class loglet(ChainletMixin, BranchMixin):
         @param root: root chain
         '''
         super(loglet, self)._setup(root)
-        settings = self._G
+        settings = self._G.log
         self.logger = logging.getLogger(settings.get('NAME', clsname(root)))
         # set logging level
         self.logger.setLevel(settings.LEVEL)
