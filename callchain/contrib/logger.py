@@ -6,8 +6,8 @@ import logging
 from logging.handlers import HTTPHandler, SysLogHandler
 from logging.handlers import TimedRotatingFileHandler, SMTPHandler
 
+from appspace import appifies
 from stuf.utils import clsname
-from appspace.keys import appifies
 
 from callchain.core import CoreMixin
 from callchain.branch import BranchMixin, ChainletMixin

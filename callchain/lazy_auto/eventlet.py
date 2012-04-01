@@ -1,23 +1,20 @@
 # -*- coding: utf-8 -*-
 '''lazy auto-balancing eventlets'''
 
-from appspace.keys import appifies
+from appspace import appifies
+from twoq.lazy import AutoQMixin, AutoResultMixin
 from twoq.mixins.filtering import (
     FilterMixin, CollectMixin, SetMixin, SliceMixin)
 from twoq.mixins.ordering import RandomMixin, OrderMixin
-from twoq.lazy.mixins import AutoQMixin, AutoResultMixin
 from twoq.mixins.mapping import DelayMixin, RepeatMixin, MapMixin
 from twoq.mixins.reducing import MathMixin, TruthMixin, ReduceMixin
 
 from callchain.call import EventMixin
-from callchain.keys.core import KEvent
-from callchain.keys.root import KConfig
-from callchain.keys.branch import KLinked
-from callchain.keys.call import KEventCall
 from callchain.services.queue import KResult
 from callchain.services.order import KRandom, KOrder
 from callchain.services.map import KDelay, KRepeat, KMap
 from callchain.services.reduce import KMath, KReduce, KTruth
+from callchain.keys import KEventCall, KEvent, KLinked, KConfig
 from callchain.branch import (
     ChainletMixin, EventBranchMixin, BranchletMixin, LinkedMixin)
 from callchain.services.filter import KCollect, KSet, KSlice, KFilter

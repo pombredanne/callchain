@@ -1,22 +1,19 @@
 # -*- coding: utf-8 -*-
 '''active auto-balancing chainlets'''
 
-from appspace.keys import appifies
+from appspace import appifies
+from twoq.active import AutoQMixin, AutoResultMixin
 from twoq.mixins.filtering import (
     FilterMixin, CollectMixin, SetMixin, SliceMixin)
 from twoq.mixins.ordering import RandomMixin, OrderMixin
-from twoq.active.mixins import AutoQMixin, AutoResultMixin
 from twoq.mixins.mapping import DelayMixin, RepeatMixin, MapMixin
 from twoq.mixins.reducing import MathMixin, TruthMixin, ReduceMixin
 
-from callchain.keys.call import KCall
-from callchain.keys.core import KChain
-from callchain.keys.root import KConfig
-from callchain.keys.branch import KLinked
 from callchain.services.queue import KResult
 from callchain.call import ChainMixin, PriorityMixin
 from callchain.services.order import KRandom, KOrder
 from callchain.services.map import KDelay, KRepeat, KMap
+from callchain.keys import KCall, KChain, KConfig, KLinked
 from callchain.services.reduce import KMath, KReduce, KTruth
 from callchain.branch import (
     BranchMixin, BranchletMixin, ChainletMixin, LinkedMixin)

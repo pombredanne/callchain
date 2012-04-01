@@ -1,18 +1,16 @@
 # -*- coding: utf-8 -*-
 '''active manually balanced event chains appconf'''
 
-from appspace.keys import appifies
-from twoq.active.mixins import ManResultMixin
+from appspace import appifies
+from twoq.active import ManResultMixin
 
 from callchain.config import Defaults
-from callchain.keys.core import KEvent
 from callchain.root import EventRootMixin
-from callchain.keys.root import KEventRoot
-from callchain.keys.call import KEventCall
 from callchain.services.apps import events
 from callchain.call import EventMixin, einside
 from callchain.patterns import Pathways, Nameways
 from callchain.services.queue import KThings, KResult
+from callchain.keys import KEvent, KEventRoot, KEventCall
 
 ###############################################################################
 ## thing event chain ##########################################################

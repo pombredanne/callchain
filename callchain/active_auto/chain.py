@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 '''active auto-balancing chains appconf'''
 
-from appspace.keys import appifies
-from twoq.active.mixins import AutoResultMixin
+from appspace import appifies
+from twoq.active import AutoResultMixin
 
 from callchain.root import RootMixin
-from callchain.keys.root import KRoot
-from callchain.keys.call import KCall
 from callchain.config import Defaults
-from callchain.keys.core import KChain
+from callchain.keys import KRoot, KCall, KChain
 from callchain.patterns import Pathways, Nameways
 from callchain.services.queue import KThings, KResult
 from callchain.call import ChainMixin, PriorityMixin, inside

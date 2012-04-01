@@ -11,7 +11,7 @@ from stuf.utils import OrderedDict, lazy
 from callchain.managers import Events
 from callchain.core import ConfigMixin
 from callchain.patterns import Pathways
-from callchain.keys.base import NoServiceError
+from callchain.keys import NoServiceError
 from callchain.support import Empty, Queue, PriorityQueue, total_ordering
 
 

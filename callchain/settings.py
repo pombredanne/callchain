@@ -5,11 +5,11 @@ from inspect import isclass
 
 from stuf.six import items
 from stuf import frozenstuf
-from appspace.keys import appifies
+from appspace import appifies
 from stuf.utils import deepget, lazy_set, setter
 
 from callchain.core import ResetLocalMixin
-from callchain.keys.base import KDefaults, KRequired, KSettings
+from callchain.keys import KDefaults, KRequired, KSettings
 
 __all__ = ('DefaultSettings', 'RequiredSettings', 'Settings')
 
