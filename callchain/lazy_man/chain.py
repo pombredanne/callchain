@@ -4,11 +4,11 @@
 from appspace import appifies
 from twoq.lazy.mixins import ManResultMixin
 
-from callchain.root import RootMixin
+from callchain.chain import RootMixin
 from callchain.config import Defaults
+from callchain.services import KThings, KResult
 from callchain.keys import KRoot, KCall, KChain
 from callchain.patterns import Pathways, Nameways
-from callchain.services.queue import KThings, KResult
 from callchain.call import ChainMixin, PriorityMixin, inside
 
 ###############################################################################

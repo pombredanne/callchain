@@ -3,20 +3,19 @@
 
 from appspace import appifies
 from twoq.active import ManQMixin, ManResultMixin
-from twoq.mixins.filtering import (
-    FilterMixin, CollectMixin, SetMixin, SliceMixin)
-from twoq.mixins.ordering import RandomMixin, OrderMixin
-from twoq.mixins.mapping import DelayMixin, RepeatMixin, MapMixin
-from twoq.mixins.reducing import MathMixin, TruthMixin, ReduceMixin
+from twoq.mapping import DelayMixin, RepeatMixin, MapMixin
+from twoq.reducing import MathMixin, TruthMixin, ReduceMixin
+from twoq.ordering import RandomMixin, OrderMixin, PermutationMixin
+from twoq.filtering import FilterMixin, CollectMixin, SetMixin, SliceMixin
 
-from callchain.services.queue import KResult
+from callchain.services import KResult
 from callchain.call import ChainMixin, PriorityMixin
-from callchain.services.order import KRandom, KOrder
 from callchain.services.map import KDelay, KRepeat, KMap
 from callchain.keys import KCall, KChain, KConfig, KLinked
 from callchain.services.reduce import KMath, KReduce, KTruth
-from callchain.branch import (
+from callchain.chain import (
     BranchMixin, BranchletMixin, ChainletMixin, LinkedMixin)
+from callchain.services.order import KRandom, KOrder, KPermutate
 from callchain.services.filter import KCollect, KSet, KSlice, KFilter
 
 __all__ = (
@@ -40,7 +39,7 @@ class delaychain(
     DelayMixin,
 ):
 
-    '''manually balanced delayed mapping chainlet'''
+    '''delayed mapping chainlet'''
 
 
 @appifies(KRepeat)
@@ -52,7 +51,7 @@ class repeatchain(
     RepeatMixin,
 ):
 
-    '''manually balanced repeat chainlet'''
+    '''repeat chainlet'''
 
 
 @appifies(KMap)
@@ -64,7 +63,7 @@ class mapchain(
     MapMixin,
 ):
 
-    '''manually balanced mapping chainlet'''
+    '''mapping chainlet'''
 
 
 @appifies(KCollect)
@@ -76,7 +75,7 @@ class collectchain(
     CollectMixin,
 ):
 
-    '''manually balanced collecting chainlet'''
+    '''collecting chainlet'''
 
 
 @appifies(KSet)
@@ -88,7 +87,7 @@ class setchain(
     SetMixin,
 ):
 
-    '''manually balanced setting chainlet'''
+    '''seting chainlet'''
 
 
 @appifies(KSlice)
@@ -100,7 +99,7 @@ class slicechain(
     SliceMixin,
 ):
 
-    '''manually balanced slicing chainlet'''
+    '''slicing chainlet'''
 
 
 @appifies(KFilter)
@@ -112,7 +111,7 @@ class filterchain(
     FilterMixin,
 ):
 
-    '''manually balanced filtering chainlet'''
+    '''filtering chainlet'''
 
 
 @appifies(KRandom)
@@ -124,7 +123,7 @@ class randomchain(
     RandomMixin,
 ):
 
-    '''manually balanced randomizing chainlet'''
+    '''randomizing chainlet'''
 
 
 @appifies(KOrder)
@@ -136,7 +135,7 @@ class orderchain(
     OrderMixin,
 ):
 
-    '''manually balanced ordering chainlet'''
+    '''ordering chainlet'''
 
 
 @appifies(KMath)
@@ -148,7 +147,7 @@ class mathchain(
     MathMixin,
 ):
 
-    '''manually balanced mathing chainlet'''
+    '''mathing chainlet'''
 
 
 @appifies(KReduce)
@@ -163,6 +162,18 @@ class reducechain(
     '''manually balanced reducing chainlet'''
 
 
+@appifies(KPermutate)
+class permutatechain(
+    ChainletMixin,
+    BranchMixin,
+    BranchletMixin,
+    ManQMixin,
+    PermutationMixin,
+):
+
+    '''permutating chainlet'''
+
+
 @appifies(KTruth)
 class truthchain(
     ChainletMixin,
@@ -172,16 +183,16 @@ class truthchain(
     TruthMixin,
 ):
 
-    '''manually balanced truthing chainlet'''
+    '''truthing chainlet'''
 
 
 @appifies(KLinked, KConfig, KCall, KChain, KResult)
 class chainlink(BranchMixin, LinkedMixin, ChainMixin, ManResultMixin):
 
-    '''manually balanced linked chain'''
+    '''linked chain'''
 
 
 @appifies(KLinked, KConfig, KCall, KChain, KResult)
-class prilink(BranchMixin, LinkedMixin, PriorityMixin, ManResultMixin):
+class prioritylink(BranchMixin, LinkedMixin, PriorityMixin, ManResultMixin):
 
-    '''manually balanced priority linked chain'''
+    '''priority linked chain'''

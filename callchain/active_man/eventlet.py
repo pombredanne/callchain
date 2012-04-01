@@ -3,19 +3,18 @@
 
 from appspace import appifies
 from twoq.active import ManQMixin, ManResultMixin
-from twoq.mixins.filtering import (
-    FilterMixin, CollectMixin, SetMixin, SliceMixin)
-from twoq.mixins.ordering import RandomMixin, OrderMixin
-from twoq.mixins.mapping import DelayMixin, RepeatMixin, MapMixin
-from twoq.mixins.reducing import MathMixin, TruthMixin, ReduceMixin
+from twoq.mapping import DelayMixin, RepeatMixin, MapMixin
+from twoq.reducing import MathMixin, TruthMixin, ReduceMixin
+from twoq.ordering import RandomMixin, OrderMixin, PermutationMixin
+from twoq.filtering import FilterMixin, CollectMixin, SetMixin, SliceMixin
 
 from callchain.call import EventMixin
 from callchain.services.queue import KResult
-from callchain.services.order import KRandom, KOrder
 from callchain.services.map import KDelay, KRepeat, KMap
 from callchain.services.reduce import KMath, KReduce, KTruth
 from callchain.keys import KEventCall, KEvent, KLinked, KConfig
-from callchain.branch import (
+from callchain.services.order import KRandom, KOrder, KPermutate
+from callchain.chain import (
     ChainletMixin, EventBranchMixin, BranchletMixin, LinkedMixin)
 from callchain.services.filter import KCollect, KSet, KSlice, KFilter
 
@@ -95,6 +94,12 @@ class mathevent(eventlet, MathMixin):
 class reduceevent(eventlet, ReduceMixin):
 
     '''reducing eventlet'''
+
+
+@appifies(KPermutate)
+class permutateevent(eventlet, PermutationMixin):
+
+    '''permutating eventlet'''
 
 
 @appifies(KTruth)

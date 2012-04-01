@@ -10,7 +10,7 @@ from appspace import appifies
 from stuf.utils import clsname
 
 from callchain.core import CoreMixin
-from callchain.branch import BranchMixin, ChainletMixin
+from callchain.chain import BranchMixin, ChainletMixin
 
 from callchain.contrib.keys import KLogger
 

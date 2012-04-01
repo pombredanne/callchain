@@ -2,9 +2,9 @@
 '''callchain generic mixins'''
 
 from callchain.core import CoreMixin
-from callchain.root import RootMixin, EventRootMixin
-from callchain.branch import (
-    BranchMixin, ChainletMixin, EventBranchMixin, LinkedMixin)
+from callchain.chain import (
+    RootMixin, EventRootMixin, BranchMixin, ChainletMixin, EventBranchMixin,
+    LinkedMixin)
 from callchain.call import ChainMixin, PriorityMixin, EventMixin
 
 ###############################################################################

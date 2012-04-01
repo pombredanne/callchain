@@ -5,7 +5,7 @@ from appspace import appifies
 from twoq.lazy import AutoResultMixin
 
 from callchain.config import Defaults
-from callchain.root import EventRootMixin
+from callchain.chain import EventRootMixin
 from callchain.services.apps import events
 from callchain.call import EventMixin, einside
 from callchain.patterns import Pathways, Nameways

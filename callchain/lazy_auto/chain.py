@@ -4,7 +4,7 @@
 from appspace import appifies
 from twoq.lazy import AutoResultMixin
 
-from callchain.root import RootMixin
+from callchain.chain import RootMixin
 from callchain.config import Defaults
 from callchain.keys import KRoot, KCall, KChain
 from callchain.patterns import Pathways, Nameways
