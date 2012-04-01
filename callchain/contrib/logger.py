@@ -9,9 +9,10 @@ from logging.handlers import TimedRotatingFileHandler, SMTPHandler
 from stuf.utils import clsname
 from appspace.keys import appifies
 
-from callchain.contrib.keys import KLogger
-from callchain.branch import BranchMixin, ChainletMixin
 from callchain.core import CoreMixin
+from callchain.branch import BranchMixin, ChainletMixin
+
+from callchain.contrib.keys import KLogger
 
 
 class _LogStdout(object):

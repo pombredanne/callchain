@@ -185,6 +185,6 @@ class chainlink(BranchMixin, LinkedMixin, ChainMixin, AutoResultMixin):
 
 
 @appifies(KLinked, KConfig, KCall, KChain, KResult)
-class prilink(BranchMixin, LinkedMixin, PriorityMixin, AutoResultMixin):
+class prioritylink(BranchMixin, LinkedMixin, PriorityMixin, AutoResultMixin):
 
     '''auto-balancing priority linked chain'''
