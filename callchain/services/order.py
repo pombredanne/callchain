@@ -49,9 +49,9 @@ class KOrder(KService):
         '''
 
 
-class KPermutate(KService):
+class KCombine(KService):
 
-    '''permutation key'''
+    '''combination key'''
 
     def combinations(r):  # @NoSelf
         '''

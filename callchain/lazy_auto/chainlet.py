@@ -5,7 +5,7 @@ from appspace import appifies
 from twoq.lazy import AutoQMixin, AutoResultMixin
 from twoq.mapping import DelayMixin, RepeatMixin, MapMixin
 from twoq.reducing import MathMixin, TruthMixin, ReduceMixin
-from twoq.ordering import RandomMixin, OrderMixin, PermutationMixin
+from twoq.ordering import RandomMixin, OrderMixin, CombineMixin
 from twoq.filtering import FilterMixin, CollectMixin, SetMixin, SliceMixin
 
 from callchain.services.queue import KResult
@@ -15,13 +15,13 @@ from callchain.keys import KCall, KChain, KConfig, KLinked
 from callchain.services.reduce import KMath, KReduce, KTruth
 from callchain.chain import (
     BranchMixin, BranchletMixin, ChainletMixin, LinkedMixin)
-from callchain.services.order import KRandom, KOrder, KPermutate
+from callchain.services.order import KRandom, KOrder, KCombine
 from callchain.services.filter import KCollect, KSet, KSlice, KFilter
 
 __all__ = (
     'mathchain', 'truthchain', 'reducechain', 'collectchain', 'setchain',
     'slicechain', 'filterchain', 'delaychain', 'repeatchain', 'mapchain',
-    'randomchain', 'orderchain',
+    'randomchain', 'orderchain', 'chainlet', 'combinechain',
 )
 
 
@@ -162,13 +162,13 @@ class reducechain(
     '''reducing chainlet'''
 
 
-@appifies(KPermutate)
-class permutatechain(
+@appifies(KCombine)
+class combinechain(
     ChainletMixin,
     BranchMixin,
     BranchletMixin,
     AutoQMixin,
-    PermutationMixin,
+    CombineMixin,
 ):
 
     '''permutating chainlet'''
