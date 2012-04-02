@@ -1,2 +1,2 @@
 twoq>=0.4.9
-appspace>=0.5.3
+appspace>=0.5.4

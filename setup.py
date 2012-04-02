@@ -9,15 +9,13 @@ try:
 except ImportError:
     from distutils.core import setup
 
-from callchain import __version__
-
-install_requires = list(l for l in open(
+install_requires = list(l.strip() for l in open(
     join(getcwd(), 'requirements.txt'), 'r',
 ).readlines())
 
 setup(
     name='callchain',
-    version='{}.{}.{}'.format(*__version__),
+    version='0.2.5',
     description='callables and components joined in one big happy chain',
     long_description=open(join(getcwd(), 'README.rst'), 'r').read(),
     keywords='component architecture injection aspect-oriented appspace '
@@ -27,7 +25,7 @@ setup(
     author_email='lcrees@gmail.com',
     url='https://bitbucket.org/lcrees/callchain',
     packages=[
-        l.strip() for l in open(join(getcwd(), 'packages'), 'r').xreadlines()
+        l.strip() for l in open(join(getcwd(), 'packages'), 'r').readlines()
     ],
     test_suite='callchain.tests',
     zip_safe=False,

@@ -2,9 +2,6 @@
 '''callchain: callables and components joined in one big happy callchain'''
 
 from callchain.call import inside, einside
-from callchain.core import ResetLocalMixin, ResetTypeMixin
-from callchain.patterns import Pathways, Branchways, Nameways
-from callchain.settings import DefaultSettings, RequiredSettings
 from callchain.active_auto.chain import (
     chainq as aachainq, callchain as aacallchain)
 from callchain.active_auto.event import (
@@ -21,5 +18,8 @@ from callchain.lazy_man.chain import (
     chainq as lmchainq, callchain as lamcallchain)
 from callchain.lazy_man.event import (
     eventq as lmeventq, eventchain as lmeventchain)
+from callchain.core import ResetLocalMixin, ResetTypeMixin
+from callchain.patterns import Pathways, Branchways, Nameways
+from callchain.settings import DefaultSettings, RequiredSettings
 
 __version__ = (0, 2, 5)
