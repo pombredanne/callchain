@@ -1,31 +1,27 @@
 # -*- coding: utf-8 -*-
 '''active auto-balancing chainlets'''
 
-from appspace.keys import appifies
-from twoq.mixins.filtering import (
-    FilterMixin, CollectMixin, SetMixin, SliceMixin)
-from twoq.mixins.ordering import RandomMixin, OrderMixin
-from twoq.active.mixins import AutoQMixin, AutoResultMixin
-from twoq.mixins.mapping import DelayMixin, RepeatMixin, MapMixin
-from twoq.mixins.reducing import MathMixin, TruthMixin, ReduceMixin
+from appspace import appifies
+from twoq.active import AutoQMixin, AutoResultMixin
+from twoq.mapping import DelayMixin, RepeatMixin, MapMixin
+from twoq.reducing import MathMixin, TruthMixin, ReduceMixin
+from twoq.ordering import RandomMixin, OrderMixin, CombineMixin
+from twoq.filtering import FilterMixin, CollectMixin, SetMixin, SliceMixin
 
-from callchain.keys.call import KCall
-from callchain.keys.core import KChain
-from callchain.keys.root import KConfig
-from callchain.keys.branch import KLinked
-from callchain.services.queue import KResult
+from callchain.services import KResult
 from callchain.call import ChainMixin, PriorityMixin
-from callchain.services.order import KRandom, KOrder
 from callchain.services.map import KDelay, KRepeat, KMap
+from callchain.keys import KCall, KChain, KConfig, KLinked
 from callchain.services.reduce import KMath, KReduce, KTruth
-from callchain.branch import (
+from callchain.chain import (
     BranchMixin, BranchletMixin, ChainletMixin, LinkedMixin)
+from callchain.services.order import KRandom, KOrder, KCombine
 from callchain.services.filter import KCollect, KSet, KSlice, KFilter
 
 __all__ = (
     'mathchain', 'truthchain', 'reducechain', 'collectchain', 'setchain',
     'slicechain', 'filterchain', 'delaychain', 'repeatchain', 'mapchain',
-    'randomchain', 'orderchain',
+    'randomchain', 'orderchain', 'chainlet', 'combinechain',
 )
 
 
@@ -43,7 +39,7 @@ class delaychain(
     DelayMixin,
 ):
 
-    '''auto-balancing delayed mapping chainlet'''
+    '''delayed mapping chainlet'''
 
 
 @appifies(KRepeat)
@@ -55,7 +51,7 @@ class repeatchain(
     RepeatMixin,
 ):
 
-    '''auto-balancing repeat chainlet'''
+    '''repeat chainlet'''
 
 
 @appifies(KMap)
@@ -67,7 +63,7 @@ class mapchain(
     MapMixin,
 ):
 
-    '''auto-balancing mapping chainlet'''
+    '''mapping chainlet'''
 
 
 @appifies(KCollect)
@@ -79,7 +75,7 @@ class collectchain(
     CollectMixin,
 ):
 
-    '''auto-balancing collecting chainlet'''
+    '''collecting chainlet'''
 
 
 @appifies(KSet)
@@ -91,7 +87,7 @@ class setchain(
     SetMixin,
 ):
 
-    '''auto-balancing seting chainlet'''
+    '''seting chainlet'''
 
 
 @appifies(KSlice)
@@ -103,7 +99,7 @@ class slicechain(
     SliceMixin,
 ):
 
-    '''auto-balancing slicing chainlet'''
+    '''slicing chainlet'''
 
 
 @appifies(KFilter)
@@ -115,7 +111,7 @@ class filterchain(
     FilterMixin,
 ):
 
-    '''auto-balancing filtering chainlet'''
+    '''filtering chainlet'''
 
 
 @appifies(KRandom)
@@ -127,7 +123,7 @@ class randomchain(
     RandomMixin,
 ):
 
-    '''auto-balancing randomizing chainlet'''
+    '''randomizing chainlet'''
 
 
 @appifies(KOrder)
@@ -139,7 +135,7 @@ class orderchain(
     OrderMixin,
 ):
 
-    '''auto-balancing ordering chainlet'''
+    '''ordering chainlet'''
 
 
 @appifies(KMath)
@@ -151,7 +147,7 @@ class mathchain(
     MathMixin,
 ):
 
-    '''auto-balancing mathing chainlet'''
+    '''mathing chainlet'''
 
 
 @appifies(KReduce)
@@ -163,7 +159,19 @@ class reducechain(
     ReduceMixin,
 ):
 
-    '''auto-balancing reducing chainlet'''
+    '''reducing chainlet'''
+
+
+@appifies(KCombine)
+class combinechain(
+    ChainletMixin,
+    BranchMixin,
+    BranchletMixin,
+    AutoQMixin,
+    CombineMixin,
+):
+
+    '''combining chainlet'''
 
 
 @appifies(KTruth)
@@ -175,16 +183,16 @@ class truthchain(
     TruthMixin,
 ):
 
-    '''auto-balancing truthing chainlet'''
+    '''truthing chainlet'''
 
 
 @appifies(KLinked, KConfig, KCall, KChain, KResult)
 class chainlink(BranchMixin, LinkedMixin, ChainMixin, AutoResultMixin):
 
-    '''auto-balancing linked chain'''
+    '''linked chain'''
 
 
 @appifies(KLinked, KConfig, KCall, KChain, KResult)
-class prilink(BranchMixin, LinkedMixin, PriorityMixin, AutoResultMixin):
+class prioritylink(BranchMixin, LinkedMixin, PriorityMixin, AutoResultMixin):
 
-    '''auto-balancing priority linked chain'''
+    '''priority linked chain'''

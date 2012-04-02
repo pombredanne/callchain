@@ -1,31 +1,35 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-'''setup callchain'''
+'''setup for callchain'''
 
-import os
-
+from os import getcwd
+from os.path import join
 try:
     from setuptools import setup
 except ImportError:
     from distutils.core import setup
 
-install_requires = ['twoq>=0.4.8', 'appspace>=0.5.3', 'stuf>=0.8.11']
+install_requires = list(l.strip() for l in open(
+    join(getcwd(), 'requirements.txt'), 'r',
+).readlines())
 
 setup(
     name='callchain',
-    version='0.2.4',
-    url='http://bitbucket.com/lcrees/callchain',
+    version='0.2.5',
     description='callables and components joined in one big happy chain',
-    long_description=open(os.path.join(os.getcwd(), 'README.rst'), 'r').read(),
-    author='L. C. Rees',
+    long_description=open(join(getcwd(), 'README.rst'), 'r').read(),
+    keywords='component architecture injection aspect-oriented appspace '
+        'generator iterator functional',
     license='BSD',
+    author='L. C. Rees',
     author_email='lcrees@gmail.com',
+    url='https://bitbucket.org/lcrees/callchain',
     packages=[
-        'callchain',  'callchain.services', 'callchain.keys',
-        'callchain.lazy_auto', 'callchain.lazy_man', 'callchain.active_man',
-        'callchain.active_auto',
+        l.strip() for l in open(join(getcwd(), 'packages'), 'r').readlines()
     ],
-    tests='callchain.tests',
+    test_suite='callchain.tests',
+    zip_safe=False,
+    install_requires=install_requires,
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
@@ -39,9 +43,8 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.2',
         'Programming Language :: Python :: Implementation :: CPython',
+        'Topic :: Software Development',
         'Topic :: Software Development :: Libraries',
         'Topic :: Utilities',
     ],
-    install_requires=install_requires,
-    zip_safe=False,
 )

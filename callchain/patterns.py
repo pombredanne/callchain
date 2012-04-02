@@ -61,8 +61,10 @@ class Pathways(Patterns):
         @param required: required settings
         @param defaults: default settings
         '''
-        manager.settings.required = required
-        manager.settings.defaults = defaults
+        if required is not None:
+            manager.settings.required = required
+        if defaults is not None:
+            manager.settings.defaults = defaults
 
 
 class _PatternsMixin(object):

@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 '''lazy auto-balancing chains appconf'''
 
-from appspace.keys import appifies
-from twoq.lazy.mixins import AutoResultMixin
+from appspace import appifies
+from twoq.lazy import AutoResultMixin
 
-from callchain.root import RootMixin
-from callchain.keys.root import KRoot
-from callchain.keys.call import KCall
-from callchain.keys.core import KChain
+from callchain.chain import RootMixin
+from callchain.config import Defaults
+from callchain.keys import KRoot, KCall, KChain
 from callchain.patterns import Pathways, Nameways
 from callchain.services.queue import KThings, KResult
 from callchain.call import ChainMixin, PriorityMixin, inside
@@ -18,18 +17,20 @@ from callchain.call import ChainMixin, PriorityMixin, inside
 
 
 class thingchain(Pathways):
-    link = 'callchain.lazy_auto.chainlet.chainlink'
+    class logger(Nameways):
+        key = 'callchain.contrib.keys.KLogger'
+        logger = 'callchain.contrib.logger.loglet'
 
 
 @appifies(KThings, KRoot, KChain, KCall)
-@inside(thingchain)
+@inside(thingchain, defaults=Defaults)
 class callchain(RootMixin, ChainMixin, AutoResultMixin):
 
     '''lazy queued auto-balancing lite call chain'''
 
 
 @appifies(KThings, KRoot, KChain, KCall)
-@inside(thingchain)
+@inside(thingchain, defaults=Defaults)
 class prioritychain(RootMixin, PriorityMixin, AutoResultMixin):
 
     '''lazy priority queued auto-balancing lite call chain'''
@@ -41,6 +42,9 @@ class prioritychain(RootMixin, PriorityMixin, AutoResultMixin):
 
 
 class chain(Pathways):
+    class logger(Nameways):
+        key = 'callchain.contrib.keys.KLogger'
+        logger = 'callchain.contrib.logger.loglet'
 
     class filter(Nameways):
         key = 'callchain.services.filter.KFilter'
@@ -57,6 +61,10 @@ class chain(Pathways):
     class slice(Nameways):
         key = 'callchain.services.filter.KSlice'
         slice = 'callchain.lazy_auto.chainlet.slicechain'
+
+    class combine(Nameways):
+        key = 'callchain.services.order.KCombine'
+        combine = 'callchain.lazy_auto.chainlet.combinechain'
 
     class map(Nameways):
         key = 'callchain.services.map.KMap'
@@ -92,14 +100,14 @@ class chain(Pathways):
 
 
 @appifies(KResult, KRoot, KChain, KCall)
-@inside(chain)
+@inside(chain, defaults=Defaults)
 class chainq(RootMixin, ChainMixin, AutoResultMixin):
 
     '''lazy queued auto-balancing call chain'''
 
 
 @appifies(KThings, KRoot, KChain, KCall)
-@inside(chain)
+@inside(chain, defaults=Defaults)
 class priorityq(RootMixin, PriorityMixin, AutoResultMixin):
 
     '''lazy priority queued auto-balancing lite call chain'''
