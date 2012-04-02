@@ -21,7 +21,7 @@ from callchain.services.filter import KCollect, KSet, KSlice, KFilter
 __all__ = (
     'mathevent', 'truthevent', 'reduceevent', 'collectevent', 'setevent',
     'sliceevent', 'filterevent', 'delayevent', 'repeatevent', 'mapevent',
-    'randomevent', 'orderevent', 'eventlet'
+    'randomevent', 'orderevent', 'eventlet', 'combineevent'
 )
 
 
@@ -99,7 +99,7 @@ class reduceevent(eventlet, ReduceMixin):
 @appifies(KCombine)
 class combineevent(eventlet, CombineMixin):
 
-    '''permutating eventlet'''
+    '''combining eventlet'''
 
 
 @appifies(KTruth)

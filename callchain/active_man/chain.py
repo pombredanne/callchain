@@ -6,9 +6,9 @@ from twoq.active import ManResultMixin
 
 from callchain.chain import RootMixin
 from callchain.config import Defaults
+from callchain.services import KThings, KResult
 from callchain.keys import KRoot, KCall, KChain
 from callchain.patterns import Pathways, Nameways
-from callchain.services.queue import KThings, KResult
 from callchain.call import ChainMixin, PriorityMixin, inside
 
 ###############################################################################
@@ -61,6 +61,10 @@ class chain(Pathways):
     class slice(Nameways):
         key = 'callchain.services.filter.KSlice'
         slice = 'callchain.active_man.chainlet.slicechain'
+
+    class combine(Nameways):
+        key = 'callchain.services.order.KCombine'
+        combine = 'callchain.active_man.chainlet.combinechain'
 
     class map(Nameways):
         key = 'callchain.services.map.KMap'

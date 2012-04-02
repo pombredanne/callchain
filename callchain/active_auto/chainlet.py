@@ -8,7 +8,7 @@ from twoq.reducing import MathMixin, TruthMixin, ReduceMixin
 from twoq.ordering import RandomMixin, OrderMixin, CombineMixin
 from twoq.filtering import FilterMixin, CollectMixin, SetMixin, SliceMixin
 
-from callchain.services.queue import KResult
+from callchain.services import KResult
 from callchain.call import ChainMixin, PriorityMixin
 from callchain.services.map import KDelay, KRepeat, KMap
 from callchain.keys import KCall, KChain, KConfig, KLinked
@@ -21,7 +21,7 @@ from callchain.services.filter import KCollect, KSet, KSlice, KFilter
 __all__ = (
     'mathchain', 'truthchain', 'reducechain', 'collectchain', 'setchain',
     'slicechain', 'filterchain', 'delaychain', 'repeatchain', 'mapchain',
-    'randomchain', 'orderchain',
+    'randomchain', 'orderchain', 'chainlet', 'combinechain',
 )
 
 
@@ -171,7 +171,7 @@ class combinechain(
     CombineMixin,
 ):
 
-    '''permutating chainlet'''
+    '''combining chainlet'''
 
 
 @appifies(KTruth)

@@ -8,8 +8,8 @@ from callchain.config import Defaults
 from callchain.chain import EventRootMixin
 from callchain.services.apps import events
 from callchain.call import EventMixin, einside
+from callchain.services import KThings, KResult
 from callchain.patterns import Pathways, Nameways
-from callchain.services.queue import KThings, KResult
 from callchain.keys import KEvent, KEventRoot, KEventCall
 
 ###############################################################################
@@ -51,6 +51,10 @@ class event(Pathways):
     class collect(Nameways):
         key = 'callchain.services.filter.KCollect'
         collect = 'callchain.lazy_auto.eventlet.collectevent'
+
+    class combine(Nameways):
+        key = 'callchain.services.order.KCombine'
+        combine = 'callchain.lazy_auto.eventlet.combineevent'
 
     class set(Nameways):
         key = 'callchain.services.filter.KSet'

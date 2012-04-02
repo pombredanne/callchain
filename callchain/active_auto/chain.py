@@ -62,9 +62,9 @@ class chain(Pathways):
         key = 'callchain.services.filter.KSlice'
         slice = 'callchain.active_auto.chainlet.slicechain'
 
-    class permutate(Nameways):
-        key = 'callchain.services.order.KPermutate'
-        permutate = 'callchain.active_auto.chainlet.permutatechain'
+    class combine(Nameways):
+        key = 'callchain.services.order.KCombine'
+        combine = 'callchain.active_auto.chainlet.combinechain'
 
     class map(Nameways):
         key = 'callchain.services.map.KMap'

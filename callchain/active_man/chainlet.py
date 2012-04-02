@@ -159,7 +159,7 @@ class reducechain(
     ReduceMixin,
 ):
 
-    '''manually balanced reducing chainlet'''
+    '''reducing chainlet'''
 
 
 @appifies(KCombine)
@@ -171,7 +171,7 @@ class combinechain(
     CombineMixin,
 ):
 
-    '''permutating chainlet'''
+    '''combining chainlet'''
 
 
 @appifies(KTruth)

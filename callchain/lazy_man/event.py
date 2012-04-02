@@ -51,6 +51,10 @@ class event(Pathways):
         key = 'callchain.services.filter.KCollect'
         collect = 'callchain.lazy_man.eventlet.collectevent'
 
+    class combine(Nameways):
+        key = 'callchain.services.order.KCombine'
+        combine = 'callchain.lazy_man.eventlet.combineevent'
+
     class set(Nameways):
         key = 'callchain.services.filter.KSet'
         set = 'callchain.lazy_man.eventlet.setevent'

@@ -99,7 +99,7 @@ class reduceevent(eventlet, ReduceMixin):
 @appifies(KCombine)
 class combineevent(eventlet, CombineMixin):
 
-    '''permutating eventlet'''
+    '''combining eventlet'''
 
 
 @appifies(KTruth)

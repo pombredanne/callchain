@@ -62,6 +62,10 @@ class chain(Pathways):
         key = 'callchain.services.filter.KSlice'
         slice = 'callchain.lazy_man.chainlet.slicechain'
 
+    class combine(Nameways):
+        key = 'callchain.services.order.KCombine'
+        combine = 'callchain.lazy_man.chainlet.combinechain'
+
     class map(Nameways):
         key = 'callchain.services.map.KMap'
         map = 'callchain.lazy_man.chainlet.mapchain'

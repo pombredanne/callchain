@@ -21,7 +21,7 @@ from callchain.services.filter import KCollect, KSet, KSlice, KFilter
 __all__ = (
     'mathchain', 'truthchain', 'reducechain', 'collectchain', 'setchain',
     'slicechain', 'filterchain', 'delaychain', 'repeatchain', 'mapchain',
-    'randomchain', 'orderchain',
+    'randomchain', 'orderchain', 'chainlet', 'combinechain',
 )
 
 
@@ -159,7 +159,7 @@ class reducechain(
     ReduceMixin,
 ):
 
-    '''manually balanced reducing chainlet'''
+    '''reducing chainlet'''
 
 
 @appifies(KCombine)
@@ -171,7 +171,7 @@ class combinechain(
     CombineMixin,
 ):
 
-    '''permutating chainlet'''
+    '''combining chainlet'''
 
 
 @appifies(KTruth)
