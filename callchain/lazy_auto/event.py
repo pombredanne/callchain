@@ -1,17 +1,16 @@
 # -*- coding: utf-8 -*-
 '''lazy auto-balancing event chains appconf'''
 
-from appspace.keys import appifies
-from twoq.lazy.mixins import AutoResultMixin
+from appspace import appifies
+from twoq.lazy import AutoResultMixin
 
-from callchain.keys.core import KEvent
-from callchain.root import EventRootMixin
-from callchain.keys.root import KEventRoot
-from callchain.keys.call import KEventCall
+from callchain.config import Defaults
+from callchain.chain import EventRootMixin
 from callchain.services.apps import events
 from callchain.call import EventMixin, einside
+from callchain.services import KThings, KResult
 from callchain.patterns import Pathways, Nameways
-from callchain.services.queue import KThings, KResult
+from callchain.keys import KEvent, KEventRoot, KEventCall
 
 ###############################################################################
 ## thing event chain ##########################################################
@@ -21,9 +20,13 @@ from callchain.services.queue import KThings, KResult
 class thingevent(Pathways):
     chain = 'callchain.lazy_auto.chainlet.chainlink'
 
+    class logger(Nameways):
+        key = 'callchain.contrib.keys.KLogger'
+        logger = 'callchain.contrib.logger.loglet'
+
 
 @appifies(KThings, KEventRoot, KEvent, KEventCall)
-@einside(thingevent, events)
+@einside(thingevent, events, defaults=Defaults)
 class eventchain(EventRootMixin, EventMixin, AutoResultMixin):
 
     '''lazy queued auto-balancing lite event chain'''
@@ -37,6 +40,10 @@ class eventchain(EventRootMixin, EventMixin, AutoResultMixin):
 class event(Pathways):
     chain = 'callchain.lazy_auto.chainlet.chainlink'
 
+    class logger(Nameways):
+        key = 'callchain.contrib.keys.KLogger'
+        logger = 'callchain.contrib.logger.loglet'
+
     class filter(Nameways):
         key = 'callchain.services.filter.KFilter'
         filter = 'callchain.lazy_auto.eventlet.filterevent'
@@ -44,6 +51,10 @@ class event(Pathways):
     class collect(Nameways):
         key = 'callchain.services.filter.KCollect'
         collect = 'callchain.lazy_auto.eventlet.collectevent'
+
+    class combine(Nameways):
+        key = 'callchain.services.order.KCombine'
+        combine = 'callchain.lazy_auto.eventlet.combineevent'
 
     class set(Nameways):
         key = 'callchain.services.filter.KSet'
@@ -87,7 +98,7 @@ class event(Pathways):
 
 
 @appifies(KResult, KEventRoot, KEvent, KEventCall)
-@einside(event, events)
+@einside(event, events, defaults=Defaults)
 class eventq(EventRootMixin, EventMixin, AutoResultMixin):
 
     '''lazy queued auto-balancing event chain'''

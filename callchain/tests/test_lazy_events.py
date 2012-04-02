@@ -6,16 +6,16 @@ try:
 except ImportError:
     import unittest
 
-from callchain.tests.mixins.man.queuing import MQMixin
-from callchain.tests.mixins.auto.queuing import AQMixin
-from callchain.tests.mixins.man.mapping import MMapQMixin
-from callchain.tests.mixins.auto.mapping import AMapQMixin
-from callchain.tests.mixins.man.ordering import MOrderQMixin
-from callchain.tests.mixins.auto.ordering import AOrderQMixin
-from callchain.tests.mixins.man.reducing import MReduceQMixin
-from callchain.tests.mixins.man.filtering import MFilterQMixin
-from callchain.tests.mixins.auto.reducing import AReduceQMixin
-from callchain.tests.mixins.auto.filtering import AFilterQMixin
+from callchain.tests.man.queuing import MQMixin
+from callchain.tests.auto.queuing import AQMixin
+from callchain.tests.man.mapping import MMapQMixin
+from callchain.tests.auto.mapping import AMapQMixin
+from callchain.tests.man.ordering import MOrderQMixin
+from callchain.tests.auto.ordering import AOrderQMixin
+from callchain.tests.man.reducing import MReduceQMixin
+from callchain.tests.man.filtering import MFilterQMixin
+from callchain.tests.auto.reducing import AReduceQMixin
+from callchain.tests.auto.filtering import AFilterQMixin
 
 from callchain.tests.manning import Manning
 from callchain.tests.chain import CallMixin

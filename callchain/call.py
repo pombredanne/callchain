@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 '''callchain call mixins'''
 
-from itertools import chain
+from functools import partial
+from itertools import chain, count
 
 from twoq.support import isstring
 from appspace.builders import Appspace
@@ -10,8 +11,27 @@ from stuf.utils import OrderedDict, lazy
 from callchain.managers import Events
 from callchain.core import ConfigMixin
 from callchain.patterns import Pathways
-from callchain.keys.base import NoServiceError
-from callchain.support import Queue, PriorityQueue, Empty, cury
+from callchain.keys import NoServiceError
+from callchain.support import Empty, Queue, PriorityQueue, total_ordering
+
+
+@total_ordering
+class Partial(object):
+
+    '''partial wrapper'''
+
+    __slots__ = ('_call', 'count', '__call__')
+
+    counter = count()
+
+    def __init__(self, call, *args, **settings):
+        self.__call__ = partial(call, *args, **settings)
+        priority = settings.pop('priority', None)
+        self.count = next(self.counter) if priority is None else priority
+
+    def __lt__(self, other):
+        return self.count < other
+
 
 ###############################################################################
 ## chain components ###########################################################
@@ -79,7 +99,7 @@ class CallMixin(ConfigMixin):
             key = _M.service(label)
             return getattr(_M.get(key, key)(self), label)
         except NoServiceError:
-            # ...or lookup other appspaced thing
+            # ...or lookup some other appspaced thing
             return super(CallMixin, self)._load(label)
 
     @lazy
@@ -89,8 +109,6 @@ class CallMixin(ConfigMixin):
 
     def _setup(self, root):
         '''call chain setup'''
-        # chain label
-        self._CALLQ = '_chain'
         # call chain queue
         self._chain = self._queue()
 
@@ -103,8 +121,8 @@ class CallMixin(ConfigMixin):
         @param key: appspace key (default: False)
         '''
         self._chain.put(
-            cury(call, *(key,) + args, **kw) if not isstring(call)
-            else cury(self.M.get(call, key), *args, **kw)
+            Partial(call, *(key,) + args, **kw) if not isstring(call)
+            else Partial(self.M.get(call, key), *args, **kw)
         )
         return self
 
@@ -160,9 +178,9 @@ class PriorityMixin(CallMixin):
         @param key: appspace key (default: False)
         '''
         self._chain.put(
-            cury(call, *(key,) + args, **kw)
+            Partial(call, *(key,) + args, **kw)
             if not isstring(call)
-            else cury(self.M.get(call, key), *args, **kw)
+            else Partial(self.M.get(call, key), *args, **kw)
         )
         return self
 
@@ -260,7 +278,7 @@ class EventMixin(ChainMixin):
 
         @param *events: event labels
         '''
-        with self.ctx1(workq='_work'):
+        with self.ctx1(workq=self._WORKVAR):
             return self.exhaustcall(
                 lambda x: x(), self._xtend(self._events(*events))._iterable,
             )

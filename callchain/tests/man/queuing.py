@@ -8,6 +8,31 @@ class MQMixin(object):
     ## queue manipulation #####################################################
     ###########################################################################
 
+    def test_debug(self):
+        self.assertIsNotNone(self.qclass.debug('this is a debug message'))
+
+    def test_info(self):
+        self.assertIsNotNone(self.qclass.info('this is a info message'))
+
+    def test_warning(self):
+        self.assertIsNotNone(self.qclass.warning('this is a info message'))
+
+    def test_error(self):
+        self.assertIsNotNone(self.qclass.error('this is a error message'))
+
+    def test_critical(self):
+        self.assertIsNotNone(
+            self.qclass.critical('this is a critical message')
+        )
+
+    def test_exception(self):
+        try:
+            raise TypeError()
+        except TypeError:
+            self.assertIsNotNone(
+                self.qclass.exception('this is a exception message')
+            )
+
     def test_ro(self):
         self.assertEqual(
             self.qclass([1, 2, 3, 4, 5, 6]).ro().peek(), [1, 2, 3, 4, 5, 6],

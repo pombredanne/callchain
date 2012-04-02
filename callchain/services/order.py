@@ -47,3 +47,29 @@ class KOrder(KService):
         '''
         sort incoming things, optionally using current call as key function
         '''
+
+
+class KCombine(KService):
+
+    '''combination key'''
+
+    def combinations(r):  # @NoSelf
+        '''
+        `r` length slices of incoming things
+
+        @param r: length of combinations
+        '''
+
+    def permutations(r):  # @NoSelf
+        '''
+        successive `r` length permutations of incoming things
+
+        @param r: length of permutations
+        '''
+
+    def product(n=1):  # @NoSelf
+        '''
+        nested for each loops repeated `n` times
+
+        @param n: number of repetitions (default: 1)
+        '''
