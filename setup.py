@@ -15,7 +15,7 @@ install_requires = list(l.strip() for l in open(
 
 setup(
     name='callchain',
-    version='0.2.5',
+    version='0.2.6',
     description='callables and components joined in one big happy chain',
     long_description=open(join(getcwd(), 'README.rst'), 'r').read(),
     keywords='component architecture injection aspect-oriented appspace '
