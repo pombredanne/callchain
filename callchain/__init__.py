@@ -22,4 +22,4 @@ from callchain.core import ResetLocalMixin, ResetTypeMixin
 from callchain.patterns import Pathways, Branchways, Nameways
 from callchain.settings import DefaultSettings, RequiredSettings
 
-__version__ = (0, 2, 5)
+__version__ = (0, 2, 6)
